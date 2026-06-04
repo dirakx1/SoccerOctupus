@@ -1,0 +1,15 @@
+{
+  "name": "fifaoctopus",
+  "version": "0.1.0",
+  "scripts": {
+    "setup": "cd frontend && npm install",
+    "setup:backend": "cd backend && pip install -r requirements.txt",
+    "setup:all": "npm run setup && npm run setup:backend",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && python run.py",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
