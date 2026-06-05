@@ -21,6 +21,7 @@ from .agents import (
     FormAgent,
     LiveDataAgent,
     MarketSignalsAgent,
+    SquadQualityAgent,
     StatisticalAgent,
     TacticalAgent,
     VideoAgent,
@@ -61,6 +62,7 @@ class SwarmOrchestrator:
             TacticalAgent(llm_client=llm_client, zep_tools=self.zep),  # style matchup
             LiveDataAgent(zep_tools=self.zep),             # FotMob xG + FlashScore form
             MarketSignalsAgent(zep_tools=self.zep),        # 365Scores odds + Tiki-Taka AI
+            SquadQualityAgent(zep_tools=self.zep),         # Opta player ratings + squad depth
         ]
         self.aggregator = AggregatorAgent(llm_client=llm_client)
 

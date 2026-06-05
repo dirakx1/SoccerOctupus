@@ -34,6 +34,12 @@ class Config:
     UPLOAD_FOLDER: str = str(BASE_DIR / "uploads")
     PREDICTIONS_DIR: str = str(BASE_DIR / "uploads" / "predictions")
 
+    # Opta / Stats Perform API (commercial license required)
+    # API docs: https://developer.statsperform.com/
+    # Without this key the collector falls back to derived Opta-style metrics.
+    OPTA_API_KEY: str = os.getenv("OPTA_API_KEY", "")
+    OPTA_BASE_URL: str = "https://api.performfeeds.com/soccerdata"
+
     # Zep Cloud — knowledge graph (mirrors MiroFish)
     # Free tier at https://app.getzep.com/ is sufficient for this use case
     ZEP_API_KEY: str = os.getenv("ZEP_API_KEY", "")

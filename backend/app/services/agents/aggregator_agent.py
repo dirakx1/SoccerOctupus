@@ -62,6 +62,7 @@ class AggregatorAgent:
             "Tactical Analysis Agent": 1.2,
             "Live Data Agent": 1.4,
             "Market Signals Agent": 0.8,
+            "Squad Quality Agent": 1.1,
         }
 
         w_sum = 0.0

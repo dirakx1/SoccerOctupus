@@ -2,7 +2,7 @@
 
 **A swarm-intelligence prediction engine for the FIFA World Cup 2026.**
 
-Six specialised AI agents — each drawing on a different data source — run in parallel to predict every match of the tournament, from the 72 group-stage fixtures all the way to the Final. A Zep knowledge graph provides shared memory across all agents. An LLM synthesises their outputs into a human-readable match preview.
+Seven specialised AI agents — each drawing on a different data source — run in parallel to predict every match of the tournament, from the 72 group-stage fixtures all the way to the Final. A Zep knowledge graph provides shared memory across all agents. An LLM synthesises their outputs into a human-readable match preview.
 
 ---
 
@@ -21,13 +21,14 @@ User request ──► SwarmOrchestrator ──┬──► 📊 StatisticalAgen
                                      ├──► 🎥 VideoAgent         (weight 1.0×)
                                      ├──► 🔥 FormAgent           (weight 1.3×)
                                      ├──► 🧠 TacticalAgent       (weight 1.2×)
-                                     ├──► 📡 LiveDataAgent       (weight 1.4×)
-                                     └──► 💹 MarketSignalsAgent  (weight 0.8×)
+                                     ├──► 📡 LiveDataAgent       (weight 1.4×)  FotMob · FlashScore
+                                     ├──► 💹 MarketSignalsAgent  (weight 0.8×)  365Scores · Tiki-Taka
+                                     └──► ⚽ SquadQualityAgent   (weight 1.1×)  Opta Stats Perform
                                                │
                                                ▼
                                      AggregatorAgent
-                                     ├─ confidence-weighted ensemble
-                                     ├─ LLM narrative synthesis
+                                     ├─ confidence-weighted ensemble  (7 agents)
+                                     ├─ LLM narrative synthesis       (Claude / GPT-4o)
                                      └─ MatchPrediction
 ```
 
@@ -179,6 +180,46 @@ hw = 365scores_implied_hw × 0.60 + tikitaka_hw × 0.40  (+ news sentiment nudge
 
 ---
 
+### ⚽ SquadQualityAgent — weight 1.1× *(new — Opta)*
+
+Uses Opta / Stats Perform player statistics to evaluate individual player quality across the starting XI and bench — a dimension none of the other agents see directly.
+
+**API:** Stats Perform REST API (`https://api.performfeeds.com/soccerdata/`) — commercial license required ([developer.statsperform.com](https://developer.statsperform.com/)).  
+**Without key:** falls back to a derived model calibrated against published Opta national-team benchmarks for 18 WC-tier teams; interpolates the remaining teams using regression coefficients from those benchmarks.
+
+| Statistic | Source | Used for |
+|---|---|---|
+| **Avg player Opta rating** (0–10) | Opta Stats Perform | Primary quality signal; drives 35% of composite score |
+| **Key passes per game** | Opta | Chance-creation quality (passes that directly create a shot) |
+| **Successful dribbles per game** | Opta | Individual flair and ability to beat defenders |
+| **Tackles won %** | Opta | Defensive organisation and aggression |
+| **Aerial duels won %** | Opta | Physical dominance; set-piece defending/attacking |
+| **Set piece conversion rate** | Opta | Goals from corners + direct free kicks per set piece taken |
+| **Squad depth score** (0–1) | Opta | Bench quality vs starting XI — fatigue resilience |
+| **Pass accuracy %** | Opta | Technical quality under pressure |
+| **xG overperformance** | Opta | Goals minus expected goals — clinical finishing above model |
+| **Pressing success rate** | Opta | % of pressing actions that recover possession |
+
+**Composite scoring model:**
+
+```
+composite = rating_diff × 0.35
+          + creation_diff × 0.20          (key passes + dribbles)
+          + defence_diff / 100 × 0.15     (tackles + aerials)
+          + set_piece_diff × 0.08
+          + depth_diff × 0.08
+          + pass_acc_diff / 100 × 0.06
+          + clinical_diff × 0.05
+          + pressing_diff × 0.03
+
+hw = 0.375 + composite × 0.12
+aw = 0.375 − composite × 0.12
+```
+
+Confidence: `0.78` (live API) · `0.68` (benchmark) · `0.58` (derived interpolation)
+
+---
+
 ### AggregatorAgent
 
 Combines all six agents using **confidence-weighted averaging** where each agent's vote is weighted by `agent_weight × agent_confidence`. Calls the LLM to synthesise a 3-sentence match preview from all agent reasonings and extract 3 key factors.
@@ -186,9 +227,10 @@ Combines all six agents using **confidence-weighted averaging** where each agent
 | Agent | Base weight | Typical confidence | Effective weight |
 |---|---|---|---|
 | StatisticalAgent | 1.8× | 70–82% | ~1.3 |
+| LiveDataAgent | 1.4× | 60–65% | ~0.9 |
 | FormAgent | 1.3× | 55–72% | ~0.8 |
 | TacticalAgent | 1.2× | 60% | ~0.7 |
-| LiveDataAgent | 1.4× | 60–65% | ~0.9 |
+| SquadQualityAgent | 1.1× | 58–78% | ~0.8 |
 | VideoAgent | 1.0× | 55–60% | ~0.6 |
 | MarketSignalsAgent | 0.8× | 65–75% | ~0.6 |
 
@@ -226,15 +268,16 @@ python3 backend/setup_zep.py
 
 ## Data Sources — Summary
 
-| Source | Type | API | Fallback |
-|---|---|---|---|
-| **SofaScore** | Stats DB | Unofficial public REST | 60-team static dataset |
-| **YouTube Data API v3** | Video | Official (key required) | ELO-derived synthetic scores |
-| **FotMob** | Deep stats | Unofficial public REST | Style + rating estimates |
-| **FlashScore** | Live scores | Mobile web API | ELO-derived form strings |
-| **365Scores** | Odds + news | Unofficial public REST | ELO → implied odds conversion |
-| **Tiki-Taka AI** | AI predictions | Private (key optional) | Dixon-Coles Poisson model |
-| **Zep Cloud** | Knowledge graph | Official (key required) | Static dict lookup |
+| Source | Agent | Type | API | Fallback |
+|---|---|---|---|---|
+| **SofaScore** | Statistical, Form, Tactical | Stats DB | Unofficial public REST | 60-team static dataset |
+| **YouTube Data API v3** | Video | Video platform | Official (key required) | ELO-derived synthetic scores |
+| **FotMob** | LiveData | Deep match stats | Unofficial public REST | Style + rating estimates |
+| **FlashScore** | LiveData | Live scores | Mobile web API | ELO-derived form strings |
+| **365Scores** | MarketSignals | Odds + news | Unofficial public REST | ELO → implied odds conversion |
+| **Tiki-Taka AI** | MarketSignals | AI predictions | Private (key optional) | Dixon-Coles Poisson model |
+| **Opta / Stats Perform** | SquadQuality | Player stats | Commercial (key required) | Calibrated benchmark + derived model |
+| **Zep Cloud** | All agents | Knowledge graph | Official (key required) | Static dict lookup |
 
 ---
 
@@ -415,16 +458,24 @@ Valid `--stage` values: `group` · `round_of_32` · `round_of_16` · `quarter_fi
      H 47.7%  D 4.8%  A 47.5%  │  xG 2.1–2.2  │  conf 58%  ≈ EVEN
      → Synthetic momentum: Brazil 0.82, Spain 0.82. Neither side has edge.
 
+  ⚽  Squad Quality Agent  (weight 1.1×)
+     H 44.2%  D 25.0%  A 30.8%  │  xG 2.0–1.8  │  conf 68%  ← HOME
+     → Opta: Brazil 7.20/10 vs Spain 7.31/10 (Δ−0.11). Key passes: 2.8 vs 3.2/game.
+       Dribbles: 4.8 vs 4.1/game. Tackles won: 60% vs 61%. Aerials: 55% vs 54%.
+       Set pieces: 4.3% vs 4.2%. Pass acc: 77% vs 82%. Depth: 0.89 vs 0.93.
+       Composite Opta edge: Spain (−0.042). Data: opta_benchmark/opta_benchmark.
+
   KEY FACTORS
   •  Spain's tiki-taka dominates possession (64%) and neutralises Brazil's high press
-  •  Spain's superior recent form (WWWWWW, 22/30) vs Brazil's home advantage
+  •  Spain's superior recent form (WWWWWW, 22/30) and higher Opta rating (7.31 vs 7.20) vs Brazil's home advantage
   •  Both sides project >1.9 xG — open, high-scoring contest expected
 
   SWARM CONSENSUS  (Claude Opus 4.8)
   This is a razor-thin clash between two heavyweights, with Brazil's home
   advantage and dominant H2H record almost perfectly offset by Spain's
-  superior current form and higher adjusted xG. Spain's tiki-taka and 64%
-  projected possession threaten to neutralise Brazil's high press.
+  superior current form, higher Opta squad rating (7.31 vs 7.20), and
+  greater pass accuracy (82% vs 77%). Spain's tiki-taka and 64% projected
+  possession threaten to neutralise Brazil's high press.
 ```
 
 ### Simple match prediction script
@@ -539,9 +590,10 @@ All settings are read from `.env` (see `.env.example`):
 | `LLM_API_KEY` | — | Optional | Any OpenAI-compatible key. Enables LLM narrative. |
 | `LLM_BASE_URL` | `https://api.openai.com/v1` | Optional | Must end with `/v1` (e.g. `https://api.anthropic.com/v1`) |
 | `LLM_MODEL_NAME` | `gpt-4o` | Optional | `claude-opus-4-8`, `gpt-4o`, `qwen-plus`, etc. |
+| `OPTA_API_KEY` | — | Optional | Stats Perform commercial key. SquadQualityAgent uses benchmark fallback if absent. |
 | `YOUTUBE_API_KEY` | — | Optional | YouTube Data API v3. 10k units/day free. |
 | `PORT` | `5002` | — | Backend port |
-| `SWARM_PARALLEL_AGENTS` | `6` | — | Concurrent agent threads. Set to number of agents (6). |
+| `SWARM_PARALLEL_AGENTS` | `7` | — | Concurrent agent threads. Match number of agents (7). |
 | `SWARM_TIMEOUT_SECONDS` | `60` | — | Per-match swarm deadline |
 
 ### Running without any API keys
@@ -555,6 +607,7 @@ The system is fully functional with zero keys set:
 | TacticalAgent | Uses embedded style matrix |
 | LiveDataAgent | FotMob → style-derived estimates; FlashScore → ELO-derived form strings |
 | MarketSignalsAgent | 365Scores → ELO-implied odds; Tiki-Taka → Dixon-Coles Poisson model |
+| SquadQualityAgent | Opta benchmark table (18 elite teams) + interpolated model for the rest |
 | VideoAgent | ELO-derived synthetic engagement scores |
 | AggregatorAgent | Rule-based fallback narrative (no LLM call) |
 | Knowledge layer | Static Python dict instead of Zep graph |
@@ -588,22 +641,24 @@ FifaOctopus/
 │   │   │   │   ├── video_agent.py         # YouTube engagement
 │   │   │   │   ├── form_agent.py          # Last-10 form points
 │   │   │   │   ├── tactical_agent.py      # Style matchup matrix
-│   │   │   │   ├── live_data_agent.py     # FotMob xG + FlashScore H2H  ★ new
-│   │   │   │   ├── market_signals_agent.py # 365Scores odds + Tiki-Taka  ★ new
-│   │   │   │   └── aggregator_agent.py    # Weighted ensemble + LLM
+│   │   │   │   ├── live_data_agent.py     # FotMob xG + FlashScore H2H        ★
+│   │   │   │   ├── market_signals_agent.py # 365Scores odds + Tiki-Taka        ★
+│   │   │   │   ├── squad_quality_agent.py  # Opta player ratings + squad depth ★
+│   │   │   │   └── aggregator_agent.py    # Weighted ensemble + LLM (7 agents)
 │   │   │   └── data_collectors/
 │   │   │       ├── sofascore_collector.py
 │   │   │       ├── youtube_collector.py
-│   │   │       ├── fotmob_collector.py     # xG, possession, PPDA, heatmaps  ★ new
-│   │   │       ├── flashscore_collector.py # W/D/L form strings, H2H scores  ★ new
-│   │   │       ├── scores365_collector.py  # Odds, news sentiment             ★ new
-│   │   │       └── tikitaka_collector.py   # Dixon-Coles AI model             ★ new
+│   │   │       ├── fotmob_collector.py     # xG, possession, PPDA, heatmaps    ★
+│   │   │       ├── flashscore_collector.py # W/D/L form strings, H2H scores    ★
+│   │   │       ├── scores365_collector.py  # Odds, news sentiment               ★
+│   │   │       ├── tikitaka_collector.py   # Dixon-Coles AI model               ★
+│   │   │       └── opta_collector.py       # Opta Stats Perform player data     ★
 │   │   └── utils/
 │   │       ├── llm_client.py              # OpenAI-compatible LLM wrapper
 │   │       ├── zep_paging.py              # Paginated Zep graph reads
 │   │       └── logger.py
 │   └── examples/
-│       ├── predict_full.py                # Full 6-agent prediction with env check  ★ new
+│       ├── predict_full.py                # Full 7-agent prediction with env check ★
 │       └── predict_random_match.py        # Simple random fixture demo
 └── frontend/
     └── src/

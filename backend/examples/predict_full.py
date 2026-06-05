@@ -55,6 +55,7 @@ AGENT_META = {
     "Tactical Analysis Agent":    ("🧠", "Style matchup matrix + Zep graph",             1.2),
     "Live Data Agent":            ("📡", "FotMob xG + heatmaps + FlashScore H2H",       1.4),
     "Market Signals Agent":       ("💹", "365Scores odds + Tiki-Taka AI (Dixon-Coles)", 0.8),
+    "Squad Quality Agent":        ("⚽", "Opta player ratings + squad depth + set pieces", 1.1),
 }
 
 
