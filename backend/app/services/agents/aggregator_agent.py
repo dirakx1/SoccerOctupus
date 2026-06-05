@@ -60,6 +60,8 @@ class AggregatorAgent:
             "Video Intelligence Agent": 1.0,
             "Recent Form Agent": 1.3,
             "Tactical Analysis Agent": 1.2,
+            "Live Data Agent": 1.4,
+            "Market Signals Agent": 0.8,
         }
 
         w_sum = 0.0

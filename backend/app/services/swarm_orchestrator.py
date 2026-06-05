@@ -19,6 +19,8 @@ from ..utils.logger import get_logger
 from .agents import (
     AggregatorAgent,
     FormAgent,
+    LiveDataAgent,
+    MarketSignalsAgent,
     StatisticalAgent,
     TacticalAgent,
     VideoAgent,
@@ -53,10 +55,12 @@ class SwarmOrchestrator:
 
         # Build the swarm — every agent receives the shared zep_tools reference
         self.agents = [
-            StatisticalAgent(zep_tools=self.zep),
-            VideoAgent(),
-            FormAgent(zep_tools=self.zep),
-            TacticalAgent(llm_client=llm_client, zep_tools=self.zep),
+            StatisticalAgent(zep_tools=self.zep),          # ELO + Poisson (SofaScore)
+            VideoAgent(),                                   # YouTube engagement
+            FormAgent(zep_tools=self.zep),                 # last-10 form points
+            TacticalAgent(llm_client=llm_client, zep_tools=self.zep),  # style matchup
+            LiveDataAgent(zep_tools=self.zep),             # FotMob xG + FlashScore form
+            MarketSignalsAgent(zep_tools=self.zep),        # 365Scores odds + Tiki-Taka AI
         ]
         self.aggregator = AggregatorAgent(llm_client=llm_client)
 
