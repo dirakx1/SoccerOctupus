@@ -33,12 +33,22 @@ class LLMClient:
         temperature: float = 0.3,
         max_tokens: int = 4096,
     ) -> str:
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-        )
+        kwargs: Dict[str, Any] = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        }
+        try:
+            response = self.client.chat.completions.create(**kwargs)
+        except Exception as exc:
+            # Some models (e.g. claude-opus-4-8 via Anthropic's OpenAI-compatible
+            # endpoint) have deprecated the temperature parameter.
+            if "temperature" in str(exc).lower() and "deprecated" in str(exc).lower():
+                kwargs.pop("temperature", None)
+                response = self.client.chat.completions.create(**kwargs)
+            else:
+                raise
         content = response.choices[0].message.content or ""
         # Strip <think> blocks some models emit
         content = re.sub(r"<think>[\s\S]*?</think>", "", content).strip()
