@@ -494,6 +494,42 @@ python3 backend/examples/predict_random_match.py --home France --away Morocco
 | **Groups** | `/groups` | Browse all 12 groups with ELO and FIFA rankings |
 | **Predict Match** | `/predict` | Select any two teams, run the swarm, see full per-agent breakdown |
 | **Tournament** | `/tournament` | Simulate the entire 104-match bracket — Monte Carlo or full swarm |
+| **📈 Markets** | `/markets` | Generate Kalshi & Polymarket contracts from swarm probabilities |
+
+#### Markets view
+
+Two tabs — **Match Markets** and **Tournament Futures** — each backed by a dedicated REST endpoint.
+
+**Match Markets tab**
+
+1. Select home team, away team, stage
+2. Click **Generate Market Questions** → swarm runs → 10 contracts appear
+3. Filter cards by prop type: Match Winner · Draw · BTTS · Over/Under · Clean Sheet · Penalties · Exact Score
+4. Each card shows:
+   - YES / NO probability bars
+   - **Kalshi price**: `53.0¢ YES / 47.0¢ NO` (0–100 cents per $1 contract)
+   - **Polymarket price**: `$0.5300 YES / $0.4700 NO` (USDC)
+   - ▼ Resolution criteria (expandable)
+   - Unique ticker ID with one-click copy (e.g. `FIFA26-FRANCE-BEAT-MOROCCO-GROUP`)
+
+**Tournament Futures tab**
+
+1. Click **Generate Futures Markets** → Monte Carlo simulation → 40 contracts appear
+2. **Champion odds table** (categorical): all contenders with probability bars and prices
+3. Filter by type: Champion · Advancement · Group Winners · Confederation · Host Nation · Penalties
+4. Binary cards for every team reaching the Final / Semi-Finals, all group winners, confederation wins, host nation to win, and whether the Final goes to penalties
+
+**Market card — colour coding**
+
+| Prop type | Accent colour |
+|---|---|
+| Match Winner / Champion | 🟡 Gold |
+| Draw / Advancement | 🔵 Blue |
+| BTTS / Group Winner | 🟢 Green |
+| Over/Under / Host Nation | 🟠 Orange |
+| Clean Sheet / Confederation | 🩵 Teal |
+| Penalties | 🔴 Red |
+| Exact Score | 🟣 Purple |
 
 ### REST API
 
@@ -510,6 +546,16 @@ POST /api/predictions/graph/build  ← rebuilds Zep graph (requires ZEP_API_KEY)
 GET  /api/predictions/teams
 GET  /api/predictions/groups
 GET  /health
+
+# ── Market endpoints ────────────────────────────────────────────────────
+POST /api/markets/match
+Body: { "home_team": "France", "away_team": "Morocco", "stage": "group",
+        "platform": "both" }     ← both | kalshi | polymarket
+
+POST /api/markets/tournament
+Body: { "platform": "both" }
+
+GET  /api/markets/types
 ```
 
 #### Single-match response shape
@@ -550,6 +596,84 @@ GET  /health
 ```
 
 For knockout matches that go to extra time/penalties: `"went_to_penalties": true` and `"most_likely_score": "2-2 (AET/PKs)"`.
+
+#### Market question response shape (`/api/markets/match`)
+
+```json
+{
+  "match": "France vs Morocco",
+  "stage": "group",
+  "prediction_summary": {
+    "home_win_prob": 0.530,
+    "draw_prob": 0.174,
+    "away_win_prob": 0.296,
+    "most_likely_score": "2-1"
+  },
+  "total_questions": 10,
+  "questions": [
+    {
+      "question_id": "FIFA26-FRANCE-BEAT-MOROCCO-GROUP",
+      "market_type": "binary",
+      "question": "Will France beat Morocco in the 2026 FIFA World Cup Group?",
+      "short_title": "France beats Morocco – WC26 Group",
+      "yes_probability": 0.530,
+      "no_probability": 0.470,
+      "pricing": {
+        "kalshi_yes_cents": 53.0,
+        "kalshi_no_cents": 47.0,
+        "polymarket_yes_usdc": 0.5300,
+        "polymarket_no_usdc": 0.4700
+      },
+      "resolution": {
+        "criteria": "Resolves YES if France has more goals than Morocco after 90 minutes...",
+        "source": "FIFA official match results (fifa.com)",
+        "date": "2026-07-02"
+      },
+      "platforms": ["Kalshi", "Polymarket"],
+      "prop_type": "match_winner",
+      "confidence": 0.650,
+      "tags": ["WC2026", "Soccer", "France", "Morocco", "Group", "Match Winner"]
+    }
+  ]
+}
+```
+
+**Kalshi-specific format** (`?platform=kalshi`):
+
+```json
+{
+  "ticker": "FIFA26-FRANCE-BEAT-MOROCCO-GROUP",
+  "title": "France beats Morocco – WC26 Group",
+  "yes_price_cents": 53.0,
+  "no_price_cents": 47.0,
+  "close_time": "2026-07-02T23:59:00Z",
+  "resolution_rules": "Resolves YES if France has more goals...",
+  "resolution_sources": ["FIFA official match results (fifa.com)"],
+  "tags": ["WC2026", "Soccer", "France", "Morocco"]
+}
+```
+
+**Tournament futures response** (`/api/markets/tournament`):
+
+```json
+{
+  "simulation": {
+    "champion": "Argentina",
+    "runner_up": "Portugal",
+    "third_place": "France",
+    "champion_probability": 0.508
+  },
+  "total_questions": 40,
+  "by_type": {
+    "tournament_winner": [ ... ],   ← 9 questions (1 categorical + 8 binary)
+    "reach_stage":       [ ... ],   ← 12 questions
+    "group_winner":      [ ... ],   ← 12 questions (one per group)
+    "confederation_win": [ ... ],   ← 3 questions
+    "host_nation":       [ ... ],   ← 3 questions
+    "penalties":         [ ... ]    ← 1 question (Final to penalties)
+  }
+}
+```
 
 ---
 
@@ -627,12 +751,15 @@ FifaOctopus/
 │   ├── app/
 │   │   ├── config.py
 │   │   ├── api/
-│   │   │   └── predictions.py             # All REST endpoints
+│   │   │   ├── predictions.py             # Swarm + tournament endpoints
+│   │   │   └── markets.py                 # /api/markets/* endpoints           ★
 │   │   ├── models/
-│   │   │   └── match.py                   # MatchPrediction, TournamentResult, etc.
+│   │   │   ├── match.py                   # MatchPrediction, TournamentResult, etc.
+│   │   │   └── market.py                  # MarketQuestion, Platform, MarketType ★
 │   │   ├── services/
 │   │   │   ├── swarm_orchestrator.py      # Parallel agent dispatch + Zep injection
 │   │   │   ├── tournament_simulator.py    # Full 104-match WC bracket
+│   │   │   ├── market_question_generator.py # Converts predictions → market contracts ★
 │   │   │   ├── zep_football_graph.py      # Zep graph builder (144 episodes)
 │   │   │   ├── zep_football_tools.py      # Graph search tools for agents
 │   │   │   ├── agents/
@@ -641,24 +768,24 @@ FifaOctopus/
 │   │   │   │   ├── video_agent.py         # YouTube engagement
 │   │   │   │   ├── form_agent.py          # Last-10 form points
 │   │   │   │   ├── tactical_agent.py      # Style matchup matrix
-│   │   │   │   ├── live_data_agent.py     # FotMob xG + FlashScore H2H        ★
-│   │   │   │   ├── market_signals_agent.py # 365Scores odds + Tiki-Taka        ★
-│   │   │   │   ├── squad_quality_agent.py  # Opta player ratings + squad depth ★
+│   │   │   │   ├── live_data_agent.py     # FotMob xG + FlashScore H2H
+│   │   │   │   ├── market_signals_agent.py # 365Scores odds + Tiki-Taka
+│   │   │   │   ├── squad_quality_agent.py  # Opta player ratings + squad depth
 │   │   │   │   └── aggregator_agent.py    # Weighted ensemble + LLM (7 agents)
 │   │   │   └── data_collectors/
 │   │   │       ├── sofascore_collector.py
 │   │   │       ├── youtube_collector.py
-│   │   │       ├── fotmob_collector.py     # xG, possession, PPDA, heatmaps    ★
-│   │   │       ├── flashscore_collector.py # W/D/L form strings, H2H scores    ★
-│   │   │       ├── scores365_collector.py  # Odds, news sentiment               ★
-│   │   │       ├── tikitaka_collector.py   # Dixon-Coles AI model               ★
-│   │   │       └── opta_collector.py       # Opta Stats Perform player data     ★
+│   │   │       ├── fotmob_collector.py     # xG, possession, PPDA, heatmaps
+│   │   │       ├── flashscore_collector.py # W/D/L form strings, H2H scores
+│   │   │       ├── scores365_collector.py  # Odds, news sentiment
+│   │   │       ├── tikitaka_collector.py   # Dixon-Coles AI model
+│   │   │       └── opta_collector.py       # Opta Stats Perform player data
 │   │   └── utils/
 │   │       ├── llm_client.py              # OpenAI-compatible LLM wrapper
 │   │       ├── zep_paging.py              # Paginated Zep graph reads
 │   │       └── logger.py
 │   └── examples/
-│       ├── predict_full.py                # Full 7-agent prediction with env check ★
+│       ├── predict_full.py                # Full 7-agent prediction + market Qs
 │       └── predict_random_match.py        # Simple random fixture demo
 └── frontend/
     └── src/
@@ -666,8 +793,11 @@ FifaOctopus/
         │   ├── Home.vue
         │   ├── GroupsView.vue
         │   ├── PredictView.vue
-        │   └── TournamentView.vue
-        └── router/index.js
+        │   ├── TournamentView.vue
+        │   └── MarketsView.vue            # Match Markets + Tournament Futures  ★
+        ├── components/
+        │   └── MarketCard.vue             # Reusable contract card component    ★
+        └── router/index.js               # /markets route added                ★
 ```
 
 ---
