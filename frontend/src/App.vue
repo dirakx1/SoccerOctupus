@@ -11,6 +11,7 @@
         <router-link to="/groups">Groups</router-link>
         <router-link to="/predict">Predict Match</router-link>
         <router-link to="/tournament">Tournament</router-link>
+        <router-link to="/markets">📈 Markets</router-link>
       </div>
     </nav>
     <main class="content">

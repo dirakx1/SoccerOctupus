@@ -20,7 +20,9 @@ def create_app() -> Flask:
 
     # Register blueprints
     from .api.predictions import bp as predictions_bp
+    from .api.markets import bp as markets_bp
     app.register_blueprint(predictions_bp)
+    app.register_blueprint(markets_bp)
 
     @app.route("/health")
     def health():
