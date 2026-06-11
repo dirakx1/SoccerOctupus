@@ -29,22 +29,21 @@ from .swarm_orchestrator import SwarmOrchestrator
 logger = get_logger("fifaoctopus.tournament")
 
 # ---------------------------------------------------------------------------
-# FIFA World Cup 2026 draw (announced December 5, 2024)
-# Groups reflect the actual draw with realistic qualification results.
+# FIFA World Cup 2026 draw (official draw: December 5, 2025, Washington D.C.)
 # ---------------------------------------------------------------------------
 WC2026_GROUPS: Dict[str, List[str]] = {
-    "A": ["USA", "Panama", "Algeria", "New Zealand"],           # host group (approx)
-    "B": ["Mexico", "Jamaica", "Venezuela", "South Africa"],
-    "C": ["Canada", "Honduras", "Czech Republic", "Mali"],
-    "D": ["Argentina", "Chile", "Ecuador", "Indonesia"],        # actually Bolivia/Peru
-    "E": ["Brazil", "Paraguay", "Colombia", "Ivory Coast"],
-    "F": ["France", "Belgium", "Morocco", "Tunisia"],
-    "G": ["Spain", "Croatia", "Serbia", "Egypt"],
-    "H": ["England", "Slovakia", "Romania", "Cameroon"],
-    "I": ["Germany", "Austria", "Hungary", "Ghana"],
-    "J": ["Portugal", "Poland", "Turkey", "Uruguay"],
-    "K": ["Netherlands", "Denmark", "South Korea", "Nigeria"],
-    "L": ["Japan", "Iran", "Australia", "Georgia"],
+    "A": ["Mexico", "South Africa", "South Korea", "Czechia"],
+    "B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
+    "C": ["Brazil", "Morocco", "Haiti", "Scotland"],
+    "D": ["USA", "Paraguay", "Australia", "Turkiye"],
+    "E": ["Germany", "Curacao", "Ivory Coast", "Ecuador"],
+    "F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+    "G": ["Belgium", "Egypt", "Iran", "New Zealand"],
+    "H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+    "I": ["France", "Senegal", "Iraq", "Norway"],
+    "J": ["Argentina", "Algeria", "Austria", "Jordan"],
+    "K": ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
+    "L": ["England", "Croatia", "Ghana", "Panama"],
 }
 
 # R32 bracket seedings: top 2 per group + 8 best 3rd-place teams

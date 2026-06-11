@@ -50,8 +50,10 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "Poland":      {"elo": 1870, "rank": 28, "att": 68, "def": 68, "gf": 1.4, "ga": 1.1, "form": 14, "style": "counter-attack"},
     "Serbia":      {"elo": 1865, "rank": 29, "att": 70, "def": 65, "gf": 1.5, "ga": 1.2, "form": 14, "style": "balanced"},
     "Turkey":      {"elo": 1855, "rank": 31, "att": 68, "def": 64, "gf": 1.4, "ga": 1.2, "form": 13, "style": "counter-attack"},
+    "Turkiye":     {"elo": 1855, "rank": 31, "att": 68, "def": 64, "gf": 1.4, "ga": 1.2, "form": 13, "style": "counter-attack"},
     "Hungary":     {"elo": 1840, "rank": 35, "att": 62, "def": 65, "gf": 1.2, "ga": 1.1, "form": 13, "style": "defensive"},
     "Czech Republic": {"elo": 1835, "rank": 36, "att": 64, "def": 65, "gf": 1.3, "ga": 1.1, "form": 12, "style": "balanced"},
+    "Czechia":     {"elo": 1835, "rank": 36, "att": 64, "def": 65, "gf": 1.3, "ga": 1.1, "form": 12, "style": "balanced"},
     "Romania":     {"elo": 1825, "rank": 40, "att": 60, "def": 63, "gf": 1.2, "ga": 1.2, "form": 12, "style": "defensive"},
     "Scotland":    {"elo": 1820, "rank": 43, "att": 62, "def": 62, "gf": 1.3, "ga": 1.2, "form": 12, "style": "high-press"},
     "Ukraine":     {"elo": 1830, "rank": 38, "att": 65, "def": 63, "gf": 1.3, "ga": 1.2, "form": 13, "style": "balanced"},
@@ -59,6 +61,9 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "Albania":     {"elo": 1790, "rank": 55, "att": 56, "def": 60, "gf": 1.0, "ga": 1.3, "form": 11, "style": "counter-attack"},
     "Slovenia":    {"elo": 1785, "rank": 57, "att": 58, "def": 62, "gf": 1.1, "ga": 1.2, "form": 11, "style": "balanced"},
     "Georgia":     {"elo": 1770, "rank": 63, "att": 54, "def": 60, "gf": 1.0, "ga": 1.3, "form": 11, "style": "counter-attack"},
+    "Bosnia and Herzegovina": {"elo": 1830, "rank": 62, "att": 64, "def": 63, "gf": 1.3, "ga": 1.2, "form": 13, "style": "counter-attack"},
+    "Sweden":      {"elo": 1900, "rank": 26, "att": 72, "def": 71, "gf": 1.5, "ga": 0.9, "form": 17, "style": "balanced"},
+    "Norway":      {"elo": 1870, "rank": 32, "att": 76, "def": 68, "gf": 1.7, "ga": 1.1, "form": 16, "style": "counter-attack"},
     # -- CAF --
     "Morocco":     {"elo": 1890, "rank": 14, "att": 72, "def": 76, "gf": 1.5, "ga": 0.8, "form": 18, "style": "defensive"},
     "Senegal":     {"elo": 1850, "rank": 17, "att": 68, "def": 70, "gf": 1.4, "ga": 0.9, "form": 16, "style": "counter-attack"},
@@ -70,6 +75,8 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "Ghana":       {"elo": 1795, "rank": 48, "att": 62, "def": 60, "gf": 1.2, "ga": 1.2, "form": 12, "style": "counter-attack"},
     "South Africa":{"elo": 1775, "rank": 60, "att": 58, "def": 60, "gf": 1.1, "ga": 1.2, "form": 12, "style": "balanced"},
     "Mali":        {"elo": 1780, "rank": 56, "att": 58, "def": 60, "gf": 1.1, "ga": 1.2, "form": 11, "style": "counter-attack"},
+    "DR Congo":    {"elo": 1790, "rank": 52, "att": 62, "def": 60, "gf": 1.2, "ga": 1.2, "form": 12, "style": "counter-attack"},
+    "Cape Verde":  {"elo": 1760, "rank": 79, "att": 54, "def": 60, "gf": 1.0, "ga": 1.2, "form": 11, "style": "defensive"},
     "Algeria":     {"elo": 1790, "rank": 50, "att": 62, "def": 63, "gf": 1.2, "ga": 1.1, "form": 12, "style": "counter-attack"},
     # -- AFC --
     "Japan":       {"elo": 1895, "rank": 15, "att": 74, "def": 74, "gf": 1.6, "ga": 0.9, "form": 18, "style": "high-press"},
@@ -80,6 +87,7 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "Qatar":       {"elo": 1780, "rank": 68, "att": 56, "def": 58, "gf": 1.0, "ga": 1.4, "form": 10, "style": "balanced"},
     "Uzbekistan":  {"elo": 1765, "rank": 74, "att": 54, "def": 58, "gf": 1.0, "ga": 1.3, "form": 10, "style": "balanced"},
     "Iraq":        {"elo": 1770, "rank": 70, "att": 56, "def": 59, "gf": 1.0, "ga": 1.3, "form": 10, "style": "counter-attack"},
+    "Jordan":      {"elo": 1760, "rank": 80, "att": 54, "def": 60, "gf": 1.0, "ga": 1.2, "form": 11, "style": "defensive"},
     # -- CONCACAF --
     "USA":         {"elo": 1870, "rank": 16, "att": 70, "def": 70, "gf": 1.5, "ga": 1.0, "form": 16, "style": "high-press"},
     "Mexico":      {"elo": 1855, "rank": 18, "att": 68, "def": 67, "gf": 1.4, "ga": 1.1, "form": 15, "style": "possession"},
@@ -88,6 +96,9 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "Honduras":    {"elo": 1745, "rank": 88, "att": 48, "def": 54, "gf": 0.9, "ga": 1.5, "form":  8, "style": "defensive"},
     "Costa Rica":  {"elo": 1760, "rank": 77, "att": 52, "def": 60, "gf": 1.0, "ga": 1.3, "form": 10, "style": "defensive"},
     "Panama":      {"elo": 1750, "rank": 83, "att": 48, "def": 58, "gf": 0.9, "ga": 1.3, "form": 10, "style": "defensive"},
+    "Haiti":       {"elo": 1720, "rank": 83, "att": 46, "def": 52, "gf": 0.9, "ga": 1.6, "form":  9, "style": "counter-attack"},
+    "Curacao":     {"elo": 1740, "rank": 72, "att": 50, "def": 54, "gf": 0.9, "ga": 1.5, "form":  9, "style": "counter-attack"},
+    "New Zealand": {"elo": 1730, "rank": 95, "att": 48, "def": 55, "gf": 0.9, "ga": 1.5, "form":  9, "style": "balanced"},
 }
 
 
