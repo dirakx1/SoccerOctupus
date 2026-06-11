@@ -21,6 +21,7 @@ from ..models.match import (
     MatchPrediction,
     MatchStage,
     TournamentResult,
+    _poisson_score,
 )
 from ..utils.logger import get_logger
 from .swarm_orchestrator import SwarmOrchestrator
@@ -304,7 +305,7 @@ class TournamentSimulator:
             stage=stage, group=group,
             home_win_prob=round(hw, 3), draw_prob=round(dr, 3), away_win_prob=round(aw, 3),
             predicted_home_goals=round(home_lam, 2), predicted_away_goals=round(away_lam, 2),
-            most_likely_score=f"{round(home_lam)}-{round(away_lam)}",
+            most_likely_score=_poisson_score(home_lam, away_lam),
             outcome=outcome,
             overall_confidence=0.65,
             agent_predictions=[fake_agent],

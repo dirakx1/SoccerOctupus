@@ -17,6 +17,24 @@ from ...utils.logger import get_logger
 logger = get_logger("fifaoctopus.agent.aggregator")
 
 
+def _poisson_most_likely_score(lam_home: float, lam_away: float, max_goals: int = 6) -> str:
+    """Return the scoreline with highest joint Poisson probability."""
+    import math
+
+    def poisson_pmf(lam: float, k: int) -> float:
+        return (lam ** k) * math.exp(-lam) / math.factorial(k)
+
+    best_prob = -1.0
+    best_h = best_a = 0
+    for h in range(max_goals + 1):
+        for a in range(max_goals + 1):
+            p = poisson_pmf(lam_home, h) * poisson_pmf(lam_away, a)
+            if p > best_prob:
+                best_prob = p
+                best_h, best_a = h, a
+    return f"{best_h}-{best_a}"
+
+
 AGGREGATE_SYSTEM_PROMPT = """\
 You are FifaOctopus, an elite football prediction AI.
 You receive a JSON array of predictions from specialised swarm agents
@@ -96,7 +114,7 @@ class AggregatorAgent:
             else MatchOutcome.AWAY_WIN
         )
 
-        most_likely_score = f"{round(xg_home_final)}-{round(xg_away_final)}"
+        most_likely_score = _poisson_most_likely_score(xg_home_final, xg_away_final)
         overall_confidence = sum(p.confidence for p in agent_predictions) / len(agent_predictions)
 
         # LLM narrative
