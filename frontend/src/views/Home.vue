@@ -2,7 +2,7 @@
   <div class="home">
     <div class="hero">
       <div class="hero-icon">🐙</div>
-      <h1>FifaOctopus</h1>
+      <h1>SoccerOctopus</h1>
       <p class="tagline">
         A swarm of AI agents analyses <strong>SofaScore statistics</strong>,
         <strong>YouTube video intelligence</strong>, <strong>team form</strong>,

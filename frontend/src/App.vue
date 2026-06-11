@@ -3,7 +3,7 @@
     <nav class="navbar">
       <div class="brand">
         <span class="logo">🐙</span>
-        <span class="title">FifaOctopus</span>
+        <span class="title">SoccerOctopus</span>
         <span class="subtitle">WC 2026 Swarm Prediction Engine</span>
       </div>
       <div class="nav-links">

@@ -6,7 +6,7 @@
       <div>
         <h1>📈 Prediction Markets</h1>
         <p class="subtitle">
-          FifaOctopus swarm probabilities formatted as ready-to-list contracts
+          SoccerOctopus swarm probabilities formatted as ready-to-list contracts
           for <a href="https://kalshi.com" target="_blank" rel="noopener">Kalshi</a> and
           <a href="https://polymarket.com" target="_blank" rel="noopener">Polymarket</a>.
           All prices are fair-value — no bookmaker margin applied.
