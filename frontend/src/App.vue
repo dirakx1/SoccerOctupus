@@ -17,6 +17,10 @@
     <main class="content">
       <router-view />
     </main>
+    <footer class="footer">
+      <span>© 2026 SoccerOctopus — predictions are approximations only, not betting advice.</span>
+      <router-link to="/legal">Legal Notice</router-link>
+    </footer>
   </div>
 </template>
 
@@ -48,4 +52,18 @@
 .nav-links a:hover, .nav-links a.router-link-active { color: #e2b714; }
 
 .content { flex: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 32px;
+  border-top: 1px solid #0f3460;
+  background: #16213e;
+  font-size: 12px;
+  color: #8888aa;
+}
+.footer a { color: #a0c0ff; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
 </style>

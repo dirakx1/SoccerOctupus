@@ -4,6 +4,7 @@ import GroupsView from '../views/GroupsView.vue'
 import PredictView from '../views/PredictView.vue'
 import TournamentView from '../views/TournamentView.vue'
 import MarketsView from '../views/MarketsView.vue'
+import LegalNoticeView from '../views/LegalNoticeView.vue'
 
 export default createRouter({
   history: createWebHistory(),
@@ -13,5 +14,6 @@ export default createRouter({
     { path: '/predict', component: PredictView },
     { path: '/tournament', component: TournamentView },
     { path: '/markets', component: MarketsView },
+    { path: '/legal', component: LegalNoticeView },
   ]
 })
