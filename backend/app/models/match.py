@@ -2,10 +2,24 @@
 Domain models for matches, predictions, and tournament state.
 """
 
+import math
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Optional
+
+
+def _poisson_score(lam_home: float, lam_away: float, max_goals: int = 6) -> str:
+    """Most likely scoreline by joint Poisson probability."""
+    def pmf(lam: float, k: int) -> float:
+        return (lam ** k) * math.exp(-lam) / math.factorial(k)
+    best, bh, ba = -1.0, 0, 0
+    for h in range(max_goals + 1):
+        for a in range(max_goals + 1):
+            p = pmf(lam_home, h) * pmf(lam_away, a)
+            if p > best:
+                best, bh, ba = p, h, a
+    return f"{bh}-{ba}"
 
 
 class MatchStage(str, Enum):
@@ -75,7 +89,7 @@ class AgentPrediction:
             "home_win_prob": round(self.home_win_prob, 3),
             "draw_prob": round(self.draw_prob, 3),
             "away_win_prob": round(self.away_win_prob, 3),
-            "predicted_score": f"{round(self.predicted_home_goals, 1)}-{round(self.predicted_away_goals, 1)}",
+            "predicted_score": _poisson_score(self.predicted_home_goals, self.predicted_away_goals),
             "confidence": round(self.confidence, 3),
             "reasoning": self.reasoning,
             "data_sources": self.data_sources,

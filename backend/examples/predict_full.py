@@ -293,7 +293,7 @@ def print_report(pred, home, away, stage_str, group):
 
     # ── Agent breakdown ──────────────────────────────────────────────────
     print()
-    print("  AGENT BREAKDOWN  (6 agents · parallel execution)")
+    print("  AGENT BREAKDOWN  (7 agents · parallel execution)")
     print()
     for ap in pred.agent_predictions:
         icon, desc, weight = AGENT_META.get(ap.agent_name, ("🤖", "", 1.0))
@@ -355,7 +355,52 @@ def print_report(pred, home, away, stage_str, group):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Step 5 — Save JSON (optional)
+# Step 5 — Prediction market questions
+# ─────────────────────────────────────────────────────────────────────────────
+
+def print_market_questions(pred):
+    from app.services.market_question_generator import MarketQuestionGenerator
+    gen = MarketQuestionGenerator()
+    questions = gen.from_match(pred)
+
+    print(SEP)
+    print("  STEP 5 — Prediction Market Questions")
+    print("  Ready to list on Kalshi (kalshi.com) or Polymarket (polymarket.com)")
+    print(SEP)
+    print()
+
+    PROP_ICONS = {
+        "match_winner": "🏆",
+        "draw":         "🤝",
+        "btts":         "⚽",
+        "over_under":   "📈",
+        "clean_sheet":  "🛡️ ",
+        "penalties":    "🥅",
+        "correct_score":"🎯",
+    }
+
+    for q in questions:
+        icon = PROP_ICONS.get(q.prop_type, "📊")
+        yes_bar = "█" * int(q.yes_probability * 20) + "░" * (20 - int(q.yes_probability * 20))
+        no_bar  = "█" * int(q.no_probability * 20)  + "░" * (20 - int(q.no_probability * 20))
+        print(f"  {icon}  {q.short_title}")
+        print(f"     {q.question}")
+        print(f"     YES {yes_bar} {q.yes_probability:.1%}   ·   Kalshi {q.kalshi_yes_cents:.1f}¢  /  Polymarket ${q.polymarket_yes_usdc:.4f}")
+        print(f"     NO  {no_bar} {q.no_probability:.1%}   ·   Kalshi {100-q.kalshi_yes_cents:.1f}¢  /  Polymarket ${1-q.polymarket_yes_usdc:.4f}")
+        print(f"     Resolves: {q.resolution_date}  ·  ID: {q.question_id}")
+        print()
+
+    print(SEP2)
+    print(f"  {len(questions)} questions generated from FifaOctopus swarm probabilities.")
+    print("  Prices reflect fair-value estimates — no bookmaker margin applied.")
+    print("  Resolution source: FIFA official results (fifa.com)")
+    print()
+    print(SEP)
+    print()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Step 6 — Save JSON (optional)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def save_json(pred, path: str):
@@ -408,6 +453,9 @@ def main():
     print_report(pred, home, away, args.stage, group)
 
     # Step 5
+    print_market_questions(pred)
+
+    # Step 6
     if args.out:
         save_json(pred, args.out)
 

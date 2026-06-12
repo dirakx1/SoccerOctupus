@@ -44,6 +44,37 @@ from app.services.tournament_simulator import WC2026_GROUPS
 
 BAR = "═" * 62
 
+
+def _resolve_team(name: str) -> str:
+    """Match a CLI team name to the canonical dataset key.
+
+    Handles missing spaces (e.g. 'SouthAfrica' → 'South Africa') and
+    case differences by trying progressively looser comparisons.
+    """
+    stripped = name.strip()
+    # Exact match wins immediately
+    if stripped in TEAM_STATIC_DATA:
+        return stripped
+    # Case-insensitive + normalise interior spaces
+    normalised = " ".join(stripped.split())
+    lower = normalised.lower()
+    for key in TEAM_STATIC_DATA:
+        if key.lower() == lower:
+            return key
+    # Insert spaces before uppercase letters (CamelCase → words)
+    import re
+    spaced = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", stripped)
+    lower_spaced = spaced.lower()
+    for key in TEAM_STATIC_DATA:
+        if key.lower() == lower_spaced:
+            return key
+    # Prefix match (e.g. "South" → "South Africa") — only if unambiguous
+    matches = [k for k in TEAM_STATIC_DATA if k.lower().startswith(lower)]
+    if len(matches) == 1:
+        return matches[0]
+    # Give up — return as-is so the warning fires
+    return stripped
+
 def _all_group_fixtures() -> List[Tuple[str, str, str]]:
     """Return every unique group-stage match as (group, home, away)."""
     fixtures = []
@@ -241,7 +272,7 @@ def main() -> None:
 
     # ── Select fixture ────────────────────────────────────────────────────────
     if args.home and args.away:
-        home, away = args.home.strip(), args.away.strip()
+        home, away = _resolve_team(args.home), _resolve_team(args.away)
         # Find their group
         group = "?"
         for g, teams in WC2026_GROUPS.items():

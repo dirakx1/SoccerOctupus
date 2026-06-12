@@ -1,21 +1,26 @@
 <template>
   <div class="shell">
     <nav class="navbar">
-      <div class="brand">
+      <router-link to="/" class="brand">
         <span class="logo">🐙</span>
-        <span class="title">FifaOctopus</span>
+        <span class="title">SoccerOctopus</span>
         <span class="subtitle">WC 2026 Swarm Prediction Engine</span>
-      </div>
+      </router-link>
       <div class="nav-links">
         <router-link to="/">Home</router-link>
         <router-link to="/groups">Groups</router-link>
         <router-link to="/predict">Predict Match</router-link>
         <router-link to="/tournament">Tournament</router-link>
+        <router-link to="/markets">📈 Markets</router-link>
       </div>
     </nav>
     <main class="content">
       <router-view />
     </main>
+    <footer class="footer">
+      <span>© 2026 SoccerOctopus — predictions are approximations only, not betting advice.</span>
+      <router-link to="/legal">Legal Notice</router-link>
+    </footer>
   </div>
 </template>
 
@@ -31,7 +36,7 @@
   border-bottom: 2px solid #0f3460;
 }
 
-.brand { display: flex; align-items: center; gap: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
 .logo { font-size: 28px; }
 .title { font-size: 22px; font-weight: 700; color: #e2b714; letter-spacing: 1px; }
 .subtitle { font-size: 12px; color: #8888aa; margin-left: 4px; }
@@ -47,4 +52,18 @@
 .nav-links a:hover, .nav-links a.router-link-active { color: #e2b714; }
 
 .content { flex: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 32px;
+  border-top: 1px solid #0f3460;
+  background: #16213e;
+  font-size: 12px;
+  color: #8888aa;
+}
+.footer a { color: #a0c0ff; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
 </style>

@@ -2,7 +2,7 @@
   <div class="home">
     <div class="hero">
       <div class="hero-icon">🐙</div>
-      <h1>FifaOctopus</h1>
+      <h1>SoccerOctopus</h1>
       <p class="tagline">
         A swarm of AI agents analyses <strong>SofaScore statistics</strong>,
         <strong>YouTube video intelligence</strong>, <strong>team form</strong>,
@@ -26,6 +26,11 @@
         <div class="card-icon">🌍</div>
         <h3>Full Tournament</h3>
         <p>Simulate the entire bracket from groups to the final</p>
+      </div>
+      <div class="card markets-card" @click="$router.push('/markets')">
+        <div class="card-icon">📈</div>
+        <h3>Prediction Markets</h3>
+        <p>Generate Kalshi & Polymarket contracts — match props and tournament futures</p>
       </div>
     </div>
 
@@ -63,7 +68,7 @@ const agents = [
 .tagline { font-size: 16px; color: #a0aec0; max-width: 640px; margin: 0 auto; line-height: 1.7; }
 .tagline strong { color: #e0e0e0; }
 
-.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .card {
   background: #16213e;
   border: 1px solid #0f3460;
@@ -74,6 +79,8 @@ const agents = [
   text-align: center;
 }
 .card:hover { transform: translateY(-4px); border-color: #e2b714; }
+.markets-card:hover { border-color: #4ade80; }
+.markets-card h3 { color: #4ade80; }
 .card-icon { font-size: 40px; margin-bottom: 12px; }
 .card h3 { color: #e2b714; margin-bottom: 8px; }
 .card p { color: #8888aa; font-size: 14px; }
