@@ -101,6 +101,10 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "New Zealand": {"elo": 1730, "rank": 95, "att": 48, "def": 55, "gf": 0.9, "ga": 1.5, "form":  9, "style": "balanced"},
 }
 
+# Apply actual WC 2026 results to adjust ELO, form and goal averages
+from .live_results import apply_results as _apply_live_results  # noqa: E402
+_apply_live_results(TEAM_STATIC_DATA)
+
 
 class SofaScoreCollector:
     """Fetches team data from SofaScore public API with static fallback."""
