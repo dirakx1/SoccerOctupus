@@ -81,6 +81,33 @@
         <span>{{ pct(result.overall_confidence) }}</span>
       </div>
 
+      <!-- Score probabilities -->
+      <div v-if="result.score_probabilities?.length" class="score-probs">
+        <h3>🎯 Score Probabilities</h3>
+        <div class="xg-row">
+          <span>Expected goals</span>
+          <span class="xg-values">{{ result.home_team }} <strong>{{ result.predicted_home_goals }}</strong> &nbsp;–&nbsp; <strong>{{ result.predicted_away_goals }}</strong> {{ result.away_team }}</span>
+        </div>
+        <div class="sp-grid">
+          <div
+            v-for="(sp, i) in result.score_probabilities"
+            :key="sp.score"
+            class="sp-row"
+            :class="{ 'sp-top': i === 0 }"
+          >
+            <span class="sp-score">{{ sp.score }}</span>
+            <div class="sp-bar-bg">
+              <div
+                class="sp-bar-fill"
+                :style="{ width: barWidth(sp.probability, result.score_probabilities[0].probability) }"
+              ></div>
+            </div>
+            <span class="sp-pct">{{ (sp.probability * 100).toFixed(1) }}%</span>
+            <span v-if="i === 0" class="sp-badge">most likely</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Narrative -->
       <div v-if="result.swarm_consensus" class="narrative">
         <h3>🐙 Swarm Consensus</h3>
@@ -155,6 +182,7 @@ async function runPrediction() {
 }
 
 const pct = v => (v * 100).toFixed(1) + '%'
+const barWidth = (prob, max) => (prob / max * 100).toFixed(1) + '%'
 </script>
 
 <style scoped>
@@ -230,6 +258,25 @@ select {
 .key-factors ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .key-factors li { color: #c0c0d0; font-size: 14px; padding-left: 16px; position: relative; }
 .key-factors li::before { content: '→'; position: absolute; left: 0; color: #e2b714; }
+
+/* ── Score probabilities ─────────────────────────────────────────────────── */
+.score-probs { background: #0f1a2e; border-radius: 8px; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+.score-probs h3 { color: #e2b714; font-size: 15px; }
+
+.xg-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #8888aa; }
+.xg-values { color: #c0c0d0; }
+.xg-values strong { color: #e2b714; font-size: 15px; }
+
+.sp-grid { display: flex; flex-direction: column; gap: 8px; }
+.sp-row { display: grid; grid-template-columns: 44px 1fr 52px auto; align-items: center; gap: 10px; }
+.sp-score { font-size: 15px; font-weight: 700; color: #c0c0d0; font-variant-numeric: tabular-nums; }
+.sp-top .sp-score { color: #e2b714; }
+.sp-bar-bg { height: 10px; background: #1a2a4a; border-radius: 5px; overflow: hidden; }
+.sp-bar-fill { height: 100%; border-radius: 5px; background: #1e3a5f; transition: width 0.5s; }
+.sp-top .sp-bar-fill { background: linear-gradient(90deg, #e2b714, #f6d860); }
+.sp-pct { font-size: 13px; color: #a0aec0; text-align: right; font-variant-numeric: tabular-nums; }
+.sp-top .sp-pct { color: #e2b714; font-weight: 700; }
+.sp-badge { font-size: 10px; background: #2a3a10; color: #e2b714; border: 1px solid #e2b714; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
 
 .agents-breakdown h3 { color: #e2b714; font-size: 15px; margin-bottom: 12px; }
 .agent-row { background: #0f1a2e; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
