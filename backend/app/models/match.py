@@ -9,17 +9,30 @@ from enum import Enum
 from typing import Dict, List, Optional
 
 
+def _poisson_pmf(lam: float, k: int) -> float:
+    return (lam ** k) * math.exp(-lam) / math.factorial(k)
+
+
 def _poisson_score(lam_home: float, lam_away: float, max_goals: int = 6) -> str:
     """Most likely scoreline by joint Poisson probability."""
-    def pmf(lam: float, k: int) -> float:
-        return (lam ** k) * math.exp(-lam) / math.factorial(k)
     best, bh, ba = -1.0, 0, 0
     for h in range(max_goals + 1):
         for a in range(max_goals + 1):
-            p = pmf(lam_home, h) * pmf(lam_away, a)
+            p = _poisson_pmf(lam_home, h) * _poisson_pmf(lam_away, a)
             if p > best:
                 best, bh, ba = p, h, a
     return f"{bh}-{ba}"
+
+
+def poisson_top_scores(lam_home: float, lam_away: float, n: int = 5, max_goals: int = 7) -> List[Dict]:
+    """Return the *n* most probable scorelines with their joint probabilities."""
+    scores = []
+    for h in range(max_goals + 1):
+        for a in range(max_goals + 1):
+            p = _poisson_pmf(lam_home, h) * _poisson_pmf(lam_away, a)
+            scores.append({"score": f"{h}-{a}", "probability": round(p, 4)})
+    scores.sort(key=lambda x: -x["probability"])
+    return scores[:n]
 
 
 class MatchStage(str, Enum):
@@ -114,6 +127,7 @@ class MatchPrediction:
     most_likely_score: str          # e.g. "2-1"
     outcome: MatchOutcome
     overall_confidence: float
+    score_probabilities: List[Dict] = field(default_factory=list)  # top-5 [{score, probability}]
 
     # Per-agent breakdown
     agent_predictions: List[AgentPrediction] = field(default_factory=list)
@@ -139,6 +153,7 @@ class MatchPrediction:
             "predicted_home_goals": round(self.predicted_home_goals, 2),
             "predicted_away_goals": round(self.predicted_away_goals, 2),
             "most_likely_score": self.most_likely_score,
+            "score_probabilities": self.score_probabilities,
             "outcome": self.outcome.value,
             "went_to_penalties": self.went_to_penalties,
             "overall_confidence": round(self.overall_confidence, 3),

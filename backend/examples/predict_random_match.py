@@ -176,8 +176,15 @@ def print_prediction(group: str, prediction: MatchPrediction) -> None:
         prediction.outcome, home, away,
         prediction.stage, prediction.went_to_penalties,
     )
-    print(f"  Predicted score   :  {prediction.most_likely_score}")
+    print(f"  Expected goals    :  {prediction.predicted_home_goals:.2f} – {prediction.predicted_away_goals:.2f}")
     print(f"  Predicted outcome :  {result_label}")
+    print()
+    print("  TOP 5 LIKELY SCORES")
+    print()
+    for i, sp in enumerate(prediction.score_probabilities or []):
+        bar = "█" * int(sp["probability"] * 200)
+        marker = "  ◄ most likely" if i == 0 else ""
+        print(f"    {sp['score']}   {sp['probability']*100:5.1f}%  {bar}{marker}")
 
     if prediction.stage == MatchStage.GROUP:
         pts = {"home_win": (3, 0), "draw": (1, 1), "away_win": (0, 3)}

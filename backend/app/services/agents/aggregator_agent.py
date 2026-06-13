@@ -116,6 +116,8 @@ class AggregatorAgent:
 
         most_likely_score = _poisson_most_likely_score(xg_home_final, xg_away_final)
         overall_confidence = sum(p.confidence for p in agent_predictions) / len(agent_predictions)
+        from ...models.match import poisson_top_scores
+        score_probs = poisson_top_scores(xg_home_final, xg_away_final, n=5)
 
         # LLM narrative
         narrative, key_factors = self._synthesise(
@@ -136,6 +138,7 @@ class AggregatorAgent:
             predicted_home_goals=round(xg_home_final, 2),
             predicted_away_goals=round(xg_away_final, 2),
             most_likely_score=most_likely_score,
+            score_probabilities=score_probs,
             outcome=outcome,
             overall_confidence=round(overall_confidence, 3),
             agent_predictions=agent_predictions,
