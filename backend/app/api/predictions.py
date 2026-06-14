@@ -8,10 +8,13 @@ import json
 import os
 from typing import Any, Dict
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, g, request
 
+from ..auth import require_admin, require_user
 from ..config import Config
+from ..db.base import db
 from ..models.match import MatchStage
+from ..runtime_settings import RuntimeSettingsService
 from ..services.swarm_orchestrator import SwarmOrchestrator
 from ..services.tournament_simulator import TournamentSimulator
 from ..utils.logger import get_logger
@@ -19,19 +22,14 @@ from ..utils.logger import get_logger
 logger = get_logger("fifaoctopus.api.predictions")
 bp = Blueprint("predictions", __name__, url_prefix="/api/predictions")
 
-# Lazy-init orchestrator (requires LLM key at runtime)
-_orchestrator: SwarmOrchestrator | None = None
-
-
 def _get_orchestrator() -> SwarmOrchestrator:
-    global _orchestrator
-    if _orchestrator is None:
-        llm = None
-        if Config.LLM_API_KEY:
-            from ..utils.llm_client import LLMClient
-            llm = LLMClient()
-        _orchestrator = SwarmOrchestrator(llm_client=llm)
-    return _orchestrator
+    settings = RuntimeSettingsService.current(db)
+    llm = None
+    if settings.llm_api_key:
+        from ..utils.llm_client import LLMClient
+
+        llm = LLMClient(settings=settings)
+    return SwarmOrchestrator(settings=settings, llm_client=llm)
 
 
 # ------------------------------------------------------------------
@@ -39,6 +37,7 @@ def _get_orchestrator() -> SwarmOrchestrator:
 # ------------------------------------------------------------------
 
 @bp.route("/match", methods=["POST"])
+@require_user(db)
 def predict_match():
     """
     POST /api/predictions/match
@@ -72,6 +71,7 @@ def predict_match():
 # ------------------------------------------------------------------
 
 @bp.route("/tournament", methods=["POST"])
+@require_user(db)
 def simulate_tournament():
     """
     POST /api/predictions/tournament
@@ -82,7 +82,12 @@ def simulate_tournament():
     use_swarm = data.get("use_swarm", False)   # default off — swarm is slow for 104 matches
 
     orc = _get_orchestrator() if use_swarm else None
-    simulator = TournamentSimulator(orchestrator=orc, use_swarm=use_swarm)
+    settings = RuntimeSettingsService.current(db)
+    simulator = TournamentSimulator(
+        orchestrator=orc,
+        use_swarm=use_swarm,
+        mc_simulations=settings.mc_simulations,
+    )
 
     try:
         result = simulator.simulate()
@@ -95,6 +100,7 @@ def simulate_tournament():
 
 
 @bp.route("/tournament/<sim_id>", methods=["GET"])
+@require_user(db)
 def get_tournament_result(sim_id: str):
     path = os.path.join(Config.PREDICTIONS_DIR, f"{sim_id}.json")
     if not os.path.exists(path):
@@ -108,6 +114,7 @@ def get_tournament_result(sim_id: str):
 # ------------------------------------------------------------------
 
 @bp.route("/graph/build", methods=["POST"])
+@require_admin(db)
 def build_graph():
     """
     POST /api/predictions/graph/build
@@ -135,14 +142,15 @@ def build_graph():
 
 
 @bp.route("/graph/status", methods=["GET"])
+@require_admin(db)
 def graph_status():
     """GET /api/predictions/graph/status — reports whether Zep is active."""
-    from ..config import Config
     from ..services.zep_football_tools import ZepFootballTools
-    tools = ZepFootballTools()
+    settings = RuntimeSettingsService.current(db)
+    tools = ZepFootballTools(api_key=settings.zep_api_key, graph_id=settings.zep_graph_id)
     return jsonify({
         "zep_configured": bool(Config.ZEP_API_KEY),
-        "graph_id": Config.ZEP_GRAPH_ID or None,
+        "graph_id": settings.zep_graph_id or None,
         "graph_active": tools.has_graph,
         "mode": "zep_graph" if tools.has_graph else "static_data_fallback",
     }), 200
@@ -153,6 +161,7 @@ def graph_status():
 # ------------------------------------------------------------------
 
 @bp.route("/teams", methods=["GET"])
+@require_user(db)
 def list_teams():
     from ..services.data_collectors.sofascore_collector import TEAM_STATIC_DATA
     teams = [
@@ -167,6 +176,7 @@ def list_teams():
 # ------------------------------------------------------------------
 
 @bp.route("/groups", methods=["GET"])
+@require_user(db)
 def get_groups():
     from ..services.tournament_simulator import WC2026_GROUPS
     from ..services.data_collectors.sofascore_collector import TEAM_STATIC_DATA

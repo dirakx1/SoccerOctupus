@@ -9,18 +9,21 @@ from typing import Any, Dict, List, Optional
 from openai import OpenAI
 
 from ..config import Config
+from ..runtime_settings import RuntimeSettings
 
 
 class LLMClient:
     def __init__(
         self,
+        settings: Optional[RuntimeSettings] = None,
         api_key: Optional[str] = None,
         base_url: Optional[str] = None,
         model: Optional[str] = None,
     ):
-        self.api_key = api_key or Config.LLM_API_KEY
-        self.base_url = base_url or Config.LLM_BASE_URL
-        self.model = model or Config.LLM_MODEL_NAME
+        runtime = settings
+        self.api_key = api_key or (runtime.llm_api_key if runtime else Config.LLM_API_KEY)
+        self.base_url = base_url or (runtime.llm_base_url if runtime else Config.LLM_BASE_URL)
+        self.model = model or (runtime.llm_model_name if runtime else Config.LLM_MODEL_NAME)
 
         if not self.api_key:
             raise ValueError("LLM_API_KEY is not set")

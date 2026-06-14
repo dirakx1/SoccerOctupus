@@ -716,9 +716,44 @@ All settings are read from `.env` (see `.env.example`):
 | `LLM_MODEL_NAME` | `gpt-4o` | Optional | `claude-opus-4-8`, `gpt-4o`, `qwen-plus`, etc. |
 | `OPTA_API_KEY` | — | Optional | Stats Perform commercial key. SquadQualityAgent uses benchmark fallback if absent. |
 | `YOUTUBE_API_KEY` | — | Optional | YouTube Data API v3. 10k units/day free. |
+| `DATABASE_URL` | `sqlite:///backend/app.db` | For auth/settings persistence | Use Postgres in production. |
+| `CLERK_PUBLISHABLE_KEY` | — | For frontend auth | Clerk frontend publishable key. |
+| `CLERK_SECRET_KEY` | — | For backend auth | Backend-only Clerk secret. |
+| `CLERK_JWKS_URL` | `https://api.clerk.com/v1/jwks` | For backend auth | Used to verify Clerk bearer tokens. |
+| `CLERK_WEBHOOK_SECRET` | — | For Clerk user sync | Svix webhook signing secret. |
+| `FRONTEND_ORIGIN` | `http://localhost:3001` | For local CORS | Set to your deployed frontend origin in production. |
 | `PORT` | `5002` | — | Backend port |
 | `SWARM_PARALLEL_AGENTS` | `7` | — | Concurrent agent threads. Match number of agents (7). |
 | `SWARM_TIMEOUT_SECONDS` | `60` | — | Per-match swarm deadline |
+
+### Auth and admin settings bootstrap
+
+User auth is now Clerk-backed and app authorization is stored locally. After
+installing backend dependencies, create the database schema before first run:
+
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+venv/bin/python -m alembic upgrade head
+```
+
+Then configure Clerk:
+
+- set `CLERK_PUBLISHABLE_KEY` in the frontend environment
+- set `CLERK_SECRET_KEY`, `CLERK_JWKS_URL`, and `CLERK_WEBHOOK_SECRET` for the backend
+- point a Clerk webhook at `POST /api/webhooks/clerk`
+
+The first admin is still a manual bootstrap: sign in once so the user is synced
+into the local `users` table, then promote that row in the database:
+
+```sql
+UPDATE users SET is_admin = true WHERE email = '<admin-email>';
+```
+
+After that, the admin can manage non-secret runtime settings from the app’s
+admin settings page.
 
 ### Running without any API keys
 
