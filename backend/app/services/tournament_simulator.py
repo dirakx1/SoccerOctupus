@@ -75,7 +75,7 @@ class TournamentSimulator:
         self,
         orchestrator: Optional[SwarmOrchestrator] = None,
         use_swarm: bool = True,
-        mc_simulations: int = 500,
+        mc_simulations: int = 10000,
     ):
         self.orchestrator = orchestrator
         self.use_swarm = use_swarm and orchestrator is not None

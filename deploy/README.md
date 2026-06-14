@@ -139,6 +139,13 @@ nano .env
 Example `.env`:
 
 ```env
+DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/socceroctupus
+CLERK_SECRET_KEY=
+CLERK_PUBLISHABLE_KEY=
+CLERK_JWKS_URL=https://api.clerk.com/v1/jwks
+CLERK_WEBHOOK_SECRET=
+FRONTEND_ORIGIN=https://socceroctupus.co
+
 DEBUG=false
 PORT=5002
 
@@ -157,6 +164,8 @@ Notes:
 - `PORT=5002` should stay as is
 - Most external API keys are optional
 - The app can still run with fallback behavior when keys are missing
+- `DATABASE_URL` should point at Postgres in production
+- Clerk secrets stay in env; only non-secret model preferences move into the admin UI
 
 ## 6. Install Backend Dependencies
 
@@ -167,7 +176,19 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 pip install gunicorn
+venv/bin/python -m alembic upgrade head
 ```
+
+Before granting admin access, sign in once through the deployed app so Clerk
+sync creates the local `users` row, then promote the first admin manually in
+Postgres:
+
+```sql
+UPDATE users SET is_admin = true WHERE email = '<admin-email>';
+```
+
+Also configure a Clerk webhook to `POST https://socceroctupus.co/api/webhooks/clerk`
+with the matching `CLERK_WEBHOOK_SECRET`.
 
 ## 7. Test Backend Locally
 

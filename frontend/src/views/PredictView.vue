@@ -116,7 +116,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { api } from '../lib/api'
 
 const teams = ref([])
 const homeTeam = ref('')
@@ -128,7 +128,7 @@ const error = ref('')
 
 onMounted(async () => {
   try {
-    const res = await axios.get('/api/predictions/teams')
+    const res = await api.get('/api/predictions/teams')
     teams.value = res.data.teams
   } catch (e) {
     error.value = 'Could not load team list — is the backend running?'
@@ -141,7 +141,7 @@ async function runPrediction() {
   error.value = ''
   result.value = null
   try {
-    const res = await axios.post('/api/predictions/match', {
+    const res = await api.post('/api/predictions/match', {
       home_team: homeTeam.value,
       away_team: awayTeam.value,
       stage: stage.value,

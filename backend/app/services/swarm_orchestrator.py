@@ -13,8 +13,8 @@ from __future__ import annotations
 import concurrent.futures
 from typing import Any, Dict, List, Optional
 
-from ..config import Config
 from ..models.match import AgentPrediction, MatchPrediction, MatchStage
+from ..runtime_settings import RuntimeSettings
 from ..utils.logger import get_logger
 from .agents import (
     AggregatorAgent,
@@ -42,12 +42,18 @@ class SwarmOrchestrator:
       - Results are aggregated with an optional LLM narrative synthesis
     """
 
-    def __init__(self, llm_client=None, zep_tools: ZepFootballTools | None = None):
+    def __init__(
+        self,
+        settings: RuntimeSettings,
+        llm_client=None,
+        zep_tools: ZepFootballTools | None = None,
+    ):
+        self.settings = settings
         self.llm_client = llm_client
 
         # One shared Zep tools instance — all agents query the same graph
         # Falls back to static data automatically when ZEP_API_KEY is absent
-        self.zep = zep_tools or _try_build_zep_tools()
+        self.zep = zep_tools or _try_build_zep_tools(settings)
 
         if self.zep and self.zep.has_graph:
             logger.info("SwarmOrchestrator: Zep knowledge graph ACTIVE")
@@ -104,9 +110,9 @@ class SwarmOrchestrator:
         agent_preds: List[AgentPrediction] = []
         errors: List[str] = []
 
-        timeout = Config.SWARM_TIMEOUT_SECONDS
+        timeout = self.settings.swarm_timeout_seconds
         with concurrent.futures.ThreadPoolExecutor(
-            max_workers=Config.SWARM_PARALLEL_AGENTS
+            max_workers=self.settings.swarm_parallel_agents
         ) as executor:
             future_map = {
                 executor.submit(agent.predict, home_team, away_team, ctx): agent
@@ -170,10 +176,10 @@ class SwarmOrchestrator:
 # Module-level helper
 # ---------------------------------------------------------------------------
 
-def _try_build_zep_tools() -> ZepFootballTools:
+def _try_build_zep_tools(settings: RuntimeSettings) -> ZepFootballTools:
     """
     Build ZepFootballTools using env-configured ZEP_API_KEY + ZEP_GRAPH_ID.
     Always returns a ZepFootballTools object; static fallback activates when
     credentials are absent.
     """
-    return ZepFootballTools()
+    return ZepFootballTools(api_key=settings.zep_api_key, graph_id=settings.zep_graph_id)
