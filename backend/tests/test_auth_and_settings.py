@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+from sqlalchemy.exc import IntegrityError
+
+from app.auth import ClerkIdentity, sync_user
 from app.db.base import db
 from app.db.models import User
 from app.runtime_settings import RuntimeSettingsService
@@ -133,3 +136,98 @@ def test_lazy_upsert_creates_local_user(client, monkeypatch):
     with client.application.app_context():
         created = User.query.filter_by(clerk_user_id="user_new").one()
         assert created.email == "new@example.com"
+
+
+def test_lazy_sync_preserves_existing_email(client, user, monkeypatch):
+    monkeypatch.setattr(
+        "app.auth.verify_session_token",
+        lambda token: {
+            "sub": token,
+            "first_name": "Updated",
+            "last_name": None,
+            "iat": int(datetime.now(timezone.utc).timestamp()),
+        },
+    )
+    response = client.get("/api/me", headers=_auth_header(user["clerk_user_id"]))
+    assert response.status_code == 200
+    assert response.get_json()["email"] == "user@example.com"
+    with client.application.app_context():
+        updated = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        assert updated.email == "user@example.com"
+        assert updated.first_name == "Updated"
+
+
+def test_lazy_sync_without_email_uses_unique_placeholder(client, monkeypatch):
+    monkeypatch.setattr(
+        "app.auth.verify_session_token",
+        lambda token: {
+            "sub": token,
+            "first_name": "Pending",
+            "iat": int(datetime.now(timezone.utc).timestamp()),
+        },
+    )
+    response = client.get("/api/me", headers=_auth_header("user_pending"))
+    assert response.status_code == 200
+    with client.application.app_context():
+        created = User.query.filter_by(clerk_user_id="user_pending").one()
+        assert created.email == "user_pending@pending.clerk.local"
+
+
+def test_sync_user_recovers_from_duplicate_insert_race(app, monkeypatch):
+    with app.app_context():
+        existing = User(
+            clerk_user_id="user_race",
+            email="existing@example.com",
+            first_name="Existing",
+            last_name="User",
+            is_admin=False,
+            is_active=True,
+            last_sign_in_at=datetime.now(timezone.utc),
+        )
+        db.session.add(existing)
+        db.session.commit()
+
+        real_query = User.query.filter_by(clerk_user_id="user_race").one()
+
+        class FakeQuery:
+            def __init__(self):
+                self.calls = 0
+
+            def filter_by(self, **kwargs):
+                return self
+
+            def one_or_none(self):
+                self.calls += 1
+                if self.calls == 1:
+                    return None
+                return real_query
+
+        monkeypatch.setattr("app.auth.User.query", FakeQuery(), raising=False)
+
+        original_commit = db.session.commit
+        commit_calls = {"count": 0}
+
+        def flaky_commit():
+            commit_calls["count"] += 1
+            if commit_calls["count"] == 1:
+                raise IntegrityError("insert", {}, Exception("duplicate key"))
+            return original_commit()
+
+        monkeypatch.setattr(db.session, "commit", flaky_commit)
+
+        identity = ClerkIdentity(
+            clerk_user_id="user_race",
+            email="",
+            first_name="Synced",
+            last_name="User",
+            avatar_url="https://example.com/avatar.png",
+            last_sign_in_at=datetime.now(timezone.utc),
+        )
+
+        user = sync_user(identity, db, overwrite_missing=False)
+
+        assert user.id == real_query.id
+        assert user.email == "existing@example.com"
+        assert user.first_name == "Synced"
+        assert user.avatar_url == "https://example.com/avatar.png"
+        assert commit_calls["count"] == 2

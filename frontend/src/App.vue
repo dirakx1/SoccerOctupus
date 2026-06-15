@@ -33,17 +33,23 @@
 </template>
 
 <script setup>
-import { useClerk } from '@clerk/vue'
+import { useAuth, useClerk } from '@clerk/vue'
 import { useRouter } from 'vue-router'
 
+import { installAuthInterceptor } from './lib/api'
 import { clearAuthState, useAuthState } from './lib/auth'
 
 const auth = useAuthState()
 const clerk = useClerk()
+const clerkAuth = useAuth()
 const router = useRouter()
 
+installAuthInterceptor(async () => {
+  return await clerkAuth.getToken.value?.()
+})
+
 async function signOut() {
-  await clerk.signOut()
+  await clerk.value?.signOut()
   clearAuthState()
   router.push('/sign-in')
 }

@@ -10,6 +10,7 @@ from typing import Any, Callable
 import jwt
 import requests
 from flask import current_app, g, jsonify, request
+from sqlalchemy.exc import IntegrityError
 from svix.webhooks import Webhook
 
 from .config import Config
@@ -75,30 +76,67 @@ def build_identity_from_webhook(payload: dict[str, Any]) -> ClerkIdentity:
     )
 
 
-def sync_user(identity: ClerkIdentity, db_session, *, reactivate: bool = True) -> User:
+def _apply_identity(user: User, identity: ClerkIdentity, *, overwrite_missing: bool) -> None:
+    if identity.email:
+        user.email = identity.email
+
+    if overwrite_missing or identity.first_name is not None:
+        user.first_name = identity.first_name
+
+    if overwrite_missing or identity.last_name is not None:
+        user.last_name = identity.last_name
+
+    if overwrite_missing or identity.avatar_url is not None:
+        user.avatar_url = identity.avatar_url
+
+    if identity.last_sign_in_at is not None:
+        user.last_sign_in_at = identity.last_sign_in_at
+
+
+def _initial_email(identity: ClerkIdentity) -> str:
+    return identity.email or f"{identity.clerk_user_id}@pending.clerk.local"
+
+
+def sync_user(
+    identity: ClerkIdentity,
+    db_session,
+    *,
+    reactivate: bool = True,
+    overwrite_missing: bool = True,
+) -> User:
     user = User.query.filter_by(clerk_user_id=identity.clerk_user_id).one_or_none()
     if user is None:
         user = User(
             clerk_user_id=identity.clerk_user_id,
-            email=identity.email,
-            first_name=identity.first_name,
-            last_name=identity.last_name,
-            avatar_url=identity.avatar_url,
+            email=_initial_email(identity),
+            first_name=None,
+            last_name=None,
+            avatar_url=None,
             is_admin=False,
             is_active=True,
             last_sign_in_at=identity.last_sign_in_at,
             deleted_at=None,
         )
+        _apply_identity(user, identity, overwrite_missing=overwrite_missing)
         db_session.session.add(user)
-    else:
-        user.email = identity.email
-        user.first_name = identity.first_name
-        user.last_name = identity.last_name
-        user.avatar_url = identity.avatar_url
-        user.last_sign_in_at = identity.last_sign_in_at
-        if reactivate:
-            user.is_active = True
-            user.deleted_at = None
+        try:
+            db_session.session.commit()
+        except IntegrityError:
+            db_session.session.rollback()
+            user = User.query.filter_by(clerk_user_id=identity.clerk_user_id).one_or_none()
+            if user is None:
+                raise
+            _apply_identity(user, identity, overwrite_missing=overwrite_missing)
+            if reactivate:
+                user.is_active = True
+                user.deleted_at = None
+            db_session.session.commit()
+        return user
+
+    _apply_identity(user, identity, overwrite_missing=overwrite_missing)
+    if reactivate:
+        user.is_active = True
+        user.deleted_at = None
     db_session.session.commit()
     return user
 
@@ -137,7 +175,7 @@ def load_current_user(db_session) -> User:
     token = auth_header.split(" ", 1)[1].strip()
     claims = verify_session_token(token)
     identity = build_identity_from_claims(claims)
-    user = sync_user(identity, db_session)
+    user = sync_user(identity, db_session, overwrite_missing=False)
     g.current_user = user
     return user
 

@@ -5,11 +5,30 @@ FifaOctopus configuration
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR.parent / ".env")
+load_dotenv(BASE_DIR / ".env")
+
+
+def normalize_database_url(url: str) -> str:
+    """Ensure PostgreSQL URLs use the psycopg3 driver."""
+    if url.startswith("postgres://"):
+        return "postgresql+psycopg://" + url[len("postgres://") :]
+    if url.startswith("postgresql://"):
+        return "postgresql+psycopg://" + url[len("postgresql://") :]
+    return url
 
 
 class Config:
-    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'app.db'}")
+    DATABASE_URL: str = normalize_database_url(
+        os.getenv(
+            "DATABASE_URL",
+            "postgresql+psycopg://postgres:postgres@localhost:5432/socceroctupus",
+        )
+    )
     CLERK_SECRET_KEY: str = os.getenv("CLERK_SECRET_KEY", "")
     CLERK_PUBLISHABLE_KEY: str = os.getenv("CLERK_PUBLISHABLE_KEY", "")
     CLERK_JWKS_URL: str = os.getenv(

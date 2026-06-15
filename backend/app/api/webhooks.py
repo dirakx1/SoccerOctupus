@@ -7,6 +7,8 @@ from flask import Blueprint, jsonify, request
 from ..auth import build_identity_from_webhook, deactivate_user, sync_user, verify_webhook
 from ..db.base import db
 
+import os
+
 bp = Blueprint("webhooks", __name__, url_prefix="/api/webhooks")
 
 
@@ -21,7 +23,7 @@ def clerk_webhook():
     event_type = event.get("type")
     if event_type in {"user.created", "user.updated"}:
         identity = build_identity_from_webhook(event)
-        sync_user(identity, db, reactivate=True)
+        sync_user(identity, db, reactivate=True, overwrite_missing=True)
     elif event_type == "user.deleted":
         data = event.get("data", {})
         clerk_user_id = data.get("id")

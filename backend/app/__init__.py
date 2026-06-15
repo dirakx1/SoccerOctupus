@@ -17,6 +17,8 @@ def create_app(config_overrides: dict | None = None) -> Flask:
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = Config.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    if Config.DATABASE_URL.startswith("postgresql"):
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
     if config_overrides:
         app.config.update(config_overrides)
     CORS(app, resources={r"/api/*": {"origins": [Config.FRONTEND_ORIGIN]}})

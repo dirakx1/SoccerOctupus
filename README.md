@@ -716,7 +716,7 @@ All settings are read from `.env` (see `.env.example`):
 | `LLM_MODEL_NAME` | `gpt-4o` | Optional | `claude-opus-4-8`, `gpt-4o`, `qwen-plus`, etc. |
 | `OPTA_API_KEY` | — | Optional | Stats Perform commercial key. SquadQualityAgent uses benchmark fallback if absent. |
 | `YOUTUBE_API_KEY` | — | Optional | YouTube Data API v3. 10k units/day free. |
-| `DATABASE_URL` | `sqlite:///backend/app.db` | For auth/settings persistence | Use Postgres in production. |
+| `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/socceroctupus` | For auth/settings persistence | Supabase/Postgres in production; tests still use in-memory SQLite. |
 | `CLERK_PUBLISHABLE_KEY` | — | For frontend auth | Clerk frontend publishable key. |
 | `CLERK_SECRET_KEY` | — | For backend auth | Backend-only Clerk secret. |
 | `CLERK_JWKS_URL` | `https://api.clerk.com/v1/jwks` | For backend auth | Used to verify Clerk bearer tokens. |
