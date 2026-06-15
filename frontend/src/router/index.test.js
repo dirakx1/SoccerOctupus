@@ -12,4 +12,14 @@ describe('router meta', () => {
     const route = router.getRoutes().find((entry) => entry.path === '/sign-in')
     expect(route.meta.public).toBe(true)
   })
+
+  it('marks home as public', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/')
+    expect(route.meta.public).toBe(true)
+  })
+
+  it('marks profile as signed-in only', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/profile')
+    expect(route.meta.requiresAuth).toBe(true)
+  })
 })
