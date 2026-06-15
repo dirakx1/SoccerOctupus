@@ -238,7 +238,7 @@ Combines all six agents using **confidence-weighted averaging** where each agent
 
 ## Knowledge Layer — Zep Graph
 
-All agents share a **Zep Cloud knowledge graph** (`ZEP_GRAPH_ID`) built once from football seed data. Mirrors MiroFish's GraphRAG pattern exactly.
+All agents share a **Zep Cloud knowledge graph** configured in `/admin/settings` and built once from football seed data. Mirrors MiroFish's GraphRAG pattern exactly.
 
 ### Graph content (144 episodes → nodes + edges)
 
@@ -261,7 +261,7 @@ Edges:  beat · plays_in_group · ranked_above
 ```bash
 python3 backend/setup_zep.py
 # → prints: graph_id: fifaoctopus_xxxxxxxxxxxx
-# Add to .env: ZEP_GRAPH_ID=fifaoctopus_xxxxxxxxxxxx
+# Add the graph ID in /admin/settings
 ```
 
 ---
@@ -335,21 +335,20 @@ Total: 104 matches
 cp .env.example .env
 ```
 
-**Required:**
+`.env` contains only deployment/bootstrap settings:
 
 ```env
-ZEP_API_KEY=zep-...        # free at https://app.getzep.com/
-ZEP_GRAPH_ID=              # filled after step 2
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/socceroctupus
+CLERK_SECRET_KEY=
+CLERK_PUBLISHABLE_KEY=
+CLERK_JWKS_URL=
+CLERK_WEBHOOK_SECRET=
+FRONTEND_ORIGIN=http://localhost:3001
+PORT=5002
+DEBUG=false
 ```
 
-**Optional (enable additional data sources):**
-
-```env
-LLM_API_KEY=sk-...         # any OpenAI-compatible key; enables LLM narrative
-LLM_BASE_URL=https://api.anthropic.com/v1   # or https://api.openai.com/v1
-LLM_MODEL_NAME=claude-opus-4-8             # or gpt-4o, qwen-plus, etc.
-YOUTUBE_API_KEY=...        # YouTube Data API v3; 10k units/day free
-```
+After the first admin is bootstrapped, configure LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings in `/admin/settings`. Provider API keys are encrypted before storage and are redacted from admin API responses.
 
 ### 2. Install dependencies
 
@@ -357,15 +356,19 @@ YOUTUBE_API_KEY=...        # YouTube Data API v3; 10k units/day free
 npm run setup:all      # Python + Node packages in one command
 ```
 
-### 3. Build the Zep knowledge graph (once)
+### 3. Configure runtime providers
+
+Sign in as an admin, open `/admin/settings`, then add provider keys and runtime tuning. The Zep graph build endpoint returns a graph ID; paste that ID back into the admin settings page so future runs reuse the graph.
+
+### 4. Build the Zep knowledge graph (once)
 
 ```bash
 python3 backend/setup_zep.py
 # Ingests 144 football knowledge episodes. Takes ~2 min.
-# Copy the printed graph_id into .env as ZEP_GRAPH_ID.
+# Copy the printed graph ID into /admin/settings.
 ```
 
-### 4. Start services
+### 5. Start services
 
 ```bash
 npm run dev
@@ -542,7 +545,7 @@ Body: { "use_swarm": false }       ← true uses full swarm per match (slow)
 
 GET  /api/predictions/tournament/<sim_id>
 GET  /api/predictions/graph/status
-POST /api/predictions/graph/build  ← rebuilds Zep graph (requires ZEP_API_KEY)
+POST /api/predictions/graph/build  ← rebuilds Zep graph (requires Zep API key in admin settings)
 GET  /api/predictions/teams
 GET  /api/predictions/groups
 GET  /health
@@ -705,26 +708,21 @@ Final         Argentina 2-2 Portugal        → Argentina (AET/PKs, H 51%)
 
 ## Configuration
 
-All settings are read from `.env` (see `.env.example`):
+Only bootstrap settings are read from `.env` (see `.env.example`):
 
 | Variable | Default | Required | Description |
 |---|---|---|---|
-| `ZEP_API_KEY` | — | For graph mode | Zep Cloud key. Free tier sufficient. |
-| `ZEP_GRAPH_ID` | — | For graph mode | Set after running `setup_zep.py` |
-| `LLM_API_KEY` | — | Optional | Any OpenAI-compatible key. Enables LLM narrative. |
-| `LLM_BASE_URL` | `https://api.openai.com/v1` | Optional | Must end with `/v1` (e.g. `https://api.anthropic.com/v1`) |
-| `LLM_MODEL_NAME` | `gpt-4o` | Optional | `claude-opus-4-8`, `gpt-4o`, `qwen-plus`, etc. |
-| `OPTA_API_KEY` | — | Optional | Stats Perform commercial key. SquadQualityAgent uses benchmark fallback if absent. |
-| `YOUTUBE_API_KEY` | — | Optional | YouTube Data API v3. 10k units/day free. |
 | `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/socceroctupus` | For auth/settings persistence | Supabase/Postgres in production; tests still use in-memory SQLite. |
-| `CLERK_PUBLISHABLE_KEY` | — | For frontend auth | Clerk frontend publishable key. |
+| `VITE_CLERK_PUBLISHABLE_KEY` | — | For frontend auth | Public Clerk key exposed to the Vite build. |
 | `CLERK_SECRET_KEY` | — | For backend auth | Backend-only Clerk secret. |
 | `CLERK_JWKS_URL` | `https://api.clerk.com/v1/jwks` | For backend auth | Used to verify Clerk bearer tokens. |
 | `CLERK_WEBHOOK_SECRET` | — | For Clerk user sync | Svix webhook signing secret. |
 | `FRONTEND_ORIGIN` | `http://localhost:3001` | For local CORS | Set to your deployed frontend origin in production. |
 | `PORT` | `5002` | — | Backend port |
-| `SWARM_PARALLEL_AGENTS` | `7` | — | Concurrent agent threads. Match number of agents (7). |
-| `SWARM_TIMEOUT_SECONDS` | `60` | — | Per-match swarm deadline |
+
+LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are admin-managed at `/admin/settings` after first-admin bootstrap. API keys are encrypted in the database and only redacted `configured` booleans are returned by the admin API.
+
+The encryption root key is stored outside the database at `backend/instance/settings-fernet.key` for local and single-host deployments. Production deployments must persist and back up that file securely, or provide an equivalent persistent secret-file/KMS-backed mount before storing API keys. Losing the root key means existing encrypted API keys cannot be decrypted and must be re-entered.
 
 ### Auth and admin settings bootstrap
 
@@ -741,8 +739,7 @@ venv/bin/python -m alembic upgrade head
 
 Then configure Clerk:
 
-- set `CLERK_PUBLISHABLE_KEY` in the frontend environment
-- set `CLERK_SECRET_KEY`, `CLERK_JWKS_URL`, and `CLERK_WEBHOOK_SECRET` for the backend
+- set `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_JWKS_URL`, and `CLERK_WEBHOOK_SECRET` for the backend
 - point a Clerk webhook at `POST /api/webhooks/clerk`
 
 The first admin is still a manual bootstrap: sign in once so the user is synced
@@ -752,8 +749,7 @@ into the local `users` table, then promote that row in the database:
 UPDATE users SET is_admin = true WHERE email = '<admin-email>';
 ```
 
-After that, the admin can manage non-secret runtime settings from the app’s
-admin settings page.
+After that, the admin can manage provider API keys and runtime settings from the app’s admin settings page.
 
 ### Running without any API keys
 

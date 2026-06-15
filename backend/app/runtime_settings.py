@@ -5,8 +5,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
-from .config import Config
 from .db.models import AppSettings
+from .secret_store import SecretStore
+
+DEFAULT_LLM_BASE_URL = "https://api.openai.com/v1"
+DEFAULT_LLM_MODEL_NAME = "gpt-4o"
+DEFAULT_SWARM_PARALLEL_AGENTS = 7
+DEFAULT_SWARM_TIMEOUT_SECONDS = 60
+DEFAULT_MC_SIMULATIONS = 10000
+DEFAULT_OPTA_BASE_URL = "https://api.performfeeds.com/soccerdata"
 
 
 @dataclass(frozen=True)
@@ -31,16 +38,20 @@ class RuntimeSettingsService:
             "llm_base_url": (payload.get("llm_base_url") or "").strip(),
             "llm_model_name": (payload.get("llm_model_name") or "").strip(),
             "zep_graph_id": (payload.get("zep_graph_id") or "").strip() or None,
+            "opta_base_url": (payload.get("opta_base_url") or "").strip(),
             "swarm_parallel_agents": payload.get("swarm_parallel_agents"),
             "swarm_timeout_seconds": payload.get("swarm_timeout_seconds"),
             "mc_simulations": payload.get("mc_simulations"),
         }
 
-        parsed = urlparse(data["llm_base_url"])
-        if not parsed.scheme or not parsed.netloc or not data["llm_base_url"].endswith("/v1"):
+        llm_parsed = urlparse(data["llm_base_url"])
+        if not llm_parsed.scheme or not llm_parsed.netloc or not data["llm_base_url"].endswith("/v1"):
             raise ValueError("llm_base_url must be an absolute URL ending in /v1")
         if not data["llm_model_name"]:
             raise ValueError("llm_model_name is required")
+        opta_parsed = urlparse(data["opta_base_url"])
+        if not opta_parsed.scheme or not opta_parsed.netloc:
+            raise ValueError("opta_base_url must be an absolute URL")
 
         for key in ("swarm_parallel_agents", "swarm_timeout_seconds", "mc_simulations"):
             try:
@@ -63,12 +74,13 @@ class RuntimeSettingsService:
         if settings is None:
             settings = AppSettings(
                 scope="global",
-                llm_base_url=Config.LLM_BASE_URL,
-                llm_model_name=Config.LLM_MODEL_NAME,
-                zep_graph_id=Config.ZEP_GRAPH_ID or None,
-                swarm_parallel_agents=Config.SWARM_PARALLEL_AGENTS,
-                swarm_timeout_seconds=Config.SWARM_TIMEOUT_SECONDS,
-                mc_simulations=Config.MC_SIMULATIONS,
+                llm_base_url=DEFAULT_LLM_BASE_URL,
+                llm_model_name=DEFAULT_LLM_MODEL_NAME,
+                zep_graph_id=None,
+                opta_base_url=DEFAULT_OPTA_BASE_URL,
+                swarm_parallel_agents=DEFAULT_SWARM_PARALLEL_AGENTS,
+                swarm_timeout_seconds=DEFAULT_SWARM_TIMEOUT_SECONDS,
+                mc_simulations=DEFAULT_MC_SIMULATIONS,
             )
             db_session.session.add(settings)
             db_session.session.commit()
@@ -77,14 +89,15 @@ class RuntimeSettingsService:
     @staticmethod
     def current(db_session) -> RuntimeSettings:
         settings = RuntimeSettingsService.ensure_defaults(db_session)
+        secret_store = SecretStore()
         return RuntimeSettings(
-            llm_api_key=Config.LLM_API_KEY,
+            llm_api_key=secret_store.decrypt(settings.llm_api_key_encrypted),
             llm_base_url=settings.llm_base_url,
             llm_model_name=settings.llm_model_name,
-            youtube_api_key=Config.YOUTUBE_API_KEY,
-            opta_api_key=Config.OPTA_API_KEY,
-            opta_base_url=Config.OPTA_BASE_URL,
-            zep_api_key=Config.ZEP_API_KEY,
+            youtube_api_key=secret_store.decrypt(settings.youtube_api_key_encrypted),
+            opta_api_key=secret_store.decrypt(settings.opta_api_key_encrypted),
+            opta_base_url=settings.opta_base_url,
+            zep_api_key=secret_store.decrypt(settings.zep_api_key_encrypted),
             zep_graph_id=settings.zep_graph_id or "",
             swarm_parallel_agents=settings.swarm_parallel_agents,
             swarm_timeout_seconds=settings.swarm_timeout_seconds,

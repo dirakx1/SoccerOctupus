@@ -31,15 +31,10 @@ Configure these in the Clerk Dashboard:
 
 ## Required Environment Variables
 
-Frontend:
-
-```env
-VITE_CLERK_PUBLISHABLE_KEY=pk_...
-```
-
 Backend:
 
 ```env
+VITE_CLERK_PUBLISHABLE_KEY=pk_...
 CLERK_SECRET_KEY=sk_...
 CLERK_JWKS_URL=https://<your-clerk-domain>/.well-known/jwks.json
 CLERK_WEBHOOK_SECRET=whsec_...
@@ -48,7 +43,7 @@ FRONTEND_ORIGIN=http://localhost:3001
 ```
 
 The backend verifies bearer tokens against `CLERK_JWKS_URL`. The frontend uses
-the publishable key only.
+the public `VITE_CLERK_PUBLISHABLE_KEY` at build/bootstrap time.
 
 ## Sign-Up Workflow
 
@@ -219,6 +214,12 @@ UPDATE users SET is_admin = true WHERE email = '<admin-email>';
 
 After this, the admin can access `/admin/settings`.
 
+## Runtime Settings
+
+After first-admin bootstrap, LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are managed in `/admin/settings`, not deployment env. Provider API keys are write-only in the admin API, stored encrypted in the database, and reported to the frontend only as configured/not-configured booleans.
+
+The encryption root key is stored outside the database at `backend/instance/settings-fernet.key` for local and single-host deployments. Production must persist and back up that file, or provide an equivalent persistent secret-file/KMS-backed mount, before storing API keys. If the root key is lost, previously encrypted API keys cannot be decrypted and must be re-entered.
+
 ## Troubleshooting
 
 ### `This sign-in requires a verification method that is not enabled on this page`
@@ -248,7 +249,7 @@ webhook should replace it with the real email from Clerk.
 ### CAPTCHA errors on sign-up
 
 Make sure the custom sign-up form contains `<div id="clerk-captcha" />` and that
-the Clerk publishable key is configured correctly in the frontend environment.
+the Clerk publishable key is configured correctly in the backend environment.
 
 ### Protected API requests missing bearer token
 

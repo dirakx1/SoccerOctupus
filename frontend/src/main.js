@@ -6,12 +6,6 @@ import router from './router/index.js'
 import { api } from './lib/api'
 import { clearAuthState, setAuthState } from './lib/auth'
 
-const app = createApp(App)
-
-app.use(clerkPlugin, {
-  publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '',
-})
-
 router.beforeEach(async (to) => {
   try {
     const res = await api.get('/api/me')
@@ -31,6 +25,12 @@ router.beforeEach(async (to) => {
     if (to.meta.public) return true
     return { path: '/sign-in' }
   }
+})
+
+const app = createApp(App)
+
+app.use(clerkPlugin, {
+  publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '',
 })
 
 app.use(router).mount('#app')

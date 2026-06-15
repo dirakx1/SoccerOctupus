@@ -21,7 +21,6 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
-from ..config import Config
 from ..utils.logger import get_logger
 from .data_collectors.sofascore_collector import TEAM_STATIC_DATA
 
@@ -98,7 +97,7 @@ class ZepFootballTools:
     """
     Provides Zep-backed knowledge retrieval to all prediction agents.
 
-    When ZEP_API_KEY is set and a graph_id is provided, queries use Zep's
+    When an API key and graph_id are provided, queries use Zep's
     hybrid semantic+BM25 search over the football knowledge graph.
 
     When Zep is unavailable the fallback methods return structured text
@@ -115,8 +114,8 @@ class ZepFootballTools:
         graph_id: Optional[str] = None,
         api_key: Optional[str] = None,
     ):
-        self.graph_id = graph_id or Config.ZEP_GRAPH_ID
-        self.api_key = api_key or Config.ZEP_API_KEY
+        self.graph_id = graph_id or ""
+        self.api_key = api_key or ""
         self._zep = None
 
         if self.api_key and self.graph_id:
@@ -127,7 +126,7 @@ class ZepFootballTools:
             except Exception as exc:
                 logger.warning(f"Zep init failed — falling back to static data: {exc}")
         else:
-            logger.info("ZepFootballTools: static data fallback mode (no ZEP_API_KEY/ZEP_GRAPH_ID)")
+            logger.info("ZepFootballTools: static data fallback mode (no Zep API key/graph ID)")
 
     @property
     def has_graph(self) -> bool:

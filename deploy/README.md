@@ -141,31 +141,24 @@ Example `.env`:
 ```env
 DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/socceroctupus
 CLERK_SECRET_KEY=
-CLERK_PUBLISHABLE_KEY=
+VITE_CLERK_PUBLISHABLE_KEY=
 CLERK_JWKS_URL=https://api.clerk.com/v1/jwks
 CLERK_WEBHOOK_SECRET=
 FRONTEND_ORIGIN=https://socceroctupus.co
 
 DEBUG=false
 PORT=5002
-
-LLM_API_KEY=
-LLM_BASE_URL=https://api.openai.com/v1
-LLM_MODEL_NAME=gpt-4o
-
-YOUTUBE_API_KEY=
-OPTA_API_KEY=
-ZEP_API_KEY=
-ZEP_GRAPH_ID=
 ```
 
 Notes:
 
 - `PORT=5002` should stay as is
-- Most external API keys are optional
-- The app can still run with fallback behavior when keys are missing
 - `DATABASE_URL` should point at Postgres in production
-- Clerk secrets stay in env; only non-secret model preferences move into the admin UI
+- Clerk secrets, the public Clerk publishable key, and the database connection stay in env as bootstrap settings
+- LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are configured in `/admin/settings` after first-admin bootstrap
+- Provider API keys are encrypted in the database and redacted from admin API responses
+- The encryption root key lives outside the database at `backend/instance/settings-fernet.key`; persist and back up that file securely before storing API keys
+- Losing the root key means previously encrypted API keys cannot be decrypted and must be re-entered
 
 ## 6. Install Backend Dependencies
 

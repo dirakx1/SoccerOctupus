@@ -52,7 +52,7 @@ class SwarmOrchestrator:
         self.llm_client = llm_client
 
         # One shared Zep tools instance — all agents query the same graph
-        # Falls back to static data automatically when ZEP_API_KEY is absent
+        # Falls back to static data automatically when DB-backed Zep settings are absent
         self.zep = zep_tools or _try_build_zep_tools(settings)
 
         if self.zep and self.zep.has_graph:
@@ -63,12 +63,12 @@ class SwarmOrchestrator:
         # Build the swarm — every agent receives the shared zep_tools reference
         self.agents = [
             StatisticalAgent(zep_tools=self.zep),          # ELO + Poisson (SofaScore)
-            VideoAgent(),                                   # YouTube engagement
+            VideoAgent(settings=settings),                  # YouTube engagement
             FormAgent(zep_tools=self.zep),                 # last-10 form points
             TacticalAgent(llm_client=llm_client, zep_tools=self.zep),  # style matchup
             LiveDataAgent(zep_tools=self.zep),             # FotMob xG + FlashScore form
             MarketSignalsAgent(zep_tools=self.zep),        # 365Scores odds + Tiki-Taka AI
-            SquadQualityAgent(zep_tools=self.zep),         # Opta player ratings + squad depth
+            SquadQualityAgent(settings=settings, zep_tools=self.zep),  # Opta player ratings + squad depth
         ]
         self.aggregator = AggregatorAgent(llm_client=llm_client)
 
@@ -178,7 +178,7 @@ class SwarmOrchestrator:
 
 def _try_build_zep_tools(settings: RuntimeSettings) -> ZepFootballTools:
     """
-    Build ZepFootballTools using env-configured ZEP_API_KEY + ZEP_GRAPH_ID.
+    Build ZepFootballTools using DB-backed Zep settings.
     Always returns a ZepFootballTools object; static fallback activates when
     credentials are absent.
     """

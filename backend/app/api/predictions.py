@@ -120,11 +120,11 @@ def build_graph():
     POST /api/predictions/graph/build
     Builds (or rebuilds) the Zep WC2026 knowledge graph.
     Mirrors MiroFish's /api/graph/build endpoint.
-    Requires ZEP_API_KEY in environment.
+    Requires a Zep API key in admin settings.
     """
-    from ..config import Config
-    if not Config.ZEP_API_KEY:
-        return jsonify({"error": "ZEP_API_KEY is not configured"}), 400
+    settings = RuntimeSettingsService.current(db)
+    if not settings.zep_api_key:
+        return jsonify({"error": "Zep API key is not configured"}), 400
 
     progress_log = []
 
@@ -133,7 +133,7 @@ def build_graph():
 
     try:
         from ..services.zep_football_graph import ZepFootballGraphBuilder
-        builder = ZepFootballGraphBuilder()
+        builder = ZepFootballGraphBuilder(api_key=settings.zep_api_key)
         graph_id = builder.build(progress_callback=_cb)
         return jsonify({"graph_id": graph_id, "progress": progress_log}), 200
     except Exception as exc:
@@ -149,7 +149,7 @@ def graph_status():
     settings = RuntimeSettingsService.current(db)
     tools = ZepFootballTools(api_key=settings.zep_api_key, graph_id=settings.zep_graph_id)
     return jsonify({
-        "zep_configured": bool(Config.ZEP_API_KEY),
+        "zep_configured": bool(settings.zep_api_key),
         "graph_id": settings.zep_graph_id or None,
         "graph_active": tools.has_graph,
         "mode": "zep_graph" if tools.has_graph else "static_data_fallback",

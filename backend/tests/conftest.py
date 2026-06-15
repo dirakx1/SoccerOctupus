@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 import pytest
+from cryptography.fernet import Fernet
 
 from app import create_app
 from app.db.base import db
@@ -10,7 +11,11 @@ from app.db.models import AppSettings, User
 
 
 @pytest.fixture()
-def app():
+def app(tmp_path, monkeypatch):
+    key_path = tmp_path / "settings-fernet.key"
+    key_path.write_bytes(Fernet.generate_key())
+    monkeypatch.setattr("app.secret_store.DEFAULT_KEY_PATH", key_path)
+
     app = create_app(
         {
             "TESTING": True,
@@ -27,7 +32,8 @@ def app():
                 llm_base_url="https://api.openai.com/v1",
                 llm_model_name="gpt-4o",
                 zep_graph_id=None,
-                swarm_parallel_agents=5,
+                opta_base_url="https://api.performfeeds.com/soccerdata",
+                swarm_parallel_agents=7,
                 swarm_timeout_seconds=60,
                 mc_simulations=10000,
             )

@@ -6,12 +6,27 @@ from sqlalchemy.exc import IntegrityError
 
 from app.auth import ClerkIdentity, sync_user
 from app.db.base import db
-from app.db.models import User
+from app.db.models import AppSettings, User
 from app.runtime_settings import RuntimeSettingsService
+from app.secret_store import SecretStore
 
 
 def _auth_header(clerk_user_id: str) -> dict[str, str]:
     return {"Authorization": f"Bearer {clerk_user_id}"}
+
+
+def _settings_payload(**overrides) -> dict:
+    payload = {
+        "llm_base_url": "https://api.openai.com/v1",
+        "llm_model_name": "gpt-4.1",
+        "zep_graph_id": "graph_123",
+        "opta_base_url": "https://api.performfeeds.com/soccerdata",
+        "swarm_parallel_agents": 6,
+        "swarm_timeout_seconds": 90,
+        "mc_simulations": 15000,
+    }
+    payload.update(overrides)
+    return payload
 
 
 def test_protected_route_requires_auth(client):
@@ -31,20 +46,20 @@ def test_non_admin_cannot_access_admin_settings(client, user, monkeypatch):
     response = client.get("/api/admin/settings", headers=_auth_header(user["clerk_user_id"]))
     assert response.status_code == 403
 
+    response = client.put(
+        "/api/admin/settings",
+        headers=_auth_header(user["clerk_user_id"]),
+        json=_settings_payload(),
+    )
+    assert response.status_code == 403
+
 
 def test_admin_can_update_settings(client, admin, monkeypatch):
     monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
     response = client.put(
         "/api/admin/settings",
         headers=_auth_header(admin["clerk_user_id"]),
-        json={
-            "llm_base_url": "https://api.openai.com/v1",
-            "llm_model_name": "gpt-4.1",
-            "zep_graph_id": "graph_123",
-            "swarm_parallel_agents": 6,
-            "swarm_timeout_seconds": 90,
-            "mc_simulations": 15000,
-        },
+        json=_settings_payload(),
     )
     assert response.status_code == 200
     body = response.get_json()
@@ -117,6 +132,196 @@ def test_runtime_settings_update_changes_current_snapshot(app, admin):
         current = RuntimeSettingsService.current(db)
         assert current.llm_model_name == "gpt-4.1-mini"
         assert current.mc_simulations == 20000
+
+
+def test_runtime_settings_ignore_disallowed_env(app, admin, monkeypatch):
+    monkeypatch.setenv("LLM_API_KEY", "env-llm")
+    monkeypatch.setenv("ZEP_API_KEY", "env-zep")
+    monkeypatch.setenv("YOUTUBE_API_KEY", "env-youtube")
+    monkeypatch.setenv("OPTA_API_KEY", "env-opta")
+    monkeypatch.setenv("LLM_MODEL_NAME", "env-model")
+    monkeypatch.setenv("MC_SIMULATIONS", "1")
+
+    with app.app_context():
+        secret_store = SecretStore()
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.llm_model_name = "db-model"
+        settings.opta_base_url = "https://db-opta.example/soccerdata"
+        settings.mc_simulations = 22222
+        settings.llm_api_key_encrypted = secret_store.encrypt("db-llm")
+        settings.zep_api_key_encrypted = secret_store.encrypt("db-zep")
+        settings.youtube_api_key_encrypted = secret_store.encrypt("db-youtube")
+        settings.opta_api_key_encrypted = secret_store.encrypt("db-opta")
+        settings.updated_by_user_id = admin["id"]
+        db.session.commit()
+
+        current = RuntimeSettingsService.current(db)
+        assert current.llm_model_name == "db-model"
+        assert current.opta_base_url == "https://db-opta.example/soccerdata"
+        assert current.mc_simulations == 22222
+        assert current.llm_api_key == "db-llm"
+        assert current.zep_api_key == "db-zep"
+        assert current.youtube_api_key == "db-youtube"
+        assert current.opta_api_key == "db-opta"
+
+
+def test_admin_can_store_redacted_api_keys(client, app, admin, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
+    response = client.put(
+        "/api/admin/settings",
+        headers=_auth_header(admin["clerk_user_id"]),
+        json=_settings_payload(
+            llm_api_key="llm-secret",
+            zep_api_key="zep-secret",
+            youtube_api_key="youtube-secret",
+            opta_api_key="opta-secret",
+        ),
+    )
+    assert response.status_code == 200
+    body = response.get_json()
+    assert body["llm_api_key_configured"] is True
+    assert body["zep_api_key_configured"] is True
+    assert body["youtube_api_key_configured"] is True
+    assert body["opta_api_key_configured"] is True
+    assert "llm_api_key" not in body
+    assert "llm_api_key_encrypted" not in body
+
+    with app.app_context():
+        settings = db.session.get(AppSettings, "global")
+        assert settings.llm_api_key_encrypted.startswith("gAAAA")
+        current = RuntimeSettingsService.current(db)
+        assert current.llm_api_key == "llm-secret"
+        assert current.zep_api_key == "zep-secret"
+        assert current.youtube_api_key == "youtube-secret"
+        assert current.opta_api_key == "opta-secret"
+
+
+def test_blank_secret_input_leaves_existing_ciphertext(client, app, admin, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
+    with app.app_context():
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.llm_api_key_encrypted = SecretStore().encrypt("existing-secret")
+        db.session.commit()
+        original_ciphertext = settings.llm_api_key_encrypted
+
+    response = client.put(
+        "/api/admin/settings",
+        headers=_auth_header(admin["clerk_user_id"]),
+        json=_settings_payload(llm_api_key=""),
+    )
+    assert response.status_code == 200
+
+    with app.app_context():
+        settings = db.session.get(AppSettings, "global")
+        assert settings.llm_api_key_encrypted == original_ciphertext
+        assert RuntimeSettingsService.current(db).llm_api_key == "existing-secret"
+
+
+def test_clear_secret_removes_ciphertext(client, app, admin, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
+    with app.app_context():
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.zep_api_key_encrypted = SecretStore().encrypt("existing-zep")
+        db.session.commit()
+
+    response = client.put(
+        "/api/admin/settings",
+        headers=_auth_header(admin["clerk_user_id"]),
+        json=_settings_payload(clear_zep_api_key=True),
+    )
+    assert response.status_code == 200
+    assert response.get_json()["zep_api_key_configured"] is False
+
+    with app.app_context():
+        settings = db.session.get(AppSettings, "global")
+        assert settings.zep_api_key_encrypted is None
+        assert RuntimeSettingsService.current(db).zep_api_key == ""
+
+
+def test_conflicting_secret_update_returns_400(client, admin, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
+    response = client.put(
+        "/api/admin/settings",
+        headers=_auth_header(admin["clerk_user_id"]),
+        json=_settings_payload(llm_api_key="new-secret", clear_llm_api_key=True),
+    )
+    assert response.status_code == 400
+
+
+def test_graph_status_uses_db_backed_zep_key(client, app, admin, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
+    with app.app_context():
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.zep_api_key_encrypted = None
+        db.session.commit()
+
+    response = client.get("/api/predictions/graph/status", headers=_auth_header(admin["clerk_user_id"]))
+    assert response.status_code == 200
+    assert response.get_json()["zep_configured"] is False
+
+    with app.app_context():
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.zep_api_key_encrypted = SecretStore().encrypt("db-zep")
+        db.session.commit()
+
+    response = client.get("/api/predictions/graph/status", headers=_auth_header(admin["clerk_user_id"]))
+    assert response.status_code == 200
+    assert response.get_json()["zep_configured"] is True
+
+
+def test_market_orchestrator_uses_request_time_db_llm_key(app, monkeypatch):
+    captured = {}
+
+    class FakeLLMClient:
+        def __init__(self, settings):
+            captured["llm_api_key"] = settings.llm_api_key
+
+    class FakeOrchestrator:
+        def __init__(self, settings, llm_client=None):
+            captured["settings"] = settings
+            captured["llm_client"] = llm_client
+
+    monkeypatch.setattr("app.api.markets.LLMClient", FakeLLMClient, raising=False)
+    monkeypatch.setattr("app.api.markets.SwarmOrchestrator", FakeOrchestrator)
+
+    with app.app_context():
+        from app.api.markets import _get_orc
+
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.llm_api_key_encrypted = SecretStore().encrypt("db-llm")
+        db.session.commit()
+
+        _get_orc()
+        assert captured["llm_api_key"] == "db-llm"
+        assert captured["settings"].llm_api_key == "db-llm"
+
+
+def test_market_tournament_uses_request_time_mc_simulations(client, app, monkeypatch):
+    captured = {}
+
+    class FakeResult:
+        champion = "France"
+        runner_up = "Brazil"
+        third_place = "Argentina"
+        champion_probability = 0.6
+
+    class FakeTournamentSimulator:
+        def __init__(self, orchestrator=None, use_swarm=False, mc_simulations=10000):
+            captured["mc_simulations"] = mc_simulations
+
+        def simulate(self):
+            return FakeResult()
+
+    monkeypatch.setattr("app.api.markets.TournamentSimulator", FakeTournamentSimulator)
+    monkeypatch.setattr("app.api.markets._gen.from_tournament", lambda _result: [])
+    with app.app_context():
+        settings = RuntimeSettingsService.ensure_defaults(db)
+        settings.mc_simulations = 33333
+        db.session.commit()
+
+    response = client.post("/api/markets/tournament", json={})
+    assert response.status_code == 200
+    assert captured["mc_simulations"] == 33333
 
 
 def test_lazy_upsert_creates_local_user(client, monkeypatch):

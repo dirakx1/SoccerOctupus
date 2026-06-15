@@ -6,24 +6,27 @@ from __future__ import annotations
 
 from flask import Blueprint, jsonify, request
 
+from ..db.base import db
 from ..models.match import MatchStage
+from ..runtime_settings import RuntimeSettingsService
 from ..services.market_question_generator import MarketQuestionGenerator
 from ..services.swarm_orchestrator import SwarmOrchestrator
 from ..services.tournament_simulator import TournamentSimulator
+from ..utils.llm_client import LLMClient
 from ..utils.logger import get_logger
 
 logger = get_logger("fifaoctopus.api.markets")
 bp = Blueprint("markets", __name__, url_prefix="/api/markets")
 
 _gen = MarketQuestionGenerator()
-_orc: SwarmOrchestrator | None = None
 
 
 def _get_orc() -> SwarmOrchestrator:
-    global _orc
-    if _orc is None:
-        _orc = SwarmOrchestrator()
-    return _orc
+    settings = RuntimeSettingsService.current(db)
+    llm = None
+    if settings.llm_api_key:
+        llm = LLMClient(settings=settings)
+    return SwarmOrchestrator(settings=settings, llm_client=llm)
 
 
 # ── Match market questions ─────────────────────────────────────────────────
@@ -90,7 +93,12 @@ def tournament_markets():
     platform = data.get("platform", "both").lower()
 
     try:
-        sim = TournamentSimulator(orchestrator=None, use_swarm=False)
+        settings = RuntimeSettingsService.current(db)
+        sim = TournamentSimulator(
+            orchestrator=None,
+            use_swarm=False,
+            mc_simulations=settings.mc_simulations,
+        )
         result = sim.simulate()
         questions = _gen.from_tournament(result)
 

@@ -21,7 +21,6 @@ import time
 import uuid
 from typing import Any, Dict, List, Optional
 
-from ..config import Config
 from ..utils.logger import get_logger
 from .data_collectors.sofascore_collector import TEAM_STATIC_DATA
 from .tournament_simulator import WC2026_GROUPS
@@ -135,10 +134,10 @@ class ZepFootballGraphBuilder:
     GRAPH_NAME = "FifaOctopus WC2026"
 
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or Config.ZEP_API_KEY
+        self.api_key = api_key or ""
         if not self.api_key:
             raise ValueError(
-                "ZEP_API_KEY is not set. Get a free key at https://app.getzep.com/"
+                "Zep API key is not set. Add it in admin settings."
             )
         Zep, _ = _require_zep()
         self.client = Zep(api_key=self.api_key)
