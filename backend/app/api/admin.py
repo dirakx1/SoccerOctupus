@@ -60,6 +60,8 @@ def update_settings():
         _apply_secret_updates(settings, payload)
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
+    except SecretStoreError as exc:
+        return jsonify({"error": str(exc)}), 500
     settings.updated_by_user_id = g.current_user.id
     db.session.commit()
     return jsonify(_serialize_settings(settings))

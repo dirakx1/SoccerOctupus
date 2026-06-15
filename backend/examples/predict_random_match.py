@@ -15,8 +15,7 @@ Usage:
     # Predict a specific match:
     python3 backend/examples/predict_random_match.py --home France --away Morocco
 
-    # With an LLM key for narrative synthesis (optional):
-    LLM_API_KEY=sk-... python3 backend/examples/predict_random_match.py
+    # Configure optional LLM/Zep/YouTube/Opta keys in /admin/settings.
 """
 
 import argparse
@@ -29,7 +28,10 @@ from typing import List, Tuple
 # ── Make sure the backend package is importable ─────────────────────────────
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+from app import create_app
+from app.db.base import db
 from app.models.match import AgentPrediction, MatchOutcome, MatchPrediction, MatchStage
+from app.runtime_settings import RuntimeSettings, RuntimeSettingsService
 from app.services.agents.aggregator_agent import AggregatorAgent
 from app.services.agents.form_agent import FormAgent
 from app.services.agents.statistical_agent import StatisticalAgent
@@ -43,6 +45,12 @@ from app.services.tournament_simulator import WC2026_GROUPS
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 BAR = "═" * 62
+
+
+def _load_runtime_settings() -> RuntimeSettings:
+    app = create_app()
+    with app.app_context():
+        return RuntimeSettingsService.current(db)
 
 
 def _resolve_team(name: str) -> str:
@@ -298,17 +306,17 @@ def main() -> None:
         print(f"\n  🎲  Randomly selected: Group {group} — {home} vs {away}")
 
     # ── Build swarm ───────────────────────────────────────────────────────────
+    settings = _load_runtime_settings()
     llm_client = None
-    llm_key = os.getenv("LLM_API_KEY", "")
-    if llm_key:
+    if settings.llm_api_key:
         try:
             from app.utils.llm_client import LLMClient
-            llm_client = LLMClient(api_key=llm_key)
+            llm_client = LLMClient(settings=settings)
             print("  🤖  LLM client active — narrative synthesis enabled.")
         except Exception as e:
             print(f"  ⚠️   LLM init failed ({e}). Running without narrative synthesis.")
 
-    orc = SwarmOrchestrator(llm_client=llm_client)
+    orc = SwarmOrchestrator(settings=settings, llm_client=llm_client)
 
     print(f"\n  Running swarm for {home} vs {away}…\n")
 

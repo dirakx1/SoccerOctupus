@@ -12,7 +12,7 @@ Usage:
     # Specific match
     python3 backend/examples/predict_full.py --home Argentina --away France --stage final
 
-    # Skip the environment check (if you've already verified it)
+    # Skip the runtime settings check (if you've already verified it)
     python3 backend/examples/predict_full.py --home Brazil --away Spain --no-check
 
     # Save JSON output to file
@@ -39,6 +39,9 @@ if os.path.exists(_env):
 sys.path.insert(0, os.path.join(_root, "backend"))
 
 from app.models.match import MatchOutcome, MatchStage
+from app import create_app
+from app.db.base import db
+from app.runtime_settings import RuntimeSettings, RuntimeSettingsService
 from app.services.swarm_orchestrator import SwarmOrchestrator
 from app.services.zep_football_tools import ZepFootballTools
 from app.services.tournament_simulator import WC2026_GROUPS
@@ -63,33 +66,33 @@ AGENT_META = {
 # Step 0 — Environment check
 # ─────────────────────────────────────────────────────────────────────────────
 
-def check_environment() -> dict:
+def load_runtime_settings() -> RuntimeSettings:
+    app = create_app()
+    with app.app_context():
+        return RuntimeSettingsService.current(db)
+
+
+def check_environment(settings: RuntimeSettings) -> dict:
     checks = {}
 
     # Zep
-    zep_key = os.environ.get("ZEP_API_KEY", "")
-    zep_gid = os.environ.get("ZEP_GRAPH_ID", "")
-    checks["zep_key"]   = bool(zep_key and zep_key != "your_zep_api_key")
-    checks["zep_graph"] = bool(zep_gid)
+    checks["zep_key"]   = bool(settings.zep_api_key)
+    checks["zep_graph"] = bool(settings.zep_graph_id)
 
     # LLM
-    llm_key  = os.environ.get("LLM_API_KEY", "")
-    llm_url  = os.environ.get("LLM_BASE_URL", "")
-    llm_mdl  = os.environ.get("LLM_MODEL_NAME", "")
-    checks["llm_key"]   = bool(llm_key and llm_key not in ("your_openai_or_compatible_key", ""))
-    checks["llm_url_ok"] = llm_url.endswith("/v1")
-    checks["llm_model"] = bool(llm_mdl)
+    checks["llm_key"]   = bool(settings.llm_api_key)
+    checks["llm_url_ok"] = settings.llm_base_url.endswith("/v1")
+    checks["llm_model"] = bool(settings.llm_model_name)
 
     # YouTube (optional)
-    yt_key = os.environ.get("YOUTUBE_API_KEY", "")
-    checks["youtube"] = bool(yt_key and yt_key != "your_youtube_api_key")
+    checks["youtube"] = bool(settings.youtube_api_key)
 
     return checks
 
 
-def print_env_check(checks: dict):
+def print_env_check(checks: dict, settings: RuntimeSettings):
     print(SEP)
-    print("  STEP 0 — Environment check")
+    print("  STEP 0 — Runtime settings check")
     print(SEP)
 
     def row(label, ok, note=""):
@@ -97,15 +100,15 @@ def print_env_check(checks: dict):
         suffix = f"  ({note})" if note else ""
         print(f"  {icon}  {label}{suffix}")
 
-    row("ZEP_API_KEY",   checks["zep_key"],   "" if checks["zep_key"] else "set in .env")
-    row("ZEP_GRAPH_ID",  checks["zep_graph"], "" if checks["zep_graph"] else "run: python3 backend/setup_zep.py")
-    row("LLM_API_KEY",   checks["llm_key"],   "" if checks["llm_key"] else "optional — narrative synthesis disabled")
-    row("LLM_BASE_URL ends /v1", checks["llm_url_ok"],
-        "" if checks["llm_url_ok"] else f"current: {os.environ.get('LLM_BASE_URL','')} — add /v1")
-    row("YOUTUBE_API_KEY", checks["youtube"], "optional — synthetic scores used if absent")
+    row("Zep API key",   checks["zep_key"],   "" if checks["zep_key"] else "set in /admin/settings")
+    row("Zep graph ID",  checks["zep_graph"], "" if checks["zep_graph"] else "run: python3 backend/setup_zep.py")
+    row("LLM API key",   checks["llm_key"],   "" if checks["llm_key"] else "optional — narrative synthesis disabled")
+    row("LLM base URL ends /v1", checks["llm_url_ok"],
+        "" if checks["llm_url_ok"] else f"current: {settings.llm_base_url} — add /v1")
+    row("YouTube API key", checks["youtube"], "optional — synthetic scores used if absent")
 
     zep_mode = "Zep knowledge graph (live)" if (checks["zep_key"] and checks["zep_graph"]) else "static data fallback"
-    llm_mode = f"{os.environ.get('LLM_MODEL_NAME','?')} via {os.environ.get('LLM_BASE_URL','?')}" if checks["llm_key"] else "disabled"
+    llm_mode = f"{settings.llm_model_name} via {settings.llm_base_url}" if checks["llm_key"] else "disabled"
     yt_mode  = "YouTube Data API v3 (live)" if checks["youtube"] else "synthetic ELO-based scores"
 
     print()
@@ -117,7 +120,7 @@ def print_env_check(checks: dict):
     critical_ok = checks["zep_key"] or True  # system works without Zep via fallback
     if not checks["llm_url_ok"] and checks["llm_key"]:
         print("  ⚠️  LLM_BASE_URL must end with /v1 for OpenAI-compatible calls.")
-        print("     Fix in .env: LLM_BASE_URL=https://api.anthropic.com/v1")
+        print("     Fix in /admin/settings, for example: https://api.anthropic.com/v1")
         print()
     return critical_ok
 
@@ -147,7 +150,7 @@ def select_fixture(home_arg, away_arg):
 # Step 2 — Build swarm
 # ─────────────────────────────────────────────────────────────────────────────
 
-def build_swarm(checks: dict):
+def build_swarm(checks: dict, settings: RuntimeSettings):
     print(SEP)
     print("  STEP 2 — Initialising 6-agent swarm")
     print(SEP)
@@ -156,16 +159,16 @@ def build_swarm(checks: dict):
     if checks.get("llm_key") and checks.get("llm_url_ok"):
         try:
             from app.utils.llm_client import LLMClient
-            llm_client = LLMClient()
-            print(f"  ✓  LLM client: {os.environ.get('LLM_MODEL_NAME','?')}")
+            llm_client = LLMClient(settings=settings)
+            print(f"  ✓  LLM client: {settings.llm_model_name}")
         except Exception as e:
             print(f"  ⚠  LLM init failed ({e}) — narrative disabled")
 
-    zep_tools = ZepFootballTools()
+    zep_tools = ZepFootballTools(api_key=settings.zep_api_key, graph_id=settings.zep_graph_id)
     mode = "Zep graph" if zep_tools.has_graph else "static data"
     print(f"  ✓  Knowledge layer: {mode}")
 
-    orc = SwarmOrchestrator(llm_client=llm_client, zep_tools=zep_tools)
+    orc = SwarmOrchestrator(settings=settings, llm_client=llm_client, zep_tools=zep_tools)
 
     print()
     print("  Agents:")
@@ -422,15 +425,16 @@ def main():
                         choices=["group","round_of_32","round_of_16",
                                  "quarter_final","semi_final","final"])
     parser.add_argument("--no-check", action="store_true",
-                        help="Skip environment check")
+                        help="Skip runtime settings check")
     parser.add_argument("--out", default=None, metavar="FILE",
                         help="Save prediction JSON to this path")
     args = parser.parse_args()
 
     # Step 0
-    checks = check_environment()
+    settings = load_runtime_settings()
+    checks = check_environment(settings)
     if not args.no_check:
-        print_env_check(checks)
+        print_env_check(checks, settings)
 
     # Step 1
     print(SEP)
@@ -444,7 +448,7 @@ def main():
     print()
 
     # Step 2
-    orc = build_swarm(checks)
+    orc = build_swarm(checks, settings)
 
     # Step 3
     pred = run_swarm(orc, home, away, args.stage, group)

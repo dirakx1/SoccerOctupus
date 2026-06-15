@@ -2,16 +2,13 @@
 """
 setup_zep.py — One-shot Zep knowledge graph builder for FifaOctopus.
 
-Run this ONCE after setting ZEP_API_KEY in your .env file.
-It builds the WC2026 football knowledge graph and prints the graph_id
-to copy into your .env as ZEP_GRAPH_ID.
+Run this ONCE after saving a Zep API key in /admin/settings.
+It builds the WC2026 football knowledge graph and saves the graph_id
+back to admin settings.
 
 Usage:
     cd /Users/mac/FifaOctopus
     python3 backend/setup_zep.py
-
-    # Or pass key directly without .env:
-    ZEP_API_KEY=zep-... python3 backend/setup_zep.py
 """
 
 import os
@@ -31,13 +28,21 @@ if os.path.exists(_env):
 
 sys.path.insert(0, os.path.join(_root, "backend"))
 
+from app import create_app
+from app.db.base import db
+from app.runtime_settings import RuntimeSettingsService
+
+app = create_app()
+
 # ── validate key ─────────────────────────────────────────────────────────────
-api_key = os.environ.get("ZEP_API_KEY", "")
-if not api_key or api_key == "your_zep_api_key":
-    print("\n  ✗  ZEP_API_KEY is not set.")
+with app.app_context():
+    runtime_settings = RuntimeSettingsService.current(db)
+
+api_key = runtime_settings.zep_api_key
+if not api_key:
+    print("\n  ✗  Zep API key is not configured.")
     print("     Get a free key at https://app.getzep.com/")
-    print("     Then add it to /Users/mac/FifaOctopus/.env:\n")
-    print("       ZEP_API_KEY=zep-xxxxxxxxxxxxxxxx\n")
+    print("     Then save it in /admin/settings and rerun this script.\n")
     sys.exit(1)
 
 print()
@@ -66,6 +71,11 @@ except Exception as exc:
     print(f"\n  ✗  Graph build failed: {exc}")
     sys.exit(1)
 
+with app.app_context():
+    settings = RuntimeSettingsService.ensure_defaults(db)
+    settings.zep_graph_id = graph_id
+    db.session.commit()
+
 elapsed = time.time() - start
 print()
 print("─" * 60)
@@ -73,16 +83,13 @@ print(f"  ✓  Graph built in {elapsed:.0f}s")
 print()
 print(f"  graph_id: {graph_id}")
 print()
-print("  Next step — add this to your .env file:")
-print()
-print(f"    ZEP_GRAPH_ID={graph_id}")
-print()
+print("  Saved this graph ID to /admin/settings.")
 print("  Then start the server:")
 print()
 print("    npm run dev")
 print()
 print("  Or predict a match right now:")
 print()
-print(f"    ZEP_GRAPH_ID={graph_id} python3 backend/examples/predict_random_match.py --seed 17")
+print("    python3 backend/examples/predict_random_match.py --seed 17")
 print()
 print("═" * 60)

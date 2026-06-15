@@ -8,7 +8,7 @@ from app.auth import ClerkIdentity, sync_user
 from app.db.base import db
 from app.db.models import AppSettings, User
 from app.runtime_settings import RuntimeSettingsService
-from app.secret_store import SecretStore
+from app.secret_store import SecretStore, SecretStoreError
 
 
 def _auth_header(clerk_user_id: str) -> dict[str, str]:
@@ -246,6 +246,22 @@ def test_conflicting_secret_update_returns_400(client, admin, monkeypatch):
         json=_settings_payload(llm_api_key="new-secret", clear_llm_api_key=True),
     )
     assert response.status_code == 400
+
+
+def test_secret_store_error_returns_json(client, admin, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "admin@example.com"})
+
+    def fail_encrypt(self, value):
+        raise SecretStoreError("root key problem")
+
+    monkeypatch.setattr("app.secret_store.SecretStore.encrypt", fail_encrypt)
+    response = client.put(
+        "/api/admin/settings",
+        headers=_auth_header(admin["clerk_user_id"]),
+        json=_settings_payload(llm_api_key="new-secret"),
+    )
+    assert response.status_code == 500
+    assert response.get_json() == {"error": "root key problem"}
 
 
 def test_graph_status_uses_db_backed_zep_key(client, app, admin, monkeypatch):

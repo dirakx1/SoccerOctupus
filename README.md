@@ -261,7 +261,7 @@ Edges:  beat · plays_in_group · ranked_above
 ```bash
 python3 backend/setup_zep.py
 # → prints: graph_id: fifaoctopus_xxxxxxxxxxxx
-# Add the graph ID in /admin/settings
+# Saves the graph ID in /admin/settings
 ```
 
 ---
@@ -358,14 +358,14 @@ npm run setup:all      # Python + Node packages in one command
 
 ### 3. Configure runtime providers
 
-Sign in as an admin, open `/admin/settings`, then add provider keys and runtime tuning. The Zep graph build endpoint returns a graph ID; paste that ID back into the admin settings page so future runs reuse the graph.
+Sign in as an admin, open `/admin/settings`, then add provider keys and runtime tuning. Save a Zep API key before building the knowledge graph.
 
 ### 4. Build the Zep knowledge graph (once)
 
 ```bash
 python3 backend/setup_zep.py
 # Ingests 144 football knowledge episodes. Takes ~2 min.
-# Copy the printed graph ID into /admin/settings.
+# Saves the generated graph ID into /admin/settings.
 ```
 
 ### 5. Start services
