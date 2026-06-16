@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from functools import wraps
+from functools import lru_cache, wraps
 from typing import Any, Callable
 
 import jwt
-import requests
 from flask import current_app, g, jsonify, request
 from sqlalchemy.exc import IntegrityError
 from svix.webhooks import Webhook
@@ -150,20 +150,54 @@ def deactivate_user(clerk_user_id: str, db_session) -> None:
     db_session.session.commit()
 
 
-def _fetch_jwks() -> dict[str, Any]:
-    response = requests.get(Config.CLERK_JWKS_URL, timeout=10)
-    response.raise_for_status()
-    return response.json()
+@lru_cache(maxsize=4)
+def _jwks_client(jwks_url: str) -> jwt.PyJWKClient:
+    return jwt.PyJWKClient(jwks_url)
 
 
-def verify_session_token(token: str) -> dict[str, Any]:
-    signing_key = jwt.PyJWKClient(Config.CLERK_JWKS_URL).get_signing_key_from_jwt(token)
+def _decode_token(token: str, key: Any) -> dict[str, Any]:
     return jwt.decode(
         token,
-        signing_key.key,
+        key,
         algorithms=["RS256"],
         options={"verify_aud": False},
     )
+
+
+def _local_jwks_key(token: str, jwks_json: str) -> Any:
+    jwks = json.loads(jwks_json)
+    keys = jwks.get("keys") if isinstance(jwks, dict) else None
+    if keys is None:
+        keys = [jwks]
+    if not keys:
+        raise ValueError("CLERK_JWKS_JSON has no keys")
+
+    header = jwt.get_unverified_header(token)
+    key_id = header.get("kid")
+    selected_key = next((key for key in keys if key.get("kid") == key_id), None)
+    if selected_key is None and len(keys) == 1:
+        selected_key = keys[0]
+    if selected_key is None:
+        raise ValueError("No matching Clerk JWKS key")
+
+    return jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(selected_key))
+
+
+def _local_public_key() -> str:
+    return Config.CLERK_JWT_PUBLIC_KEY.strip().replace("\\n", "\n")
+
+
+def verify_session_token(token: str) -> dict[str, Any]:
+    local_public_key = _local_public_key()
+    if local_public_key:
+        return _decode_token(token, local_public_key)
+
+    local_jwks_json = Config.CLERK_JWKS_JSON.strip()
+    if local_jwks_json:
+        return _decode_token(token, _local_jwks_key(token, local_jwks_json))
+
+    signing_key = _jwks_client(Config.CLERK_JWKS_URL).get_signing_key_from_jwt(token)
+    return _decode_token(token, signing_key.key)
 
 
 def load_current_user(db_session) -> User:

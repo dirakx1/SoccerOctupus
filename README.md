@@ -342,6 +342,8 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/socceroctupus
 CLERK_SECRET_KEY=
 CLERK_PUBLISHABLE_KEY=
 CLERK_JWKS_URL=
+CLERK_JWKS_JSON=
+CLERK_JWT_PUBLIC_KEY=
 CLERK_WEBHOOK_SECRET=
 FRONTEND_ORIGIN=http://localhost:3001
 PORT=5002
@@ -715,7 +717,9 @@ Only bootstrap settings are read from `.env` (see `.env.example`):
 | `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/socceroctupus` | For auth/settings persistence | Supabase/Postgres in production; tests still use in-memory SQLite. |
 | `VITE_CLERK_PUBLISHABLE_KEY` | — | For frontend auth | Public Clerk key exposed to the Vite build. |
 | `CLERK_SECRET_KEY` | — | For backend auth | Backend-only Clerk secret. |
-| `CLERK_JWKS_URL` | `https://api.clerk.com/v1/jwks` | For backend auth | Used to verify Clerk bearer tokens. |
+| `CLERK_JWKS_URL` | `https://api.clerk.com/v1/jwks` | For backend auth | Fallback URL used to verify Clerk bearer tokens. |
+| `CLERK_JWKS_JSON` | — | Optional backend auth | Inline JWKS JSON used before `CLERK_JWKS_URL` to avoid runtime key fetches. |
+| `CLERK_JWT_PUBLIC_KEY` | — | Optional backend auth | PEM public key used before `CLERK_JWKS_JSON`; supports escaped `\n` line breaks. |
 | `CLERK_WEBHOOK_SECRET` | — | For Clerk user sync | Svix webhook signing secret. |
 | `FRONTEND_ORIGIN` | `http://localhost:3001` | For local CORS | Set to your deployed frontend origin in production. |
 | `PORT` | `5002` | — | Backend port |
@@ -739,7 +743,7 @@ venv/bin/python -m alembic upgrade head
 
 Then configure Clerk:
 
-- set `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_JWKS_URL`, and `CLERK_WEBHOOK_SECRET` for the backend
+- set `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET`, and either `CLERK_JWT_PUBLIC_KEY`, `CLERK_JWKS_JSON`, or `CLERK_JWKS_URL` for the backend
 - enable password reset with email verification code for the custom forgot-password page
 - enable Google as a social connection if using the `Continue with Google` auth option
 - point a Clerk webhook at `POST /api/webhooks/clerk`

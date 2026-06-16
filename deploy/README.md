@@ -143,6 +143,8 @@ DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/socceroctupus
 CLERK_SECRET_KEY=
 VITE_CLERK_PUBLISHABLE_KEY=
 CLERK_JWKS_URL=https://api.clerk.com/v1/jwks
+CLERK_JWKS_JSON=
+CLERK_JWT_PUBLIC_KEY=
 CLERK_WEBHOOK_SECRET=
 FRONTEND_ORIGIN=https://socceroctupus.co
 
@@ -155,6 +157,7 @@ Notes:
 - `PORT=5002` should stay as is
 - `DATABASE_URL` should point at Postgres in production
 - Clerk secrets, the public Clerk publishable key, and the database connection stay in env as bootstrap settings
+- `CLERK_JWT_PUBLIC_KEY` or `CLERK_JWKS_JSON` can be used instead of `CLERK_JWKS_URL` to verify tokens without a runtime JWKS fetch
 - LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are configured in `/admin/settings` after first-admin bootstrap
 - Provider API keys are encrypted in the database and redacted from admin API responses
 - The encryption root key lives outside the database at `backend/instance/settings-fernet.key`; persist and back up that file securely before storing API keys

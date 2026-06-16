@@ -41,13 +41,17 @@ Backend:
 VITE_CLERK_PUBLISHABLE_KEY=pk_...
 CLERK_SECRET_KEY=sk_...
 CLERK_JWKS_URL=https://<your-clerk-domain>/.well-known/jwks.json
+CLERK_JWKS_JSON=
+CLERK_JWT_PUBLIC_KEY=
 CLERK_WEBHOOK_SECRET=whsec_...
 DATABASE_URL=postgresql://...
 FRONTEND_ORIGIN=http://localhost:3001
 ```
 
-The backend verifies bearer tokens against `CLERK_JWKS_URL`. The frontend uses
-the public `VITE_CLERK_PUBLISHABLE_KEY` at build/bootstrap time.
+The backend verifies bearer tokens with `CLERK_JWT_PUBLIC_KEY` first,
+`CLERK_JWKS_JSON` second, and `CLERK_JWKS_URL` as the fallback. Use only one
+local key option unless you are rotating keys. The frontend uses the public
+`VITE_CLERK_PUBLISHABLE_KEY` at build/bootstrap time.
 
 ## Sign-Up Workflow
 

@@ -35,6 +35,8 @@ class Config:
         "CLERK_JWKS_URL",
         "https://api.clerk.com/v1/jwks",
     )
+    CLERK_JWKS_JSON: str = os.getenv("CLERK_JWKS_JSON", "")
+    CLERK_JWT_PUBLIC_KEY: str = os.getenv("CLERK_JWT_PUBLIC_KEY", "")
     CLERK_WEBHOOK_SECRET: str = os.getenv("CLERK_WEBHOOK_SECRET", "")
     FRONTEND_ORIGIN: str = os.getenv("FRONTEND_ORIGIN", "http://localhost:3001")
 

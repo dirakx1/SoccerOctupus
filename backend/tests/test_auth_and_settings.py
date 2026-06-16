@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import base64
+import json
 from datetime import datetime, timezone
 
+import jwt
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
 from sqlalchemy.exc import IntegrityError
 
-from app.auth import ClerkIdentity, sync_user
+from app.auth import ClerkIdentity, sync_user, verify_session_token
 from app.db.base import db
 from app.db.models import AppSettings, User
 from app.runtime_settings import RuntimeSettingsService
@@ -27,6 +32,73 @@ def _settings_payload(**overrides) -> dict:
     }
     payload.update(overrides)
     return payload
+
+
+def _jwt_key_pair() -> tuple[bytes, bytes]:
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    return (
+        private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        ),
+        private_key.public_key().public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo,
+        ),
+    )
+
+
+def _base64url_uint(value: int) -> str:
+    value_bytes = value.to_bytes((value.bit_length() + 7) // 8, "big")
+    return base64.urlsafe_b64encode(value_bytes).rstrip(b"=").decode("ascii")
+
+
+def _public_jwk(private_pem: bytes, key_id: str) -> dict:
+    private_key = serialization.load_pem_private_key(private_pem, password=None)
+    numbers = private_key.public_key().public_numbers()
+    return {
+        "kty": "RSA",
+        "kid": key_id,
+        "use": "sig",
+        "alg": "RS256",
+        "n": _base64url_uint(numbers.n),
+        "e": _base64url_uint(numbers.e),
+    }
+
+
+def test_verify_session_token_uses_static_public_key(monkeypatch):
+    private_pem, public_pem = _jwt_key_pair()
+    token = jwt.encode({"sub": "user_local", "email": "local@example.com"}, private_pem, algorithm="RS256")
+
+    monkeypatch.setattr("app.auth.Config.CLERK_JWT_PUBLIC_KEY", public_pem.decode("utf-8").replace("\n", "\\n"))
+    monkeypatch.setattr("app.auth.Config.CLERK_JWKS_JSON", "")
+    monkeypatch.setattr("app.auth.Config.CLERK_JWKS_URL", "https://invalid.local/jwks")
+
+    claims = verify_session_token(token)
+
+    assert claims["sub"] == "user_local"
+    assert claims["email"] == "local@example.com"
+
+
+def test_verify_session_token_uses_static_jwks_json(monkeypatch):
+    key_id = "local-key"
+    private_pem, _public_pem = _jwt_key_pair()
+    token = jwt.encode(
+        {"sub": "user_jwks", "email": "jwks@example.com"},
+        private_pem,
+        algorithm="RS256",
+        headers={"kid": key_id},
+    )
+
+    monkeypatch.setattr("app.auth.Config.CLERK_JWT_PUBLIC_KEY", "")
+    monkeypatch.setattr("app.auth.Config.CLERK_JWKS_JSON", json.dumps({"keys": [_public_jwk(private_pem, key_id)]}))
+    monkeypatch.setattr("app.auth.Config.CLERK_JWKS_URL", "https://invalid.local/jwks")
+
+    claims = verify_session_token(token)
+
+    assert claims["sub"] == "user_jwks"
+    assert claims["email"] == "jwks@example.com"
 
 
 def test_protected_route_requires_auth(client):
