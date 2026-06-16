@@ -11,6 +11,7 @@ and sign-up components.
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
 | Sign in UI | `frontend/src/views/SignInView.vue` | Custom email/password sign-in, MFA, and Client Trust verification flow. |
 | Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation, CAPTCHA mount, and email-code verification flow. |
+| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow. |
 | OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles Google OAuth redirects from Clerk and returns users to the app. |
 | Session hydration | `frontend/src/lib/clerkSession.js` | Activates the Clerk session, fetches a token, calls `/api/me`, and updates local auth state. |
 | API token injection | `frontend/src/App.vue` | Installs the Axios bearer-token interceptor from inside Vue setup. |
@@ -26,6 +27,7 @@ Configure these in the Clerk Dashboard:
 - Email sign-in enabled.
 - Password authentication enabled.
 - Email verification code enabled for sign-up.
+- Password reset enabled with email verification code.
 - Google enabled as an SSO/social connection for sign-up and sign-in.
 - Client Trust can be enabled; the custom sign-in flow supports `needs_client_trust`.
 - MFA can be enabled; the custom sign-in flow supports `email_code`, `phone_code`, `totp`, and `backup_code` as second factors.
@@ -106,6 +108,24 @@ the public `VITE_CLERK_PUBLISHABLE_KEY` at build/bootstrap time.
 10. When Clerk returns a created session, the frontend activates the session and
     redirects to `/`.
 
+## Password Reset Workflow
+
+1. User opens `/forgot-password` from the sign-in page.
+2. `ForgotPasswordView.vue` asks for the account email address.
+3. The frontend calls `signIn.create()` with:
+   - `strategy: 'reset_password_email_code'`
+   - `identifier: form.email`
+4. Clerk sends an email verification code.
+5. User enters the code and a new password.
+6. The frontend calls `attemptFirstFactor()` with:
+   - `strategy: 'reset_password_email_code'`
+   - `code`
+   - `password`
+7. If Clerk returns `complete`, the frontend activates the new session through
+   `activateSessionAndHydrateAuth()` and redirects to `/`.
+8. If Clerk requires a second factor after reset, the frontend sends the user
+   back to `/sign-in` so the existing sign-in MFA flow can complete access.
+
 ## Client Trust Workflow
 
 Client Trust can return `needs_client_trust` when a valid password is used from
@@ -131,6 +151,7 @@ The custom sign-in flow supports:
 - `backup_code` as second factor.
 - `password` as first factor.
 - `needs_client_trust` through email or phone code.
+- Password reset through `reset_password_email_code`.
 
 The custom sign-up flow supports:
 

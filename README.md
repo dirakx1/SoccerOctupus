@@ -740,6 +740,7 @@ venv/bin/python -m alembic upgrade head
 Then configure Clerk:
 
 - set `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_JWKS_URL`, and `CLERK_WEBHOOK_SECRET` for the backend
+- enable password reset with email verification code for the custom forgot-password page
 - enable Google as a social connection if using the `Continue with Google` auth option
 - point a Clerk webhook at `POST /api/webhooks/clerk`
 

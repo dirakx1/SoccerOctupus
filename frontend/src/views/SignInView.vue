@@ -40,6 +40,8 @@
           />
         </label>
 
+        <router-link class="forgot-link" to="/forgot-password">Forgot password?</router-link>
+
         <p v-if="error" class="error-box">{{ error }}</p>
 
         <button class="btn-primary" :disabled="loading || !isLoaded">
@@ -502,6 +504,18 @@ h1 {
 .field span {
   color: #8888aa;
   font-size: 13px;
+}
+
+.forgot-link {
+  align-self: flex-end;
+  color: #e2b714;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
 }
 
 input {
