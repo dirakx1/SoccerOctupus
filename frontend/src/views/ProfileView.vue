@@ -275,12 +275,15 @@ h2 {
   background: #16213e;
   border: 1px solid #0f3460;
   border-radius: 12px;
+  display: flex;
+  flex-direction: column;
   padding: 28px;
 }
 
 .profile-form {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 16px;
   margin-top: 22px;
 }
@@ -332,6 +335,10 @@ input:focus {
   font-weight: 700;
   padding: 13px 24px;
   transition: opacity 0.2s;
+}
+
+.profile-form .btn-primary {
+  margin-top: auto;
 }
 
 .btn-primary:disabled {
