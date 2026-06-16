@@ -101,6 +101,42 @@ def test_verify_session_token_uses_static_jwks_json(monkeypatch):
     assert claims["email"] == "jwks@example.com"
 
 
+def test_config_reads_multiline_public_key_from_env_file(tmp_path, monkeypatch):
+    env_path = tmp_path / ".env"
+    _, public_pem = _jwt_key_pair()
+    env_path.write_text(f"CLERK_JWT_PUBLIC_KEY={public_pem.decode('utf-8')}")
+
+    monkeypatch.setenv("CLERK_JWT_PUBLIC_KEY", "")
+
+    from app.config import _load_clerk_jwt_public_key
+
+    monkeypatch.setattr("app.config.BASE_DIR", tmp_path / "backend")
+    monkeypatch.setattr("app.config._read_raw_env_value", lambda name, *paths: public_pem.decode("utf-8").strip())
+
+    assert "BEGIN PUBLIC KEY" in _load_clerk_jwt_public_key()
+
+
+def test_config_normalizes_escaped_newlines(monkeypatch):
+    monkeypatch.setenv("CLERK_JWT_PUBLIC_KEY", "-----BEGIN PUBLIC KEY-----\\nabc\\n-----END PUBLIC KEY-----")
+
+    from app.config import _load_clerk_jwt_public_key
+
+    assert _load_clerk_jwt_public_key().count("\n") == 2
+
+
+def test_config_strips_wrapping_quotes_from_public_key(monkeypatch):
+    monkeypatch.setenv(
+        "CLERK_JWT_PUBLIC_KEY",
+        '"-----BEGIN PUBLIC KEY-----\\nabc\\n-----END PUBLIC KEY-----"',
+    )
+
+    from app.config import _load_clerk_jwt_public_key
+
+    public_key = _load_clerk_jwt_public_key()
+    assert public_key.startswith("-----BEGIN PUBLIC KEY-----")
+    assert public_key.endswith("-----END PUBLIC KEY-----")
+
+
 def test_protected_route_requires_auth(client):
     response = client.get("/api/me")
     assert response.status_code == 401

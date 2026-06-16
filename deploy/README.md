@@ -157,7 +157,7 @@ Notes:
 - `PORT=5002` should stay as is
 - `DATABASE_URL` should point at Postgres in production
 - Clerk secrets, the public Clerk publishable key, and the database connection stay in env as bootstrap settings
-- `CLERK_JWT_PUBLIC_KEY` or `CLERK_JWKS_JSON` can be used instead of `CLERK_JWKS_URL` to verify tokens without a runtime JWKS fetch
+- `CLERK_JWT_PUBLIC_KEY` or `CLERK_JWKS_JSON` can be used instead of `CLERK_JWKS_URL` to verify tokens without a runtime JWKS fetch; prefer `CLERK_JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"` in production env managers
 - LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are configured in `/admin/settings` after first-admin bootstrap
 - Provider API keys are encrypted in the database and redacted from admin API responses
 - The encryption root key lives outside the database at `backend/instance/settings-fernet.key`; persist and back up that file securely before storing API keys

@@ -53,6 +53,21 @@ The backend verifies bearer tokens with `CLERK_JWT_PUBLIC_KEY` first,
 local key option unless you are rotating keys. The frontend uses the public
 `VITE_CLERK_PUBLISHABLE_KEY` at build/bootstrap time.
 
+For `CLERK_JWT_PUBLIC_KEY`, the most portable `.env` format is a single line
+with escaped line breaks:
+
+```env
+CLERK_JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"
+```
+
+Raw multiline PEM blocks are also supported in local `.env` files:
+
+```env
+CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
+...
+-----END PUBLIC KEY-----
+```
+
 ## Sign-Up Workflow
 
 1. User opens `/sign-up`.

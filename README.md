@@ -724,6 +724,14 @@ Only bootstrap settings are read from `.env` (see `.env.example`):
 | `FRONTEND_ORIGIN` | `http://localhost:3001` | For local CORS | Set to your deployed frontend origin in production. |
 | `PORT` | `5002` | — | Backend port |
 
+Prefer a single-line escaped PEM for `CLERK_JWT_PUBLIC_KEY`, especially in production environment managers:
+
+```env
+CLERK_JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"
+```
+
+Local `.env` files also support raw multiline PEM blocks.
+
 LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are admin-managed at `/admin/settings` after first-admin bootstrap. API keys are encrypted in the database and only redacted `configured` booleans are returned by the admin API.
 
 The encryption root key is stored outside the database at `backend/instance/settings-fernet.key` for local and single-host deployments. Production deployments must persist and back up that file securely, or provide an equivalent persistent secret-file/KMS-backed mount before storing API keys. Losing the root key means existing encrypted API keys cannot be decrypted and must be re-entered.
