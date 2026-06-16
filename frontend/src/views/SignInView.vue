@@ -6,6 +6,18 @@
       <p class="subtitle">Access the prediction workspace and admin settings.</p>
 
       <form v-if="step === 'credentials'" class="auth-form" @submit.prevent="submit">
+        <button
+          class="btn-google"
+          type="button"
+          :disabled="loading || googleLoading || !isLoaded"
+          @click="signInWithGoogle"
+        >
+          <span class="google-mark" aria-hidden="true">G</span>
+          {{ googleLoading ? 'Opening Google...' : 'Continue with Google' }}
+        </button>
+
+        <div class="auth-divider"><span>or use email</span></div>
+
         <label class="field">
           <span>Email address</span>
           <input
@@ -91,6 +103,7 @@ const clerk = useClerk()
 const { isLoaded, signIn, setActive } = useSignIn()
 
 const loading = ref(false)
+const googleLoading = ref(false)
 const error = ref('')
 const step = ref('credentials')
 const verificationReason = ref('')
@@ -308,6 +321,24 @@ async function submit() {
   }
 }
 
+async function signInWithGoogle() {
+  if (!isLoaded.value || !signIn.value) return
+
+  googleLoading.value = true
+  error.value = ''
+
+  try {
+    await signIn.value.authenticateWithRedirect({
+      strategy: 'oauth_google',
+      redirectUrl: '/sso-callback',
+      redirectUrlComplete: '/',
+    })
+  } catch (err) {
+    googleLoading.value = false
+    error.value = authError(err)
+  }
+}
+
 async function verifyCode() {
   if (!isLoaded.value || !signIn.value || !setActive.value) return
 
@@ -406,6 +437,60 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.btn-google {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  color: #1f2937;
+  cursor: pointer;
+  display: flex;
+  font-size: 15px;
+  font-weight: 700;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px 20px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-google:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-google:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.google-mark {
+  align-items: center;
+  color: #4285f4;
+  display: inline-flex;
+  font-size: 17px;
+  font-weight: 800;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.auth-divider {
+  align-items: center;
+  color: #8888aa;
+  display: flex;
+  font-size: 11px;
+  gap: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  background: #0f3460;
+  content: '';
+  flex: 1;
+  height: 1px;
 }
 
 .field {

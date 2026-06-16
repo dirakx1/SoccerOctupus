@@ -11,6 +11,7 @@ and sign-up components.
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
 | Sign in UI | `frontend/src/views/SignInView.vue` | Custom email/password sign-in, MFA, and Client Trust verification flow. |
 | Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation, CAPTCHA mount, and email-code verification flow. |
+| OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles Google OAuth redirects from Clerk and returns users to the app. |
 | Session hydration | `frontend/src/lib/clerkSession.js` | Activates the Clerk session, fetches a token, calls `/api/me`, and updates local auth state. |
 | API token injection | `frontend/src/App.vue` | Installs the Axios bearer-token interceptor from inside Vue setup. |
 | Backend auth | `backend/app/auth.py` | Verifies Clerk JWTs, syncs local users, and provides auth decorators. |
@@ -25,6 +26,7 @@ Configure these in the Clerk Dashboard:
 - Email sign-in enabled.
 - Password authentication enabled.
 - Email verification code enabled for sign-up.
+- Google enabled as an SSO/social connection for sign-up and sign-in.
 - Client Trust can be enabled; the custom sign-in flow supports `needs_client_trust`.
 - MFA can be enabled; the custom sign-in flow supports `email_code`, `phone_code`, `totp`, and `backup_code` as second factors.
 - Clerk webhook endpoint points to `POST /api/webhooks/clerk`.
@@ -68,6 +70,20 @@ the public `VITE_CLERK_PUBLISHABLE_KEY` at build/bootstrap time.
    - calls `/api/me` with `Authorization: Bearer <token>`
    - stores `signedIn`, `isAdmin`, and user details in local auth state
    - redirects to `/`
+
+## Google OAuth Workflow
+
+1. User selects `Continue with Google` on `/sign-in` or `/sign-up`.
+2. The frontend calls `authenticateWithRedirect()` with:
+   - `strategy: 'oauth_google'`
+   - `redirectUrl: '/sso-callback'`
+   - `redirectUrlComplete: '/'`
+3. Clerk redirects the browser through Google's OAuth consent flow.
+4. Google returns to `/sso-callback`.
+5. `SSOCallbackView.vue` renders `AuthenticateWithRedirectCallback`, which lets
+   Clerk finish the OAuth flow, activate the session, and return to `/`.
+6. The existing router guard calls `/api/me`, which verifies the Clerk session
+   token, syncs the local `users` row if needed, and updates local auth state.
 
 ## Sign-In Workflow
 
@@ -119,6 +135,7 @@ The custom sign-in flow supports:
 The custom sign-up flow supports:
 
 - Email/password account creation.
+- Google OAuth sign-up through Clerk's `oauth_google` strategy.
 - Clerk CAPTCHA/bot protection through `#clerk-captcha`.
 - Email verification through `email_code`.
 

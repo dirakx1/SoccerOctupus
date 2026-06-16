@@ -6,6 +6,18 @@
       <p class="subtitle">Join the workspace to run predictions and receive role-based access.</p>
 
       <form v-if="step === 'details'" class="auth-form" @submit.prevent="createAccount">
+        <button
+          class="btn-google"
+          type="button"
+          :disabled="loading || googleLoading || !isLoaded"
+          @click="signUpWithGoogle"
+        >
+          <span class="google-mark" aria-hidden="true">G</span>
+          {{ googleLoading ? 'Opening Google...' : 'Continue with Google' }}
+        </button>
+
+        <div class="auth-divider"><span>or use email</span></div>
+
         <div class="name-grid">
           <label class="field">
             <span>First name</span>
@@ -45,7 +57,7 @@
 
         <div id="clerk-captcha" />
 
-        <button class="btn-primary" :disabled="loading || !isLoaded">
+        <button class="btn-primary" :disabled="loading || googleLoading || !isLoaded">
           {{ loading ? 'Creating account...' : 'Create account' }}
         </button>
       </form>
@@ -99,6 +111,7 @@ const { isLoaded, signUp, setActive } = useSignUp()
 
 const step = ref('details')
 const loading = ref(false)
+const googleLoading = ref(false)
 const error = ref('')
 const form = reactive({
   firstName: '',
@@ -176,6 +189,24 @@ async function createAccount() {
   }
 }
 
+async function signUpWithGoogle() {
+  if (!isLoaded.value || !signUp.value) return
+
+  googleLoading.value = true
+  error.value = ''
+
+  try {
+    await signUp.value.authenticateWithRedirect({
+      strategy: 'oauth_google',
+      redirectUrl: '/sso-callback',
+      redirectUrlComplete: '/',
+    })
+  } catch (err) {
+    googleLoading.value = false
+    error.value = authError(err)
+  }
+}
+
 async function verifyEmail() {
   if (!isLoaded.value || !signUp.value) return
 
@@ -247,6 +278,60 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.btn-google {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  color: #1f2937;
+  cursor: pointer;
+  display: flex;
+  font-size: 15px;
+  font-weight: 700;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px 20px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-google:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-google:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.google-mark {
+  align-items: center;
+  color: #4285f4;
+  display: inline-flex;
+  font-size: 17px;
+  font-weight: 800;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.auth-divider {
+  align-items: center;
+  color: #8888aa;
+  display: flex;
+  font-size: 11px;
+  gap: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  background: #0f3460;
+  content: '';
+  flex: 1;
+  height: 1px;
 }
 
 .name-grid {

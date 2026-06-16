@@ -9,6 +9,7 @@ import AdminSettingsView from '../views/AdminSettingsView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SignInView from '../views/SignInView.vue'
 import SignUpView from '../views/SignUpView.vue'
+import SSOCallbackView from '../views/SSOCallbackView.vue'
 
 export default createRouter({
   history: createWebHistory(),
@@ -22,6 +23,7 @@ export default createRouter({
     { path: '/admin/settings', component: AdminSettingsView, meta: { requiresAuth: true, admin: true } },
     { path: '/sign-in', component: SignInView, meta: { public: true } },
     { path: '/sign-up', component: SignUpView, meta: { public: true } },
+    { path: '/sso-callback', component: SSOCallbackView, meta: { public: true } },
     { path: '/legal', component: LegalNoticeView, meta: { public: true } },
   ]
 })
