@@ -32,12 +32,13 @@
     <!-- MATCH MARKETS                                                       -->
     <!-- ══════════════════════════════════════════════════════════════════ -->
     <template v-if="mode === 'match'">
+      <div v-if="teamsError" class="error-box">⚠️ {{ teamsError }}</div>
       <div class="form-panel">
         <div class="selectors">
           <div class="select-group">
             <label>Home Team</label>
-            <select v-model="homeTeam">
-              <option value="">— select —</option>
+            <select v-model="homeTeam" :disabled="!teams.length">
+              <option value="">{{ teams.length ? '— select —' : 'Loading…' }}</option>
               <option v-for="t in teams" :key="t.name" :value="t.name">
                 {{ t.name }} (ELO {{ t.elo }})
               </option>
@@ -46,8 +47,8 @@
           <div class="vs-label">VS</div>
           <div class="select-group">
             <label>Away Team</label>
-            <select v-model="awayTeam">
-              <option value="">— select —</option>
+            <select v-model="awayTeam" :disabled="!teams.length">
+              <option value="">{{ teams.length ? '— select —' : 'Loading…' }}</option>
               <option v-for="t in teams" :key="t.name" :value="t.name">
                 {{ t.name }} (ELO {{ t.elo }})
               </option>
@@ -214,6 +215,7 @@ import MarketCard from '../components/MarketCard.vue'
 // ── State ───────────────────────────────────────────────────────────────────
 const mode         = ref('match')
 const teams        = ref([])
+const teamsError   = ref('')
 const homeTeam     = ref('')
 const awayTeam     = ref('')
 const stage        = ref('group')
@@ -286,7 +288,12 @@ onMounted(async () => {
   try {
     const res = await axios.get('/api/predictions/teams')
     teams.value = res.data.teams
-  } catch { /* backend not running */ }
+    if (!teams.value?.length) {
+      teamsError.value = 'Team list returned empty — backend may not have data.'
+    }
+  } catch (e) {
+    teamsError.value = 'Could not load teams — is the backend running on port 5002?'
+  }
 })
 
 async function runMatchMarkets() {
@@ -369,6 +376,8 @@ select {
   background: #0a0a1a; color: #e0e0e0; border: 1px solid #0f3460;
   border-radius: 8px; padding: 9px 12px; font-size: 14px;
 }
+select:disabled { opacity: 0.5; cursor: not-allowed; }
+option { background: #0a0a1a; color: #e0e0e0; }
 .vs-label { color: #e2b714; font-size: 18px; font-weight: 700; padding-bottom: 9px; }
 .tournament-form { flex-direction: row; align-items: center; justify-content: space-between; }
 .form-description { color: #a0aec0; font-size: 14px; max-width: 520px; line-height: 1.5; }

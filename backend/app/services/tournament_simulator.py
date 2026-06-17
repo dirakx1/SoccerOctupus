@@ -35,7 +35,7 @@ WC2026_GROUPS: Dict[str, List[str]] = {
     "A": ["Mexico", "South Africa", "South Korea", "Czechia"],
     "B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
     "C": ["Brazil", "Morocco", "Haiti", "Scotland"],
-    "D": ["USA", "Paraguay", "Australia", "Turkiye"],
+    "D": ["USA", "Paraguay", "Australia", "Turkey"],
     "E": ["Germany", "Curacao", "Ivory Coast", "Ecuador"],
     "F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
     "G": ["Belgium", "Egypt", "Iran", "New Zealand"],

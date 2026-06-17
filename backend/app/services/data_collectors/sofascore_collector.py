@@ -50,7 +50,6 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
     "Poland":      {"elo": 1870, "rank": 28, "att": 68, "def": 68, "gf": 1.4, "ga": 1.1, "form": 14, "style": "counter-attack"},
     "Serbia":      {"elo": 1865, "rank": 29, "att": 70, "def": 65, "gf": 1.5, "ga": 1.2, "form": 14, "style": "balanced"},
     "Turkey":      {"elo": 1855, "rank": 31, "att": 68, "def": 64, "gf": 1.4, "ga": 1.2, "form": 13, "style": "counter-attack"},
-    "Turkiye":     {"elo": 1855, "rank": 31, "att": 68, "def": 64, "gf": 1.4, "ga": 1.2, "form": 13, "style": "counter-attack"},
     "Hungary":     {"elo": 1840, "rank": 35, "att": 62, "def": 65, "gf": 1.2, "ga": 1.1, "form": 13, "style": "defensive"},
     "Czech Republic": {"elo": 1835, "rank": 36, "att": 64, "def": 65, "gf": 1.3, "ga": 1.1, "form": 12, "style": "balanced"},
     "Czechia":     {"elo": 1835, "rank": 36, "att": 64, "def": 65, "gf": 1.3, "ga": 1.1, "form": 12, "style": "balanced"},
