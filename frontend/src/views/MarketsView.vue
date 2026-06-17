@@ -209,7 +209,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
+import { api } from '../lib/api'
 import MarketCard from '../components/MarketCard.vue'
 
 // ── State ───────────────────────────────────────────────────────────────────
@@ -286,7 +286,7 @@ const categoricalOutcomes = computed(() => {
 // ── Methods ──────────────────────────────────────────────────────────────────
 onMounted(async () => {
   try {
-    const res = await axios.get('/api/predictions/teams')
+    const res = await api.get('/api/predictions/teams')
     teams.value = res.data.teams
     if (!teams.value?.length) {
       teamsError.value = 'Team list returned empty — backend may not have data.'
@@ -302,7 +302,7 @@ async function runMatchMarkets() {
   matchData.value = null
   matchFilter.value = 'all'
   try {
-    const res = await axios.post('/api/markets/match', {
+    const res = await api.post('/api/markets/match', {
       home_team: homeTeam.value,
       away_team: awayTeam.value,
       stage: stage.value,
@@ -321,7 +321,7 @@ async function runTournamentMarkets() {
   tourneyData.value = null
   tourneyFilter.value = 'all'
   try {
-    const res = await axios.post('/api/markets/tournament')
+    const res = await api.post('/api/markets/tournament')
     tourneyData.value = res.data
   } catch (e) {
     tourneyError.value = e.response?.data?.error ?? e.message
