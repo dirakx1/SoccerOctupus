@@ -57,20 +57,17 @@
         <div class="team away-team">{{ result.away_team }}</div>
       </div>
 
-      <div class="probs-row">
-        <div class="prob-block" :class="{ winner: result.outcome === 'home_win' }">
-          <div class="prob-pct">{{ pct(result.home_win_prob) }}</div>
-          <div class="prob-label">{{ result.home_team }} Win</div>
-        </div>
-        <div class="prob-block" :class="{ winner: result.outcome === 'draw' }">
-          <div class="prob-pct">{{ pct(result.draw_prob) }}</div>
-          <div class="prob-label">Draw</div>
-        </div>
-        <div class="prob-block" :class="{ winner: result.outcome === 'away_win' }">
-          <div class="prob-pct">{{ pct(result.away_win_prob) }}</div>
-          <div class="prob-label">{{ result.away_team }} Win</div>
-        </div>
-      </div>
+      <!-- Probability meter -->
+      <ProbMeter
+        :homeTeam="result.home_team"
+        :awayTeam="result.away_team"
+        :homePct="result.home_win_prob"
+        :drawPct="result.draw_prob"
+        :awayPct="result.away_win_prob"
+        :outcome="result.outcome"
+        :agentCount="result.agent_predictions?.length ?? 7"
+        :agentSeries="agentSeries"
+      />
 
       <!-- Confidence bar -->
       <div class="confidence-row">
@@ -142,8 +139,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+import ProbMeter from '../components/ProbMeter.vue'
 
 const teams = ref([])
 const homeTeam = ref('')
@@ -183,6 +181,21 @@ async function runPrediction() {
 
 const pct = v => (v * 100).toFixed(1) + '%'
 const barWidth = (prob, max) => (prob / max * 100).toFixed(1) + '%'
+
+// Build per-agent running-average series for the sparkline
+const agentSeries = computed(() => {
+  const agents = result.value?.agent_predictions ?? []
+  if (!agents.length) return []
+  const series = []
+  let sumH = 0, sumD = 0, sumA = 0
+  for (let i = 0; i < agents.length; i++) {
+    sumH += agents[i].home_win_prob
+    sumD += agents[i].draw_prob
+    sumA += agents[i].away_win_prob
+    series.push({ home: sumH / (i + 1), draw: sumD / (i + 1), away: sumA / (i + 1) })
+  }
+  return series
+})
 </script>
 
 <style scoped>
@@ -242,11 +255,6 @@ select {
 .score { font-size: 40px; font-weight: 800; color: #e2b714; }
 .score-label { font-size: 11px; color: #8888aa; }
 
-.probs-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.prob-block { text-align: center; background: #0f3460; border-radius: 10px; padding: 16px; border: 2px solid transparent; }
-.prob-block.winner { border-color: #e2b714; background: #1e3a5f; }
-.prob-pct { font-size: 28px; font-weight: 800; color: #e2b714; }
-.prob-label { font-size: 12px; color: #a0aec0; margin-top: 4px; }
 
 .confidence-row { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #a0aec0; }
 .bar-bg { flex: 1; height: 8px; background: #0a0a1a; border-radius: 4px; overflow: hidden; }
