@@ -3,6 +3,7 @@ SoccerOctopus Flask application factory.
 """
 
 import os
+from pathlib import Path
 
 from flask import Flask
 from flask_cors import CORS
@@ -13,8 +14,28 @@ from .db.base import db
 from .runtime_settings import RuntimeSettingsService
 
 
+def _ensure_fernet_key(instance_path: str) -> None:
+    key_path = Path(instance_path) / "settings-fernet.key"
+    if key_path.exists():
+        return
+    try:
+        from cryptography.fernet import Fernet
+        key_path.parent.mkdir(parents=True, exist_ok=True)
+        key_path.write_bytes(Fernet.generate_key())
+        import logging
+        logging.getLogger("fifaoctopus").info(
+            f"Generated new Fernet key at {key_path}. "
+            "Re-enter any encrypted API keys via the admin panel."
+        )
+    except ImportError:
+        pass
+    except Exception as exc:
+        import logging
+        logging.getLogger("fifaoctopus").warning(f"Could not write Fernet key: {exc}")
+
+
 def create_app(config_overrides: dict | None = None) -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config["SQLALCHEMY_DATABASE_URI"] = Config.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     if Config.DATABASE_URL.startswith("postgresql"):
@@ -24,7 +45,9 @@ def create_app(config_overrides: dict | None = None) -> Flask:
     CORS(app, resources={r"/api/*": {"origins": [Config.FRONTEND_ORIGIN]}})
     db.init_app(app)
 
-    # Ensure directories
+    # Ensure instance + upload directories exist
+    os.makedirs(app.instance_path, exist_ok=True)
+    _ensure_fernet_key(app.instance_path)
     os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(Config.PREDICTIONS_DIR, exist_ok=True)
 

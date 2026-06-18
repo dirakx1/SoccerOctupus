@@ -361,8 +361,10 @@ _CONFEDERATION_MAP: Dict[str, str] = {
     "Portugal": "UEFA", "Netherlands": "UEFA", "Italy": "UEFA", "Belgium": "UEFA",
     "Croatia": "UEFA", "Austria": "UEFA", "Switzerland": "UEFA", "Denmark": "UEFA",
     "Poland": "UEFA", "Serbia": "UEFA", "Turkey": "UEFA", "Hungary": "UEFA",
-    "Czech Republic": "UEFA", "Romania": "UEFA", "Scotland": "UEFA", "Ukraine": "UEFA",
+    "Czech Republic": "UEFA", "Czechia": "UEFA",
+    "Romania": "UEFA", "Scotland": "UEFA", "Ukraine": "UEFA",
     "Slovakia": "UEFA", "Albania": "UEFA", "Slovenia": "UEFA", "Georgia": "UEFA",
+    "Bosnia and Herzegovina": "UEFA", "Sweden": "UEFA", "Norway": "UEFA",
     # CONMEBOL
     "Brazil": "CONMEBOL", "Argentina": "CONMEBOL", "Uruguay": "CONMEBOL",
     "Colombia": "CONMEBOL", "Ecuador": "CONMEBOL", "Paraguay": "CONMEBOL",
@@ -371,13 +373,15 @@ _CONFEDERATION_MAP: Dict[str, str] = {
     "Morocco": "CAF", "Senegal": "CAF", "Nigeria": "CAF", "Egypt": "CAF",
     "Cameroon": "CAF", "Ivory Coast": "CAF", "Tunisia": "CAF", "Ghana": "CAF",
     "South Africa": "CAF", "Mali": "CAF", "Algeria": "CAF",
+    "DR Congo": "CAF", "Cape Verde": "CAF",
     # AFC
     "Japan": "AFC", "South Korea": "AFC", "Iran": "AFC", "Saudi Arabia": "AFC",
     "Australia": "AFC", "Qatar": "AFC", "Uzbekistan": "AFC", "Iraq": "AFC",
+    "Jordan": "AFC",
     # CONCACAF
     "USA": "CONCACAF", "Mexico": "CONCACAF", "Canada": "CONCACAF",
     "Jamaica": "CONCACAF", "Honduras": "CONCACAF", "Costa Rica": "CONCACAF",
-    "Panama": "CONCACAF",
+    "Panama": "CONCACAF", "Haiti": "CONCACAF", "Curacao": "CONCACAF",
     # OFC
     "New Zealand": "OFC",
     # Unknown / placeholder

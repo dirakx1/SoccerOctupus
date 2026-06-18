@@ -321,7 +321,7 @@ async function runTournamentMarkets() {
   tourneyData.value = null
   tourneyFilter.value = 'all'
   try {
-    const res = await api.post('/api/markets/tournament')
+    const res = await api.post('/api/markets/tournament', {})
     tourneyData.value = res.data
   } catch (e) {
     tourneyError.value = e.response?.data?.error ?? e.message
