@@ -19,14 +19,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { api } from '../lib/api'
 
 const groups = ref({})
 const loading = ref(true)
 
 onMounted(async () => {
   try {
-    const res = await axios.get('/api/predictions/groups')
+    const res = await api.get('/api/predictions/groups')
     groups.value = res.data.groups
   } catch (e) {
     console.error(e)

@@ -31,7 +31,7 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from ...config import Config
+from ...runtime_settings import DEFAULT_OPTA_BASE_URL
 from ...utils.logger import get_logger
 from .sofascore_collector import TEAM_STATIC_DATA
 
@@ -82,9 +82,9 @@ class OptaCollector:
     Fallback: Calibrated derived model (no key needed)
     """
 
-    def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or Config.OPTA_API_KEY
-        self.base_url = Config.OPTA_BASE_URL
+    def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None):
+        self.api_key = api_key or ""
+        self.base_url = base_url or DEFAULT_OPTA_BASE_URL
 
     # ── Public interface ────────────────────────────────────────────────
 

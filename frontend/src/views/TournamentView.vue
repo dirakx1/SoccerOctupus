@@ -84,7 +84,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios'
+import { api } from '../lib/api'
 
 const useSwarm = ref(false)
 const loading = ref(false)
@@ -96,7 +96,7 @@ async function runSim() {
   error.value = ''
   result.value = null
   try {
-    const res = await axios.post('/api/predictions/tournament', { use_swarm: useSwarm.value })
+    const res = await api.post('/api/predictions/tournament', { use_swarm: useSwarm.value })
     result.value = res.data
   } catch (e) {
     error.value = e.response?.data?.error || e.message

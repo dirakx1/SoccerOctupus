@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any, Dict
 
 from ...models.match import AgentPrediction
+from ...runtime_settings import RuntimeSettings
 from ...utils.logger import get_logger
 from ..data_collectors.sofascore_collector import TEAM_STATIC_DATA
 from ..data_collectors.youtube_collector import YouTubeCollector
@@ -22,9 +23,9 @@ logger = get_logger("fifaoctopus.agent.video")
 class VideoAgent(BaseFootballAgent):
     """Analyses YouTube video signals to measure team momentum."""
 
-    def __init__(self):
+    def __init__(self, settings: RuntimeSettings | None = None):
         super().__init__("Video Intelligence Agent", weight=1.0)
-        self.yt = YouTubeCollector()
+        self.yt = YouTubeCollector(api_key=settings.youtube_api_key if settings else None)
 
     def predict(self, home_team: str, away_team: str, context: Dict[str, Any]) -> AgentPrediction:
         # Retrieve videos for the fixture

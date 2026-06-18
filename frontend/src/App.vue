@@ -7,11 +7,39 @@
         <span class="subtitle">WC 2026 Swarm Prediction Engine</span>
       </router-link>
       <div class="nav-links">
-        <router-link to="/">Home</router-link>
-        <router-link to="/groups">Groups</router-link>
-        <router-link to="/predict">Predict Match</router-link>
-        <router-link to="/tournament">Tournament</router-link>
-        <router-link to="/markets">📈 Markets</router-link>
+        <template v-if="auth.state.signedIn">
+          <router-link to="/">Home</router-link>
+          <router-link to="/groups">Groups</router-link>
+          <router-link to="/predict">Predict Match</router-link>
+          <router-link to="/tournament">Tournament</router-link>
+          <router-link to="/markets">Markets</router-link>
+          <router-link v-if="auth.state.isAdmin" to="/admin/settings">Admin</router-link>
+          <div class="user-menu">
+            <button
+              class="user-button"
+              type="button"
+              :aria-expanded="userMenuOpen"
+              aria-haspopup="menu"
+              @click="toggleUserMenu"
+            >
+              <img v-if="auth.state.user?.avatar_url" :src="auth.state.user.avatar_url" alt="" />
+              <span v-else>{{ userInitials }}</span>
+            </button>
+            <div v-if="userMenuOpen" class="user-dropdown" role="menu">
+              <div class="user-summary">
+                <strong>{{ userDisplayName }}</strong>
+                <small>{{ auth.state.user?.email }}</small>
+              </div>
+              <router-link to="/profile" role="menuitem" @click="closeUserMenu">Profile</router-link>
+              <button type="button" role="menuitem" @click="signOut">Sign Out</button>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <router-link to="/">Home</router-link>
+          <router-link to="/sign-in">Sign In</router-link>
+          <router-link to="/sign-up">Sign Up</router-link>
+        </template>
       </div>
     </nav>
     <main class="content">
@@ -23,6 +51,57 @@
     </footer>
   </div>
 </template>
+
+<script setup>
+import { computed, ref } from 'vue'
+import { useAuth, useClerk } from '@clerk/vue'
+import { useRouter } from 'vue-router'
+
+import { installAuthInterceptor } from './lib/api'
+import { clearAuthState, useAuthState } from './lib/auth'
+
+const auth = useAuthState()
+const clerk = useClerk()
+const clerkAuth = useAuth()
+const router = useRouter()
+const userMenuOpen = ref(false)
+
+const userDisplayName = computed(() => {
+  const firstName = auth.state.user?.first_name || ''
+  const lastName = auth.state.user?.last_name || ''
+  const fullName = `${firstName} ${lastName}`.trim()
+  return fullName || auth.state.user?.email || 'Account'
+})
+
+const userInitials = computed(() => {
+  const source = userDisplayName.value || auth.state.user?.email || 'A'
+  return source
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('') || 'A'
+})
+
+installAuthInterceptor(async () => {
+  return await clerkAuth.getToken.value?.()
+})
+
+async function signOut() {
+  closeUserMenu()
+  await clerk.value?.signOut()
+  clearAuthState()
+  router.push('/sign-in')
+}
+
+function toggleUserMenu() {
+  userMenuOpen.value = !userMenuOpen.value
+}
+
+function closeUserMenu() {
+  userMenuOpen.value = false
+}
+</script>
 
 <style scoped>
 .shell { min-height: 100vh; display: flex; flex-direction: column; }
@@ -41,15 +120,86 @@
 .title { font-size: 22px; font-weight: 700; color: #e2b714; letter-spacing: 1px; }
 .subtitle { font-size: 12px; color: #8888aa; margin-left: 4px; }
 
-.nav-links { display: flex; gap: 24px; }
-.nav-links a {
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-links a,
+.nav-btn {
   color: #a0aec0;
+  background: transparent;
+  border: none;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
   transition: color 0.2s;
+  cursor: pointer;
 }
-.nav-links a:hover, .nav-links a.router-link-active { color: #e2b714; }
+.nav-links a:hover, .nav-links a.router-link-active, .nav-btn:hover { color: #e2b714; }
+
+.user-menu { position: relative; }
+
+.user-button {
+  align-items: center;
+  background: #0a0a1a;
+  border: 1px solid #34506f;
+  border-radius: 999px;
+  color: #e2b714;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  height: 36px;
+  justify-content: center;
+  overflow: hidden;
+  width: 36px;
+}
+
+.user-button:hover { border-color: #e2b714; }
+.user-button img { height: 100%; object-fit: cover; width: 100%; }
+
+.user-dropdown {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 20;
+}
+
+.user-summary {
+  border-bottom: 1px solid #0f3460;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 6px;
+  padding: 8px 10px 12px;
+}
+
+.user-summary strong { color: #e0e0e0; font-size: 14px; }
+.user-summary small { color: #8888aa; font-size: 12px; overflow-wrap: anywhere; }
+
+.user-dropdown a,
+.user-dropdown button {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #a0aec0;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background: #0f3460;
+  color: #e2b714;
+}
 
 .content { flex: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
 

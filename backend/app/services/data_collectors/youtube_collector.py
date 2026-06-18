@@ -12,7 +12,6 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
-from ...config import Config
 from ...utils.logger import get_logger
 
 logger = get_logger("fifaoctopus.youtube")
@@ -23,7 +22,7 @@ _YOUTUBE_VIDEO_URL = "https://www.googleapis.com/youtube/v3/videos"
 
 class YouTubeCollector:
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or Config.YOUTUBE_API_KEY
+        self.api_key = api_key or ""
 
     # ------------------------------------------------------------------
     # Public interface

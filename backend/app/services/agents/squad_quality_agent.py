@@ -26,6 +26,7 @@ from __future__ import annotations
 from typing import Any, Dict
 
 from ...models.match import AgentPrediction
+from ...runtime_settings import DEFAULT_OPTA_BASE_URL, RuntimeSettings
 from ...utils.logger import get_logger
 from ..data_collectors.opta_collector import OptaCollector
 from ..zep_football_tools import ZepFootballTools
@@ -37,9 +38,16 @@ logger = get_logger("fifaoctopus.agent.squad_quality")
 class SquadQualityAgent(BaseFootballAgent):
     """Opta player-quality metrics → squad-level prediction."""
 
-    def __init__(self, zep_tools: ZepFootballTools | None = None):
+    def __init__(
+        self,
+        settings: RuntimeSettings | None = None,
+        zep_tools: ZepFootballTools | None = None,
+    ):
         super().__init__("Squad Quality Agent", weight=1.1)
-        self.opta = OptaCollector()
+        self.opta = OptaCollector(
+            api_key=settings.opta_api_key if settings else None,
+            base_url=settings.opta_base_url if settings else DEFAULT_OPTA_BASE_URL,
+        )
         self.zep = zep_tools
 
     def predict(self, home_team: str, away_team: str, context: Dict[str, Any]) -> AgentPrediction:
