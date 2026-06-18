@@ -448,6 +448,30 @@ def test_market_tournament_uses_request_time_mc_simulations(client, app, monkeyp
     assert captured["mc_simulations"] == 33333
 
 
+def test_market_tournament_accepts_empty_body(client, app, monkeypatch):
+    class FakeResult:
+        champion = "France"
+        runner_up = "Brazil"
+        third_place = "Argentina"
+        champion_probability = 0.6
+
+    class FakeTournamentSimulator:
+        def __init__(self, orchestrator=None, use_swarm=False, mc_simulations=10000):
+            pass
+
+        def simulate(self):
+            return FakeResult()
+
+    monkeypatch.setattr("app.api.markets.TournamentSimulator", FakeTournamentSimulator)
+    monkeypatch.setattr("app.api.markets._gen.from_tournament", lambda _result: [])
+    with app.app_context():
+        RuntimeSettingsService.ensure_defaults(db)
+
+    response = client.post("/api/markets/tournament")
+    assert response.status_code == 200
+    assert response.is_json
+
+
 def test_lazy_upsert_creates_local_user(client, monkeypatch):
     monkeypatch.setattr(
         "app.auth.verify_session_token",

@@ -38,7 +38,7 @@ def match_markets():
     Body: { "home_team": "France", "away_team": "Argentina", "stage": "final" }
     Returns all prediction market questions for a single match.
     """
-    data = request.get_json(force=True) or {}
+    data = request.get_json(silent=True) or {}
     home  = data.get("home_team", "").strip()
     away  = data.get("away_team", "").strip()
     stage_str = data.get("stage", "group")
@@ -89,7 +89,7 @@ def tournament_markets():
     Body: { "platform": "both" }
     Simulates the full tournament and generates futures + group markets.
     """
-    data = request.get_json(force=True) or {}
+    data = request.get_json(silent=True) or {}
     platform = data.get("platform", "both").lower()
 
     try:
