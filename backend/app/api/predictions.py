@@ -81,24 +81,21 @@ def simulate_tournament():
     data = request.get_json(force=True) or {}
     use_swarm = data.get("use_swarm", False)   # default off — swarm is slow for 104 matches
 
+    orc = _get_orchestrator() if use_swarm else None
+    settings = RuntimeSettingsService.current(db)
+    simulator = TournamentSimulator(
+        orchestrator=orc,
+        use_swarm=use_swarm,
+        mc_simulations=settings.mc_simulations,
+    )
+
     try:
-        orc = _get_orchestrator() if use_swarm else None
-        settings = RuntimeSettingsService.current(db)
-        simulator = TournamentSimulator(
-            orchestrator=orc,
-            use_swarm=use_swarm,
-            mc_simulations=settings.mc_simulations,
-        )
         result = simulator.simulate()
-        # Persist result (non-fatal if directory is not writable)
-        try:
-            _save_result(result.simulation_id, result.to_dict())
-        except Exception as save_exc:
-            logger.warning(f"Could not persist tournament result: {save_exc}")
+        # Persist result
+        _save_result(result.simulation_id, result.to_dict())
         return jsonify(result.to_dict()), 200
     except Exception as exc:
-        import traceback
-        logger.error(f"Tournament simulation failed: {exc}\n{traceback.format_exc()}")
+        logger.error(f"Tournament simulation failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 
 

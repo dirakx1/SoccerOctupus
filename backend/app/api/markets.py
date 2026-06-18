@@ -100,7 +100,7 @@ def tournament_markets():
             mc_simulations=settings.mc_simulations,
         )
         result = sim.simulate()
-        questions = list(_gen.from_tournament(result))
+        questions = _gen.from_tournament(result)
 
         if platform == "kalshi":
             payload = [q.to_kalshi_format() for q in questions]

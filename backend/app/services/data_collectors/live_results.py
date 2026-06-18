@@ -13,8 +13,6 @@ Falls back to a hardcoded seed list if the network is unavailable.
 from __future__ import annotations
 
 import datetime
-import json
-import os
 import time
 from typing import Any, Dict, List, Optional
 
@@ -23,13 +21,6 @@ import requests
 from ...utils.logger import get_logger
 
 logger = get_logger("fifaoctopus.live_results")
-
-# Disk cache: avoids re-hitting ESPN on every gunicorn worker startup
-_CACHE_TTL_SECONDS = 3600  # refresh at most once per hour
-# Path: backend/instance/live_cache.json (4 levels up from this file)
-_CACHE_PATH = os.path.normpath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..", "instance", "live_cache.json")
-)
 
 # ---------------------------------------------------------------------------
 # Tournament date range
@@ -177,47 +168,10 @@ def _fetch_all_results() -> List[Dict[str, Any]]:
     return results
 
 
-def _load_cached() -> Optional[List[Dict[str, Any]]]:
-    """Return disk-cached results if they are less than _CACHE_TTL_SECONDS old."""
-    try:
-        path = os.path.abspath(_CACHE_PATH)
-        if not os.path.exists(path):
-            return None
-        age = time.time() - os.path.getmtime(path)
-        if age > _CACHE_TTL_SECONDS:
-            return None
-        with open(path) as f:
-            data = json.load(f)
-        logger.debug(f"Live results: loaded {len(data)} matches from disk cache (age {age:.0f}s)")
-        return data
-    except Exception as exc:
-        logger.debug(f"Cache read failed: {exc}")
-        return None
-
-
-def _save_cache(results: List[Dict[str, Any]]) -> None:
-    try:
-        path = os.path.abspath(_CACHE_PATH)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w") as f:
-            json.dump(results, f)
-    except Exception as exc:
-        logger.debug(f"Cache write failed: {exc}")
-
-
-def _fetch_with_cache() -> List[Dict[str, Any]]:
-    cached = _load_cached()
-    if cached is not None:
-        return cached
-    results = _fetch_all_results()
-    _save_cache(results)
-    return results
-
-
 # ---------------------------------------------------------------------------
-# Module-level population (runs once on import, uses disk cache when fresh)
+# Module-level population (runs once on import)
 # ---------------------------------------------------------------------------
-WC2026_RESULTS: List[Dict[str, Any]] = _fetch_with_cache()
+WC2026_RESULTS: List[Dict[str, Any]] = _fetch_all_results()
 
 # ---------------------------------------------------------------------------
 # ELO helpers
