@@ -5,6 +5,7 @@ import PredictView from '../views/PredictView.vue'
 import TournamentView from '../views/TournamentView.vue'
 import MarketsView from '../views/MarketsView.vue'
 import LegalNoticeView from '../views/LegalNoticeView.vue'
+import CookiePolicyView from '../views/CookiePolicyView.vue'
 import AdminSettingsView from '../views/AdminSettingsView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SignInView from '../views/SignInView.vue'
@@ -27,5 +28,6 @@ export default createRouter({
     { path: '/forgot-password', component: ForgotPasswordView, meta: { public: true } },
     { path: '/sso-callback', component: SSOCallbackView, meta: { public: true } },
     { path: '/legal', component: LegalNoticeView, meta: { public: true } },
+    { path: '/cookie-policy', component: CookiePolicyView, meta: { public: true } },
   ]
 })
