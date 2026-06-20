@@ -49,6 +49,7 @@
       <span>© 2026 SoccerOctopus — predictions are approximations only, not betting advice.</span>
       <router-link to="/legal">Legal Notice</router-link>
       <router-link to="/cookie-policy">Cookie Policy</router-link>
+      <router-link to="/contact">Contact</router-link>
     </footer>
     <CookieBanner />
   </div>

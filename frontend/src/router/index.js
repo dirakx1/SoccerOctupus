@@ -6,6 +6,7 @@ import TournamentView from '../views/TournamentView.vue'
 import MarketsView from '../views/MarketsView.vue'
 import LegalNoticeView from '../views/LegalNoticeView.vue'
 import CookiePolicyView from '../views/CookiePolicyView.vue'
+import ContactView from '../views/ContactView.vue'
 import AdminSettingsView from '../views/AdminSettingsView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SignInView from '../views/SignInView.vue'
@@ -29,5 +30,6 @@ export default createRouter({
     { path: '/sso-callback', component: SSOCallbackView, meta: { public: true } },
     { path: '/legal', component: LegalNoticeView, meta: { public: true } },
     { path: '/cookie-policy', component: CookiePolicyView, meta: { public: true } },
+    { path: '/contact', component: ContactView, meta: { public: true } },
   ]
 })
