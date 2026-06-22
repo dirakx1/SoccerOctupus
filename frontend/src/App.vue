@@ -48,7 +48,10 @@
     <footer class="footer">
       <span>© 2026 SoccerOctopus — predictions are approximations only, not betting advice.</span>
       <router-link to="/legal">Legal Notice</router-link>
+      <router-link to="/cookie-policy">Cookie Policy</router-link>
+      <router-link to="/contact">Contact</router-link>
     </footer>
+    <CookieBanner />
   </div>
 </template>
 
@@ -59,6 +62,7 @@ import { useRouter } from 'vue-router'
 
 import { installAuthInterceptor } from './lib/api'
 import { clearAuthState, useAuthState } from './lib/auth'
+import CookieBanner from './components/CookieBanner.vue'
 
 const auth = useAuthState()
 const clerk = useClerk()
