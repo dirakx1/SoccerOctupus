@@ -41,6 +41,7 @@ def _subscription(**overrides):
         "object": "subscription",
         "customer": "cus_123",
         "status": "active",
+        "current_period_start": 1_700_000_000,
         "current_period_end": 1_800_000_000,
         "cancel_at_period_end": False,
         "metadata": {},
@@ -83,6 +84,11 @@ def test_checkout_creates_basic_and_pro_sessions(client, user, monkeypatch):
         def create(**kwargs):
             return {"id": "cus_123"}
 
+    class FakePrice:
+        @staticmethod
+        def retrieve(price_id):
+            return {"id": price_id, "currency": "usd"}
+
     class FakeSession:
         @staticmethod
         def create(**kwargs):
@@ -92,7 +98,7 @@ def test_checkout_creates_basic_and_pro_sessions(client, user, monkeypatch):
     fake_stripe = type(
         "FakeStripe",
         (),
-        {"Customer": FakeCustomer, "checkout": type("Checkout", (), {"Session": FakeSession})},
+        {"Customer": FakeCustomer, "Price": FakePrice, "checkout": type("Checkout", (), {"Session": FakeSession})},
     )
     monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
 
@@ -104,6 +110,7 @@ def test_checkout_creates_basic_and_pro_sessions(client, user, monkeypatch):
     assert basic.get_json()["url"] == "https://checkout.stripe.com/price_basic"
     assert pro.get_json()["url"] == "https://checkout.stripe.com/price_pro"
     assert created[0]["mode"] == "subscription"
+    assert created[0]["payment_method_types"] == ["card", "cashapp"]
     assert created[1]["line_items"] == [{"price": "price_pro", "quantity": 1}]
 
 
@@ -122,6 +129,11 @@ def test_checkout_reuses_existing_stripe_customer(client, user, monkeypatch):
         def create(**kwargs):
             raise AssertionError("checkout should reuse the existing customer")
 
+    class FakePrice:
+        @staticmethod
+        def retrieve(price_id):
+            return {"id": price_id, "currency": "usd"}
+
     class FakeSession:
         @staticmethod
         def create(**kwargs):
@@ -131,7 +143,7 @@ def test_checkout_reuses_existing_stripe_customer(client, user, monkeypatch):
     fake_stripe = type(
         "FakeStripe",
         (),
-        {"Customer": FakeCustomer, "checkout": type("Checkout", (), {"Session": FakeSession})},
+        {"Customer": FakeCustomer, "Price": FakePrice, "checkout": type("Checkout", (), {"Session": FakeSession})},
     )
     monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
 
@@ -139,6 +151,38 @@ def test_checkout_reuses_existing_stripe_customer(client, user, monkeypatch):
 
     assert response.status_code == 200
     assert created_sessions[0]["customer"] == "cus_existing"
+
+
+def test_checkout_rejects_non_usd_price(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+
+    class FakeCustomer:
+        @staticmethod
+        def create(**kwargs):
+            raise AssertionError("checkout should validate price before creating customer")
+
+    class FakePrice:
+        @staticmethod
+        def retrieve(price_id):
+            return {"id": price_id, "currency": "eur"}
+
+    class FakeSession:
+        @staticmethod
+        def create(**kwargs):
+            raise AssertionError("checkout should not create session for non-USD price")
+
+    fake_stripe = type(
+        "FakeStripe",
+        (),
+        {"Customer": FakeCustomer, "Price": FakePrice, "checkout": type("Checkout", (), {"Session": FakeSession})},
+    )
+    monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
+
+    response = client.post("/api/billing/checkout", headers=_auth_header(user["clerk_user_id"]), json={"tier": "basic"})
+
+    assert response.status_code == 400
+    assert "USD" in response.get_json()["error"]
 
 
 def test_checkout_rejects_free_and_missing_config(client, user, monkeypatch):
@@ -240,14 +284,43 @@ def test_stripe_webhook_rejects_invalid_signature(client, monkeypatch):
     assert response.status_code == 400
 
 
-def test_stripe_webhook_stores_events_and_duplicates(client, user, monkeypatch):
+def test_stripe_webhook_rejects_missing_event_id_or_type(client, monkeypatch):
+    _configure_stripe(monkeypatch)
+    monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: {"id": "evt_missing"})
+
+    response = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
+
+    assert response.status_code == 400
+    assert "missing event id or type" in response.get_json()["error"]
+
+
+def test_stripe_webhook_refetches_subscription_and_deduplicates(client, user, monkeypatch):
     _configure_stripe(monkeypatch)
     event = {
         "id": "evt_123",
         "type": "customer.subscription.updated",
-        "data": {"object": _subscription(customer="cus_123", metadata={"user_id": str(user["id"])})},
+        "data": {
+            "object": _subscription(
+                id="sub_123",
+                customer="cus_123",
+                metadata={"user_id": str(user["id"])},
+                items={"data": [{"price": {"id": "price_basic"}}]},
+            )
+        },
     }
+    retrieve_calls = []
+
+    def retrieve_subscription(subscription_id, **kwargs):
+        retrieve_calls.append((subscription_id, kwargs))
+        return _subscription(
+            id=subscription_id,
+            customer="cus_123",
+            metadata={"user_id": str(user["id"])},
+            items={"data": [{"price": {"id": "price_pro"}}]},
+        )
+
     monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: event)
+    monkeypatch.setattr("app.api.webhooks.stripe.Subscription.retrieve", retrieve_subscription)
 
     first = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
     duplicate = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
@@ -255,11 +328,12 @@ def test_stripe_webhook_stores_events_and_duplicates(client, user, monkeypatch):
     assert first.status_code == 200
     assert duplicate.status_code == 200
     assert duplicate.get_json()["status"] == "duplicate"
+    assert retrieve_calls == [("sub_123", {"expand": ["items.data.price"]})]
     with client.application.app_context():
         stored = StripeEvent.query.filter_by(stripe_event_id="evt_123").one()
         updated = User.query.get(user["id"])
         assert stored.processed_at is not None
-        assert updated.subscription_tier == "basic"
+        assert updated.subscription_tier == "pro"
 
 
 def test_subscription_sync_maps_basic_pro_and_deleted(client, user, monkeypatch):
@@ -273,6 +347,7 @@ def test_subscription_sync_maps_basic_pro_and_deleted(client, user, monkeypatch)
         )
         db.session.commit()
         assert basic.subscription_tier == "basic"
+        assert basic.subscription_current_period_start is not None
 
         pro = sync_subscription_from_stripe_subscription(
             _subscription(customer="cus_123", items={"data": [{"price": {"id": "price_pro"}}]}),
@@ -289,9 +364,10 @@ def test_subscription_sync_maps_basic_pro_and_deleted(client, user, monkeypatch)
         assert deleted.subscription_tier == "free"
         assert deleted.subscription_status == "canceled"
         assert deleted.stripe_price_id is None
+        assert deleted.usage_cycle_anchor_at is not None
 
 
-def test_checkout_completed_webhook_syncs_expanded_subscription(client, user, monkeypatch):
+def test_checkout_completed_webhook_refetches_session_and_subscription(client, user, monkeypatch):
     _configure_stripe(monkeypatch)
     event = {
         "id": "evt_checkout",
@@ -299,22 +375,91 @@ def test_checkout_completed_webhook_syncs_expanded_subscription(client, user, mo
         "data": {
             "object": {
                 "id": "cs_123",
-                "customer": "cus_checkout",
-                "client_reference_id": str(user["id"]),
-                "subscription": _subscription(customer="cus_checkout", items={"data": [{"price": {"id": "price_pro"}}]}),
-                "metadata": {"user_id": str(user["id"])},
+                "customer": "cus_stale",
+                "client_reference_id": "999999",
+                "subscription": _subscription(
+                    id="sub_stale",
+                    customer="cus_stale",
+                    items={"data": [{"price": {"id": "price_basic"}}]},
+                ),
             }
         },
     }
+    session_calls = []
+    subscription_calls = []
+
+    def retrieve_session(session_id, **kwargs):
+        session_calls.append((session_id, kwargs))
+        return {
+            "id": session_id,
+            "customer": "cus_checkout",
+            "client_reference_id": str(user["id"]),
+            "subscription": "sub_checkout",
+            "metadata": {"user_id": str(user["id"])},
+        }
+
+    def retrieve_subscription(subscription_id, **kwargs):
+        subscription_calls.append((subscription_id, kwargs))
+        return _subscription(
+            id=subscription_id,
+            customer="cus_checkout",
+            metadata={"user_id": str(user["id"])},
+            items={"data": [{"price": {"id": "price_pro"}}]},
+        )
+
     monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: event)
+    monkeypatch.setattr("app.api.webhooks.stripe.checkout.Session.retrieve", retrieve_session)
+    monkeypatch.setattr("app.api.webhooks.stripe.Subscription.retrieve", retrieve_subscription)
 
     response = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
 
     assert response.status_code == 200
+    assert session_calls == [("cs_123", {"expand": ["subscription"]})]
+    assert subscription_calls == [("sub_checkout", {"expand": ["items.data.price"]})]
     with client.application.app_context():
         updated = User.query.get(user["id"])
         assert updated.stripe_customer_id == "cus_checkout"
         assert updated.subscription_tier == "pro"
+
+
+def test_invoice_paid_webhook_refetches_invoice_and_subscription(client, user, monkeypatch):
+    _configure_stripe(monkeypatch)
+    event = {
+        "id": "evt_invoice_paid",
+        "type": "invoice.paid",
+        "data": {"object": {"id": "in_123", "subscription": "sub_stale"}},
+    }
+    invoice_calls = []
+    subscription_calls = []
+
+    def retrieve_invoice(invoice_id, **kwargs):
+        invoice_calls.append((invoice_id, kwargs))
+        return {"id": invoice_id, "subscription": "sub_current"}
+
+    def retrieve_subscription(subscription_id, **kwargs):
+        subscription_calls.append((subscription_id, kwargs))
+        return _subscription(
+            id=subscription_id,
+            customer="cus_invoice",
+            metadata={"user_id": str(user["id"])},
+            items={"data": [{"price": {"id": "price_basic"}}]},
+        )
+
+    monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: event)
+    monkeypatch.setattr("app.api.webhooks.stripe.Invoice.retrieve", retrieve_invoice)
+    monkeypatch.setattr("app.api.webhooks.stripe.Subscription.retrieve", retrieve_subscription)
+
+    response = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
+
+    assert response.status_code == 200
+    assert invoice_calls == [("in_123", {"expand": ["subscription"]})]
+    assert subscription_calls == [("sub_current", {"expand": ["items.data.price"]})]
+    with client.application.app_context():
+        updated = User.query.get(user["id"])
+        assert updated.stripe_customer_id == "cus_invoice"
+        assert updated.stripe_subscription_id == "sub_current"
+        assert updated.subscription_tier == "basic"
+        assert updated.subscription_current_period_start is not None
 
 
 def test_stripe_webhook_accepts_stripe_object_events(client, user, monkeypatch):
@@ -329,15 +474,44 @@ def test_stripe_webhook_accepts_stripe_object_events(client, user, monkeypatch):
                     "customer": "cus_object",
                     "client_reference_id": str(user["id"]),
                     "subscription": _subscription(
+                        id="sub_stale",
                         customer="cus_object",
-                        items={"data": [{"price": {"id": "price_pro"}}]},
+                        items={"data": [{"price": {"id": "price_basic"}}]},
                     ),
                     "metadata": {"user_id": str(user["id"])},
                 }
             },
         }
     )
+
+    def retrieve_session(session_id, **kwargs):
+        assert session_id == "cs_object"
+        assert kwargs == {"expand": ["subscription"]}
+        return _stripe_like(
+            {
+                "id": "cs_object",
+                "customer": "cus_object",
+                "client_reference_id": str(user["id"]),
+                "subscription": {"id": "sub_object"},
+                "metadata": {"user_id": str(user["id"])},
+            }
+        )
+
+    def retrieve_subscription(subscription_id, **kwargs):
+        assert subscription_id == "sub_object"
+        assert kwargs == {"expand": ["items.data.price"]}
+        return _stripe_like(
+            _subscription(
+                id=subscription_id,
+                customer="cus_object",
+                metadata={"user_id": str(user["id"])},
+                items={"data": [{"price": {"id": "price_pro"}}]},
+            )
+        )
+
     monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: event)
+    monkeypatch.setattr("app.api.webhooks.stripe.checkout.Session.retrieve", retrieve_session)
+    monkeypatch.setattr("app.api.webhooks.stripe.Subscription.retrieve", retrieve_subscription)
 
     response = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
 
@@ -364,21 +538,147 @@ def test_checkout_session_ownership_accepts_stripe_object_metadata(user):
     assert checkout_session_belongs_to_user(session, account) is True
 
 
-def test_free_user_gets_402_from_prediction_and_markets(client, user, monkeypatch):
+def test_free_user_gets_cycle_limited_prediction_and_markets(client, user, monkeypatch):
     _auth(monkeypatch)
-    prediction = client.post(
+
+    class FakeResult:
+        home_win_prob = 0.5
+        draw_prob = 0.2
+        away_win_prob = 0.3
+        most_likely_score = "1-0"
+
+        def to_dict(self):
+            return {"home_team": "France", "away_team": "Argentina", "agent_predictions": []}
+
+    class FakeOrchestrator:
+        def predict_match(self, *args, **kwargs):
+            return FakeResult()
+
+    class FakeQuestion:
+        prop_type = "match_winner"
+
+        def to_dict(self):
+            return {"question": "France to win?"}
+
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: FakeOrchestrator())
+    monkeypatch.setattr("app.api.markets._get_orc", lambda include_video_analysis=True: FakeOrchestrator())
+    monkeypatch.setattr("app.api.markets._gen.from_match", lambda pred: [FakeQuestion()])
+
+    first_prediction = client.post(
         "/api/predictions/match",
         headers=_auth_header(user["clerk_user_id"]),
         json={"home_team": "France", "away_team": "Argentina"},
     )
-    market = client.post(
-        "/api/markets/match",
+    second_prediction = client.post(
+        "/api/predictions/match",
         headers=_auth_header(user["clerk_user_id"]),
         json={"home_team": "France", "away_team": "Argentina"},
     )
-    assert prediction.status_code == 402
-    assert prediction.get_json()["code"] == "subscription_required"
-    assert market.status_code == 402
+    markets = [
+        client.post(
+            "/api/markets/match",
+            headers=_auth_header(user["clerk_user_id"]),
+            json={"home_team": "France", "away_team": "Argentina"},
+        )
+        for _ in range(4)
+    ]
+
+    assert first_prediction.status_code == 200
+    assert second_prediction.status_code == 402
+    assert second_prediction.get_json()["code"] == "feature_limit_reached"
+    assert [response.status_code for response in markets] == [200, 200, 200, 402]
+
+
+def test_failed_prediction_releases_free_usage(client, user, monkeypatch):
+    _auth(monkeypatch)
+
+    class FailingOrchestrator:
+        def predict_match(self, *args, **kwargs):
+            raise RuntimeError("boom")
+
+    class PassingResult:
+        def to_dict(self):
+            return {"home_team": "France", "away_team": "Argentina", "agent_predictions": []}
+
+    class PassingOrchestrator:
+        def predict_match(self, *args, **kwargs):
+            return PassingResult()
+
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: FailingOrchestrator())
+    failed = client.post(
+        "/api/predictions/match",
+        headers=_auth_header(user["clerk_user_id"]),
+        json={"home_team": "France", "away_team": "Argentina"},
+    )
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: PassingOrchestrator())
+    retry = client.post(
+        "/api/predictions/match",
+        headers=_auth_header(user["clerk_user_id"]),
+        json={"home_team": "France", "away_team": "Argentina"},
+    )
+    exhausted = client.post(
+        "/api/predictions/match",
+        headers=_auth_header(user["clerk_user_id"]),
+        json={"home_team": "France", "away_team": "Argentina"},
+    )
+
+    assert failed.status_code == 500
+    assert retry.status_code == 200
+    assert exhausted.status_code == 402
+
+
+def test_free_user_gets_cycle_limited_tournament_features(client, user, monkeypatch):
+    _auth(monkeypatch)
+
+    class FakeTournamentResult:
+        simulation_id = "sim_123"
+        champion = "France"
+        runner_up = "Argentina"
+        third_place = "Brazil"
+        champion_probability = 0.22
+
+        def to_dict(self):
+            return {
+                "simulation_id": self.simulation_id,
+                "champion": self.champion,
+                "runner_up": self.runner_up,
+                "third_place": self.third_place,
+                "champion_probability": self.champion_probability,
+            }
+
+    class FakeSimulator:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def simulate(self):
+            return FakeTournamentResult()
+
+    class FakeQuestion:
+        prop_type = "tournament_winner"
+
+        def to_dict(self):
+            return {"question": "Champion?"}
+
+    monkeypatch.setattr("app.api.predictions.TournamentSimulator", FakeSimulator)
+    monkeypatch.setattr("app.api.markets.TournamentSimulator", FakeSimulator)
+    monkeypatch.setattr("app.api.markets._gen.from_tournament", lambda result: [FakeQuestion()])
+
+    first_sim = client.post("/api/predictions/tournament", headers=_auth_header(user["clerk_user_id"]), json={})
+    second_sim = client.post("/api/predictions/tournament", headers=_auth_header(user["clerk_user_id"]), json={})
+    markets = [
+        client.post(
+        "/api/markets/match",
+        headers=_auth_header(user["clerk_user_id"]),
+            json={"home_team": "France", "away_team": "Argentina"},
+        )
+        for _ in range(0)
+    ]
+    tournament_markets = [client.post("/api/markets/tournament", headers=_auth_header(user["clerk_user_id"]), json={}) for _ in range(4)]
+
+    assert markets == []
+    assert first_sim.status_code == 200
+    assert second_sim.status_code == 402
+    assert [response.status_code for response in tournament_markets] == [200, 200, 200, 402]
 
 
 @pytest.mark.parametrize(("tier", "expected_video"), [("basic", False), ("pro", True)])

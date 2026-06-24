@@ -22,9 +22,32 @@ vi.mock('../lib/billing', () => ({
 import { createCheckout, getPlans, getSubscription } from '../lib/billing'
 
 const plans = [
-  { tier: 'free', label: 'Free', display_price: '$0', interval: 'month', features: ['No paid prediction runs'] },
-  { tier: 'basic', label: 'Basic', display_price: '$5', interval: 'month', features: ['Predictions without YouTube video analysis'] },
-  { tier: 'pro', label: 'Pro', display_price: '$10', interval: 'month', features: ['Predictions with YouTube video analysis'] },
+  {
+    tier: 'free',
+    label: 'Free',
+    display_price: '$0',
+    interval: 'month',
+    features: [
+      '1 match prediction',
+      '1 tournament simulation',
+      '3 match markets',
+      '3 tournament markets',
+    ],
+  },
+  {
+    tier: 'basic',
+    label: 'Basic',
+    display_price: '$5',
+    interval: 'month',
+    features: ['Unlimited prediction runs', 'Unlimited market generation', 'No video analysis'],
+  },
+  {
+    tier: 'pro',
+    label: 'Pro',
+    display_price: '$10',
+    interval: 'month',
+    features: ['Unlimited prediction runs', 'Unlimited market generation', 'Includes video analysis'],
+  },
 ]
 
 describe('PricingView', () => {
@@ -45,6 +68,9 @@ describe('PricingView', () => {
   it('stores a post-auth redirect and routes to sign-up when Basic is clicked signed out', async () => {
     const wrapper = mount(PricingView, { global: { stubs: ['router-link'] } })
     await flushPromises()
+
+    expect(wrapper.text()).toContain('1 match prediction')
+    expect(wrapper.text()).toContain('Unlimited market generation')
 
     await wrapper.findAll('button')[1].trigger('click')
 

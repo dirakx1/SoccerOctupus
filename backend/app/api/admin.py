@@ -7,7 +7,14 @@ from flask import Blueprint, jsonify, g, request
 from ..auth import require_admin, require_user
 from ..billing import serialize_subscription
 from ..db.base import db
-from ..db.models import AppSettings
+from ..db.models import AppSettings, User
+from ..feature_limits import (
+    override_current_cycle_limit,
+    serialize_policies,
+    serialize_user_limits,
+    update_policies,
+    upsert_user_override,
+)
 from ..runtime_settings import RuntimeSettingsService
 from ..secret_store import SecretStore, SecretStoreError
 
@@ -67,6 +74,64 @@ def update_settings():
     settings.updated_by_user_id = g.current_user.id
     db.session.commit()
     return jsonify(_serialize_settings(settings))
+
+
+@bp.route("/admin/feature-limits", methods=["GET"])
+@require_admin(db)
+def get_feature_limits():
+    return jsonify(serialize_policies(db))
+
+
+@bp.route("/admin/feature-limits", methods=["PUT"])
+@require_admin(db)
+def put_feature_limits():
+    payload = request.get_json(force=True) or {}
+    try:
+        return jsonify(update_policies(payload, db))
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+
+def _find_user_or_404(user_id: int):
+    user = db.session.get(User, user_id)
+    if user is None:
+        return None, (jsonify({"error": "User not found"}), 404)
+    return user, None
+
+
+@bp.route("/admin/users/<int:user_id>/feature-limits", methods=["GET"])
+@require_admin(db)
+def get_user_feature_limits(user_id: int):
+    user, error = _find_user_or_404(user_id)
+    if error:
+        return error
+    return jsonify(serialize_user_limits(user, db))
+
+
+@bp.route("/admin/users/<int:user_id>/feature-limit-overrides", methods=["POST"])
+@require_admin(db)
+def post_user_feature_limit_override(user_id: int):
+    user, error = _find_user_or_404(user_id)
+    if error:
+        return error
+    payload = request.get_json(force=True) or {}
+    try:
+        return jsonify(upsert_user_override(user, payload, g.current_user, db))
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+
+@bp.route("/admin/users/<int:user_id>/feature-cycle-limits/<feature_key>", methods=["PUT"])
+@require_admin(db)
+def put_user_feature_cycle_limit(user_id: int, feature_key: str):
+    user, error = _find_user_or_404(user_id)
+    if error:
+        return error
+    payload = request.get_json(force=True) or {}
+    try:
+        return jsonify(override_current_cycle_limit(user, feature_key, payload, g.current_user, db))
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
 
 
 def _serialize_settings(settings: AppSettings) -> dict:

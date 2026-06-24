@@ -7,8 +7,14 @@ from __future__ import annotations
 from flask import Blueprint, jsonify, g, request
 
 from ..auth import require_user
-from ..billing import billing_required_response, includes_video_analysis
+from ..billing import includes_video_analysis
 from ..db.base import db
+from ..feature_limits import (
+    FEATURE_MATCH_MARKET,
+    FEATURE_TOURNAMENT_MARKET,
+    release_feature_usage,
+    reserve_feature_usage,
+)
 from ..models.match import MatchStage
 from ..runtime_settings import RuntimeSettingsService
 from ..services.market_question_generator import MarketQuestionGenerator
@@ -49,14 +55,15 @@ def match_markets():
 
     if not home or not away:
         return jsonify({"error": "home_team and away_team are required"}), 400
-    required = billing_required_response(g.current_user)
-    if required:
-        return required
 
     try:
         stage = MatchStage(stage_str)
     except ValueError:
         stage = MatchStage.GROUP
+
+    reservation = reserve_feature_usage(g.current_user, FEATURE_MATCH_MARKET, db)
+    if not reservation.allowed:
+        return reservation.response
 
     try:
         pred = _get_orc(include_video_analysis=includes_video_analysis(g.current_user)).predict_match(home, away, stage=stage)
@@ -82,6 +89,7 @@ def match_markets():
             "questions": payload,
         }), 200
     except Exception as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
         logger.error(f"Match markets failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 
@@ -98,9 +106,9 @@ def tournament_markets():
     """
     data = request.get_json(silent=True) or {}
     platform = data.get("platform", "both").lower()
-    required = billing_required_response(g.current_user)
-    if required:
-        return required
+    reservation = reserve_feature_usage(g.current_user, FEATURE_TOURNAMENT_MARKET, db)
+    if not reservation.allowed:
+        return reservation.response
 
     try:
         settings = RuntimeSettingsService.current(db)
@@ -137,6 +145,7 @@ def tournament_markets():
             "questions": payload,
         }), 200
     except Exception as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
         logger.error(f"Tournament markets failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 

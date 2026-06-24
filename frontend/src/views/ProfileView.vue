@@ -9,33 +9,6 @@
       <img v-if="avatarUrl" class="avatar" :src="avatarUrl" alt="Profile avatar" />
     </header>
 
-    <section class="profile-card billing-card">
-      <div class="billing-row">
-        <div>
-          <h2>Billing</h2>
-          <p class="billing-tier">
-            <span>Current tier</span>
-            <LoaderCircle v-if="billingLoading" :size="18" class="spin billing-loader" aria-label="Loading billing tier" />
-            <strong v-else>{{ tierLabel }}</strong>
-          </p>
-        </div>
-        <button
-          class="btn-primary billing-action"
-          :disabled="billingLoading || portalLoading"
-          :aria-label="portalLoading ? 'Opening billing' : 'Manage billing'"
-          :title="portalLoading ? 'Opening billing' : 'Manage'"
-          @click="openBillingPortal"
-        >
-          <LoaderCircle v-if="portalLoading" :size="18" class="spin" aria-hidden="true" />
-          <template v-else>
-            <span>Manage</span>
-            <CreditCard :size="18" aria-hidden="true" />
-          </template>
-        </button>
-      </div>
-      <p v-if="billingError" class="error-box">{{ billingError }}</p>
-    </section>
-
     <div class="profile-grid">
       <section class="profile-card">
         <h2>Personal details</h2>
@@ -119,17 +92,51 @@
         </form>
       </section>
     </div>
+
+    <section class="profile-card billing-card">
+      <div class="billing-row">
+        <div>
+          <h2>Billing</h2>
+          <p class="billing-tier">
+            <span>Current tier</span>
+            <LoaderCircle v-if="billingLoading" :size="18" class="spin billing-loader" aria-label="Loading billing tier" />
+            <strong v-else>{{ tierLabel }}</strong>
+          </p>
+        </div>
+        <button
+          class="btn-primary billing-action"
+          :disabled="billingLoading || portalLoading"
+          :aria-label="portalLoading ? 'Opening billing' : billingActionLabel"
+          :title="portalLoading ? 'Opening billing' : billingActionLabel"
+          @click="openBillingPortal"
+        >
+          <LoaderCircle v-if="portalLoading" :size="18" class="spin" aria-hidden="true" />
+          <template v-else>
+            <span>{{ billingActionText }}</span>
+            <CreditCard :size="18" aria-hidden="true" />
+          </template>
+        </button>
+      </div>
+      <div v-if="usage.features?.length" class="usage-grid">
+        <div v-for="feature in usage.features" :key="feature.feature_key" class="usage-row">
+          <span>{{ feature.label }}</span>
+          <strong>{{ usageText(feature) }}</strong>
+        </div>
+      </div>
+      <p v-if="billingError" class="error-box">{{ billingError }}</p>
+    </section>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { CreditCard, LoaderCircle } from '@lucide/vue'
+import { useRouter } from 'vue-router'
 
 import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
-import { createPortalSession, getSubscription } from '../lib/billing'
+import { createPortalSession, getSubscription, getUsage } from '../lib/billing'
 
 const {
   avatarUrl,
@@ -140,6 +147,7 @@ const {
   user,
 } = useCurrentUserProfile()
 
+const router = useRouter()
 const profileLoading = ref(false)
 const passwordLoading = ref(false)
 const profileError = ref('')
@@ -147,6 +155,7 @@ const passwordError = ref('')
 const profileSuccess = ref('')
 const passwordSuccess = ref('')
 const subscription = ref({})
+const usage = ref({})
 const billingLoading = ref(true)
 const portalLoading = ref(false)
 const billingError = ref('')
@@ -170,6 +179,9 @@ const tierLabel = computed(() => {
   }
   return labels[subscription.value.tier] || 'Free'
 })
+const isFreeTier = computed(() => (subscription.value.tier || 'free') === 'free')
+const billingActionText = computed(() => (isFreeTier.value ? 'Plans' : 'Manage'))
+const billingActionLabel = computed(() => (isFreeTier.value ? 'View plans' : 'Manage billing'))
 
 watch(
   [firstName, lastName],
@@ -193,8 +205,9 @@ async function loadBilling() {
   billingLoading.value = true
   billingError.value = ''
   try {
-    const res = await getSubscription()
-    subscription.value = res.data
+    const [subscriptionRes, usageRes] = await Promise.all([getSubscription(), getUsage()])
+    subscription.value = subscriptionRes.data
+    usage.value = usageRes.data
   } catch (err) {
     billingError.value = err.response?.data?.error || 'Could not load billing details.'
   } finally {
@@ -202,7 +215,17 @@ async function loadBilling() {
   }
 }
 
+function usageText(feature) {
+  if (feature.unlimited) return 'Unlimited'
+  return `${feature.used_count} / ${feature.limit_count}`
+}
+
 async function openBillingPortal() {
+  if (isFreeTier.value) {
+    router.push('/pricing')
+    return
+  }
+
   portalLoading.value = true
   billingError.value = ''
   try {
@@ -390,6 +413,30 @@ h2 {
 
 .billing-action {
   flex: 0 0 auto;
+}
+
+.usage-grid {
+  border-top: 1px solid #0f3460;
+  display: grid;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+.usage-row {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.usage-row span {
+  color: #a0aec0;
+  font-size: 13px;
+}
+
+.usage-row strong {
+  color: #e0e0e0;
+  font-size: 13px;
 }
 
 .profile-form {

@@ -55,7 +55,12 @@ def stripe_webhook():
     except Exception as exc:
         return jsonify({"error": f"Invalid webhook: {exc}"}), 400
 
-    event_row = StripeEvent(stripe_event_id=event["id"], event_type=event["type"])
+    event_id = _get_value(event, "id")
+    event_type = _get_value(event, "type")
+    if not event_id or not event_type:
+        return jsonify({"error": "Invalid webhook: missing event id or type"}), 400
+
+    event_row = StripeEvent(stripe_event_id=event_id, event_type=event_type)
     db.session.add(event_row)
     try:
         db.session.flush()
@@ -80,18 +85,44 @@ def _process_stripe_event(event: dict) -> None:
     obj = _get_value(data, "object") or {}
 
     if event_type == "checkout.session.completed":
-        _handle_checkout_completed(obj)
+        session_id = _get_value(obj, "id")
+        if session_id:
+            _handle_checkout_completed(_retrieve_checkout_session(session_id))
     elif event_type in {
         "customer.subscription.created",
         "customer.subscription.updated",
         "customer.subscription.deleted",
     }:
-        sync_subscription_from_stripe_subscription(obj, db)
-    elif event_type in {"invoice.payment_succeeded", "invoice.payment_failed"}:
-        subscription_id = _get_value(obj, "subscription")
+        subscription_id = _get_value(obj, "id")
         if subscription_id:
-            subscription = stripe.Subscription.retrieve(subscription_id, expand=["items.data.price"])
-            sync_subscription_from_stripe_subscription(subscription, db)
+            _sync_subscription_reference(subscription_id)
+    elif event_type in {"invoice.paid", "invoice.payment_succeeded", "invoice.payment_failed"}:
+        invoice_id = _get_value(obj, "id")
+        if invoice_id:
+            invoice = _retrieve_invoice(invoice_id)
+            _sync_subscription_reference(_get_value(invoice, "subscription"))
+
+
+def _retrieve_subscription(subscription_id: str):
+    return stripe.Subscription.retrieve(subscription_id, expand=["items.data.price"])
+
+
+def _retrieve_checkout_session(session_id: str):
+    return stripe.checkout.Session.retrieve(session_id, expand=["subscription"])
+
+
+def _retrieve_invoice(invoice_id: str):
+    return stripe.Invoice.retrieve(invoice_id, expand=["subscription"])
+
+
+def _sync_subscription_reference(subscription_ref) -> None:
+    if not subscription_ref:
+        return
+    subscription_id = subscription_ref if isinstance(subscription_ref, str) else _get_value(subscription_ref, "id")
+    if not subscription_id:
+        return
+    subscription = _retrieve_subscription(subscription_id)
+    sync_subscription_from_stripe_subscription(subscription, db)
 
 
 def _handle_checkout_completed(session: dict) -> None:
@@ -110,7 +141,5 @@ def _handle_checkout_completed(session: dict) -> None:
         db.session.add(user)
 
     subscription = _get_value(session, "subscription")
-    if isinstance(subscription, str):
-        subscription = stripe.Subscription.retrieve(subscription, expand=["items.data.price"])
     if subscription:
-        sync_subscription_from_stripe_subscription(subscription, db)
+        _sync_subscription_reference(subscription)

@@ -4,7 +4,7 @@
       <div>
         <p class="eyebrow">Billing</p>
         <h1>Choose prediction access</h1>
-        <p class="subtitle">Free accounts can browse. Basic runs prediction workflows without YouTube analysis. Pro includes the full video agent.</p>
+        <p class="subtitle">Free includes cycle-limited access. Paid tiers remove usage caps; Pro adds video analysis.</p>
       </div>
       <router-link v-if="auth.state.signedIn" class="icon-link" to="/profile">
         <span>Billing</span>
@@ -18,6 +18,7 @@
       <article v-for="plan in plans" :key="plan.tier" class="plan-card" :class="{ featured: plan.tier === 'pro' }">
         <div class="plan-top">
           <h2>{{ plan.label }}</h2>
+          <p class="plan-note">{{ planNote(plan.tier) }}</p>
           <div class="price">
             <span>{{ plan.display_price }}</span>
             <small>/{{ plan.interval }}</small>
@@ -75,6 +76,13 @@ function ctaText(tier) {
 function ctaIcon(tier) {
   if (tier === 'free') return auth.state.signedIn ? ArrowRight : LogIn
   return auth.state.signedIn ? ArrowRight : LogIn
+}
+
+function planNote(tier) {
+  if (tier === 'free') return 'Starter quota'
+  if (tier === 'basic') return 'Unlimited core access'
+  if (tier === 'pro') return 'Full signal coverage'
+  return ''
 }
 
 async function startCheckout(tier) {
@@ -142,6 +150,7 @@ h1 { color: #e2b714; font-size: 30px; margin-bottom: 8px; }
 .plan-card.featured { border-color: #e2b714; box-shadow: 0 0 0 1px rgba(226, 183, 20, 0.2); }
 .plan-top { display: flex; flex-direction: column; gap: 10px; }
 h2 { color: #e0e0e0; font-size: 20px; }
+.plan-note { color: #8888aa; font-size: 13px; margin-top: -4px; }
 .price span { color: #e2b714; font-size: 34px; font-weight: 800; }
 .price small { color: #8888aa; font-size: 14px; margin-left: 4px; }
 ul { color: #c0c0d0; display: flex; flex: 1; flex-direction: column; gap: 10px; list-style: none; padding: 0; }

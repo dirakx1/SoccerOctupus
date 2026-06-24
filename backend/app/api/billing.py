@@ -18,6 +18,7 @@ from ..billing import (
 )
 from ..db.base import db
 from ..db.models import User
+from ..feature_limits import serialize_usage
 
 bp = Blueprint("billing", __name__, url_prefix="/api/billing")
 
@@ -56,6 +57,12 @@ def checkout():
 @require_user(db)
 def subscription():
     return jsonify(serialize_subscription(g.current_user))
+
+
+@bp.route("/usage", methods=["GET"])
+@require_user(db)
+def usage():
+    return jsonify(serialize_usage(g.current_user, db))
 
 
 @bp.route("/invoices", methods=["GET"])

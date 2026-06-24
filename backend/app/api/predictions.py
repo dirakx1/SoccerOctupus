@@ -11,9 +11,15 @@ from typing import Any, Dict
 from flask import Blueprint, jsonify, g, request
 
 from ..auth import require_admin, require_user
-from ..billing import billing_required_response, includes_video_analysis
+from ..billing import includes_video_analysis
 from ..config import Config
 from ..db.base import db
+from ..feature_limits import (
+    FEATURE_MATCH_PREDICTION,
+    FEATURE_TOURNAMENT_SIMULATION,
+    release_feature_usage,
+    reserve_feature_usage,
+)
 from ..models.match import MatchStage
 from ..runtime_settings import RuntimeSettingsService
 from ..services.swarm_orchestrator import SwarmOrchestrator
@@ -52,20 +58,22 @@ def predict_match():
 
     if not home or not away:
         return jsonify({"error": "home_team and away_team are required"}), 400
-    required = billing_required_response(g.current_user)
-    if required:
-        return required
 
     try:
         stage = MatchStage(stage_str)
     except ValueError:
         stage = MatchStage.GROUP
 
+    reservation = reserve_feature_usage(g.current_user, FEATURE_MATCH_PREDICTION, db)
+    if not reservation.allowed:
+        return reservation.response
+
     try:
         orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user))
         result = orc.predict_match(home, away, stage=stage, group=group)
         return jsonify(result.to_dict()), 200
     except Exception as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
         logger.error(f"Match prediction failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 
@@ -84,9 +92,9 @@ def simulate_tournament():
     """
     data = request.get_json(force=True) or {}
     use_swarm = data.get("use_swarm", False)   # default off — swarm is slow for 104 matches
-    required = billing_required_response(g.current_user)
-    if required:
-        return required
+    reservation = reserve_feature_usage(g.current_user, FEATURE_TOURNAMENT_SIMULATION, db)
+    if not reservation.allowed:
+        return reservation.response
 
     orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user)) if use_swarm else None
     settings = RuntimeSettingsService.current(db)
@@ -102,6 +110,7 @@ def simulate_tournament():
         _save_result(result.simulation_id, result.to_dict())
         return jsonify(result.to_dict()), 200
     except Exception as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
         logger.error(f"Tournament simulation failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 

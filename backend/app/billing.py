@@ -16,6 +16,8 @@ from .db.models import User, utcnow
 
 PAID_STATUSES = {"active", "trialing"}
 PAID_TIERS = {"basic", "pro"}
+CHECKOUT_PAYMENT_METHOD_TYPES = ["card", "cashapp"]
+CHECKOUT_CURRENCY = "usd"
 
 
 class BillingConfigError(RuntimeError):
@@ -34,6 +36,13 @@ def _price_id_for_tier(tier: str) -> str:
     }.get(tier, "")
 
 
+def _ensure_usd_price(stripe_client: Any, price_id: str) -> None:
+    price = stripe_client.Price.retrieve(price_id)
+    currency = (_get_value(price, "currency", "") or "").lower()
+    if currency != CHECKOUT_CURRENCY:
+        raise BillingConfigError("Stripe price must use USD currency")
+
+
 def plan_catalog() -> list[dict[str, Any]]:
     return [
         {
@@ -42,7 +51,12 @@ def plan_catalog() -> list[dict[str, Any]]:
             "amount": 0,
             "display_price": "$0",
             "interval": "month",
-            "features": ["No paid prediction runs"],
+            "features": [
+                "1 match prediction",
+                "1 tournament simulation",
+                "3 match markets",
+                "3 tournament markets",
+            ],
             "includes_video_analysis": False,
         },
         {
@@ -51,7 +65,11 @@ def plan_catalog() -> list[dict[str, Any]]:
             "amount": 500,
             "display_price": "$5",
             "interval": "month",
-            "features": ["Predictions without YouTube video analysis"],
+            "features": [
+                "Unlimited prediction runs",
+                "Unlimited market generation",
+                "No video analysis",
+            ],
             "includes_video_analysis": False,
         },
         {
@@ -60,7 +78,11 @@ def plan_catalog() -> list[dict[str, Any]]:
             "amount": 1000,
             "display_price": "$10",
             "interval": "month",
-            "features": ["Predictions with YouTube video analysis"],
+            "features": [
+                "Unlimited prediction runs",
+                "Unlimited market generation",
+                "Includes video analysis",
+            ],
             "includes_video_analysis": True,
         },
     ]
@@ -81,6 +103,11 @@ def serialize_subscription(user: User) -> dict[str, Any]:
         "status": user.subscription_status,
         "is_paid_entitled": is_paid_entitled(user),
         "includes_video_analysis": includes_video_analysis(user),
+        "current_period_start": (
+            user.subscription_current_period_start.isoformat()
+            if user.subscription_current_period_start
+            else None
+        ),
         "current_period_end": (
             user.subscription_current_period_end.isoformat()
             if user.subscription_current_period_end
@@ -210,11 +237,14 @@ def create_checkout_session(user: User, tier: str) -> str:
         raise ValueError("Unknown paid tier")
     ensure_stripe_configured()
     price_id = _price_id_for_tier(tier)
+    stripe_client = _stripe()
+    _ensure_usd_price(stripe_client, price_id)
     customer_id = ensure_customer(user, db)
-    session = _stripe().checkout.Session.create(
+    session = stripe_client.checkout.Session.create(
         mode="subscription",
         customer=customer_id,
         client_reference_id=str(user.id),
+        payment_method_types=CHECKOUT_PAYMENT_METHOD_TYPES,
         line_items=[{"price": price_id, "quantity": 1}],
         success_url=f"{Config.FRONTEND_ORIGIN}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{Config.FRONTEND_ORIGIN}/pricing?checkout=cancelled&plan={tier}",
@@ -318,11 +348,16 @@ def sync_subscription_from_stripe_subscription(subscription: dict[str, Any], db_
     user.stripe_customer_id = customer_id or user.stripe_customer_id
     user.stripe_subscription_id = subscription_id or user.stripe_subscription_id
     user.subscription_status = "canceled" if deleted else status
+    user.subscription_current_period_start = _ts(_get_value(subscription, "current_period_start"))
     user.subscription_current_period_end = _ts(_get_value(subscription, "current_period_end"))
     user.subscription_cancel_at_period_end = False if deleted else bool(_get_value(subscription, "cancel_at_period_end"))
     user.subscription_synced_at = utcnow()
     user.stripe_price_id = price_id
     user.subscription_tier = "free" if deleted else tier_for_price_id(price_id)
+    if deleted:
+        period_end = user.subscription_current_period_end
+        now = utcnow()
+        user.usage_cycle_anchor_at = period_end if period_end and period_end <= now else now
     if deleted and not price_id:
         user.stripe_price_id = None
     _session(db_session).add(user)

@@ -320,7 +320,7 @@ async function runMatchMarkets() {
     matchData.value = res.data
   } catch (e) {
     matchError.value = e.response?.data?.error ?? e.message
-    matchSubscriptionRequired.value = e.response?.data?.code === 'subscription_required'
+    matchSubscriptionRequired.value = ['subscription_required', 'feature_limit_reached'].includes(e.response?.data?.code)
   } finally {
     matchLoading.value = false
   }
@@ -337,7 +337,7 @@ async function runTournamentMarkets() {
     tourneyData.value = res.data
   } catch (e) {
     tourneyError.value = e.response?.data?.error ?? e.message
-    tourneySubscriptionRequired.value = e.response?.data?.code === 'subscription_required'
+    tourneySubscriptionRequired.value = ['subscription_required', 'feature_limit_reached'].includes(e.response?.data?.code)
   } finally {
     tourneyLoading.value = false
   }

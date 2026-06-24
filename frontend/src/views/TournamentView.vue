@@ -106,7 +106,7 @@ async function runSim() {
     result.value = res.data
   } catch (e) {
     error.value = e.response?.data?.error || e.message
-    subscriptionRequired.value = e.response?.data?.code === 'subscription_required'
+    subscriptionRequired.value = ['subscription_required', 'feature_limit_reached'].includes(e.response?.data?.code)
   } finally {
     loading.value = false
   }
