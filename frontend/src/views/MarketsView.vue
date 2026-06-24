@@ -75,7 +75,10 @@
         </button>
       </div>
 
-      <div v-if="matchError" class="error-box">{{ matchError }}</div>
+      <div v-if="matchError" class="error-box">
+        {{ matchError }}
+        <BillingPlansLink v-if="matchSubscriptionRequired" />
+      </div>
 
       <!-- Match result summary -->
       <div v-if="matchData" class="match-summary">
@@ -132,7 +135,10 @@
         </button>
       </div>
 
-      <div v-if="tourneyError" class="error-box">{{ tourneyError }}</div>
+      <div v-if="tourneyError" class="error-box">
+        {{ tourneyError }}
+        <BillingPlansLink v-if="tourneySubscriptionRequired" />
+      </div>
 
       <!-- Champion banner -->
       <div v-if="tourneyData" class="champion-banner">
@@ -210,6 +216,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { api } from '../lib/api'
+import BillingPlansLink from '../components/BillingPlansLink.vue'
 import MarketCard from '../components/MarketCard.vue'
 
 // ── State ───────────────────────────────────────────────────────────────────
@@ -224,11 +231,13 @@ const matchLoading = ref(false)
 const matchError   = ref('')
 const matchData    = ref(null)
 const matchFilter  = ref('all')
+const matchSubscriptionRequired = ref(false)
 
 const tourneyLoading = ref(false)
 const tourneyError   = ref('')
 const tourneyData    = ref(null)
 const tourneyFilter  = ref('all')
+const tourneySubscriptionRequired = ref(false)
 
 // ── Prop type definitions ────────────────────────────────────────────────────
 const matchPropTypes = [
@@ -299,6 +308,7 @@ onMounted(async () => {
 async function runMatchMarkets() {
   matchLoading.value = true
   matchError.value = ''
+  matchSubscriptionRequired.value = false
   matchData.value = null
   matchFilter.value = 'all'
   try {
@@ -310,6 +320,7 @@ async function runMatchMarkets() {
     matchData.value = res.data
   } catch (e) {
     matchError.value = e.response?.data?.error ?? e.message
+    matchSubscriptionRequired.value = e.response?.data?.code === 'subscription_required'
   } finally {
     matchLoading.value = false
   }
@@ -318,6 +329,7 @@ async function runMatchMarkets() {
 async function runTournamentMarkets() {
   tourneyLoading.value = true
   tourneyError.value = ''
+  tourneySubscriptionRequired.value = false
   tourneyData.value = null
   tourneyFilter.value = 'all'
   try {
@@ -325,6 +337,7 @@ async function runTournamentMarkets() {
     tourneyData.value = res.data
   } catch (e) {
     tourneyError.value = e.response?.data?.error ?? e.message
+    tourneySubscriptionRequired.value = e.response?.data?.code === 'subscription_required'
   } finally {
     tourneyLoading.value = false
   }
@@ -474,4 +487,5 @@ option { background: #0a0a1a; color: #e0e0e0; }
   background: #3d1a1a; border: 1px solid #c53030;
   border-radius: 8px; padding: 14px; color: #fc8181; font-size: 14px;
 }
+.error-box a { color: #f6d860; font-weight: 700; margin-left: 10px; }
 </style>

@@ -8,3 +8,5 @@ backend/uploads/
 backend/instance/
 dist/
 .DS_Store
+
+.env.*

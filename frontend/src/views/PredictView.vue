@@ -44,7 +44,10 @@
     </div>
 
     <!-- Error -->
-    <div v-if="error" class="error-box">{{ error }}</div>
+    <div v-if="error" class="error-box">
+      {{ error }}
+      <BillingPlansLink v-if="subscriptionRequired" />
+    </div>
 
     <!-- Result -->
     <div v-if="result" class="result-panel">
@@ -141,6 +144,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { api } from '../lib/api'
+import BillingPlansLink from '../components/BillingPlansLink.vue'
 import ProbMeter from '../components/ProbMeter.vue'
 
 const teams = ref([])
@@ -150,6 +154,7 @@ const stage = ref('group')
 const loading = ref(false)
 const result = ref(null)
 const error = ref('')
+const subscriptionRequired = ref(false)
 
 onMounted(async () => {
   try {
@@ -164,6 +169,7 @@ async function runPrediction() {
   if (!homeTeam.value || !awayTeam.value) return
   loading.value = true
   error.value = ''
+  subscriptionRequired.value = false
   result.value = null
   try {
     const res = await api.post('/api/predictions/match', {
@@ -174,6 +180,7 @@ async function runPrediction() {
     result.value = res.data
   } catch (e) {
     error.value = e.response?.data?.error || e.message
+    subscriptionRequired.value = e.response?.data?.code === 'subscription_required'
   } finally {
     loading.value = false
   }

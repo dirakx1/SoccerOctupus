@@ -4,8 +4,10 @@ Markets API blueprint
 
 from __future__ import annotations
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, g, request
 
+from ..auth import require_user
+from ..billing import billing_required_response, includes_video_analysis
 from ..db.base import db
 from ..models.match import MatchStage
 from ..runtime_settings import RuntimeSettingsService
@@ -21,17 +23,18 @@ bp = Blueprint("markets", __name__, url_prefix="/api/markets")
 _gen = MarketQuestionGenerator()
 
 
-def _get_orc() -> SwarmOrchestrator:
+def _get_orc(include_video_analysis: bool = True) -> SwarmOrchestrator:
     settings = RuntimeSettingsService.current(db)
     llm = None
     if settings.llm_api_key:
         llm = LLMClient(settings=settings)
-    return SwarmOrchestrator(settings=settings, llm_client=llm)
+    return SwarmOrchestrator(settings=settings, llm_client=llm, include_video_analysis=include_video_analysis)
 
 
 # ── Match market questions ─────────────────────────────────────────────────
 
 @bp.route("/match", methods=["POST"])
+@require_user(db)
 def match_markets():
     """
     POST /api/markets/match
@@ -46,6 +49,9 @@ def match_markets():
 
     if not home or not away:
         return jsonify({"error": "home_team and away_team are required"}), 400
+    required = billing_required_response(g.current_user)
+    if required:
+        return required
 
     try:
         stage = MatchStage(stage_str)
@@ -53,7 +59,7 @@ def match_markets():
         stage = MatchStage.GROUP
 
     try:
-        pred = _get_orc().predict_match(home, away, stage=stage)
+        pred = _get_orc(include_video_analysis=includes_video_analysis(g.current_user)).predict_match(home, away, stage=stage)
         questions = _gen.from_match(pred)
 
         if platform == "kalshi":
@@ -83,6 +89,7 @@ def match_markets():
 # ── Tournament market questions ────────────────────────────────────────────
 
 @bp.route("/tournament", methods=["POST"])
+@require_user(db)
 def tournament_markets():
     """
     POST /api/markets/tournament
@@ -91,6 +98,9 @@ def tournament_markets():
     """
     data = request.get_json(silent=True) or {}
     platform = data.get("platform", "both").lower()
+    required = billing_required_response(g.current_user)
+    if required:
+        return required
 
     try:
         settings = RuntimeSettingsService.current(db)

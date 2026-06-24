@@ -146,7 +146,11 @@ def test_signed_in_user_can_access_me(client, user, monkeypatch):
     monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "user@example.com"})
     response = client.get("/api/me", headers=_auth_header(user["clerk_user_id"]))
     assert response.status_code == 200
-    assert response.get_json()["email"] == "user@example.com"
+    body = response.get_json()
+    assert body["email"] == "user@example.com"
+    assert body["subscription"]["tier"] == "free"
+    assert body["subscription"]["is_paid_entitled"] is False
+    assert "stripe_customer_id" not in body["subscription"]
 
 
 def test_non_admin_cannot_access_admin_settings(client, user, monkeypatch):
@@ -194,6 +198,7 @@ def test_validation_rejects_invalid_base_url():
 
 
 def test_webhook_update_preserves_admin_flag(client, admin, monkeypatch):
+    monkeypatch.setattr("app.api.webhooks.sync_stripe_customer_profile", lambda user, db_session: "cus_test")
     monkeypatch.setattr(
         "app.api.webhooks.verify_webhook",
         lambda payload, headers: {
@@ -214,6 +219,170 @@ def test_webhook_update_preserves_admin_flag(client, admin, monkeypatch):
         updated = User.query.filter_by(clerk_user_id=admin["clerk_user_id"]).one()
         assert updated.is_admin is True
         assert updated.first_name == "Updated"
+
+
+def test_clerk_created_webhook_creates_stripe_customer(client, monkeypatch):
+    created = []
+    monkeypatch.setattr("app.api.webhooks.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    monkeypatch.setattr("app.billing.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    monkeypatch.setattr(
+        "app.api.webhooks.verify_webhook",
+        lambda payload, headers: {
+            "type": "user.created",
+            "data": {
+                "id": "user_new",
+                "first_name": "New",
+                "last_name": "Customer",
+                "email_addresses": [{"email_address": "new@example.com"}],
+                "primary_email_address_id": None,
+                "image_url": "https://example.com/avatar.png",
+            },
+        },
+    )
+
+    class FakeCustomer:
+        @staticmethod
+        def create(**kwargs):
+            created.append(kwargs)
+            return {"id": "cus_new"}
+
+        @staticmethod
+        def modify(*args, **kwargs):
+            raise AssertionError("new users should create a Stripe customer")
+
+    monkeypatch.setattr("app.billing._stripe", lambda: type("FakeStripe", (), {"Customer": FakeCustomer}))
+
+    response = client.post("/api/webhooks/clerk", data=b"{}")
+
+    assert response.status_code == 200
+    assert created[0]["email"] == "new@example.com"
+    assert created[0]["name"] == "New Customer"
+    assert created[0]["metadata"]["clerk_user_id"] == "user_new"
+    with client.application.app_context():
+        user = User.query.filter_by(clerk_user_id="user_new").one()
+        assert user.stripe_customer_id == "cus_new"
+
+
+def test_clerk_webhook_uses_primary_email_address(client, monkeypatch):
+    created = []
+    monkeypatch.setattr("app.api.webhooks.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    monkeypatch.setattr("app.billing.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    monkeypatch.setattr(
+        "app.api.webhooks.verify_webhook",
+        lambda payload, headers: {
+            "type": "user.created",
+            "data": {
+                "id": "user_primary_email",
+                "first_name": "Primary",
+                "last_name": "Email",
+                "email": "fallback@example.com",
+                "primary_email_address": {
+                    "id": "email_primary_object",
+                    "email_address": "primary@example.com",
+                },
+                "email_addresses": [
+                    {"id": "email_secondary", "email_address": "secondary@example.com"},
+                    {"id": "email_primary_id", "email_address": "id-match@example.com"},
+                ],
+                "primary_email_address_id": "email_primary_id",
+            },
+        },
+    )
+
+    class FakeCustomer:
+        @staticmethod
+        def create(**kwargs):
+            created.append(kwargs)
+            return {"id": "cus_primary"}
+
+        @staticmethod
+        def modify(*args, **kwargs):
+            raise AssertionError("new users should create a Stripe customer")
+
+    monkeypatch.setattr("app.billing._stripe", lambda: type("FakeStripe", (), {"Customer": FakeCustomer}))
+
+    response = client.post("/api/webhooks/clerk", data=b"{}")
+
+    assert response.status_code == 200
+    assert created[0]["email"] == "primary@example.com"
+    with client.application.app_context():
+        user = User.query.filter_by(clerk_user_id="user_primary_email").one()
+        assert user.email == "primary@example.com"
+
+
+def test_clerk_updated_webhook_updates_stripe_customer_profile(client, user, monkeypatch):
+    modified = []
+    monkeypatch.setattr("app.api.webhooks.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    monkeypatch.setattr("app.billing.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        db.session.commit()
+
+    monkeypatch.setattr(
+        "app.api.webhooks.verify_webhook",
+        lambda payload, headers: {
+            "type": "user.updated",
+            "data": {
+                "id": user["clerk_user_id"],
+                "first_name": "Updated",
+                "last_name": "Customer",
+                "email_addresses": [{"email_address": "updated@example.com"}],
+                "primary_email_address_id": None,
+                "image_url": "https://example.com/avatar.png",
+            },
+        },
+    )
+
+    class FakeCustomer:
+        @staticmethod
+        def create(**kwargs):
+            raise AssertionError("existing users should update their Stripe customer")
+
+        @staticmethod
+        def modify(customer_id, **kwargs):
+            modified.append((customer_id, kwargs))
+            return {"id": customer_id}
+
+    monkeypatch.setattr("app.billing._stripe", lambda: type("FakeStripe", (), {"Customer": FakeCustomer}))
+
+    response = client.post("/api/webhooks/clerk", data=b"{}")
+
+    assert response.status_code == 200
+    assert modified == [
+        (
+            "cus_existing",
+            {
+                "email": "updated@example.com",
+                "name": "Updated Customer",
+                "metadata": {"user_id": str(user["id"]), "clerk_user_id": user["clerk_user_id"]},
+            },
+        )
+    ]
+
+
+def test_clerk_webhook_still_syncs_user_when_stripe_is_not_configured(client, monkeypatch):
+    monkeypatch.setattr("app.api.webhooks.Config.STRIPE_SECRET_KEY", "")
+    monkeypatch.setattr("app.billing.Config.STRIPE_SECRET_KEY", "")
+    monkeypatch.setattr(
+        "app.api.webhooks.verify_webhook",
+        lambda payload, headers: {
+            "type": "user.created",
+            "data": {
+                "id": "user_without_stripe",
+                "email_addresses": [{"email_address": "nostripe@example.com"}],
+                "primary_email_address_id": None,
+            },
+        },
+    )
+
+    response = client.post("/api/webhooks/clerk", data=b"{}")
+
+    assert response.status_code == 200
+    with client.application.app_context():
+        user = User.query.filter_by(clerk_user_id="user_without_stripe").one()
+        assert user.email == "nostripe@example.com"
+        assert user.stripe_customer_id is None
 
 
 def test_user_deleted_deactivates_local_user(client, user, monkeypatch):
@@ -401,9 +570,10 @@ def test_market_orchestrator_uses_request_time_db_llm_key(app, monkeypatch):
             captured["llm_api_key"] = settings.llm_api_key
 
     class FakeOrchestrator:
-        def __init__(self, settings, llm_client=None):
+        def __init__(self, settings, llm_client=None, include_video_analysis=True):
             captured["settings"] = settings
             captured["llm_client"] = llm_client
+            captured["include_video_analysis"] = include_video_analysis
 
     monkeypatch.setattr("app.api.markets.LLMClient", FakeLLMClient, raising=False)
     monkeypatch.setattr("app.api.markets.SwarmOrchestrator", FakeOrchestrator)
@@ -420,7 +590,7 @@ def test_market_orchestrator_uses_request_time_db_llm_key(app, monkeypatch):
         assert captured["settings"].llm_api_key == "db-llm"
 
 
-def test_market_tournament_uses_request_time_mc_simulations(client, app, monkeypatch):
+def test_market_tournament_uses_request_time_mc_simulations(client, app, user, monkeypatch):
     captured = {}
 
     class FakeResult:
@@ -441,14 +611,18 @@ def test_market_tournament_uses_request_time_mc_simulations(client, app, monkeyp
     with app.app_context():
         settings = RuntimeSettingsService.ensure_defaults(db)
         settings.mc_simulations = 33333
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.subscription_tier = "basic"
+        entry.subscription_status = "active"
         db.session.commit()
 
-    response = client.post("/api/markets/tournament", json={})
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "user@example.com"})
+    response = client.post("/api/markets/tournament", headers=_auth_header(user["clerk_user_id"]), json={})
     assert response.status_code == 200
     assert captured["mc_simulations"] == 33333
 
 
-def test_market_tournament_accepts_empty_body(client, app, monkeypatch):
+def test_market_tournament_accepts_empty_body(client, app, user, monkeypatch):
     class FakeResult:
         champion = "France"
         runner_up = "Brazil"
@@ -466,8 +640,13 @@ def test_market_tournament_accepts_empty_body(client, app, monkeypatch):
     monkeypatch.setattr("app.api.markets._gen.from_tournament", lambda _result: [])
     with app.app_context():
         RuntimeSettingsService.ensure_defaults(db)
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.subscription_tier = "basic"
+        entry.subscription_status = "active"
+        db.session.commit()
 
-    response = client.post("/api/markets/tournament")
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": token, "email": "user@example.com"})
+    response = client.post("/api/markets/tournament", headers=_auth_header(user["clerk_user_id"]))
     assert response.status_code == 200
     assert response.is_json
 

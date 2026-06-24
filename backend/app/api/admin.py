@@ -5,6 +5,7 @@ from __future__ import annotations
 from flask import Blueprint, jsonify, g, request
 
 from ..auth import require_admin, require_user
+from ..billing import serialize_subscription
 from ..db.base import db
 from ..db.models import AppSettings
 from ..runtime_settings import RuntimeSettingsService
@@ -27,6 +28,7 @@ def me():
             "avatar_url": user.avatar_url,
             "is_admin": user.is_admin,
             "is_active": user.is_active,
+            "subscription": serialize_subscription(user),
         }
     )
 

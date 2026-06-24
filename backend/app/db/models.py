@@ -34,6 +34,23 @@ class User(db.Model, TimestampMixin):
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     last_sign_in_at = db.Column(db.DateTime(timezone=True), nullable=True)
     deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    stripe_customer_id = db.Column(db.String(255), unique=True, nullable=True, index=True)
+    stripe_subscription_id = db.Column(db.String(255), unique=True, nullable=True, index=True)
+    stripe_price_id = db.Column(db.String(255), nullable=True, index=True)
+    subscription_tier = db.Column(db.String(32), nullable=False, default="free", index=True)
+    subscription_status = db.Column(db.String(64), nullable=True, index=True)
+    subscription_current_period_end = db.Column(db.DateTime(timezone=True), nullable=True)
+    subscription_cancel_at_period_end = db.Column(db.Boolean, nullable=False, default=False)
+    subscription_synced_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+
+class StripeEvent(db.Model, TimestampMixin):
+    __tablename__ = "stripe_events"
+
+    id = db.Column(db.Integer, primary_key=True)
+    stripe_event_id = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    event_type = db.Column(db.String(255), nullable=False)
+    processed_at = db.Column(db.DateTime(timezone=True), nullable=True)
 
 
 class AppSettings(db.Model, TimestampMixin):

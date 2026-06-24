@@ -43,11 +43,15 @@ def _normalize_timestamp(value: Any) -> datetime | None:
 
 
 def _extract_email(payload: dict[str, Any]) -> str:
+    primary_email_address = payload.get("primary_email_address")
+    if isinstance(primary_email_address, dict) and primary_email_address.get("email_address"):
+        return primary_email_address["email_address"]
+    primary_email_address_id = payload.get("primary_email_address_id")
+    for address in payload.get("email_addresses", []):
+        if address.get("id") == primary_email_address_id:
+            return address.get("email_address", "")
     if payload.get("email"):
         return payload["email"]
-    for address in payload.get("email_addresses", []):
-        if address.get("id") == payload.get("primary_email_address_id"):
-            return address.get("email_address", "")
     if payload.get("email_addresses"):
         return payload["email_addresses"][0].get("email_address", "")
     return ""

@@ -22,4 +22,19 @@ describe('router meta', () => {
     const route = router.getRoutes().find((entry) => entry.path === '/profile')
     expect(route.meta.requiresAuth).toBe(true)
   })
+
+  it('marks pricing as public', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/pricing')
+    expect(route.meta.public).toBe(true)
+  })
+
+  it('redirects the old billing route to profile', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/billing')
+    expect(route.redirect).toBe('/profile')
+  })
+
+  it('marks billing success as signed-in only', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/billing/success')
+    expect(route.meta.requiresAuth).toBe(true)
+  })
 })

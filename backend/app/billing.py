@@ -1,0 +1,329 @@
+"""Stripe billing helpers and entitlement policy."""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from typing import Any
+
+import stripe
+from flask import jsonify
+from sqlalchemy.exc import IntegrityError
+
+from .config import Config
+from .db.base import db
+from .db.models import User, utcnow
+
+
+PAID_STATUSES = {"active", "trialing"}
+PAID_TIERS = {"basic", "pro"}
+
+
+class BillingConfigError(RuntimeError):
+    pass
+
+
+def _stripe() -> Any:
+    stripe.api_key = Config.STRIPE_SECRET_KEY
+    return stripe
+
+
+def _price_id_for_tier(tier: str) -> str:
+    return {
+        "basic": Config.STRIPE_BASIC_PRICE_ID,
+        "pro": Config.STRIPE_PRO_PRICE_ID,
+    }.get(tier, "")
+
+
+def plan_catalog() -> list[dict[str, Any]]:
+    return [
+        {
+            "tier": "free",
+            "label": "Free",
+            "amount": 0,
+            "display_price": "$0",
+            "interval": "month",
+            "features": ["No paid prediction runs"],
+            "includes_video_analysis": False,
+        },
+        {
+            "tier": "basic",
+            "label": "Basic",
+            "amount": 500,
+            "display_price": "$5",
+            "interval": "month",
+            "features": ["Predictions without YouTube video analysis"],
+            "includes_video_analysis": False,
+        },
+        {
+            "tier": "pro",
+            "label": "Pro",
+            "amount": 1000,
+            "display_price": "$10",
+            "interval": "month",
+            "features": ["Predictions with YouTube video analysis"],
+            "includes_video_analysis": True,
+        },
+    ]
+
+
+def tier_for_price_id(price_id: str | None) -> str:
+    if price_id and price_id == Config.STRIPE_BASIC_PRICE_ID:
+        return "basic"
+    if price_id and price_id == Config.STRIPE_PRO_PRICE_ID:
+        return "pro"
+    return "free"
+
+
+def serialize_subscription(user: User) -> dict[str, Any]:
+    tier = user.subscription_tier or "free"
+    return {
+        "tier": tier,
+        "status": user.subscription_status,
+        "is_paid_entitled": is_paid_entitled(user),
+        "includes_video_analysis": includes_video_analysis(user),
+        "current_period_end": (
+            user.subscription_current_period_end.isoformat()
+            if user.subscription_current_period_end
+            else None
+        ),
+        "cancel_at_period_end": bool(user.subscription_cancel_at_period_end),
+        "synced_at": user.subscription_synced_at.isoformat() if user.subscription_synced_at else None,
+    }
+
+
+def is_paid_entitled(user: User) -> bool:
+    if user.is_admin:
+        return True
+    return (user.subscription_tier in PAID_TIERS) and (user.subscription_status in PAID_STATUSES)
+
+
+def includes_video_analysis(user: User) -> bool:
+    if user.is_admin:
+        return True
+    return user.subscription_tier == "pro" and user.subscription_status in PAID_STATUSES
+
+
+def billing_required_response(user: User):
+    if is_paid_entitled(user):
+        return None
+    return jsonify(
+        {
+            "error": "Active subscription required",
+            "code": "subscription_required",
+            "plans_url": "/pricing",
+        }
+    ), 402
+
+
+def ensure_stripe_configured(*, require_prices: bool = True, require_webhook: bool = False) -> None:
+    missing = []
+    if not Config.STRIPE_SECRET_KEY:
+        missing.append("STRIPE_SECRET_KEY")
+    if require_prices:
+        if not Config.STRIPE_BASIC_PRICE_ID:
+            missing.append("STRIPE_BASIC_PRICE_ID")
+        if not Config.STRIPE_PRO_PRICE_ID:
+            missing.append("STRIPE_PRO_PRICE_ID")
+    if require_webhook and not Config.STRIPE_WEBHOOK_SECRET:
+        missing.append("STRIPE_WEBHOOK_SECRET")
+    if missing:
+        raise BillingConfigError(f"Stripe configuration missing: {', '.join(missing)}")
+
+
+def _session(db_session):
+    return getattr(db_session, "session", db_session)
+
+
+def _get_value(obj: Any, key: str, default: Any = None) -> Any:
+    if obj is None:
+        return default
+    try:
+        return obj[key]
+    except (KeyError, TypeError):
+        pass
+    value = getattr(obj, key, default)
+    return value if value is not None else default
+
+
+def _metadata_dict(metadata: Any) -> dict[str, Any]:
+    if metadata is None:
+        return {}
+    if hasattr(metadata, "to_dict_recursive"):
+        return metadata.to_dict_recursive()
+    if hasattr(metadata, "to_dict"):
+        return metadata.to_dict()
+    if isinstance(metadata, dict):
+        return {key: metadata[key] for key in metadata}
+    return {}
+
+
+def _customer_profile_payload(user: User) -> dict[str, Any]:
+    name = " ".join(part for part in [user.first_name, user.last_name] if part).strip()
+    payload: dict[str, Any] = {
+        "email": user.email,
+        "metadata": {
+            "user_id": str(user.id),
+            "clerk_user_id": user.clerk_user_id,
+        },
+    }
+    if name:
+        payload["name"] = name
+    return payload
+
+
+def sync_stripe_customer_profile(user: User, db_session) -> str:
+    """Create or update the Stripe customer backing a Clerk user."""
+    ensure_stripe_configured(require_prices=False)
+    stripe_client = _stripe()
+    payload = _customer_profile_payload(user)
+
+    if user.stripe_customer_id:
+        stripe_client.Customer.modify(user.stripe_customer_id, **payload)
+        return user.stripe_customer_id
+
+    customer = stripe_client.Customer.create(**payload)
+    customer_id = _get_value(customer, "id")
+    user.stripe_customer_id = customer_id
+    session = _session(db_session)
+    try:
+        session.add(user)
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+        existing = User.query.get(user.id)
+        if existing and existing.stripe_customer_id:
+            stripe_client.Customer.modify(existing.stripe_customer_id, **payload)
+            return existing.stripe_customer_id
+        raise
+    return customer_id
+
+
+def ensure_customer(user: User, db_session) -> str:
+    if user.stripe_customer_id:
+        return user.stripe_customer_id
+
+    return sync_stripe_customer_profile(user, db_session)
+
+
+def create_checkout_session(user: User, tier: str) -> str:
+    if tier not in PAID_TIERS:
+        raise ValueError("Unknown paid tier")
+    ensure_stripe_configured()
+    price_id = _price_id_for_tier(tier)
+    customer_id = ensure_customer(user, db)
+    session = _stripe().checkout.Session.create(
+        mode="subscription",
+        customer=customer_id,
+        client_reference_id=str(user.id),
+        line_items=[{"price": price_id, "quantity": 1}],
+        success_url=f"{Config.FRONTEND_ORIGIN}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=f"{Config.FRONTEND_ORIGIN}/pricing?checkout=cancelled&plan={tier}",
+        metadata={"user_id": str(user.id), "tier": tier},
+        subscription_data={"metadata": {"user_id": str(user.id), "tier": tier}},
+    )
+    return session["url"] if isinstance(session, dict) else session.url
+
+
+def create_portal_session(user: User, return_path: str = "/profile") -> str:
+    ensure_stripe_configured(require_prices=False)
+    customer_id = ensure_customer(user, db)
+    params: dict[str, Any] = {
+        "customer": customer_id,
+        "return_url": f"{Config.FRONTEND_ORIGIN}{return_path}",
+    }
+    if Config.STRIPE_BILLING_PORTAL_CONFIGURATION_ID:
+        params["configuration"] = Config.STRIPE_BILLING_PORTAL_CONFIGURATION_ID
+    session = _stripe().billing_portal.Session.create(**params)
+    return session["url"] if isinstance(session, dict) else session.url
+
+
+def list_invoices(user: User, limit: int = 20) -> list[dict[str, Any]]:
+    ensure_stripe_configured(require_prices=False)
+    if not user.stripe_customer_id:
+        return []
+    invoices = _stripe().Invoice.list(customer=user.stripe_customer_id, limit=limit)
+    data = invoices.get("data", invoices) if isinstance(invoices, dict) else invoices.data
+    sanitized = []
+    for invoice in data:
+        sanitized.append(
+        {
+            "id": _get_value(invoice, "id"),
+            "number": _get_value(invoice, "number"),
+            "status": _get_value(invoice, "status"),
+            "amount_due": _get_value(invoice, "amount_due"),
+            "amount_paid": _get_value(invoice, "amount_paid"),
+            "currency": _get_value(invoice, "currency"),
+            "created": _get_value(invoice, "created"),
+            "hosted_invoice_url": _get_value(invoice, "hosted_invoice_url"),
+        }
+        )
+    return sanitized
+
+
+def retrieve_checkout_session(session_id: str) -> dict[str, Any]:
+    ensure_stripe_configured(require_prices=False)
+    return _stripe().checkout.Session.retrieve(session_id, expand=["subscription"])
+
+
+def checkout_session_belongs_to_user(session: dict[str, Any], user: User) -> bool:
+    metadata = _metadata_dict(_get_value(session, "metadata"))
+    return any(
+        [
+            _get_value(session, "customer") and _get_value(session, "customer") == user.stripe_customer_id,
+            _get_value(session, "client_reference_id") == str(user.id),
+            metadata.get("user_id") == str(user.id),
+            metadata.get("clerk_user_id") == user.clerk_user_id,
+        ]
+    )
+
+
+def _ts(value: int | None) -> datetime | None:
+    if not value:
+        return None
+    return datetime.fromtimestamp(value, tz=timezone.utc)
+
+
+def _subscription_item_price_id(subscription: dict[str, Any]) -> str | None:
+    items_obj = _get_value(subscription, "items") or {}
+    items = _get_value(items_obj, "data", [])
+    if not items:
+        return None
+    price = _get_value(items[0], "price") or {}
+    return _get_value(price, "id")
+
+
+def sync_subscription_from_stripe_subscription(subscription: dict[str, Any], db_session) -> User | None:
+    metadata = _metadata_dict(_get_value(subscription, "metadata"))
+    customer_id = _get_value(subscription, "customer")
+    subscription_id = _get_value(subscription, "id")
+    user = None
+
+    if customer_id:
+        user = User.query.filter_by(stripe_customer_id=customer_id).one_or_none()
+    if user is None and subscription_id:
+        user = User.query.filter_by(stripe_subscription_id=subscription_id).one_or_none()
+    if user is None and metadata.get("user_id"):
+        user = User.query.get(metadata["user_id"])
+    if user is None and metadata.get("clerk_user_id"):
+        user = User.query.filter_by(clerk_user_id=metadata["clerk_user_id"]).one_or_none()
+    if user is None:
+        return None
+
+    status = _get_value(subscription, "status")
+    price_id = _subscription_item_price_id(subscription)
+    deleted = status == "canceled" or (
+        _get_value(subscription, "object") == "subscription" and _get_value(subscription, "deleted") is True
+    )
+
+    user.stripe_customer_id = customer_id or user.stripe_customer_id
+    user.stripe_subscription_id = subscription_id or user.stripe_subscription_id
+    user.subscription_status = "canceled" if deleted else status
+    user.subscription_current_period_end = _ts(_get_value(subscription, "current_period_end"))
+    user.subscription_cancel_at_period_end = False if deleted else bool(_get_value(subscription, "cancel_at_period_end"))
+    user.subscription_synced_at = utcnow()
+    user.stripe_price_id = price_id
+    user.subscription_tier = "free" if deleted else tier_for_price_id(price_id)
+    if deleted and not price_id:
+        user.stripe_price_id = None
+    _session(db_session).add(user)
+    return user

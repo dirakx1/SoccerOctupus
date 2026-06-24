@@ -15,7 +15,10 @@
       </button>
     </div>
 
-    <div v-if="error" class="error-box">{{ error }}</div>
+    <div v-if="error" class="error-box">
+      {{ error }}
+      <BillingPlansLink v-if="subscriptionRequired" />
+    </div>
 
     <div v-if="result" class="result-panel">
       <!-- Champion podium -->
@@ -85,21 +88,25 @@
 <script setup>
 import { ref } from 'vue'
 import { api } from '../lib/api'
+import BillingPlansLink from '../components/BillingPlansLink.vue'
 
 const useSwarm = ref(false)
 const loading = ref(false)
 const result = ref(null)
 const error = ref('')
+const subscriptionRequired = ref(false)
 
 async function runSim() {
   loading.value = true
   error.value = ''
+  subscriptionRequired.value = false
   result.value = null
   try {
     const res = await api.post('/api/predictions/tournament', { use_swarm: useSwarm.value })
     result.value = res.data
   } catch (e) {
     error.value = e.response?.data?.error || e.message
+    subscriptionRequired.value = e.response?.data?.code === 'subscription_required'
   } finally {
     loading.value = false
   }

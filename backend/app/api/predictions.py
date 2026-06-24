@@ -11,6 +11,7 @@ from typing import Any, Dict
 from flask import Blueprint, jsonify, g, request
 
 from ..auth import require_admin, require_user
+from ..billing import billing_required_response, includes_video_analysis
 from ..config import Config
 from ..db.base import db
 from ..models.match import MatchStage
@@ -22,14 +23,14 @@ from ..utils.logger import get_logger
 logger = get_logger("fifaoctopus.api.predictions")
 bp = Blueprint("predictions", __name__, url_prefix="/api/predictions")
 
-def _get_orchestrator() -> SwarmOrchestrator:
+def _get_orchestrator(include_video_analysis: bool = True) -> SwarmOrchestrator:
     settings = RuntimeSettingsService.current(db)
     llm = None
     if settings.llm_api_key:
         from ..utils.llm_client import LLMClient
 
         llm = LLMClient(settings=settings)
-    return SwarmOrchestrator(settings=settings, llm_client=llm)
+    return SwarmOrchestrator(settings=settings, llm_client=llm, include_video_analysis=include_video_analysis)
 
 
 # ------------------------------------------------------------------
@@ -51,6 +52,9 @@ def predict_match():
 
     if not home or not away:
         return jsonify({"error": "home_team and away_team are required"}), 400
+    required = billing_required_response(g.current_user)
+    if required:
+        return required
 
     try:
         stage = MatchStage(stage_str)
@@ -58,7 +62,7 @@ def predict_match():
         stage = MatchStage.GROUP
 
     try:
-        orc = _get_orchestrator()
+        orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user))
         result = orc.predict_match(home, away, stage=stage, group=group)
         return jsonify(result.to_dict()), 200
     except Exception as exc:
@@ -80,8 +84,11 @@ def simulate_tournament():
     """
     data = request.get_json(force=True) or {}
     use_swarm = data.get("use_swarm", False)   # default off — swarm is slow for 104 matches
+    required = billing_required_response(g.current_user)
+    if required:
+        return required
 
-    orc = _get_orchestrator() if use_swarm else None
+    orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user)) if use_swarm else None
     settings = RuntimeSettingsService.current(db)
     simulator = TournamentSimulator(
         orchestrator=orc,

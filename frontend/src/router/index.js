@@ -11,6 +11,8 @@ import SignInView from '../views/SignInView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import SSOCallbackView from '../views/SSOCallbackView.vue'
 import ForgotPasswordView from '../views/ForgotPasswordView.vue'
+import PricingView from '../views/PricingView.vue'
+import BillingSuccessView from '../views/BillingSuccessView.vue'
 
 export default createRouter({
   history: createWebHistory(),
@@ -21,6 +23,9 @@ export default createRouter({
     { path: '/tournament', component: TournamentView, meta: { requiresAuth: true } },
     { path: '/markets', component: MarketsView, meta: { requiresAuth: true } },
     { path: '/profile', component: ProfileView, meta: { requiresAuth: true } },
+    { path: '/pricing', component: PricingView, meta: { public: true } },
+    { path: '/billing', redirect: '/profile', meta: { requiresAuth: true } },
+    { path: '/billing/success', component: BillingSuccessView, meta: { requiresAuth: true } },
     { path: '/admin/settings', component: AdminSettingsView, meta: { requiresAuth: true, admin: true } },
     { path: '/sign-in', component: SignInView, meta: { public: true } },
     { path: '/sign-up', component: SignUpView, meta: { public: true } },
