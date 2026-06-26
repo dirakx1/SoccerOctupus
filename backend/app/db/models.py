@@ -34,6 +34,74 @@ class User(db.Model, TimestampMixin):
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     last_sign_in_at = db.Column(db.DateTime(timezone=True), nullable=True)
     deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    stripe_customer_id = db.Column(db.String(255), unique=True, nullable=True, index=True)
+    stripe_subscription_id = db.Column(db.String(255), unique=True, nullable=True, index=True)
+    stripe_price_id = db.Column(db.String(255), nullable=True, index=True)
+    subscription_tier = db.Column(db.String(32), nullable=False, default="free", index=True)
+    subscription_status = db.Column(db.String(64), nullable=True, index=True)
+    subscription_current_period_start = db.Column(db.DateTime(timezone=True), nullable=True)
+    subscription_current_period_end = db.Column(db.DateTime(timezone=True), nullable=True)
+    subscription_cancel_at_period_end = db.Column(db.Boolean, nullable=False, default=False)
+    subscription_synced_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    usage_cycle_anchor_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+
+class StripeEvent(db.Model, TimestampMixin):
+    __tablename__ = "stripe_events"
+
+    id = db.Column(db.Integer, primary_key=True)
+    stripe_event_id = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    event_type = db.Column(db.String(255), nullable=False)
+    processed_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+
+class FeatureLimitPolicy(db.Model, TimestampMixin):
+    __tablename__ = "feature_limit_policies"
+    __table_args__ = (db.UniqueConstraint("tier", "feature_key", name="uq_feature_limit_policy_tier_feature"),)
+
+    id = db.Column(db.Integer, primary_key=True)
+    tier = db.Column(db.String(32), nullable=False, index=True)
+    feature_key = db.Column(db.String(64), nullable=False, index=True)
+    limit_count = db.Column(db.Integer, nullable=True)
+
+
+class UserFeatureLimitOverride(db.Model, TimestampMixin):
+    __tablename__ = "user_feature_limit_overrides"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    feature_key = db.Column(db.String(64), nullable=False, index=True)
+    limit_count = db.Column(db.Integer, nullable=True)
+    starts_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    ends_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    is_active = db.Column(db.Boolean, nullable=False, default=True, index=True)
+    created_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    note = db.Column(db.Text, nullable=True)
+
+
+class UserFeatureCycleLimit(db.Model, TimestampMixin):
+    __tablename__ = "user_feature_cycle_limits"
+    __table_args__ = (
+        db.UniqueConstraint(
+            "user_id",
+            "feature_key",
+            "cycle_start",
+            "cycle_end",
+            name="uq_user_feature_cycle_limit",
+        ),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    tier = db.Column(db.String(32), nullable=False, index=True)
+    feature_key = db.Column(db.String(64), nullable=False, index=True)
+    cycle_start = db.Column(db.DateTime(timezone=True), nullable=False, index=True)
+    cycle_end = db.Column(db.DateTime(timezone=True), nullable=False, index=True)
+    limit_count = db.Column(db.Integer, nullable=True)
+    used_count = db.Column(db.Integer, nullable=False, default=0)
+    limit_source = db.Column(db.String(32), nullable=False, default="policy")
+    override_note = db.Column(db.Text, nullable=True)
+    overridden_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
 
 class AppSettings(db.Model, TimestampMixin):

@@ -28,17 +28,57 @@ const settingsResponse = {
   updated_by: { email: 'admin@example.com' },
 }
 
-function setupApi() {
-  api.get.mockResolvedValue({ data: settingsResponse })
-  api.put.mockImplementation(async (_url, payload) => ({
-    data: {
-      ...settingsResponse,
-      ...payload,
-      llm_api_key_configured: payload.clear_llm_api_key ? false : settingsResponse.llm_api_key_configured,
-      youtube_api_key_configured: payload.clear_youtube_api_key ? false : settingsResponse.youtube_api_key_configured,
-      updated_at: '2026-06-11T01:00:00Z',
+const featureLimitsResponse = {
+  features: [
+    { feature_key: 'match_prediction', label: 'Match predictions' },
+    { feature_key: 'tournament_simulation', label: 'Tournament simulations' },
+    { feature_key: 'match_market', label: 'Match markets' },
+    { feature_key: 'tournament_market', label: 'Tournament markets' },
+  ],
+  tiers: {
+    free: {
+      match_prediction: 1,
+      tournament_simulation: 1,
+      match_market: 3,
+      tournament_market: 3,
     },
+    basic: {
+      match_prediction: null,
+      tournament_simulation: null,
+      match_market: null,
+      tournament_market: null,
+    },
+    pro: {
+      match_prediction: null,
+      tournament_simulation: null,
+      match_market: null,
+      tournament_market: null,
+    },
+  },
+}
+
+function setupApi() {
+  api.get.mockImplementation(async (url) => ({
+    data: url === '/api/admin/feature-limits' ? featureLimitsResponse : settingsResponse,
   }))
+  api.put.mockImplementation(async (url, payload) => {
+    if (url === '/api/admin/feature-limits') {
+      const tiers = { free: {}, basic: {}, pro: {} }
+      for (const policy of payload.policies) {
+        tiers[policy.tier][policy.feature_key] = policy.limit_count
+      }
+      return { data: { ...featureLimitsResponse, tiers } }
+    }
+    return {
+      data: {
+        ...settingsResponse,
+        ...payload,
+        llm_api_key_configured: payload.clear_llm_api_key ? false : settingsResponse.llm_api_key_configured,
+        youtube_api_key_configured: payload.clear_youtube_api_key ? false : settingsResponse.youtube_api_key_configured,
+        updated_at: '2026-06-11T01:00:00Z',
+      },
+    }
+  })
 }
 
 describe('AdminSettingsView', () => {
@@ -103,5 +143,29 @@ describe('AdminSettingsView', () => {
     await flushPromises()
 
     expect(api.put).toHaveBeenCalledWith('/api/admin/settings', expect.objectContaining({ clear_llm_api_key: true }))
+  })
+
+  it('loads and saves feature limits', async () => {
+    const wrapper = mount(AdminSettingsView)
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Feature limits')
+    expect(wrapper.text()).toContain('Match predictions')
+
+    const matchPredictionInput = wrapper.findAll('.limit-row input')[0]
+    await matchPredictionInput.setValue('2')
+    const saveLimitsButton = wrapper.findAll('button').find((button) => button.text() === 'Save limits')
+    await saveLimitsButton.trigger('click')
+    await flushPromises()
+
+    expect(api.put).toHaveBeenCalledWith(
+      '/api/admin/feature-limits',
+      expect.objectContaining({
+        policies: expect.arrayContaining([
+          { tier: 'free', feature_key: 'match_prediction', limit_count: 2 },
+        ]),
+      })
+    )
+    expect(wrapper.text()).toContain('Limits saved.')
   })
 })

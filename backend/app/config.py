@@ -93,6 +93,12 @@ class Config:
     CLERK_JWT_PUBLIC_KEY: str = _load_clerk_jwt_public_key()
     CLERK_WEBHOOK_SECRET: str = os.getenv("CLERK_WEBHOOK_SECRET", "")
     FRONTEND_ORIGIN: str = os.getenv("FRONTEND_ORIGIN", "http://localhost:3001")
+    STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
+    STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+    STRIPE_BASIC_PRICE_ID: str = os.getenv("STRIPE_BASIC_PRICE_ID", "")
+    STRIPE_PRO_PRICE_ID: str = os.getenv("STRIPE_PRO_PRICE_ID", "")
+    STRIPE_BILLING_PORTAL_CONFIGURATION_ID: str = os.getenv("STRIPE_BILLING_PORTAL_CONFIGURATION_ID", "")
+    STRIPE_TEST_CLOCK_ID: str = os.getenv("STRIPE_TEST_CLOCK_ID", "")
 
     # SofaScore (unofficial public API — no key needed but respect rate limits)
     SOFASCORE_BASE_URL: str = "https://api.sofascore.com/api/v1"

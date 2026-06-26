@@ -35,8 +35,9 @@
           <p v-if="profileError" class="error-box">{{ profileError }}</p>
           <p v-if="profileSuccess" class="success-box">{{ profileSuccess }}</p>
 
-          <button class="btn-primary" :disabled="profileLoading || !isLoaded || !user">
-            {{ profileLoading ? 'Saving...' : 'Save profile' }}
+          <button class="btn-primary" :disabled="profileLoading || !isLoaded || !user" :aria-label="profileLoading ? 'Saving profile' : 'Save profile'">
+            <LoaderCircle v-if="profileLoading" :size="18" class="spin" aria-hidden="true" />
+            <template v-else>Save profile</template>
           </button>
         </form>
       </section>
@@ -84,30 +85,87 @@
           <p v-if="passwordError" class="error-box">{{ passwordError }}</p>
           <p v-if="passwordSuccess" class="success-box">{{ passwordSuccess }}</p>
 
-          <button class="btn-primary" :disabled="passwordLoading || !isLoaded || !user">
-            {{ passwordLoading ? 'Updating...' : 'Update password' }}
+          <button class="btn-primary" :disabled="passwordLoading || !isLoaded || !user" :aria-label="passwordLoading ? 'Updating password' : 'Update password'">
+            <LoaderCircle v-if="passwordLoading" :size="18" class="spin" aria-hidden="true" />
+            <template v-else>Update password</template>
           </button>
         </form>
       </section>
     </div>
+
+    <section class="profile-card billing-card">
+      <div class="billing-row">
+        <div>
+          <h2>Billing</h2>
+          <p class="billing-tier">
+            <span>Current tier</span>
+            <LoaderCircle v-if="billingLoading" :size="18" class="spin billing-loader" aria-label="Loading billing tier" />
+            <strong v-else>{{ tierLabel }}</strong>
+          </p>
+        </div>
+        <button
+          class="btn-primary billing-action"
+          :disabled="billingLoading || portalLoading"
+          :aria-label="portalLoading ? 'Opening billing' : billingActionLabel"
+          :title="portalLoading ? 'Opening billing' : billingActionLabel"
+          @click="openBillingPortal"
+        >
+          <LoaderCircle v-if="portalLoading" :size="18" class="spin" aria-hidden="true" />
+          <template v-else>
+            <span>{{ billingActionText }}</span>
+            <CreditCard :size="18" aria-hidden="true" />
+          </template>
+        </button>
+      </div>
+      <BillingStatusNotice
+        :health="billingHealth"
+        :loading="paymentLoading"
+        @action="openPaymentRecovery"
+      />
+      <div v-if="usage.features?.length" class="usage-grid">
+        <div v-for="feature in usage.features" :key="feature.feature_key" class="usage-row">
+          <span>{{ feature.label }}</span>
+          <strong>{{ usageText(feature) }}</strong>
+        </div>
+      </div>
+      <p v-if="billingError" class="error-box">{{ billingError }}</p>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
-import { useUser } from '@clerk/vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { CreditCard, LoaderCircle } from '@lucide/vue'
+import { useRouter } from 'vue-router'
 
+import BillingStatusNotice from '../components/BillingStatusNotice.vue'
+import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
+import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
 
-const { isLoaded, user } = useUser()
+const {
+  avatarUrl,
+  email: emailAddress,
+  firstName,
+  isLoaded,
+  lastName,
+  user,
+} = useCurrentUserProfile()
 
+const router = useRouter()
 const profileLoading = ref(false)
 const passwordLoading = ref(false)
 const profileError = ref('')
 const passwordError = ref('')
 const profileSuccess = ref('')
 const passwordSuccess = ref('')
+const subscription = ref({})
+const usage = ref({})
+const billingLoading = ref(true)
+const portalLoading = ref(false)
+const paymentLoading = ref(false)
+const billingError = ref('')
 
 const profileForm = reactive({
   firstName: '',
@@ -120,14 +178,24 @@ const passwordForm = reactive({
   confirmPassword: '',
 })
 
-const emailAddress = computed(() => user.value?.primaryEmailAddress?.emailAddress || '')
-const avatarUrl = computed(() => user.value?.imageUrl || '')
+const tierLabel = computed(() => {
+  const labels = {
+    free: 'Free',
+    basic: 'Basic',
+    pro: 'Pro',
+  }
+  return labels[subscription.value.tier] || 'Free'
+})
+const isFreeTier = computed(() => (subscription.value.tier || 'free') === 'free')
+const billingHealth = computed(() => subscription.value.billing_health || {})
+const billingActionText = computed(() => (isFreeTier.value ? 'Plans' : 'Manage'))
+const billingActionLabel = computed(() => (isFreeTier.value ? 'View plans' : 'Manage billing'))
 
 watch(
-  user,
-  (currentUser) => {
-    profileForm.firstName = currentUser?.firstName || ''
-    profileForm.lastName = currentUser?.lastName || ''
+  [firstName, lastName],
+  ([currentFirstName, currentLastName]) => {
+    profileForm.firstName = currentFirstName
+    profileForm.lastName = currentLastName
   },
   { immediate: true }
 )
@@ -139,6 +207,66 @@ function clerkError(err, fallback) {
 async function refreshLocalUser() {
   const res = await api.get('/api/me')
   setAuthState({ signedIn: true, isAdmin: res.data.is_admin, user: res.data })
+}
+
+async function loadBilling() {
+  billingLoading.value = true
+  billingError.value = ''
+  try {
+    const [subscriptionRes, usageRes] = await Promise.all([getSubscription(), getUsage()])
+    subscription.value = subscriptionRes.data
+    usage.value = usageRes.data
+  } catch (err) {
+    billingError.value = err.response?.data?.error || 'Could not load billing details.'
+  } finally {
+    billingLoading.value = false
+  }
+}
+
+function usageText(feature) {
+  if (feature.unlimited) return 'Unlimited'
+  return `${feature.used_count} / ${feature.limit_count}`
+}
+
+async function openBillingPortal() {
+  if (isFreeTier.value) {
+    router.push('/pricing')
+    return
+  }
+
+  portalLoading.value = true
+  billingError.value = ''
+  try {
+    const res = await createPortalSession({ return_path: '/profile' })
+    window.location.assign(res.data.url)
+  } catch (err) {
+    billingError.value = err.response?.data?.error || 'Could not open Stripe billing portal.'
+  } finally {
+    portalLoading.value = false
+  }
+}
+
+async function openPaymentRecovery() {
+  if (billingHealth.value.action === 'choose_plan') {
+    router.push('/pricing')
+    return
+  }
+
+  if (billingHealth.value.action === 'manage_billing') {
+    await openBillingPortal()
+    return
+  }
+
+  paymentLoading.value = true
+  billingError.value = ''
+  try {
+    const res = await createPaymentMethodSession({ return_path: '/profile' })
+    window.location.assign(res.data.url)
+  } catch (err) {
+    billingError.value = err.response?.data?.error || 'Could not open payment update.'
+  } finally {
+    paymentLoading.value = false
+  }
 }
 
 async function updateProfile() {
@@ -208,6 +336,8 @@ async function updatePassword() {
     passwordLoading.value = false
   }
 }
+
+onMounted(loadBilling)
 </script>
 
 <style scoped>
@@ -280,6 +410,66 @@ h2 {
   padding: 28px;
 }
 
+.billing-card {
+  gap: 16px;
+}
+
+.billing-row {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.billing-tier {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.billing-tier span {
+  color: #8888aa;
+  font-size: 13px;
+}
+
+.billing-tier strong {
+  color: #e2b714;
+  font-size: 20px;
+}
+
+.billing-loader {
+  color: #e2b714;
+}
+
+.billing-action {
+  flex: 0 0 auto;
+}
+
+.usage-grid {
+  border-top: 1px solid #0f3460;
+  display: grid;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+.usage-row {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.usage-row span {
+  color: #a0aec0;
+  font-size: 13px;
+}
+
+.usage-row strong {
+  color: #e0e0e0;
+  font-size: 13px;
+}
+
 .profile-form {
   display: flex;
   flex-direction: column;
@@ -326,13 +516,18 @@ input:focus {
 }
 
 .btn-primary {
+  align-items: center;
   background: linear-gradient(135deg, #e2b714, #f6d860);
   border: none;
   border-radius: 10px;
   color: #0a0a1a;
   cursor: pointer;
+  display: inline-flex;
   font-size: 15px;
   font-weight: 700;
+  gap: 8px;
+  justify-content: center;
+  min-height: 46px;
   padding: 13px 24px;
   transition: opacity 0.2s;
 }
@@ -346,11 +541,21 @@ input:focus {
   opacity: 0.55;
 }
 
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
 .error-box,
 .success-box {
   border-radius: 8px;
   font-size: 13px;
   padding: 12px 14px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-box {
@@ -376,6 +581,11 @@ input:focus {
     align-items: flex-start;
     flex-direction: column;
     gap: 20px;
+  }
+
+  .billing-row {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .name-grid {

@@ -114,6 +114,37 @@
         </div>
       </section>
 
+      <section class="settings-section" aria-labelledby="limits-heading">
+        <div>
+          <h2 id="limits-heading">Feature limits</h2>
+          <p class="hint">Cycle limits by tier. Leave paid limits blank for unlimited.</p>
+        </div>
+        <div class="limit-table">
+          <div class="limit-head">
+            <span>Feature</span>
+            <span v-for="tier in limitTiers" :key="tier">{{ tierLabel(tier) }}</span>
+          </div>
+          <div v-for="feature in featureLimitFeatures" :key="feature.feature_key" class="limit-row">
+            <span>{{ feature.label }}</span>
+            <label v-for="tier in limitTiers" :key="`${tier}-${feature.feature_key}`" class="limit-input">
+              <input
+                v-model="featureLimitForm[tier][feature.feature_key]"
+                type="number"
+                min="0"
+                :placeholder="tier === 'free' ? '0' : 'Unlimited'"
+              />
+            </label>
+          </div>
+        </div>
+        <p v-if="featureLimitError" class="error-box">{{ featureLimitError }}</p>
+        <p v-if="featureLimitSuccess" class="success-box">{{ featureLimitSuccess }}</p>
+        <div class="section-actions">
+          <button class="btn-save" type="button" :disabled="featureLimitLoading" @click="saveFeatureLimits">
+            {{ featureLimitLoading ? 'Saving…' : 'Save limits' }}
+          </button>
+        </div>
+      </section>
+
       <p v-if="error" class="error-box">{{ error }}</p>
       <p v-if="success" class="success-box">{{ success }}</p>
 
@@ -131,9 +162,19 @@ import ApiKeyField from '../components/ApiKeyField.vue'
 import { api } from '../lib/api'
 
 const loading = ref(false)
+const featureLimitLoading = ref(false)
 const error = ref('')
 const success = ref('')
+const featureLimitError = ref('')
+const featureLimitSuccess = ref('')
 const settings = ref(null)
+const limitTiers = ['free', 'basic', 'pro']
+const featureLimitFeatures = ref([])
+const featureLimitForm = reactive({
+  free: {},
+  basic: {},
+  pro: {},
+})
 const form = reactive({
   llm_base_url: '',
   llm_model_name: '',
@@ -163,6 +204,10 @@ const secrets = [
 ]
 const secretByKey = computed(() => Object.fromEntries(secrets.map((secret) => [secret.key, secret])))
 
+function tierLabel(tier) {
+  return { free: 'Free', basic: 'Basic', pro: 'Pro' }[tier] || tier
+}
+
 function applySettings(payload) {
   settings.value = payload
   form.llm_base_url = payload.llm_base_url || ''
@@ -175,6 +220,18 @@ function applySettings(payload) {
   for (const secret of secrets) {
     secretForm[secret.key] = ''
     clearFlags[secret.clear] = false
+  }
+}
+
+function applyFeatureLimits(payload) {
+  featureLimitFeatures.value = payload.features || []
+  for (const tier of limitTiers) {
+    featureLimitForm[tier] = {}
+    const tierLimits = payload.tiers?.[tier] || {}
+    for (const feature of featureLimitFeatures.value) {
+      const value = tierLimits[feature.feature_key]
+      featureLimitForm[tier][feature.feature_key] = value == null ? '' : String(value)
+    }
   }
 }
 
@@ -204,12 +261,34 @@ function buildPayload() {
   return payload
 }
 
+function buildFeatureLimitPayload() {
+  const policies = []
+  for (const tier of limitTiers) {
+    for (const feature of featureLimitFeatures.value) {
+      const rawValue = featureLimitForm[tier][feature.feature_key]
+      policies.push({
+        tier,
+        feature_key: feature.feature_key,
+        limit_count: rawValue === '' || rawValue == null ? null : Number(rawValue),
+      })
+    }
+  }
+  return { policies }
+}
+
 onMounted(async () => {
   try {
     const res = await api.get('/api/admin/settings')
     applySettings(res.data)
   } catch (err) {
     error.value = err.response?.data?.error || 'Could not load settings.'
+  }
+
+  try {
+    const res = await api.get('/api/admin/feature-limits')
+    applyFeatureLimits(res.data)
+  } catch (err) {
+    featureLimitError.value = err.response?.data?.error || 'Could not load feature limits.'
   }
 })
 
@@ -225,6 +304,21 @@ async function save() {
     error.value = err.response?.data?.error || 'Could not save settings.'
   } finally {
     loading.value = false
+  }
+}
+
+async function saveFeatureLimits() {
+  featureLimitLoading.value = true
+  featureLimitError.value = ''
+  featureLimitSuccess.value = ''
+  try {
+    const res = await api.put('/api/admin/feature-limits', buildFeatureLimitPayload())
+    applyFeatureLimits(res.data)
+    featureLimitSuccess.value = 'Limits saved.'
+  } catch (err) {
+    featureLimitError.value = err.response?.data?.error || 'Could not save limits.'
+  } finally {
+    featureLimitLoading.value = false
   }
 }
 </script>
@@ -258,6 +352,44 @@ h1 { color: #e2b714; font-size: 30px; letter-spacing: -0.02em; }
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+
+.limit-table {
+  border: 1px solid #17436e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.limit-head,
+.limit-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(160px, 1fr) repeat(3, minmax(90px, 120px));
+  padding: 12px 14px;
+}
+
+.limit-head {
+  background: #0a0f21;
+  color: #8888aa;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.limit-row {
+  align-items: center;
+  border-top: 1px solid #17436e;
+  color: #e0e0e0;
+  font-size: 13px;
+}
+
+.limit-input input {
+  width: 100%;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .field-grid {

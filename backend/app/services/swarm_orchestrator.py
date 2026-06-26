@@ -47,6 +47,7 @@ class SwarmOrchestrator:
         settings: RuntimeSettings,
         llm_client=None,
         zep_tools: ZepFootballTools | None = None,
+        include_video_analysis: bool = True,
     ):
         self.settings = settings
         self.llm_client = llm_client
@@ -63,13 +64,14 @@ class SwarmOrchestrator:
         # Build the swarm — every agent receives the shared zep_tools reference
         self.agents = [
             StatisticalAgent(zep_tools=self.zep),          # ELO + Poisson (SofaScore)
-            VideoAgent(settings=settings),                  # YouTube engagement
             FormAgent(zep_tools=self.zep),                 # last-10 form points
             TacticalAgent(llm_client=llm_client, zep_tools=self.zep),  # style matchup
             LiveDataAgent(zep_tools=self.zep),             # FotMob xG + FlashScore form
             MarketSignalsAgent(zep_tools=self.zep),        # 365Scores odds + Tiki-Taka AI
             SquadQualityAgent(settings=settings, zep_tools=self.zep),  # Opta player ratings + squad depth
         ]
+        if include_video_analysis:
+            self.agents.insert(1, VideoAgent(settings=settings))  # YouTube engagement
         self.aggregator = AggregatorAgent(llm_client=llm_client)
 
         logger.info(

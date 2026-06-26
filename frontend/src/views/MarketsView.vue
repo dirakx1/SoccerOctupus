@@ -75,7 +75,17 @@
         </button>
       </div>
 
-      <div v-if="matchError" class="error-box">{{ matchError }}</div>
+      <div v-if="matchError" class="error-box">
+        {{ matchError }}
+        <BillingStatusNotice
+          v-if="matchBillingHealth?.requires_attention"
+          compact
+          :health="matchBillingHealth"
+          :loading="billingActionLoading"
+          @action="openBillingRecovery('/markets', matchBillingHealth)"
+        />
+        <BillingPlansLink v-else-if="matchSubscriptionRequired" />
+      </div>
 
       <!-- Match result summary -->
       <div v-if="matchData" class="match-summary">
@@ -132,7 +142,17 @@
         </button>
       </div>
 
-      <div v-if="tourneyError" class="error-box">{{ tourneyError }}</div>
+      <div v-if="tourneyError" class="error-box">
+        {{ tourneyError }}
+        <BillingStatusNotice
+          v-if="tourneyBillingHealth?.requires_attention"
+          compact
+          :health="tourneyBillingHealth"
+          :loading="billingActionLoading"
+          @action="openBillingRecovery('/markets', tourneyBillingHealth)"
+        />
+        <BillingPlansLink v-else-if="tourneySubscriptionRequired" />
+      </div>
 
       <!-- Champion banner -->
       <div v-if="tourneyData" class="champion-banner">
@@ -210,7 +230,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { api } from '../lib/api'
+import BillingStatusNotice from '../components/BillingStatusNotice.vue'
+import BillingPlansLink from '../components/BillingPlansLink.vue'
 import MarketCard from '../components/MarketCard.vue'
+import { useBillingStatus } from '../composables/useBillingStatus'
 
 // ── State ───────────────────────────────────────────────────────────────────
 const mode         = ref('match')
@@ -224,11 +247,19 @@ const matchLoading = ref(false)
 const matchError   = ref('')
 const matchData    = ref(null)
 const matchFilter  = ref('all')
+const matchSubscriptionRequired = ref(false)
+const matchBillingHealth = ref(null)
 
 const tourneyLoading = ref(false)
 const tourneyError   = ref('')
 const tourneyData    = ref(null)
 const tourneyFilter  = ref('all')
+const tourneySubscriptionRequired = ref(false)
+const tourneyBillingHealth = ref(null)
+const {
+  actionLoading: billingActionLoading,
+  openBillingRecovery,
+} = useBillingStatus()
 
 // ── Prop type definitions ────────────────────────────────────────────────────
 const matchPropTypes = [
@@ -299,6 +330,8 @@ onMounted(async () => {
 async function runMatchMarkets() {
   matchLoading.value = true
   matchError.value = ''
+  matchSubscriptionRequired.value = false
+  matchBillingHealth.value = null
   matchData.value = null
   matchFilter.value = 'all'
   try {
@@ -310,6 +343,8 @@ async function runMatchMarkets() {
     matchData.value = res.data
   } catch (e) {
     matchError.value = e.response?.data?.error ?? e.message
+    matchBillingHealth.value = e.response?.data?.billing_health || null
+    matchSubscriptionRequired.value = ['subscription_required', 'billing_payment_required', 'feature_limit_reached'].includes(e.response?.data?.code)
   } finally {
     matchLoading.value = false
   }
@@ -318,6 +353,8 @@ async function runMatchMarkets() {
 async function runTournamentMarkets() {
   tourneyLoading.value = true
   tourneyError.value = ''
+  tourneySubscriptionRequired.value = false
+  tourneyBillingHealth.value = null
   tourneyData.value = null
   tourneyFilter.value = 'all'
   try {
@@ -325,6 +362,8 @@ async function runTournamentMarkets() {
     tourneyData.value = res.data
   } catch (e) {
     tourneyError.value = e.response?.data?.error ?? e.message
+    tourneyBillingHealth.value = e.response?.data?.billing_health || null
+    tourneySubscriptionRequired.value = ['subscription_required', 'billing_payment_required', 'feature_limit_reached'].includes(e.response?.data?.code)
   } finally {
     tourneyLoading.value = false
   }
@@ -474,4 +513,5 @@ option { background: #0a0a1a; color: #e0e0e0; }
   background: #3d1a1a; border: 1px solid #c53030;
   border-radius: 8px; padding: 14px; color: #fc8181; font-size: 14px;
 }
+.error-box a { color: #f6d860; font-weight: 700; margin-left: 10px; }
 </style>

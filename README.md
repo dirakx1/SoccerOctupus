@@ -339,16 +339,24 @@ cp .env.example .env
 
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/socceroctupus
+DATABASE_SCHEMA=public
 CLERK_SECRET_KEY=
-CLERK_PUBLISHABLE_KEY=
+VITE_CLERK_PUBLISHABLE_KEY=
 CLERK_JWKS_URL=
 CLERK_JWKS_JSON=
 CLERK_JWT_PUBLIC_KEY=
 CLERK_WEBHOOK_SECRET=
 FRONTEND_ORIGIN=http://localhost:3001
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_BASIC_PRICE_ID=
+STRIPE_PRO_PRICE_ID=
+STRIPE_BILLING_PORTAL_CONFIGURATION_ID=
 PORT=5002
 DEBUG=false
 ```
+
+Stripe billing secrets stay in deployment environment variables, not `/admin/settings`. Price IDs are not secret, but configure them through env for each Stripe account. The Stripe webhook endpoint is `/api/webhooks/stripe`.
 
 After the first admin is bootstrapped, configure LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings in `/admin/settings`. Provider API keys are encrypted before storage and are redacted from admin API responses.
 
@@ -715,6 +723,7 @@ Only bootstrap settings are read from `.env` (see `.env.example`):
 | Variable | Default | Required | Description |
 |---|---|---|---|
 | `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/socceroctupus` | For auth/settings persistence | Supabase/Postgres in production; tests still use in-memory SQLite. |
+| `DATABASE_SCHEMA` | `public` | For Postgres migrations | PostgreSQL schema used by Alembic. Keep `public` for normal Supabase projects unless you intentionally use a custom schema. |
 | `VITE_CLERK_PUBLISHABLE_KEY` | — | For frontend auth | Public Clerk key exposed to the Vite build. |
 | `CLERK_SECRET_KEY` | — | For backend auth | Backend-only Clerk secret. |
 | `CLERK_JWKS_URL` | `https://api.clerk.com/v1/jwks` | For backend auth | Fallback URL used to verify Clerk bearer tokens. |
@@ -722,6 +731,11 @@ Only bootstrap settings are read from `.env` (see `.env.example`):
 | `CLERK_JWT_PUBLIC_KEY` | — | Optional backend auth | PEM public key used before `CLERK_JWKS_JSON`; supports escaped `\n` line breaks. |
 | `CLERK_WEBHOOK_SECRET` | — | For Clerk user sync | Svix webhook signing secret. |
 | `FRONTEND_ORIGIN` | `http://localhost:3001` | For local CORS | Set to your deployed frontend origin in production. |
+| `STRIPE_SECRET_KEY` | — | For billing | Backend-only Stripe API secret key. Keep in deployment env, not `/admin/settings`. |
+| `STRIPE_WEBHOOK_SECRET` | — | For billing webhooks | Stripe endpoint signing secret for `POST /api/webhooks/stripe`. |
+| `STRIPE_BASIC_PRICE_ID` | — | For billing | Stripe recurring monthly price ID for Basic USD 5. Not secret, but env-specific. |
+| `STRIPE_PRO_PRICE_ID` | — | For billing | Stripe recurring monthly price ID for Pro USD 10. Not secret, but env-specific. |
+| `STRIPE_BILLING_PORTAL_CONFIGURATION_ID` | — | Optional billing | Stripe Customer Portal configuration ID when using a non-default portal setup. |
 | `PORT` | `5002` | — | Backend port |
 
 Prefer a single-line escaped PEM for `CLERK_JWT_PUBLIC_KEY`, especially in production environment managers:
@@ -734,8 +748,6 @@ Local `.env` files also support raw multiline PEM blocks.
 
 LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are admin-managed at `/admin/settings` after first-admin bootstrap. API keys are encrypted in the database and only redacted `configured` booleans are returned by the admin API.
 
-<<<<<<< Updated upstream
-=======
 ### Stripe billing setup
 
 Stripe products, prices, Customer Portal behavior, and webhook endpoint secrets are managed in Stripe Dashboard. Use test mode first, then repeat the same shape in live mode with live keys and live price IDs.
@@ -810,7 +822,6 @@ venv/bin/python -m alembic upgrade head
 
 Local secret hygiene: `.env:1`, `.env:3`, and `.env:4` contain local auth/database secret types. Rotate those credentials before production billing setup if they were exposed outside the local machine.
 
->>>>>>> Stashed changes
 The encryption root key is stored outside the database at `backend/instance/settings-fernet.key` for local and single-host deployments. Production deployments must persist and back up that file securely, or provide an equivalent persistent secret-file/KMS-backed mount before storing API keys. Losing the root key means existing encrypted API keys cannot be decrypted and must be re-entered.
 
 ### Auth and admin settings bootstrap
@@ -828,10 +839,11 @@ venv/bin/python -m alembic upgrade head
 
 Then configure Clerk:
 
-- set `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET`, and either `CLERK_JWT_PUBLIC_KEY`, `CLERK_JWKS_JSON`, or `CLERK_JWKS_URL` for the backend
+- set `VITE_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET`, and either `CLERK_JWT_PUBLIC_KEY`, `CLERK_JWKS_JSON`, or `CLERK_JWKS_URL`
 - enable password reset with email verification code for the custom forgot-password page
 - enable Google as a social connection if using the `Continue with Google` auth option
 - point a Clerk webhook at `POST /api/webhooks/clerk`
+- configure Stripe Dashboard products/prices for Basic and Pro, Customer Portal, and a webhook at `POST /api/webhooks/stripe`
 
 The first admin is still a manual bootstrap: sign in once so the user is synced
 into the local `users` table, then promote that row in the database:

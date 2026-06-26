@@ -11,4 +11,5 @@ svix>=1.29.0
 pyjwt>=2.8
 cryptography>=42.0
 pytest>=8.2
+stripe>=10.0.0
 zep-cloud==3.13.0
