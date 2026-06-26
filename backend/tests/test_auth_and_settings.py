@@ -700,6 +700,34 @@ def test_lazy_sync_preserves_existing_email(client, user, monkeypatch):
         assert updated.first_name == "Updated"
 
 
+def test_lazy_sync_does_not_commit_when_claims_are_unchanged(client, user, monkeypatch):
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        claims = {
+            "sub": entry.clerk_user_id,
+            "email": entry.email,
+            "first_name": entry.first_name,
+            "last_name": entry.last_name,
+            "picture": entry.avatar_url,
+            "iat": int(datetime.now(timezone.utc).timestamp()),
+        }
+
+        original_commit = db.session.commit
+        commit_calls = {"count": 0}
+
+        def counted_commit():
+            commit_calls["count"] += 1
+            return original_commit()
+
+        monkeypatch.setattr(db.session, "commit", counted_commit)
+        monkeypatch.setattr("app.auth.verify_session_token", lambda _token: claims)
+
+        response = client.get("/api/me", headers=_auth_header(entry.clerk_user_id))
+
+        assert response.status_code == 200
+        assert commit_calls["count"] == 0
+
+
 def test_lazy_sync_without_email_uses_unique_placeholder(client, monkeypatch):
     monkeypatch.setattr(
         "app.auth.verify_session_token",
