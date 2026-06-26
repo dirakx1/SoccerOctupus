@@ -98,6 +98,7 @@ class Config:
     STRIPE_BASIC_PRICE_ID: str = os.getenv("STRIPE_BASIC_PRICE_ID", "")
     STRIPE_PRO_PRICE_ID: str = os.getenv("STRIPE_PRO_PRICE_ID", "")
     STRIPE_BILLING_PORTAL_CONFIGURATION_ID: str = os.getenv("STRIPE_BILLING_PORTAL_CONFIGURATION_ID", "")
+    STRIPE_TEST_CLOCK_ID: str = os.getenv("STRIPE_TEST_CLOCK_ID", "")
 
     # SofaScore (unofficial public API — no key needed but respect rate limits)
     SOFASCORE_BASE_URL: str = "https://api.sofascore.com/api/v1"

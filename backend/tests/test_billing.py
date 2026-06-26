@@ -468,6 +468,150 @@ def test_portal_creates_customer_when_missing(client, user, monkeypatch):
     assert created_portal_sessions[0]["return_url"] == "http://localhost:3001/profile"
 
 
+def test_subscription_billing_health_for_past_due_and_unpaid(client, user):
+    from app.billing import serialize_subscription
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        entry.stripe_subscription_id = "sub_existing"
+        entry.subscription_tier = "pro"
+        entry.subscription_status = "past_due"
+        db.session.commit()
+
+        past_due = serialize_subscription(entry)
+        assert past_due["is_paid_entitled"] is True
+        assert past_due["includes_video_analysis"] is True
+        assert past_due["billing_health"]["state"] == "payment_failed"
+        assert past_due["billing_health"]["action"] == "update_payment_method"
+        assert past_due["billing_health"]["requires_attention"] is True
+        assert past_due["billing_health"]["blocks_access"] is False
+
+        entry.subscription_status = "unpaid"
+        db.session.commit()
+        unpaid = serialize_subscription(entry)
+        assert unpaid["is_paid_entitled"] is False
+        assert unpaid["includes_video_analysis"] is False
+        assert unpaid["billing_health"]["state"] == "payment_required"
+        assert unpaid["billing_health"]["action"] == "update_payment_method"
+        assert unpaid["billing_health"]["blocks_access"] is True
+
+
+def test_payment_recovery_prefers_open_invoice(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        db.session.commit()
+
+    class FakeInvoice:
+        @staticmethod
+        def list(**kwargs):
+            assert kwargs == {"customer": "cus_existing", "status": "open", "limit": 10}
+            return {
+                "data": [
+                    {
+                        "id": "in_open",
+                        "status": "open",
+                        "hosted_invoice_url": "https://invoice.stripe.com/pay/open",
+                    }
+                ]
+            }
+
+    fake_stripe = type(
+        "FakeStripe",
+        (),
+        {"Invoice": FakeInvoice},
+    )
+    monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
+
+    response = client.post(
+        "/api/billing/payment-method",
+        headers=_auth_header(user["clerk_user_id"]),
+        json={"return_path": "/profile"},
+    )
+
+    assert response.status_code == 200
+    assert response.get_json()["url"] == "https://invoice.stripe.com/pay/open"
+
+
+def test_payment_recovery_falls_back_to_payment_method_portal_flow(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+    portal_sessions = []
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        db.session.commit()
+
+    class FakeInvoice:
+        @staticmethod
+        def list(**kwargs):
+            return {"data": []}
+
+    class FakePortalSession:
+        @staticmethod
+        def create(**kwargs):
+            portal_sessions.append(kwargs)
+            return {"url": "https://billing.stripe.com/payment-method"}
+
+    fake_stripe = type(
+        "FakeStripe",
+        (),
+        {
+            "Invoice": FakeInvoice,
+            "billing_portal": type("BillingPortal", (), {"Session": FakePortalSession}),
+        },
+    )
+    monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
+
+    response = client.post(
+        "/api/billing/payment-method",
+        headers=_auth_header(user["clerk_user_id"]),
+        json={"return_path": "/profile"},
+    )
+
+    assert response.status_code == 200
+    assert response.get_json()["url"] == "https://billing.stripe.com/payment-method"
+    assert portal_sessions == [
+        {
+            "customer": "cus_existing",
+            "return_url": "http://localhost:3001/profile",
+            "flow_data": {
+                "type": "payment_method_update",
+                "after_completion": {
+                    "type": "redirect",
+                    "redirect": {"return_url": "http://localhost:3001/profile"},
+                },
+            },
+        }
+    ]
+
+
+def test_billing_required_response_includes_payment_recovery(client, user):
+    from app.billing import billing_required_response
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        entry.stripe_subscription_id = "sub_existing"
+        entry.subscription_tier = "pro"
+        entry.subscription_status = "unpaid"
+        db.session.commit()
+
+        response, status = billing_required_response(entry)
+        body = response.get_json()
+
+    assert status == 402
+    assert body["code"] == "billing_payment_required"
+    assert body["billing_health"]["action"] == "update_payment_method"
+    assert body["subscription"]["billing_health"]["state"] == "payment_required"
+    assert "Pay the invoice" in body["error"]
+
+
 def test_invoice_listing_empty_or_sanitized(client, user, monkeypatch):
     _auth(monkeypatch)
     _configure_stripe(monkeypatch)
@@ -698,6 +842,87 @@ def test_invoice_paid_webhook_refetches_invoice_and_subscription(client, user, m
         assert updated.stripe_subscription_id == "sub_current"
         assert updated.subscription_tier == "basic"
         assert updated.subscription_current_period_start is not None
+
+
+def test_invoice_payment_action_required_refetches_invoice_and_subscription(client, user, monkeypatch):
+    _configure_stripe(monkeypatch)
+    event = {
+        "id": "evt_invoice_action",
+        "type": "invoice.payment_action_required",
+        "data": {"object": {"id": "in_action", "subscription": "sub_stale"}},
+    }
+    invoice_calls = []
+    subscription_calls = []
+
+    def retrieve_invoice(invoice_id, **kwargs):
+        invoice_calls.append((invoice_id, kwargs))
+        return {"id": invoice_id, "subscription": "sub_current_action"}
+
+    def retrieve_subscription(subscription_id, **kwargs):
+        subscription_calls.append((subscription_id, kwargs))
+        return _subscription(
+            id=subscription_id,
+            customer="cus_action",
+            status="past_due",
+            metadata={"user_id": str(user["id"])},
+            items={"data": [{"price": {"id": "price_pro"}}]},
+        )
+
+    monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: event)
+    monkeypatch.setattr("app.api.webhooks.stripe.Invoice.retrieve", retrieve_invoice)
+    monkeypatch.setattr("app.api.webhooks.stripe.Subscription.retrieve", retrieve_subscription)
+
+    response = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
+
+    assert response.status_code == 200
+    assert invoice_calls == [("in_action", {"expand": ["subscription"]})]
+    assert subscription_calls == [("sub_current_action", {"expand": ["items.data.price"]})]
+    with client.application.app_context():
+        updated = User.query.get(user["id"])
+        assert updated.stripe_customer_id == "cus_action"
+        assert updated.stripe_subscription_id == "sub_current_action"
+        assert updated.subscription_tier == "pro"
+        assert updated.subscription_status == "past_due"
+
+
+def test_invoice_updated_webhook_refetches_invoice_and_subscription(client, user, monkeypatch):
+    _configure_stripe(monkeypatch)
+    event = {
+        "id": "evt_invoice_updated",
+        "type": "invoice.updated",
+        "data": {"object": {"id": "in_updated", "subscription": "sub_stale"}},
+    }
+    invoice_calls = []
+    subscription_calls = []
+
+    def retrieve_invoice(invoice_id, **kwargs):
+        invoice_calls.append((invoice_id, kwargs))
+        return {"id": invoice_id, "subscription": "sub_current_updated"}
+
+    def retrieve_subscription(subscription_id, **kwargs):
+        subscription_calls.append((subscription_id, kwargs))
+        return _subscription(
+            id=subscription_id,
+            customer="cus_updated",
+            status="active",
+            metadata={"user_id": str(user["id"])},
+            items={"data": [{"price": {"id": "price_basic"}}]},
+        )
+
+    monkeypatch.setattr("app.api.webhooks.stripe.Webhook.construct_event", lambda *args: event)
+    monkeypatch.setattr("app.api.webhooks.stripe.Invoice.retrieve", retrieve_invoice)
+    monkeypatch.setattr("app.api.webhooks.stripe.Subscription.retrieve", retrieve_subscription)
+
+    response = client.post("/api/webhooks/stripe", data=b"{}", headers={"Stripe-Signature": "ok"})
+
+    assert response.status_code == 200
+    assert invoice_calls == [("in_updated", {"expand": ["subscription"]})]
+    assert subscription_calls == [("sub_current_updated", {"expand": ["items.data.price"]})]
+    with client.application.app_context():
+        updated = User.query.get(user["id"])
+        assert updated.stripe_customer_id == "cus_updated"
+        assert updated.stripe_subscription_id == "sub_current_updated"
+        assert updated.subscription_status == "active"
 
 
 def test_stripe_webhook_accepts_stripe_object_events(client, user, monkeypatch):

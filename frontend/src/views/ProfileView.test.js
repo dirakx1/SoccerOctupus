@@ -41,10 +41,11 @@ vi.mock('../lib/billing', () => ({
   getSubscription: vi.fn(),
   getUsage: vi.fn(),
   createPortalSession: vi.fn(),
+  createPaymentMethodSession: vi.fn(),
 }))
 
 import { api } from '../lib/api'
-import { createPortalSession, getSubscription, getUsage } from '../lib/billing'
+import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
 
 describe('ProfileView', () => {
   beforeEach(() => {
@@ -77,6 +78,7 @@ describe('ProfileView', () => {
       },
     })
     createPortalSession.mockResolvedValue({ data: { url: 'https://billing.stripe.com/session' } })
+    createPaymentMethodSession.mockResolvedValue({ data: { url: 'https://billing.stripe.com/payment-method' } })
     Object.defineProperty(window, 'location', {
       value: { assign: vi.fn() },
       writable: true,
@@ -122,5 +124,36 @@ describe('ProfileView', () => {
 
     expect(routerPush).toHaveBeenCalledWith('/pricing')
     expect(createPortalSession).not.toHaveBeenCalled()
+  })
+
+  it('shows payment recovery for failed billing status', async () => {
+    getSubscription.mockResolvedValue({
+      data: {
+        tier: 'pro',
+        status: 'past_due',
+        is_paid_entitled: true,
+        billing_health: {
+          state: 'payment_failed',
+          severity: 'warning',
+          requires_attention: true,
+          blocks_access: false,
+          action: 'update_payment_method',
+          action_label: 'Pay invoice',
+          message: 'Payment failed. Pay the invoice to keep access.',
+        },
+      },
+    })
+    const wrapper = mount(ProfileView)
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Payment failed. Pay the invoice to keep access.')
+    expect(wrapper.text()).toContain('Pay invoice')
+
+    const buttons = wrapper.findAll('button')
+    await buttons.find((button) => button.text().includes('Pay invoice')).trigger('click')
+    await flushPromises()
+
+    expect(createPaymentMethodSession).toHaveBeenCalledWith({ return_path: '/profile' })
+    expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/payment-method')
   })
 })

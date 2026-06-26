@@ -14,11 +14,14 @@ from .db.base import db
 from .db.models import User, utcnow
 
 
-PAID_STATUSES = {"active", "trialing"}
+PAID_STATUSES = {"active", "trialing", "past_due"}
 PAID_TIERS = {"basic", "pro"}
 CHECKOUT_PAYMENT_METHOD_TYPES = ["card", "cashapp"]
 CHECKOUT_CURRENCY = "usd"
 MANAGED_SUBSCRIPTION_STATUSES = {"active", "trialing", "past_due", "unpaid", "incomplete", "paused"}
+RECOVERABLE_BILLING_STATUSES = {"past_due"}
+BLOCKED_BILLING_STATUSES = {"incomplete", "incomplete_expired", "unpaid", "canceled"}
+PAYMENT_RECOVERY_STATUSES = RECOVERABLE_BILLING_STATUSES | {"incomplete", "unpaid"}
 
 
 class BillingConfigError(RuntimeError):
@@ -104,6 +107,7 @@ def serialize_subscription(user: User) -> dict[str, Any]:
         "status": user.subscription_status,
         "is_paid_entitled": is_paid_entitled(user),
         "includes_video_analysis": includes_video_analysis(user),
+        "billing_health": subscription_billing_health(user),
         "current_period_start": (
             user.subscription_current_period_start.isoformat()
             if user.subscription_current_period_start
@@ -131,14 +135,93 @@ def includes_video_analysis(user: User) -> bool:
     return user.subscription_tier == "pro" and user.subscription_status in PAID_STATUSES
 
 
+def subscription_billing_health(user: User) -> dict[str, Any]:
+    tier = user.subscription_tier or "free"
+    status = user.subscription_status
+
+    def health(
+        state: str,
+        severity: str = "none",
+        *,
+        requires_attention: bool = False,
+        blocks_access: bool = False,
+        action: str | None = None,
+        action_label: str | None = None,
+        message: str = "",
+    ) -> dict[str, Any]:
+        return {
+            "state": state,
+            "severity": severity,
+            "requires_attention": requires_attention,
+            "blocks_access": blocks_access,
+            "action": action,
+            "action_label": action_label,
+            "message": message,
+        }
+
+    if tier not in PAID_TIERS or not user.stripe_subscription_id:
+        return health("healthy")
+
+    if status in {"active", "trialing"}:
+        if user.subscription_cancel_at_period_end:
+            return health(
+                "healthy",
+                "info",
+                action="manage_billing",
+                action_label="Manage",
+                message="Your plan ends at the current period end.",
+            )
+        return health("healthy")
+
+    if status == "past_due":
+        return health(
+            "payment_failed",
+            "warning",
+            requires_attention=True,
+            blocks_access=False,
+            action="update_payment_method",
+            action_label="Pay invoice",
+            message="Payment failed. Pay the invoice to keep access.",
+        )
+
+    if status in {"incomplete", "unpaid"}:
+        return health(
+            "payment_required",
+            "danger",
+            requires_attention=True,
+            blocks_access=True,
+            action="update_payment_method",
+            action_label="Pay invoice",
+            message="Payment is overdue. Pay the invoice to restore access.",
+        )
+
+    if status in {"canceled", "incomplete_expired"}:
+        return health(
+            "canceled",
+            "danger",
+            requires_attention=True,
+            blocks_access=True,
+            action="choose_plan",
+            action_label="Choose plan",
+            message="Your subscription is inactive. Choose a plan to continue.",
+        )
+
+    return health("inactive")
+
+
 def billing_required_response(user: User):
     if is_paid_entitled(user):
         return None
+    subscription = serialize_subscription(user)
+    billing_health = subscription["billing_health"]
+    is_payment_recovery = billing_health.get("action") == "update_payment_method"
     return jsonify(
         {
-            "error": "Active subscription required",
-            "code": "subscription_required",
+            "error": billing_health["message"] if billing_health.get("requires_attention") else "Active subscription required",
+            "code": "billing_payment_required" if is_payment_recovery else "subscription_required",
             "plans_url": "/pricing",
+            "subscription": subscription,
+            "billing_health": billing_health,
         }
     ), 402
 
@@ -199,6 +282,13 @@ def _customer_profile_payload(user: User) -> dict[str, Any]:
     return payload
 
 
+def _customer_create_payload(user: User) -> dict[str, Any]:
+    payload = _customer_profile_payload(user)
+    if Config.STRIPE_TEST_CLOCK_ID:
+        payload["test_clock"] = Config.STRIPE_TEST_CLOCK_ID
+    return payload
+
+
 def sync_stripe_customer_profile(user: User, db_session) -> str:
     """Create or update the Stripe customer backing a Clerk user."""
     ensure_stripe_configured(require_prices=False)
@@ -209,7 +299,7 @@ def sync_stripe_customer_profile(user: User, db_session) -> str:
         stripe_client.Customer.modify(user.stripe_customer_id, **payload)
         return user.stripe_customer_id
 
-    customer = stripe_client.Customer.create(**payload)
+    customer = stripe_client.Customer.create(**_customer_create_payload(user))
     customer_id = _get_value(customer, "id")
     user.stripe_customer_id = customer_id
     session = _session(db_session)
@@ -411,6 +501,38 @@ def change_subscription_plan(user: User, desired_tier: str) -> dict[str, Any]:
 def create_portal_session(user: User, return_path: str = "/profile") -> str:
     ensure_stripe_configured(require_prices=False)
     return _portal_session_url(user, return_path)
+
+
+def create_payment_method_update_session(user: User, return_path: str = "/profile") -> str:
+    ensure_stripe_configured(require_prices=False)
+    flow_data = {
+        "type": "payment_method_update",
+        "after_completion": {
+            "type": "redirect",
+            "redirect": {"return_url": _portal_return_url(return_path)},
+        },
+    }
+    return _portal_session_url(user, return_path, flow_data)
+
+
+def latest_payable_invoice_url(user: User) -> str | None:
+    ensure_stripe_configured(require_prices=False)
+    if not user.stripe_customer_id:
+        return None
+    invoices = _stripe().Invoice.list(customer=user.stripe_customer_id, status="open", limit=10)
+    data = invoices.get("data", invoices) if isinstance(invoices, dict) else invoices.data
+    for invoice in data:
+        hosted_invoice_url = _get_value(invoice, "hosted_invoice_url")
+        if hosted_invoice_url:
+            return hosted_invoice_url
+    return None
+
+
+def create_payment_recovery_session(user: User, return_path: str = "/profile") -> str:
+    invoice_url = latest_payable_invoice_url(user)
+    if invoice_url:
+        return invoice_url
+    return create_payment_method_update_session(user, return_path)
 
 
 def list_invoices(user: User, limit: int = 20) -> list[dict[str, Any]]:

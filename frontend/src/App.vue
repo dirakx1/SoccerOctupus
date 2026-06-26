@@ -44,6 +44,13 @@
         </template>
       </div>
     </nav>
+    <BillingStatusNotice
+      v-if="auth.state.signedIn && requiresAttention"
+      class="shell-billing-notice"
+      :health="billingHealth"
+      :loading="billingActionLoading"
+      @action="openShellBillingRecovery"
+    />
     <main class="content">
       <router-view />
     </main>
@@ -55,10 +62,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuth, useClerk } from '@clerk/vue'
 import { useRouter } from 'vue-router'
 
+import BillingStatusNotice from './components/BillingStatusNotice.vue'
+import { useBillingStatus } from './composables/useBillingStatus'
 import { useCurrentUserProfile } from './composables/useCurrentUserProfile'
 import { installAuthInterceptor } from './lib/api'
 import { clearAuthState, useAuthState } from './lib/auth'
@@ -74,6 +83,14 @@ const {
   email: userEmail,
   initials: userInitials,
 } = useCurrentUserProfile()
+const {
+  actionLoading: billingActionLoading,
+  billingHealth,
+  clearBillingStatus,
+  openBillingRecovery,
+  refreshBillingStatus,
+  requiresAttention,
+} = useBillingStatus()
 
 installAuthInterceptor(async () => {
   return await clerkAuth.getToken.value?.()
@@ -82,9 +99,26 @@ installAuthInterceptor(async () => {
 async function signOut() {
   closeUserMenu()
   await clerk.value?.signOut()
+  clearBillingStatus()
   clearAuthState()
   router.push('/sign-in')
 }
+
+async function openShellBillingRecovery() {
+  await openBillingRecovery(router.currentRoute.value.fullPath || '/profile')
+}
+
+watch(
+  () => auth.state.signedIn,
+  (signedIn) => {
+    if (signedIn) {
+      refreshBillingStatus()
+    } else {
+      clearBillingStatus()
+    }
+  },
+  { immediate: true }
+)
 
 function toggleUserMenu() {
   userMenuOpen.value = !userMenuOpen.value
@@ -194,6 +228,13 @@ function closeUserMenu() {
 }
 
 .content { flex: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+.shell-billing-notice {
+  border-left: 0;
+  border-radius: 0;
+  border-right: 0;
+  justify-content: center;
+}
 
 .footer {
   display: flex;

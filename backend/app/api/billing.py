@@ -9,6 +9,7 @@ from ..billing import (
     BillingConfigError,
     change_subscription_plan,
     checkout_session_belongs_to_user,
+    create_payment_recovery_session,
     create_portal_session,
     list_invoices,
     plan_catalog,
@@ -97,6 +98,19 @@ def portal():
     payload = request.get_json(silent=True) or {}
     try:
         url = create_portal_session(g.current_user, _safe_return_path(payload.get("return_path")))
+    except BillingConfigError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    return jsonify({"url": url})
+
+
+@bp.route("/payment-method", methods=["POST"])
+@require_user(db)
+def payment_method():
+    payload = request.get_json(silent=True) or {}
+    try:
+        url = create_payment_recovery_session(g.current_user, _safe_return_path(payload.get("return_path")))
     except BillingConfigError as exc:
         return jsonify({"error": str(exc)}), 400
     except ValueError as exc:

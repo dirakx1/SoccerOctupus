@@ -117,6 +117,11 @@
           </template>
         </button>
       </div>
+      <BillingStatusNotice
+        :health="billingHealth"
+        :loading="paymentLoading"
+        @action="openPaymentRecovery"
+      />
       <div v-if="usage.features?.length" class="usage-grid">
         <div v-for="feature in usage.features" :key="feature.feature_key" class="usage-row">
           <span>{{ feature.label }}</span>
@@ -133,10 +138,11 @@ import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { CreditCard, LoaderCircle } from '@lucide/vue'
 import { useRouter } from 'vue-router'
 
+import BillingStatusNotice from '../components/BillingStatusNotice.vue'
 import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
-import { createPortalSession, getSubscription, getUsage } from '../lib/billing'
+import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
 
 const {
   avatarUrl,
@@ -158,6 +164,7 @@ const subscription = ref({})
 const usage = ref({})
 const billingLoading = ref(true)
 const portalLoading = ref(false)
+const paymentLoading = ref(false)
 const billingError = ref('')
 
 const profileForm = reactive({
@@ -180,6 +187,7 @@ const tierLabel = computed(() => {
   return labels[subscription.value.tier] || 'Free'
 })
 const isFreeTier = computed(() => (subscription.value.tier || 'free') === 'free')
+const billingHealth = computed(() => subscription.value.billing_health || {})
 const billingActionText = computed(() => (isFreeTier.value ? 'Plans' : 'Manage'))
 const billingActionLabel = computed(() => (isFreeTier.value ? 'View plans' : 'Manage billing'))
 
@@ -235,6 +243,29 @@ async function openBillingPortal() {
     billingError.value = err.response?.data?.error || 'Could not open Stripe billing portal.'
   } finally {
     portalLoading.value = false
+  }
+}
+
+async function openPaymentRecovery() {
+  if (billingHealth.value.action === 'choose_plan') {
+    router.push('/pricing')
+    return
+  }
+
+  if (billingHealth.value.action === 'manage_billing') {
+    await openBillingPortal()
+    return
+  }
+
+  paymentLoading.value = true
+  billingError.value = ''
+  try {
+    const res = await createPaymentMethodSession({ return_path: '/profile' })
+    window.location.assign(res.data.url)
+  } catch (err) {
+    billingError.value = err.response?.data?.error || 'Could not open payment update.'
+  } finally {
+    paymentLoading.value = false
   }
 }
 

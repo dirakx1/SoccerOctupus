@@ -10,6 +10,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from sqlalchemy.exc import IntegrityError
 
 from app.auth import ClerkIdentity, sync_user, verify_session_token
+from app import _sqlalchemy_engine_options
 from app.db.base import db
 from app.db.models import AppSettings, User
 from app.runtime_settings import RuntimeSettingsService
@@ -65,6 +66,14 @@ def _public_jwk(private_pem: bytes, key_id: str) -> dict:
         "n": _base64url_uint(numbers.n),
         "e": _base64url_uint(numbers.e),
     }
+
+
+def test_postgres_engine_options_disable_prepared_statements():
+    options = _sqlalchemy_engine_options("postgresql+psycopg://user:pass@example.com/db")
+
+    assert options["pool_pre_ping"] is True
+    assert options["connect_args"]["prepare_threshold"] is None
+    assert _sqlalchemy_engine_options("sqlite:///:memory:") == {}
 
 
 def test_verify_session_token_uses_static_public_key(monkeypatch):
@@ -225,6 +234,7 @@ def test_clerk_created_webhook_creates_stripe_customer(client, monkeypatch):
     created = []
     monkeypatch.setattr("app.api.webhooks.Config.STRIPE_SECRET_KEY", "sk_test_local")
     monkeypatch.setattr("app.billing.Config.STRIPE_SECRET_KEY", "sk_test_local")
+    monkeypatch.setattr("app.billing.Config.STRIPE_TEST_CLOCK_ID", "clock_1Tma3tRHvkf3rpbEKm1XrIQW")
     monkeypatch.setattr(
         "app.api.webhooks.verify_webhook",
         lambda payload, headers: {
@@ -257,6 +267,7 @@ def test_clerk_created_webhook_creates_stripe_customer(client, monkeypatch):
     assert response.status_code == 200
     assert created[0]["email"] == "new@example.com"
     assert created[0]["name"] == "New Customer"
+    assert created[0]["test_clock"] == "clock_1Tma3tRHvkf3rpbEKm1XrIQW"
     assert created[0]["metadata"]["clerk_user_id"] == "user_new"
     with client.application.app_context():
         user = User.query.filter_by(clerk_user_id="user_new").one()

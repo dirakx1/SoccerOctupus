@@ -96,7 +96,13 @@ def _process_stripe_event(event: dict) -> None:
         subscription_id = _get_value(obj, "id")
         if subscription_id:
             _sync_subscription_reference(subscription_id)
-    elif event_type in {"invoice.paid", "invoice.payment_succeeded", "invoice.payment_failed"}:
+    elif event_type in {
+        "invoice.paid",
+        "invoice.payment_succeeded",
+        "invoice.payment_failed",
+        "invoice.payment_action_required",
+        "invoice.updated",
+    }:
         invoice_id = _get_value(obj, "id")
         if invoice_id:
             invoice = _retrieve_invoice(invoice_id)
