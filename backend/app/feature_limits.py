@@ -176,6 +176,14 @@ def _active_override(user: User, feature_key: str, now: datetime) -> UserFeature
     )
 
 
+def _limit_values(user: User, feature_key: str, tier: str, now: datetime) -> tuple[int | None, str, str | None]:
+    override = _active_override(user, feature_key, now)
+    if override:
+        return override.limit_count, "user_override", override.note
+    policy = FeatureLimitPolicy.query.filter_by(tier=tier, feature_key=feature_key).one()
+    return policy.limit_count, "policy", None
+
+
 def ensure_cycle_limits(user: User, db_session, now: datetime | None = None) -> list[UserFeatureCycleLimit]:
     session = _session(db_session)
     current = _now(now)
@@ -188,18 +196,19 @@ def ensure_cycle_limits(user: User, db_session, now: datetime | None = None) -> 
     }
     changed = False
     for feature_key in ORDERED_FEATURE_KEYS:
+        limit_count, limit_source, override_note = _limit_values(user, feature_key, tier, current)
         if feature_key in rows:
+            row = rows[feature_key]
+            if row.tier != tier and row.limit_source != "manual_cycle_override":
+                row.tier = tier
+                row.limit_count = limit_count
+                row.used_count = 0
+                row.limit_source = limit_source
+                row.override_note = override_note
+                row.overridden_by_user_id = None
+                session.add(row)
+                changed = True
             continue
-        override = _active_override(user, feature_key, current)
-        if override:
-            limit_count = override.limit_count
-            limit_source = "user_override"
-            override_note = override.note
-        else:
-            policy = FeatureLimitPolicy.query.filter_by(tier=tier, feature_key=feature_key).one()
-            limit_count = policy.limit_count
-            limit_source = "policy"
-            override_note = None
         row = UserFeatureCycleLimit(
             user_id=user.id,
             tier=tier,

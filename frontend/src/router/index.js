@@ -1,40 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import GroupsView from '../views/GroupsView.vue'
-import PredictView from '../views/PredictView.vue'
-import TournamentView from '../views/TournamentView.vue'
-import MarketsView from '../views/MarketsView.vue'
-import LegalNoticeView from '../views/LegalNoticeView.vue'
-import CookiePolicyView from '../views/CookiePolicyView.vue'
-import ContactView from '../views/ContactView.vue'
-import AdminSettingsView from '../views/AdminSettingsView.vue'
-import ProfileView from '../views/ProfileView.vue'
-import SignInView from '../views/SignInView.vue'
-import SignUpView from '../views/SignUpView.vue'
-import SSOCallbackView from '../views/SSOCallbackView.vue'
-import ForgotPasswordView from '../views/ForgotPasswordView.vue'
-import PricingView from '../views/PricingView.vue'
-import BillingSuccessView from '../views/BillingSuccessView.vue'
+import { useAuthState } from '../lib/auth'
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: Home, meta: { public: true } },
-    { path: '/groups', component: GroupsView, meta: { requiresAuth: true } },
-    { path: '/predict', component: PredictView, meta: { requiresAuth: true } },
-    { path: '/tournament', component: TournamentView, meta: { requiresAuth: true } },
-    { path: '/markets', component: MarketsView, meta: { requiresAuth: true } },
-    { path: '/profile', component: ProfileView, meta: { requiresAuth: true } },
-    { path: '/pricing', component: PricingView, meta: { public: true } },
+    { path: '/', component: () => import('../views/Home.vue'), meta: { public: true } },
+    { path: '/groups', component: () => import('../views/GroupsView.vue'), meta: { requiresAuth: true } },
+    { path: '/predict', component: () => import('../views/PredictView.vue'), meta: { requiresAuth: true } },
+    { path: '/tournament', component: () => import('../views/TournamentView.vue'), meta: { requiresAuth: true } },
+    { path: '/markets', component: () => import('../views/MarketsView.vue'), meta: { requiresAuth: true } },
+    { path: '/profile', component: () => import('../views/ProfileView.vue'), meta: { requiresAuth: true } },
+    { path: '/pricing', component: () => import('../views/PricingView.vue'), meta: { public: true } },
     { path: '/billing', redirect: '/profile', meta: { requiresAuth: true } },
-    { path: '/billing/success', component: BillingSuccessView, meta: { requiresAuth: true } },
-    { path: '/admin/settings', component: AdminSettingsView, meta: { requiresAuth: true, admin: true } },
-    { path: '/sign-in', component: SignInView, meta: { public: true } },
-    { path: '/sign-up', component: SignUpView, meta: { public: true } },
-    { path: '/forgot-password', component: ForgotPasswordView, meta: { public: true } },
-    { path: '/sso-callback', component: SSOCallbackView, meta: { public: true } },
-    { path: '/legal', component: LegalNoticeView, meta: { public: true } },
-    { path: '/cookie-policy', component: CookiePolicyView, meta: { public: true } },
-    { path: '/contact', component: ContactView, meta: { public: true } },
+    { path: '/billing/success', component: () => import('../views/BillingSuccessView.vue'), meta: { requiresAuth: true } },
+    { path: '/admin/settings', component: () => import('../views/AdminSettingsView.vue'), meta: { requiresAuth: true, admin: true } },
+    { path: '/sign-in', component: () => import('../views/SignInView.vue'), meta: { public: true } },
+    { path: '/sign-up', component: () => import('../views/SignUpView.vue'), meta: { public: true } },
+    { path: '/forgot-password', component: () => import('../views/ForgotPasswordView.vue'), meta: { public: true } },
+    { path: '/sso-callback', component: () => import('../views/SSOCallbackView.vue'), meta: { public: true } },
+    { path: '/legal', component: () => import('../views/LegalNoticeView.vue'), meta: { public: true } },
+    { path: '/cookie-policy', component: () => import('../views/CookiePolicyView.vue'), meta: { public: true } },
+    { path: '/contact', component: () => import('../views/ContactView.vue'), meta: { public: true } },
   ]
 })
+
+const auth = useAuthState()
+
+router.beforeEach((to) => {
+  if (!auth.state.loaded) return true
+
+  if (to.meta.requiresAuth && !auth.state.signedIn) {
+    return { path: '/sign-in' }
+  }
+
+  if (to.meta.admin && !auth.state.isAdmin) {
+    return { path: '/' }
+  }
+
+  if (auth.state.signedIn && (to.path === '/sign-in' || to.path === '/sign-up')) {
+    return { path: '/' }
+  }
+
+  return true
+})
+
+export default router

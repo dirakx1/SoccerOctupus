@@ -80,21 +80,38 @@ def build_identity_from_webhook(payload: dict[str, Any]) -> ClerkIdentity:
     )
 
 
-def _apply_identity(user: User, identity: ClerkIdentity, *, overwrite_missing: bool) -> None:
+def _set_if_changed(user: User, field: str, value: Any) -> bool:
+    if getattr(user, field) == value:
+        return False
+    setattr(user, field, value)
+    return True
+
+
+def _apply_identity(
+    user: User,
+    identity: ClerkIdentity,
+    *,
+    overwrite_missing: bool,
+    sync_last_sign_in: bool = True,
+) -> bool:
+    changed = False
+
     if identity.email:
-        user.email = identity.email
+        changed = _set_if_changed(user, "email", identity.email) or changed
 
     if overwrite_missing or identity.first_name is not None:
-        user.first_name = identity.first_name
+        changed = _set_if_changed(user, "first_name", identity.first_name) or changed
 
     if overwrite_missing or identity.last_name is not None:
-        user.last_name = identity.last_name
+        changed = _set_if_changed(user, "last_name", identity.last_name) or changed
 
     if overwrite_missing or identity.avatar_url is not None:
-        user.avatar_url = identity.avatar_url
+        changed = _set_if_changed(user, "avatar_url", identity.avatar_url) or changed
 
-    if identity.last_sign_in_at is not None:
-        user.last_sign_in_at = identity.last_sign_in_at
+    if sync_last_sign_in and identity.last_sign_in_at is not None:
+        changed = _set_if_changed(user, "last_sign_in_at", identity.last_sign_in_at) or changed
+
+    return changed
 
 
 def _initial_email(identity: ClerkIdentity) -> str:
@@ -107,6 +124,7 @@ def sync_user(
     *,
     reactivate: bool = True,
     overwrite_missing: bool = True,
+    sync_last_sign_in: bool = True,
 ) -> User:
     user = User.query.filter_by(clerk_user_id=identity.clerk_user_id).one_or_none()
     if user is None:
@@ -121,7 +139,7 @@ def sync_user(
             last_sign_in_at=identity.last_sign_in_at,
             deleted_at=None,
         )
-        _apply_identity(user, identity, overwrite_missing=overwrite_missing)
+        _apply_identity(user, identity, overwrite_missing=overwrite_missing, sync_last_sign_in=sync_last_sign_in)
         db_session.session.add(user)
         try:
             db_session.session.commit()
@@ -130,18 +148,30 @@ def sync_user(
             user = User.query.filter_by(clerk_user_id=identity.clerk_user_id).one_or_none()
             if user is None:
                 raise
-            _apply_identity(user, identity, overwrite_missing=overwrite_missing)
+            changed = _apply_identity(
+                user,
+                identity,
+                overwrite_missing=overwrite_missing,
+                sync_last_sign_in=sync_last_sign_in,
+            )
             if reactivate:
-                user.is_active = True
-                user.deleted_at = None
-            db_session.session.commit()
+                changed = _set_if_changed(user, "is_active", True) or changed
+                changed = _set_if_changed(user, "deleted_at", None) or changed
+            if changed:
+                db_session.session.commit()
         return user
 
-    _apply_identity(user, identity, overwrite_missing=overwrite_missing)
+    changed = _apply_identity(
+        user,
+        identity,
+        overwrite_missing=overwrite_missing,
+        sync_last_sign_in=sync_last_sign_in,
+    )
     if reactivate:
-        user.is_active = True
-        user.deleted_at = None
-    db_session.session.commit()
+        changed = _set_if_changed(user, "is_active", True) or changed
+        changed = _set_if_changed(user, "deleted_at", None) or changed
+    if changed:
+        db_session.session.commit()
     return user
 
 
@@ -213,7 +243,7 @@ def load_current_user(db_session) -> User:
     token = auth_header.split(" ", 1)[1].strip()
     claims = verify_session_token(token)
     identity = build_identity_from_claims(claims)
-    user = sync_user(identity, db_session, overwrite_missing=False)
+    user = sync_user(identity, db_session, overwrite_missing=False, sync_last_sign_in=False)
     g.current_user = user
     return user
 

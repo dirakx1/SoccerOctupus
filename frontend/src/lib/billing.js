@@ -10,6 +10,8 @@ export const getSubscription = () => api.get('/api/billing/subscription')
 
 export const getUsage = () => api.get('/api/billing/usage')
 
+export const getCheckoutSession = (sessionId) => api.get(`/api/billing/checkout-session/${encodeURIComponent(sessionId)}`)
+
 export const createPortalSession = (payload = {}) => api.post('/api/billing/portal', payload)
 
 export const createPaymentMethodSession = (payload = {}) => api.post('/api/billing/payment-method', payload)

@@ -31,9 +31,14 @@ def _safe_return_path(value: str | None) -> str:
 
 
 def _get_value(obj, key, default=None):
-    if isinstance(obj, dict):
-        return obj.get(key, default)
-    return getattr(obj, key, default)
+    if obj is None:
+        return default
+    try:
+        return obj[key]
+    except (KeyError, TypeError):
+        pass
+    value = getattr(obj, key, default)
+    return value if value is not None else default
 
 
 @bp.route("/plans", methods=["GET"])
@@ -132,7 +137,7 @@ def checkout_session(session_id: str):
         return jsonify({"error": "Checkout session not found"}), 404
 
     subscription_obj = _get_value(session, "subscription")
-    if isinstance(subscription_obj, dict):
+    if subscription_obj and not isinstance(subscription_obj, str):
         sync_subscription_from_stripe_subscription(subscription_obj, db)
         db.session.commit()
 

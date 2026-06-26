@@ -14,13 +14,24 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { UserCircle } from '@lucide/vue'
 
+import { getCheckoutSession } from '../lib/billing'
+
+const route = useRoute()
 const router = useRouter()
 let redirectTimer
 
-onMounted(() => {
+onMounted(async () => {
+  const sessionId = typeof route.query.session_id === 'string' ? route.query.session_id : ''
+  if (sessionId) {
+    try {
+      await getCheckoutSession(sessionId)
+    } catch {
+      // The Stripe webhook can still reconcile this subscription asynchronously.
+    }
+  }
   redirectTimer = window.setTimeout(() => {
     router.replace('/profile')
   }, 3500)

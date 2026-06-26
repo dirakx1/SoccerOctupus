@@ -403,12 +403,17 @@ def _best_customer_subscription(customer_id: str):
     return data[0]
 
 
-def _subscription_item_id(subscription: dict[str, Any]) -> str | None:
+def _first_subscription_item(subscription: dict[str, Any]):
     items_obj = _get_value(subscription, "items") or {}
     items = _get_value(items_obj, "data", [])
     if not items:
         return None
-    return _get_value(items[0], "id")
+    return items[0]
+
+
+def _subscription_item_id(subscription: dict[str, Any]) -> str | None:
+    item = _first_subscription_item(subscription)
+    return _get_value(item, "id") if item else None
 
 
 def _active_stripe_subscription(user: User):
@@ -583,12 +588,19 @@ def _ts(value: int | None) -> datetime | None:
 
 
 def _subscription_item_price_id(subscription: dict[str, Any]) -> str | None:
-    items_obj = _get_value(subscription, "items") or {}
-    items = _get_value(items_obj, "data", [])
-    if not items:
+    item = _first_subscription_item(subscription)
+    if not item:
         return None
-    price = _get_value(items[0], "price") or {}
+    price = _get_value(item, "price") or {}
     return _get_value(price, "id")
+
+
+def _subscription_period_timestamp(subscription: dict[str, Any], key: str) -> int | None:
+    value = _get_value(subscription, key)
+    if value is not None:
+        return value
+    item = _first_subscription_item(subscription)
+    return _get_value(item, key) if item else None
 
 
 def sync_subscription_from_stripe_subscription(subscription: dict[str, Any], db_session) -> User | None:
@@ -617,8 +629,8 @@ def sync_subscription_from_stripe_subscription(subscription: dict[str, Any], db_
     user.stripe_customer_id = customer_id or user.stripe_customer_id
     user.stripe_subscription_id = subscription_id or user.stripe_subscription_id
     user.subscription_status = "canceled" if deleted else status
-    user.subscription_current_period_start = _ts(_get_value(subscription, "current_period_start"))
-    user.subscription_current_period_end = _ts(_get_value(subscription, "current_period_end"))
+    user.subscription_current_period_start = _ts(_subscription_period_timestamp(subscription, "current_period_start"))
+    user.subscription_current_period_end = _ts(_subscription_period_timestamp(subscription, "current_period_end"))
     user.subscription_cancel_at_period_end = False if deleted else bool(_get_value(subscription, "cancel_at_period_end"))
     user.subscription_synced_at = utcnow()
     user.stripe_price_id = price_id

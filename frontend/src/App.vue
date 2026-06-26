@@ -52,7 +52,7 @@
       @action="openShellBillingRecovery"
     />
     <main class="content">
-      <router-view />
+      <router-view v-if="canRenderRoute" />
     </main>
     <footer class="footer">
       <span>© 2026 SoccerOctopus — predictions are approximations only, not betting advice.</span>
@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useAuth, useClerk } from '@clerk/vue'
 import { useRouter } from 'vue-router'
 
@@ -73,12 +73,17 @@ import BillingStatusNotice from './components/BillingStatusNotice.vue'
 import { useBillingStatus } from './composables/useBillingStatus'
 import { useCurrentUserProfile } from './composables/useCurrentUserProfile'
 import { installAuthInterceptor } from './lib/api'
-import { clearAuthState, useAuthState } from './lib/auth'
+import { clearAuthState, refreshAuthState, useAuthState } from './lib/auth'
+import { consumePostAuthRedirect, peekPostAuthRedirect } from './lib/postAuthRedirect'
 import CookieBanner from './components/CookieBanner.vue'
 
 const auth = useAuthState()
 const clerk = useClerk()
-const clerkAuth = useAuth()
+const {
+  getToken,
+  isLoaded: clerkLoaded,
+  isSignedIn: clerkSignedIn,
+} = useAuth()
 const router = useRouter()
 const userMenuOpen = ref(false)
 const {
@@ -97,8 +102,39 @@ const {
 } = useBillingStatus()
 
 installAuthInterceptor(async () => {
-  return await clerkAuth.getToken.value?.()
+  return await getToken.value?.()
 })
+
+const canRenderRoute = computed(() => {
+  const current = router.currentRoute.value
+  if (!current.meta.requiresAuth) return true
+  return auth.state.loaded && auth.state.signedIn && (!current.meta.admin || auth.state.isAdmin)
+})
+
+function redirectAfterAuthRefresh() {
+  const current = router.currentRoute.value
+  const storedRedirect = peekPostAuthRedirect()
+
+  if (storedRedirect && ['/', '/sign-in', '/sign-up', '/sso-callback'].includes(current.path)) {
+    router.replace(consumePostAuthRedirect())
+    return
+  }
+
+  if (current.path === '/sign-in' || current.path === '/sign-up') {
+    router.replace('/')
+    return
+  }
+
+  if (current.meta.admin && !auth.state.isAdmin) {
+    router.replace('/')
+  }
+}
+
+function redirectAfterSignOut() {
+  if (router.currentRoute.value.meta.requiresAuth) {
+    router.replace('/sign-in')
+  }
+}
 
 async function signOut() {
   closeUserMenu()
@@ -119,6 +155,27 @@ watch(
       refreshBillingStatus()
     } else {
       clearBillingStatus()
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  [clerkLoaded, clerkSignedIn],
+  async ([loaded, signedIn]) => {
+    if (!loaded) return
+
+    if (!signedIn) {
+      clearAuthState()
+      redirectAfterSignOut()
+      return
+    }
+
+    try {
+      await refreshAuthState({ force: !auth.state.signedIn })
+      redirectAfterAuthRefresh()
+    } catch {
+      redirectAfterSignOut()
     }
   },
   { immediate: true }

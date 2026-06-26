@@ -751,6 +751,54 @@ def test_subscription_sync_maps_basic_pro_and_deleted(client, user, monkeypatch)
         assert deleted.usage_cycle_anchor_at is not None
 
 
+def test_subscription_sync_reads_item_period_and_refreshes_usage_rows(client, user, monkeypatch):
+    _configure_stripe(monkeypatch)
+    from app.billing import sync_subscription_from_stripe_subscription
+    from app.feature_limits import FEATURE_MATCH_PREDICTION, reserve_feature_usage, serialize_usage
+
+    cycle_start = datetime(2026, 6, 1, tzinfo=timezone.utc)
+    cycle_end = datetime(2026, 7, 1, tzinfo=timezone.utc)
+    current = datetime(2026, 6, 15, tzinfo=timezone.utc)
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.usage_cycle_anchor_at = cycle_start
+        db.session.commit()
+
+        free_reservation = reserve_feature_usage(entry, FEATURE_MATCH_PREDICTION, db, current)
+        assert free_reservation.allowed is True
+
+        subscription = _subscription(
+            customer="cus_item_period",
+            metadata={"user_id": str(user["id"])},
+            items={
+                "data": [
+                    {
+                        "id": "si_basic",
+                        "current_period_start": int(cycle_start.timestamp()),
+                        "current_period_end": int(cycle_end.timestamp()),
+                        "price": {"id": "price_basic"},
+                    }
+                ]
+            },
+        )
+        subscription.pop("current_period_start")
+        subscription.pop("current_period_end")
+
+        synced = sync_subscription_from_stripe_subscription(subscription, db)
+        db.session.commit()
+
+        assert synced.subscription_current_period_start.replace(tzinfo=timezone.utc) == cycle_start
+        assert synced.subscription_current_period_end.replace(tzinfo=timezone.utc) == cycle_end
+
+        usage = serialize_usage(entry, db, current)
+        match_usage = next(feature for feature in usage["features"] if feature["feature_key"] == FEATURE_MATCH_PREDICTION)
+        assert usage["tier"] == "basic"
+        assert match_usage["unlimited"] is True
+        assert match_usage["limit_count"] is None
+        assert match_usage["used_count"] == 0
+
+
 def test_checkout_completed_webhook_refetches_session_and_subscription(client, user, monkeypatch):
     _configure_stripe(monkeypatch)
     event = {
@@ -1001,6 +1049,37 @@ def test_checkout_session_ownership_accepts_stripe_object_metadata(user):
     account = User(id=user["id"], clerk_user_id=user["clerk_user_id"], email=user["email"])
 
     assert checkout_session_belongs_to_user(session, account) is True
+
+
+def test_checkout_session_endpoint_syncs_stripe_object_subscription(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+    session = _stripe_like(
+        {
+            "id": "cs_object",
+            "status": "complete",
+            "payment_status": "paid",
+            "customer": "cus_object",
+            "client_reference_id": str(user["id"]),
+            "metadata": {"user_id": str(user["id"])},
+            "subscription": _subscription(
+                id="sub_object",
+                customer="cus_object",
+                metadata={"user_id": str(user["id"])},
+                items={"data": [{"price": {"id": "price_pro"}}]},
+            ),
+        }
+    )
+    monkeypatch.setattr("app.api.billing.retrieve_checkout_session", lambda session_id: session)
+
+    response = client.get("/api/billing/checkout-session/cs_object", headers=_auth_header(user["clerk_user_id"]))
+
+    assert response.status_code == 200
+    assert response.get_json()["subscription"]["tier"] == "pro"
+    with client.application.app_context():
+        updated = User.query.get(user["id"])
+        assert updated.stripe_customer_id == "cus_object"
+        assert updated.subscription_tier == "pro"
 
 
 def test_free_user_gets_cycle_limited_prediction_and_markets(client, user, monkeypatch):
