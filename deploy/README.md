@@ -147,6 +147,11 @@ CLERK_JWKS_JSON=
 CLERK_JWT_PUBLIC_KEY=
 CLERK_WEBHOOK_SECRET=
 FRONTEND_ORIGIN=https://socceroctupus.co
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_BASIC_PRICE_ID=
+STRIPE_PRO_PRICE_ID=
+STRIPE_BILLING_PORTAL_CONFIGURATION_ID=
 
 DEBUG=false
 PORT=5002
@@ -158,6 +163,9 @@ Notes:
 - `DATABASE_URL` should point at Postgres in production
 - Clerk secrets, the public Clerk publishable key, and the database connection stay in env as bootstrap settings
 - `CLERK_JWT_PUBLIC_KEY` or `CLERK_JWKS_JSON` can be used instead of `CLERK_JWKS_URL` to verify tokens without a runtime JWKS fetch; prefer `CLERK_JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"` in production env managers
+- Stripe secrets stay in deployment env, not `/admin/settings`
+- Stripe price IDs are not secret, but configure `STRIPE_BASIC_PRICE_ID` and `STRIPE_PRO_PRICE_ID` through env for each Stripe account
+- The Stripe webhook endpoint is `POST https://socceroctupus.co/api/webhooks/stripe`
 - LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are configured in `/admin/settings` after first-admin bootstrap
 - Provider API keys are encrypted in the database and redacted from admin API responses
 - The encryption root key lives outside the database at `backend/instance/settings-fernet.key`; persist and back up that file securely before storing API keys
@@ -185,6 +193,15 @@ UPDATE users SET is_admin = true WHERE email = '<admin-email>';
 
 Also configure a Clerk webhook to `POST https://socceroctupus.co/api/webhooks/clerk`
 with the matching `CLERK_WEBHOOK_SECRET`.
+
+Configure Stripe Dashboard before paid access testing:
+
+- Create products/prices for Basic USD 5 monthly and Pro USD 10 monthly.
+- Set `STRIPE_BASIC_PRICE_ID` and `STRIPE_PRO_PRICE_ID` from those recurring prices.
+- Enable Customer Portal plan changes and cancellation for the Basic/Pro products.
+- Add webhook endpoint `https://socceroctupus.co/api/webhooks/stripe`.
+- Subscribe it to `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_succeeded`, and `invoice.payment_failed`.
+- Set `STRIPE_WEBHOOK_SECRET` from that endpoint.
 
 ## 7. Test Backend Locally
 

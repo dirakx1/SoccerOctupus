@@ -99,6 +99,7 @@ import { useRouter } from 'vue-router'
 import { useClerk, useSignIn } from '@clerk/vue'
 
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
+import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
 
 const router = useRouter()
 const clerk = useClerk()
@@ -193,7 +194,7 @@ async function completeSignIn(result) {
     setActive: setActive.value,
     sessionId,
   })
-  router.push('/')
+  router.push(consumePostAuthRedirect() || '/')
 }
 
 async function prepareCodeVerification(stage, factor) {
@@ -333,7 +334,7 @@ async function signInWithGoogle() {
     await signIn.value.authenticateWithRedirect({
       strategy: 'oauth_google',
       redirectUrl: '/sso-callback',
-      redirectUrlComplete: '/',
+      redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
     googleLoading.value = false

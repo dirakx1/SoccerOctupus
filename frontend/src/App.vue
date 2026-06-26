@@ -13,6 +13,7 @@
           <router-link to="/predict">Predict Match</router-link>
           <router-link to="/tournament">Tournament</router-link>
           <router-link to="/markets">Markets</router-link>
+          <router-link to="/pricing">Pricing</router-link>
           <router-link v-if="auth.state.isAdmin" to="/admin/settings">Admin</router-link>
           <div class="user-menu">
             <button
@@ -22,13 +23,13 @@
               aria-haspopup="menu"
               @click="toggleUserMenu"
             >
-              <img v-if="auth.state.user?.avatar_url" :src="auth.state.user.avatar_url" alt="" />
+              <img v-if="userAvatarUrl" :src="userAvatarUrl" alt="" />
               <span v-else>{{ userInitials }}</span>
             </button>
             <div v-if="userMenuOpen" class="user-dropdown" role="menu">
               <div class="user-summary">
                 <strong>{{ userDisplayName }}</strong>
-                <small>{{ auth.state.user?.email }}</small>
+                <small>{{ userEmail }}</small>
               </div>
               <router-link to="/profile" role="menuitem" @click="closeUserMenu">Profile</router-link>
               <button type="button" role="menuitem" @click="signOut">Sign Out</button>
@@ -37,11 +38,19 @@
         </template>
         <template v-else>
           <router-link to="/">Home</router-link>
+          <router-link to="/pricing">Pricing</router-link>
           <router-link to="/sign-in">Sign In</router-link>
           <router-link to="/sign-up">Sign Up</router-link>
         </template>
       </div>
     </nav>
+    <BillingStatusNotice
+      v-if="auth.state.signedIn && requiresAttention"
+      class="shell-billing-notice"
+      :health="billingHealth"
+      :loading="billingActionLoading"
+      @action="openShellBillingRecovery"
+    />
     <main class="content">
       <router-view />
     </main>
@@ -56,10 +65,13 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuth, useClerk } from '@clerk/vue'
 import { useRouter } from 'vue-router'
 
+import BillingStatusNotice from './components/BillingStatusNotice.vue'
+import { useBillingStatus } from './composables/useBillingStatus'
+import { useCurrentUserProfile } from './composables/useCurrentUserProfile'
 import { installAuthInterceptor } from './lib/api'
 import { clearAuthState, useAuthState } from './lib/auth'
 import CookieBanner from './components/CookieBanner.vue'
@@ -69,23 +81,20 @@ const clerk = useClerk()
 const clerkAuth = useAuth()
 const router = useRouter()
 const userMenuOpen = ref(false)
-
-const userDisplayName = computed(() => {
-  const firstName = auth.state.user?.first_name || ''
-  const lastName = auth.state.user?.last_name || ''
-  const fullName = `${firstName} ${lastName}`.trim()
-  return fullName || auth.state.user?.email || 'Account'
-})
-
-const userInitials = computed(() => {
-  const source = userDisplayName.value || auth.state.user?.email || 'A'
-  return source
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('') || 'A'
-})
+const {
+  avatarUrl: userAvatarUrl,
+  displayName: userDisplayName,
+  email: userEmail,
+  initials: userInitials,
+} = useCurrentUserProfile()
+const {
+  actionLoading: billingActionLoading,
+  billingHealth,
+  clearBillingStatus,
+  openBillingRecovery,
+  refreshBillingStatus,
+  requiresAttention,
+} = useBillingStatus()
 
 installAuthInterceptor(async () => {
   return await clerkAuth.getToken.value?.()
@@ -94,9 +103,26 @@ installAuthInterceptor(async () => {
 async function signOut() {
   closeUserMenu()
   await clerk.value?.signOut()
+  clearBillingStatus()
   clearAuthState()
   router.push('/sign-in')
 }
+
+async function openShellBillingRecovery() {
+  await openBillingRecovery(router.currentRoute.value.fullPath || '/profile')
+}
+
+watch(
+  () => auth.state.signedIn,
+  (signedIn) => {
+    if (signedIn) {
+      refreshBillingStatus()
+    } else {
+      clearBillingStatus()
+    }
+  },
+  { immediate: true }
+)
 
 function toggleUserMenu() {
   userMenuOpen.value = !userMenuOpen.value
@@ -206,6 +232,13 @@ function closeUserMenu() {
 }
 
 .content { flex: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+.shell-billing-notice {
+  border-left: 0;
+  border-radius: 0;
+  border-right: 0;
+  justify-content: center;
+}
 
 .footer {
   display: flex;

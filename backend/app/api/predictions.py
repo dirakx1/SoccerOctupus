@@ -11,8 +11,15 @@ from typing import Any, Dict
 from flask import Blueprint, jsonify, g, request
 
 from ..auth import require_admin, require_user
+from ..billing import includes_video_analysis
 from ..config import Config
 from ..db.base import db
+from ..feature_limits import (
+    FEATURE_MATCH_PREDICTION,
+    FEATURE_TOURNAMENT_SIMULATION,
+    release_feature_usage,
+    reserve_feature_usage,
+)
 from ..models.match import MatchStage
 from ..runtime_settings import RuntimeSettingsService
 from ..services.swarm_orchestrator import SwarmOrchestrator
@@ -22,14 +29,14 @@ from ..utils.logger import get_logger
 logger = get_logger("fifaoctopus.api.predictions")
 bp = Blueprint("predictions", __name__, url_prefix="/api/predictions")
 
-def _get_orchestrator() -> SwarmOrchestrator:
+def _get_orchestrator(include_video_analysis: bool = True) -> SwarmOrchestrator:
     settings = RuntimeSettingsService.current(db)
     llm = None
     if settings.llm_api_key:
         from ..utils.llm_client import LLMClient
 
         llm = LLMClient(settings=settings)
-    return SwarmOrchestrator(settings=settings, llm_client=llm)
+    return SwarmOrchestrator(settings=settings, llm_client=llm, include_video_analysis=include_video_analysis)
 
 
 # ------------------------------------------------------------------
@@ -57,11 +64,16 @@ def predict_match():
     except ValueError:
         stage = MatchStage.GROUP
 
+    reservation = reserve_feature_usage(g.current_user, FEATURE_MATCH_PREDICTION, db)
+    if not reservation.allowed:
+        return reservation.response
+
     try:
-        orc = _get_orchestrator()
+        orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user))
         result = orc.predict_match(home, away, stage=stage, group=group)
         return jsonify(result.to_dict()), 200
     except Exception as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
         logger.error(f"Match prediction failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 
@@ -80,8 +92,11 @@ def simulate_tournament():
     """
     data = request.get_json(force=True) or {}
     use_swarm = data.get("use_swarm", False)   # default off — swarm is slow for 104 matches
+    reservation = reserve_feature_usage(g.current_user, FEATURE_TOURNAMENT_SIMULATION, db)
+    if not reservation.allowed:
+        return reservation.response
 
-    orc = _get_orchestrator() if use_swarm else None
+    orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user)) if use_swarm else None
     settings = RuntimeSettingsService.current(db)
     simulator = TournamentSimulator(
         orchestrator=orc,
@@ -95,6 +110,7 @@ def simulate_tournament():
         _save_result(result.simulation_id, result.to_dict())
         return jsonify(result.to_dict()), 200
     except Exception as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
         logger.error(f"Tournament simulation failed: {exc}")
         return jsonify({"error": str(exc)}), 500
 

@@ -6,10 +6,10 @@
       <p class="subtitle">Securely finishing your Google authentication.</p>
 
       <AuthenticateWithRedirectCallback
-        sign-in-force-redirect-url="/"
-        sign-up-force-redirect-url="/"
-        sign-in-fallback-redirect-url="/"
-        sign-up-fallback-redirect-url="/"
+        :sign-in-force-redirect-url="redirectTarget"
+        :sign-up-force-redirect-url="redirectTarget"
+        :sign-in-fallback-redirect-url="redirectTarget"
+        :sign-up-fallback-redirect-url="redirectTarget"
         sign-in-url="/sign-in"
         sign-up-url="/sign-up"
       />
@@ -20,6 +20,9 @@
 
 <script setup>
 import { AuthenticateWithRedirectCallback } from '@clerk/vue'
+import { peekPostAuthRedirect } from '../lib/postAuthRedirect'
+
+const redirectTarget = peekPostAuthRedirect() || '/'
 </script>
 
 <style scoped>

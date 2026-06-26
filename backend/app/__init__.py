@@ -13,14 +13,24 @@ from .db.base import db
 from .runtime_settings import RuntimeSettingsService
 
 
+def _sqlalchemy_engine_options(database_url: str) -> dict:
+    if not database_url.startswith("postgresql"):
+        return {}
+    return {
+        "pool_pre_ping": True,
+        "connect_args": {"prepare_threshold": None},
+    }
+
+
 def create_app(config_overrides: dict | None = None) -> Flask:
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = Config.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    if Config.DATABASE_URL.startswith("postgresql"):
-        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
     if config_overrides:
         app.config.update(config_overrides)
+    engine_options = _sqlalchemy_engine_options(app.config["SQLALCHEMY_DATABASE_URI"])
+    if engine_options:
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = engine_options
     CORS(app, resources={r"/api/*": {"origins": [Config.FRONTEND_ORIGIN]}})
     db.init_app(app)
 
@@ -35,6 +45,7 @@ def create_app(config_overrides: dict | None = None) -> Flask:
 
     # Register blueprints
     from .api.admin import bp as admin_bp
+    from .api.billing import bp as billing_bp
     from .api.markets import bp as markets_bp
     from .api.predictions import bp as predictions_bp
     from .api.webhooks import bp as webhooks_bp
@@ -42,6 +53,7 @@ def create_app(config_overrides: dict | None = None) -> Flask:
     app.register_blueprint(predictions_bp)
     app.register_blueprint(markets_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(billing_bp)
     app.register_blueprint(webhooks_bp)
 
     @app.route("/health")

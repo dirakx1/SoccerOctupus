@@ -15,7 +15,17 @@
       </button>
     </div>
 
-    <div v-if="error" class="error-box">{{ error }}</div>
+    <div v-if="error" class="error-box">
+      {{ error }}
+      <BillingStatusNotice
+        v-if="billingHealth?.requires_attention"
+        compact
+        :health="billingHealth"
+        :loading="billingActionLoading"
+        @action="openBillingRecovery('/tournament', billingHealth)"
+      />
+      <BillingPlansLink v-else-if="subscriptionRequired" />
+    </div>
 
     <div v-if="result" class="result-panel">
       <!-- Champion podium -->
@@ -85,21 +95,34 @@
 <script setup>
 import { ref } from 'vue'
 import { api } from '../lib/api'
+import BillingStatusNotice from '../components/BillingStatusNotice.vue'
+import BillingPlansLink from '../components/BillingPlansLink.vue'
+import { useBillingStatus } from '../composables/useBillingStatus'
 
 const useSwarm = ref(false)
 const loading = ref(false)
 const result = ref(null)
 const error = ref('')
+const subscriptionRequired = ref(false)
+const billingHealth = ref(null)
+const {
+  actionLoading: billingActionLoading,
+  openBillingRecovery,
+} = useBillingStatus()
 
 async function runSim() {
   loading.value = true
   error.value = ''
+  subscriptionRequired.value = false
+  billingHealth.value = null
   result.value = null
   try {
     const res = await api.post('/api/predictions/tournament', { use_swarm: useSwarm.value })
     result.value = res.data
   } catch (e) {
     error.value = e.response?.data?.error || e.message
+    billingHealth.value = e.response?.data?.billing_health || null
+    subscriptionRequired.value = ['subscription_required', 'billing_payment_required', 'feature_limit_reached'].includes(e.response?.data?.code)
   } finally {
     loading.value = false
   }
