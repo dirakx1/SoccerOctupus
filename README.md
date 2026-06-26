@@ -734,6 +734,83 @@ Local `.env` files also support raw multiline PEM blocks.
 
 LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are admin-managed at `/admin/settings` after first-admin bootstrap. API keys are encrypted in the database and only redacted `configured` booleans are returned by the admin API.
 
+<<<<<<< Updated upstream
+=======
+### Stripe billing setup
+
+Stripe products, prices, Customer Portal behavior, and webhook endpoint secrets are managed in Stripe Dashboard. Use test mode first, then repeat the same shape in live mode with live keys and live price IDs.
+
+1. Create the subscription products:
+   - Product: `Basic`
+     - Recurring price: USD 5.00
+     - Billing period: monthly
+   - Product: `Pro`
+     - Recurring price: USD 10.00
+     - Billing period: monthly
+
+2. Copy the recurring price IDs from Stripe Dashboard:
+   - Set `STRIPE_BASIC_PRICE_ID` to the Basic monthly price ID, for example `price_...`.
+   - Set `STRIPE_PRO_PRICE_ID` to the Pro monthly price ID, for example `price_...`.
+   - Price IDs are not secret, but they are environment-specific. Do not mix test-mode and live-mode price IDs.
+
+3. Set backend Stripe secrets:
+   - `STRIPE_SECRET_KEY`: Stripe secret API key for the same mode as the price IDs.
+   - `STRIPE_WEBHOOK_SECRET`: filled after creating the webhook endpoint in step 5.
+   - Keep Stripe secrets in deployment environment variables, not `/admin/settings`.
+
+4. Enable Stripe Customer Portal:
+   - In Stripe Dashboard, enable plan changes for the Basic and Pro products.
+   - Enable subscription cancellation.
+   - Enable payment method updates.
+   - If you create a non-default portal configuration, set `STRIPE_BILLING_PORTAL_CONFIGURATION_ID` to that portal configuration ID. Otherwise leave it blank.
+
+5. Configure Stripe Billing dunning:
+   - Enable Stripe customer emails for failed payments.
+   - Configure the retry policy for failed subscription invoices.
+   - Decide when Stripe should mark subscriptions unpaid or canceled after retries are exhausted.
+
+6. Create the Stripe webhook endpoint:
+   - Endpoint URL: `<backend-origin>/api/webhooks/stripe`
+   - For local testing with Stripe CLI: `stripe listen --forward-to localhost:5002/api/webhooks/stripe`
+   - For remote backend testing with Stripe CLI: `stripe listen --forward-to https://<backend-origin>/api/webhooks/stripe`
+   - Subscribe to these events:
+     - `checkout.session.completed`
+     - `customer.subscription.created`
+     - `customer.subscription.updated`
+     - `customer.subscription.deleted`
+     - `invoice.payment_succeeded`
+     - `invoice.payment_failed`
+     - `invoice.payment_action_required`
+   - Copy the endpoint signing secret into `STRIPE_WEBHOOK_SECRET`.
+
+7. Run the database migration after setting `DATABASE_URL` and, if needed, `DATABASE_SCHEMA`:
+
+```bash
+cd backend
+venv/bin/python -m alembic upgrade head
+```
+
+8. Smoke-test the flow:
+   - Start the app with `npm run dev`.
+   - Visit `/pricing` while signed out.
+   - Choose Basic, sign up/sign in, and confirm redirect to Stripe Checkout.
+   - Complete Checkout with a Stripe test card.
+   - Return to `/billing/success`, then open `/profile`.
+   - Confirm a Basic user can run predictions without the video agent.
+   - Use the Billing section on the Profile page to open Customer Portal, change to Pro, and confirm webhook sync updates the tier.
+   - Cancel in Customer Portal and confirm the user downgrades to Free after webhook sync.
+
+9. Smoke-test failed-payment recovery:
+   - Trigger a failed subscription invoice in Stripe test mode.
+   - Confirm the Stripe webhook receives the failed-payment event.
+   - Confirm `/profile` shows a payment notice.
+   - Confirm the top app banner shows the same payment notice.
+   - Click `Pay invoice` and confirm Stripe opens the hosted invoice payment page. If Stripe has no open hosted invoice, confirm it falls back to Customer Portal payment method update.
+   - Complete recovery in Stripe and confirm webhook sync clears the app notice.
+
+Local secret hygiene: `.env:1`, `.env:3`, and `.env:4` contain local auth/database secret types. Rotate those credentials before production billing setup if they were exposed outside the local machine.
+
+>>>>>>> Stashed changes
 The encryption root key is stored outside the database at `backend/instance/settings-fernet.key` for local and single-host deployments. Production deployments must persist and back up that file securely, or provide an equivalent persistent secret-file/KMS-backed mount before storing API keys. Losing the root key means existing encrypted API keys cannot be decrypted and must be re-entered.
 
 ### Auth and admin settings bootstrap
