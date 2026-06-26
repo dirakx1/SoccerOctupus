@@ -123,6 +123,8 @@ def test_checkout_creates_basic_and_pro_sessions(client, user, monkeypatch):
     assert pro.get_json()["url"] == "https://checkout.stripe.com/price_pro"
     assert created[0]["mode"] == "subscription"
     assert created[0]["payment_method_types"] == ["card", "cashapp"]
+    assert created[0]["allow_promotion_codes"] is True
+    assert created[1]["allow_promotion_codes"] is True
     assert created[1]["line_items"] == [{"price": "price_pro", "quantity": 1}]
 
 

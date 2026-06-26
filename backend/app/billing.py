@@ -336,6 +336,7 @@ def create_checkout_session(user: User, tier: str) -> str:
         customer=customer_id,
         client_reference_id=str(user.id),
         payment_method_types=CHECKOUT_PAYMENT_METHOD_TYPES,
+        allow_promotion_codes=True,
         line_items=[{"price": price_id, "quantity": 1}],
         success_url=f"{Config.FRONTEND_ORIGIN}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{Config.FRONTEND_ORIGIN}/pricing?checkout=cancelled&plan={tier}",
