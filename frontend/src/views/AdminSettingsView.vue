@@ -115,9 +115,14 @@
       </section>
 
       <section class="settings-section" aria-labelledby="limits-heading">
-        <div>
-          <h2 id="limits-heading">Feature limits</h2>
-          <p class="hint">Cycle limits by tier. Leave paid limits blank for unlimited.</p>
+        <div class="section-header">
+          <div>
+            <h2 id="limits-heading">Feature limits</h2>
+            <p class="hint">Cycle limits by tier. Leave paid limits blank for unlimited. Changes apply to new customers and to existing customers when their next billing cycle starts; active cycle snapshots stay unchanged.</p>
+          </div>
+          <button class="btn-save" type="button" :disabled="featureLimitLoading" @click="saveFeatureLimits">
+            {{ featureLimitLoading ? 'Saving…' : 'Save limits' }}
+          </button>
         </div>
         <div class="limit-table">
           <div class="limit-head">
@@ -138,11 +143,6 @@
         </div>
         <p v-if="featureLimitError" class="error-box">{{ featureLimitError }}</p>
         <p v-if="featureLimitSuccess" class="success-box">{{ featureLimitSuccess }}</p>
-        <div class="section-actions">
-          <button class="btn-save" type="button" :disabled="featureLimitLoading" @click="saveFeatureLimits">
-            {{ featureLimitLoading ? 'Saving…' : 'Save limits' }}
-          </button>
-        </div>
       </section>
 
       <p v-if="error" class="error-box">{{ error }}</p>
@@ -387,9 +387,11 @@ h1 { color: #e2b714; font-size: 30px; letter-spacing: -0.02em; }
   width: 100%;
 }
 
-.section-actions {
+.section-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
 }
 
 .field-grid {
@@ -496,6 +498,10 @@ input:focus {
 
   .audit {
     text-align: left;
+  }
+
+  .section-header {
+    flex-direction: column;
   }
 }
 </style>

@@ -151,6 +151,7 @@ describe('AdminSettingsView', () => {
 
     expect(wrapper.text()).toContain('Feature limits')
     expect(wrapper.text()).toContain('Match predictions')
+    expect(wrapper.text()).toContain('Changes apply to new customers and to existing customers when their next billing cycle starts')
 
     const matchPredictionInput = wrapper.findAll('.limit-row input')[0]
     await matchPredictionInput.setValue('2')
