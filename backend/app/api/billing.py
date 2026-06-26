@@ -7,8 +7,8 @@ from flask import Blueprint, g, jsonify, request
 from ..auth import require_user
 from ..billing import (
     BillingConfigError,
+    change_subscription_plan,
     checkout_session_belongs_to_user,
-    create_checkout_session,
     create_portal_session,
     list_invoices,
     plan_catalog,
@@ -48,8 +48,22 @@ def checkout():
     if tier not in {"basic", "pro"}:
         return jsonify({"error": "Select Basic or Pro to start checkout"}), 400
     try:
-        return jsonify({"url": create_checkout_session(g.current_user, tier)})
+        return jsonify(change_subscription_plan(g.current_user, tier))
     except BillingConfigError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+
+@bp.route("/change-plan", methods=["POST"])
+@require_user(db)
+def change_plan():
+    payload = request.get_json(silent=True) or {}
+    try:
+        return jsonify(change_subscription_plan(g.current_user, payload.get("tier")))
+    except BillingConfigError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
 
 

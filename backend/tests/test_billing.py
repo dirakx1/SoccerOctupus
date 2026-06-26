@@ -95,10 +95,20 @@ def test_checkout_creates_basic_and_pro_sessions(client, user, monkeypatch):
             created.append(kwargs)
             return {"url": f"https://checkout.stripe.com/{kwargs['line_items'][0]['price']}"}
 
+    class FakeSubscription:
+        @staticmethod
+        def list(**kwargs):
+            return {"data": []}
+
     fake_stripe = type(
         "FakeStripe",
         (),
-        {"Customer": FakeCustomer, "Price": FakePrice, "checkout": type("Checkout", (), {"Session": FakeSession})},
+        {
+            "Customer": FakeCustomer,
+            "Price": FakePrice,
+            "Subscription": FakeSubscription,
+            "checkout": type("Checkout", (), {"Session": FakeSession}),
+        },
     )
     monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
 
@@ -107,6 +117,8 @@ def test_checkout_creates_basic_and_pro_sessions(client, user, monkeypatch):
 
     assert basic.status_code == 200
     assert pro.status_code == 200
+    assert basic.get_json()["action"] == "checkout"
+    assert pro.get_json()["action"] == "checkout"
     assert basic.get_json()["url"] == "https://checkout.stripe.com/price_basic"
     assert pro.get_json()["url"] == "https://checkout.stripe.com/price_pro"
     assert created[0]["mode"] == "subscription"
@@ -140,17 +152,243 @@ def test_checkout_reuses_existing_stripe_customer(client, user, monkeypatch):
             created_sessions.append(kwargs)
             return {"url": "https://checkout.stripe.com/existing"}
 
+    class FakeSubscription:
+        @staticmethod
+        def list(**kwargs):
+            return {"data": []}
+
     fake_stripe = type(
         "FakeStripe",
         (),
-        {"Customer": FakeCustomer, "Price": FakePrice, "checkout": type("Checkout", (), {"Session": FakeSession})},
+        {
+            "Customer": FakeCustomer,
+            "Price": FakePrice,
+            "Subscription": FakeSubscription,
+            "checkout": type("Checkout", (), {"Session": FakeSession}),
+        },
     )
     monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
 
     response = client.post("/api/billing/checkout", headers=_auth_header(user["clerk_user_id"]), json={"tier": "basic"})
 
     assert response.status_code == 200
+    assert response.get_json()["action"] == "checkout"
     assert created_sessions[0]["customer"] == "cus_existing"
+
+
+def test_checkout_updates_existing_paid_subscription_from_stripe_state(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+    calls = {"checkout": 0, "portal": []}
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        entry.subscription_tier = "free"
+        entry.subscription_status = None
+        db.session.commit()
+
+    def basic_subscription():
+        return _subscription(
+            id="sub_existing",
+            customer="cus_existing",
+            metadata={"user_id": str(user["id"])},
+            items={"data": [{"id": "si_basic", "price": {"id": "price_basic"}}]},
+        )
+
+    class FakeCustomer:
+        @staticmethod
+        def create(**kwargs):
+            raise AssertionError("plan change should not create a new customer")
+
+    class FakePrice:
+        @staticmethod
+        def retrieve(price_id):
+            return {"id": price_id, "currency": "usd"}
+
+    class FakeSession:
+        @staticmethod
+        def create(**kwargs):
+            calls["checkout"] += 1
+            raise AssertionError("paid-to-paid changes should not create checkout")
+
+    class FakePortalSession:
+        @staticmethod
+        def create(**kwargs):
+            calls["portal"].append(kwargs)
+            return {"url": "https://billing.stripe.com/update"}
+
+    class FakeSubscription:
+        @staticmethod
+        def list(**kwargs):
+            return {"data": [basic_subscription()]}
+
+    fake_stripe = type(
+        "FakeStripe",
+        (),
+        {
+            "Customer": FakeCustomer,
+            "Price": FakePrice,
+            "Subscription": FakeSubscription,
+            "billing_portal": type("BillingPortal", (), {"Session": FakePortalSession}),
+            "checkout": type("Checkout", (), {"Session": FakeSession}),
+        },
+    )
+    monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
+
+    response = client.post("/api/billing/checkout", headers=_auth_header(user["clerk_user_id"]), json={"tier": "pro"})
+
+    assert response.status_code == 200
+    assert response.get_json()["action"] == "subscription_update"
+    assert response.get_json()["url"] == "https://billing.stripe.com/update"
+    assert calls["checkout"] == 0
+    assert calls["portal"] == [
+        {
+            "customer": "cus_existing",
+            "return_url": "http://localhost:3001/profile",
+            "flow_data": {
+                "type": "subscription_update_confirm",
+                "subscription_update_confirm": {
+                    "subscription": "sub_existing",
+                    "items": [{"id": "si_basic", "price": "price_pro"}],
+                },
+                "after_completion": {
+                    "type": "redirect",
+                    "redirect": {"return_url": "http://localhost:3001/profile"},
+                },
+            },
+        }
+    ]
+    with client.application.app_context():
+        updated = User.query.get(user["id"])
+        assert updated.stripe_subscription_id == "sub_existing"
+        assert updated.subscription_tier == "basic"
+
+
+def test_change_plan_to_free_creates_cancel_portal_flow(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+    portal_calls = []
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        entry.stripe_subscription_id = "sub_existing"
+        entry.subscription_tier = "pro"
+        entry.subscription_status = "active"
+        db.session.commit()
+
+    def subscription(cancel_at_period_end=False):
+        return _subscription(
+            id="sub_existing",
+            customer="cus_existing",
+            metadata={"user_id": str(user["id"])},
+            cancel_at_period_end=cancel_at_period_end,
+            items={"data": [{"id": "si_pro", "price": {"id": "price_pro"}}]},
+        )
+
+    class FakeSubscription:
+        @staticmethod
+        def retrieve(subscription_id, **kwargs):
+            assert subscription_id == "sub_existing"
+            return subscription()
+
+    class FakePortalSession:
+        @staticmethod
+        def create(**kwargs):
+            portal_calls.append(kwargs)
+            return {"url": "https://billing.stripe.com/cancel"}
+
+    fake_stripe = type(
+        "FakeStripe",
+        (),
+        {
+            "Subscription": FakeSubscription,
+            "billing_portal": type("BillingPortal", (), {"Session": FakePortalSession}),
+        },
+    )
+    monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
+
+    response = client.post("/api/billing/change-plan", headers=_auth_header(user["clerk_user_id"]), json={"tier": "free"})
+
+    assert response.status_code == 200
+    assert response.get_json()["action"] == "subscription_cancel"
+    assert response.get_json()["url"] == "https://billing.stripe.com/cancel"
+    assert portal_calls == [
+        {
+            "customer": "cus_existing",
+            "return_url": "http://localhost:3001/profile",
+            "flow_data": {
+                "type": "subscription_cancel",
+                "subscription_cancel": {"subscription": "sub_existing"},
+                "after_completion": {
+                    "type": "redirect",
+                    "redirect": {"return_url": "http://localhost:3001/profile"},
+                },
+            },
+        }
+    ]
+
+
+def test_change_plan_same_tier_resumes_pending_cancellation(client, user, monkeypatch):
+    _auth(monkeypatch)
+    _configure_stripe(monkeypatch)
+    modify_calls = []
+
+    with client.application.app_context():
+        entry = User.query.filter_by(clerk_user_id=user["clerk_user_id"]).one()
+        entry.stripe_customer_id = "cus_existing"
+        entry.stripe_subscription_id = "sub_existing"
+        entry.subscription_tier = "basic"
+        entry.subscription_status = "active"
+        entry.subscription_cancel_at_period_end = True
+        db.session.commit()
+
+    def subscription(cancel_at_period_end=True):
+        return _subscription(
+            id="sub_existing",
+            customer="cus_existing",
+            metadata={"user_id": str(user["id"])},
+            cancel_at_period_end=cancel_at_period_end,
+            items={"data": [{"id": "si_basic", "price": {"id": "price_basic"}}]},
+        )
+
+    class FakePrice:
+        @staticmethod
+        def retrieve(price_id):
+            return {"id": price_id, "currency": "usd"}
+
+    class FakeSubscription:
+        @staticmethod
+        def retrieve(subscription_id, **kwargs):
+            assert subscription_id == "sub_existing"
+            return subscription(cancel_at_period_end=not bool(modify_calls))
+
+        @staticmethod
+        def modify(subscription_id, **kwargs):
+            modify_calls.append((subscription_id, kwargs))
+            assert subscription_id == "sub_existing"
+            return subscription(cancel_at_period_end=False)
+
+    class FakeSubscriptionItem:
+        @staticmethod
+        def modify(item_id, **kwargs):
+            raise AssertionError("resuming the same tier should not change the subscription item")
+
+    fake_stripe = type(
+        "FakeStripe",
+        (),
+        {"Price": FakePrice, "Subscription": FakeSubscription, "SubscriptionItem": FakeSubscriptionItem},
+    )
+    monkeypatch.setattr("app.billing._stripe", lambda: fake_stripe)
+
+    response = client.post("/api/billing/change-plan", headers=_auth_header(user["clerk_user_id"]), json={"tier": "basic"})
+
+    assert response.status_code == 200
+    assert response.get_json()["action"] == "cancellation_resumed"
+    assert response.get_json()["subscription"]["tier"] == "basic"
+    assert response.get_json()["subscription"]["cancel_at_period_end"] is False
+    assert modify_calls == [("sub_existing", {"cancel_at_period_end": False})]
 
 
 def test_checkout_rejects_non_usd_price(client, user, monkeypatch):

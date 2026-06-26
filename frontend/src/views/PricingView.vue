@@ -50,7 +50,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowRight, CreditCard, LoaderCircle, LogIn } from '@lucide/vue'
 
-import { createCheckout, getPlans, getSubscription } from '../lib/billing'
+import { changePlan, getPlans, getSubscription } from '../lib/billing'
 import { useAuthState } from '../lib/auth'
 import { setPostAuthRedirect } from '../lib/postAuthRedirect'
 
@@ -68,8 +68,8 @@ function isCurrentTier(tier) {
 }
 
 function ctaText(tier) {
+  if (loadingTier.value === tier) return 'Updating'
   if (tier === 'free') return auth.state.signedIn ? 'Choose' : 'Start'
-  if (loadingTier.value === tier) return 'Opening checkout'
   return auth.state.signedIn ? 'Choose' : 'Sign up'
 }
 
@@ -85,14 +85,20 @@ function planNote(tier) {
   return ''
 }
 
-async function startCheckout(tier) {
+async function submitPlanChange(tier) {
   loadingTier.value = tier
   error.value = ''
   try {
-    const res = await createCheckout(tier)
-    window.location.assign(res.data.url)
+    const res = await changePlan(tier)
+    if (res.data.url) {
+      window.location.assign(res.data.url)
+      return
+    }
+    if (res.data.subscription?.tier) {
+      currentTier.value = res.data.subscription.tier
+    }
   } catch (err) {
-    error.value = err.response?.data?.error || err.message || 'Unable to start checkout.'
+    error.value = err.response?.data?.error || err.message || 'Unable to update billing.'
   } finally {
     loadingTier.value = ''
   }
@@ -102,7 +108,15 @@ async function choosePlan(tier) {
   if (isCurrentTier(tier)) return
 
   if (tier === 'free') {
-    router.push(auth.state.signedIn ? '/' : '/sign-up')
+    if (!auth.state.signedIn) {
+      router.push('/sign-up')
+      return
+    }
+    if (currentTier.value === 'free') {
+      router.push('/')
+      return
+    }
+    await submitPlanChange(tier)
     return
   }
 
@@ -112,7 +126,7 @@ async function choosePlan(tier) {
     return
   }
 
-  await startCheckout(tier)
+  await submitPlanChange(tier)
 }
 
 onMounted(async () => {
@@ -132,7 +146,7 @@ onMounted(async () => {
   if (auth.state.signedIn && route.query.checkout === '1' && ['basic', 'pro'].includes(plan) && !checkoutStarted) {
     checkoutStarted = true
     router.replace({ path: '/pricing', query: { plan } })
-    await startCheckout(plan)
+    await submitPlanChange(plan)
   }
 })
 </script>

@@ -18,6 +18,7 @@ PAID_STATUSES = {"active", "trialing"}
 PAID_TIERS = {"basic", "pro"}
 CHECKOUT_PAYMENT_METHOD_TYPES = ["card", "cashapp"]
 CHECKOUT_CURRENCY = "usd"
+MANAGED_SUBSCRIPTION_STATUSES = {"active", "trialing", "past_due", "unpaid", "incomplete", "paused"}
 
 
 class BillingConfigError(RuntimeError):
@@ -254,17 +255,162 @@ def create_checkout_session(user: User, tier: str) -> str:
     return session["url"] if isinstance(session, dict) else session.url
 
 
-def create_portal_session(user: User, return_path: str = "/profile") -> str:
-    ensure_stripe_configured(require_prices=False)
+def _portal_return_url(return_path: str = "/profile") -> str:
+    return f"{Config.FRONTEND_ORIGIN}{return_path}"
+
+
+def _portal_session_url(user: User, return_path: str = "/profile", flow_data: dict[str, Any] | None = None) -> str:
     customer_id = ensure_customer(user, db)
     params: dict[str, Any] = {
         "customer": customer_id,
-        "return_url": f"{Config.FRONTEND_ORIGIN}{return_path}",
+        "return_url": _portal_return_url(return_path),
     }
     if Config.STRIPE_BILLING_PORTAL_CONFIGURATION_ID:
         params["configuration"] = Config.STRIPE_BILLING_PORTAL_CONFIGURATION_ID
+    if flow_data:
+        params["flow_data"] = flow_data
     session = _stripe().billing_portal.Session.create(**params)
     return session["url"] if isinstance(session, dict) else session.url
+
+
+def _retrieve_subscription(subscription_id: str):
+    return _stripe().Subscription.retrieve(subscription_id, expand=["items.data.price"])
+
+
+def _list_customer_subscriptions(customer_id: str):
+    return _stripe().Subscription.list(
+        customer=customer_id,
+        status="all",
+        limit=10,
+        expand=["data.items.data.price"],
+    )
+
+
+def _subscription_status(subscription: dict[str, Any]) -> str | None:
+    return _get_value(subscription, "status")
+
+
+def _is_managed_subscription(subscription: dict[str, Any] | None) -> bool:
+    if not subscription:
+        return False
+    status = _subscription_status(subscription)
+    return status in MANAGED_SUBSCRIPTION_STATUSES
+
+
+def _best_customer_subscription(customer_id: str):
+    subscriptions = _list_customer_subscriptions(customer_id)
+    data = _get_value(subscriptions, "data", [])
+    if not data:
+        return None
+    active_statuses = {"active", "trialing", "past_due", "unpaid", "incomplete"}
+    for subscription in data:
+        if _subscription_status(subscription) in active_statuses:
+            return subscription
+    for subscription in data:
+        if _is_managed_subscription(subscription):
+            return subscription
+    return data[0]
+
+
+def _subscription_item_id(subscription: dict[str, Any]) -> str | None:
+    items_obj = _get_value(subscription, "items") or {}
+    items = _get_value(items_obj, "data", [])
+    if not items:
+        return None
+    return _get_value(items[0], "id")
+
+
+def _active_stripe_subscription(user: User):
+    subscription = None
+    if user.stripe_subscription_id:
+        subscription = _retrieve_subscription(user.stripe_subscription_id)
+        if not _is_managed_subscription(subscription) and user.stripe_customer_id:
+            customer_subscription = _best_customer_subscription(user.stripe_customer_id)
+            if _is_managed_subscription(customer_subscription):
+                subscription = customer_subscription
+    elif user.stripe_customer_id:
+        subscription = _best_customer_subscription(user.stripe_customer_id)
+    if not subscription:
+        return None
+    sync_subscription_from_stripe_subscription(subscription, db)
+    db.session.commit()
+    return subscription
+
+
+def change_subscription_plan(user: User, desired_tier: str) -> dict[str, Any]:
+    """Apply a server-derived subscription transition for the requested tier."""
+    if desired_tier not in {"free", "basic", "pro"}:
+        raise ValueError("Select Free, Basic, or Pro")
+    if desired_tier in PAID_TIERS or user.stripe_subscription_id or user.stripe_customer_id:
+        ensure_stripe_configured(require_prices=desired_tier in PAID_TIERS)
+
+    subscription = _active_stripe_subscription(user)
+    current_tier = tier_for_price_id(_subscription_item_price_id(subscription)) if subscription else "free"
+    is_paid_subscription = _is_managed_subscription(subscription)
+
+    if desired_tier == "free":
+        if not is_paid_subscription:
+            return {"action": "noop", "subscription": serialize_subscription(user)}
+        subscription_id = _get_value(subscription, "id")
+        if not subscription_id:
+            raise BillingConfigError("Stripe subscription is missing an ID")
+        flow_data = {
+            "type": "subscription_cancel",
+            "subscription_cancel": {"subscription": subscription_id},
+            "after_completion": {
+                "type": "redirect",
+                "redirect": {"return_url": _portal_return_url("/profile")},
+            },
+        }
+        return {
+            "action": "subscription_cancel",
+            "url": _portal_session_url(user, "/profile", flow_data),
+        }
+
+    if not is_paid_subscription:
+        return {"action": "checkout", "url": create_checkout_session(user, desired_tier)}
+
+    price_id = _price_id_for_tier(desired_tier)
+    stripe_client = _stripe()
+    _ensure_usd_price(stripe_client, price_id)
+
+    current_price_id = _subscription_item_price_id(subscription)
+    cancel_at_period_end = bool(_get_value(subscription, "cancel_at_period_end"))
+    if current_tier == desired_tier and current_price_id == price_id and not cancel_at_period_end:
+        return {"action": "noop", "subscription": serialize_subscription(user)}
+
+    subscription_id = _get_value(subscription, "id")
+    if current_tier == desired_tier and current_price_id == price_id and cancel_at_period_end:
+        stripe_client.Subscription.modify(subscription_id, cancel_at_period_end=False)
+        updated = _retrieve_subscription(subscription_id)
+        sync_subscription_from_stripe_subscription(updated, db)
+        db.session.commit()
+        return {"action": "cancellation_resumed", "subscription": serialize_subscription(user)}
+
+    item_id = _subscription_item_id(subscription)
+    if not subscription_id or not item_id:
+        raise BillingConfigError("Stripe subscription is missing an item to update")
+
+    flow_data = {
+        "type": "subscription_update_confirm",
+        "subscription_update_confirm": {
+            "subscription": subscription_id,
+            "items": [{"id": item_id, "price": price_id}],
+        },
+        "after_completion": {
+            "type": "redirect",
+            "redirect": {"return_url": _portal_return_url("/profile")},
+        },
+    }
+    return {
+        "action": "subscription_update",
+        "url": _portal_session_url(user, "/profile", flow_data),
+    }
+
+
+def create_portal_session(user: User, return_path: str = "/profile") -> str:
+    ensure_stripe_configured(require_prices=False)
+    return _portal_session_url(user, return_path)
 
 
 def list_invoices(user: User, limit: int = 20) -> list[dict[str, Any]]:

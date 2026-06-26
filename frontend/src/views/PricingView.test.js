@@ -16,10 +16,10 @@ vi.mock('vue-router', () => ({
 vi.mock('../lib/billing', () => ({
   getPlans: vi.fn(),
   getSubscription: vi.fn(),
-  createCheckout: vi.fn(),
+  changePlan: vi.fn(),
 }))
 
-import { createCheckout, getPlans, getSubscription } from '../lib/billing'
+import { changePlan, getPlans, getSubscription } from '../lib/billing'
 
 const plans = [
   {
@@ -58,7 +58,7 @@ describe('PricingView', () => {
     clearAuthState()
     getPlans.mockResolvedValue({ data: { plans } })
     getSubscription.mockResolvedValue({ data: { tier: 'free' } })
-    createCheckout.mockResolvedValue({ data: { url: 'https://checkout.stripe.com/session' } })
+    changePlan.mockResolvedValue({ data: { action: 'checkout', url: 'https://checkout.stripe.com/session' } })
     Object.defineProperty(window, 'location', {
       value: { assign: vi.fn() },
       writable: true,
@@ -86,8 +86,28 @@ describe('PricingView', () => {
     await wrapper.findAll('button')[2].trigger('click')
     await flushPromises()
 
-    expect(createCheckout).toHaveBeenCalledWith('pro')
+    expect(changePlan).toHaveBeenCalledWith('pro')
     expect(window.location.assign).toHaveBeenCalledWith('https://checkout.stripe.com/session')
+  })
+
+  it('opens cancellation flow when a paid user chooses Free', async () => {
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    getSubscription.mockResolvedValue({ data: { tier: 'pro' } })
+    changePlan.mockResolvedValue({
+      data: {
+        action: 'subscription_cancel',
+        url: 'https://billing.stripe.com/cancel',
+      },
+    })
+    const wrapper = mount(PricingView, { global: { stubs: ['router-link'] } })
+    await flushPromises()
+
+    await wrapper.findAll('button')[0].trigger('click')
+    await flushPromises()
+
+    expect(changePlan).toHaveBeenCalledWith('free')
+    expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/cancel')
+    expect(routerPush).not.toHaveBeenCalled()
   })
 
   it('disables the current signed-in tier', async () => {
@@ -101,6 +121,6 @@ describe('PricingView', () => {
     expect(proButton.text()).toContain('Choose')
 
     await proButton.trigger('click')
-    expect(createCheckout).not.toHaveBeenCalled()
+    expect(changePlan).not.toHaveBeenCalled()
   })
 })
