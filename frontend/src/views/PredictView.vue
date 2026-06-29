@@ -59,12 +59,13 @@
     <!-- Result -->
     <div v-if="result" class="result-panel">
       <div class="match-header">
-        <div class="team home-team">{{ result.home_team }}</div>
+        <div class="team home-team" :class="{ winner: result.outcome === 'home_win' }">{{ result.home_team }}</div>
         <div class="score-block">
           <div class="score">{{ result.most_likely_score }}</div>
           <div class="score-label">Most Likely Score</div>
+          <div v-if="result.went_to_penalties" class="aet-badge">After Extra Time / Penalties</div>
         </div>
-        <div class="team away-team">{{ result.away_team }}</div>
+        <div class="team away-team" :class="{ winner: result.outcome === 'away_win' }">{{ result.away_team }}</div>
       </div>
 
       <!-- Probability meter -->
@@ -277,6 +278,17 @@ select {
 .score-block { text-align: center; }
 .score { font-size: 40px; font-weight: 800; color: #e2b714; }
 .score-label { font-size: 11px; color: #8888aa; }
+.aet-badge {
+  font-size: 11px;
+  color: #e2b714;
+  background: rgba(226,183,20,0.12);
+  border: 1px solid rgba(226,183,20,0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-top: 6px;
+  display: inline-block;
+}
+.team.winner { color: #e2b714; }
 
 
 .confidence-row { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #a0aec0; }

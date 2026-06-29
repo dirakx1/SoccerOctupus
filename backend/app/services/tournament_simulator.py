@@ -226,6 +226,7 @@ class TournamentSimulator:
                 winner = home if random.random() < hw / (hw + aw) else away
                 pred.went_to_penalties = True
                 pred.most_likely_score = pred.most_likely_score + " (AET/PKs)"
+                pred.outcome = MatchOutcome.HOME_WIN if winner == home else MatchOutcome.AWAY_WIN
             else:
                 winner = home if pred.outcome == MatchOutcome.HOME_WIN else away
             output_list.append(pred)

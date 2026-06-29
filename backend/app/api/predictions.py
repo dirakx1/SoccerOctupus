@@ -20,7 +20,7 @@ from ..feature_limits import (
     release_feature_usage,
     reserve_feature_usage,
 )
-from ..models.match import MatchStage
+from ..models.match import MatchOutcome, MatchStage
 from ..runtime_settings import RuntimeSettingsService
 from ..services.swarm_orchestrator import SwarmOrchestrator
 from ..services.tournament_simulator import TournamentSimulator
@@ -69,8 +69,24 @@ def predict_match():
         return reservation.response
 
     try:
+        import random as _random
         orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user))
         result = orc.predict_match(home, away, stage=stage, group=group)
+
+        # In knockout stages draws don't exist — resolve to AET/penalties
+        knockout_stages = {
+            MatchStage.ROUND_OF_32, MatchStage.ROUND_OF_16,
+            MatchStage.QUARTER_FINAL, MatchStage.SEMI_FINAL,
+            MatchStage.THIRD_PLACE, MatchStage.FINAL,
+        }
+        if stage in knockout_stages and result.outcome == MatchOutcome.DRAW:
+            hw = result.home_win_prob
+            aw = result.away_win_prob
+            goes_home = _random.random() < hw / (hw + aw)
+            result.went_to_penalties = True
+            result.most_likely_score = result.most_likely_score + " (AET/PKs)"
+            result.outcome = MatchOutcome.HOME_WIN if goes_home else MatchOutcome.AWAY_WIN
+
         return jsonify(result.to_dict()), 200
     except Exception as exc:
         release_feature_usage(reservation.cycle_limit_id, db)
