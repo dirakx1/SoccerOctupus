@@ -199,4 +199,20 @@ h1 { color: #e2b714; font-size: 26px; }
 .sname { flex: 1; color: #e0e0e0; }
 .pts { color: #e2b714; font-weight: 600; }
 .gd { color: #8888aa; min-width: 30px; text-align: right; }
+
+@media (max-width: 768px) {
+  .controls { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .btn-sim { width: 100%; }
+  .podium { flex-direction: column; align-items: center; gap: 12px; padding: 20px 12px; }
+  .podium-spot { width: 100%; max-width: 280px; }
+  .groups-grid { grid-template-columns: repeat(2, 1fr); }
+  .match-item { flex-wrap: wrap; gap: 6px; }
+  .probs { min-width: unset; width: 100%; text-align: left; margin-top: 2px; }
+  .mt-home { text-align: left; }
+  h1 { font-size: 20px; }
+}
+@media (max-width: 480px) {
+  .groups-grid { grid-template-columns: 1fr; }
+  .match-item { font-size: 12px; }
+}
 </style>

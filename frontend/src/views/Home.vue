@@ -99,4 +99,16 @@ const agents = [
 .agent-icon { font-size: 28px; flex-shrink: 0; }
 .agent-card strong { color: #e0e0e0; font-size: 15px; }
 .agent-card p { color: #8888aa; font-size: 13px; margin-top: 4px; }
+
+@media (max-width: 900px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .hero { padding: 28px 0 16px; }
+  .hero-icon { font-size: 48px; }
+  .hero h1 { font-size: 32px; }
+  .tagline { font-size: 14px; }
+  .cards { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+}
 </style>

@@ -6,7 +6,10 @@
         <span class="title">SoccerOctopus</span>
         <span class="subtitle">WC 2026 Swarm Prediction Engine</span>
       </router-link>
-      <div class="nav-links">
+      <button class="hamburger" aria-label="Toggle menu" @click="toggleMobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" :class="{ 'nav-open': mobileMenuOpen }">
         <template v-if="auth.state.signedIn">
           <router-link to="/">Home</router-link>
           <router-link to="/groups">Groups</router-link>
@@ -67,7 +70,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useAuth, useClerk } from '@clerk/vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 import BillingStatusNotice from './components/BillingStatusNotice.vue'
 import { useBillingStatus } from './composables/useBillingStatus'
@@ -85,7 +88,17 @@ const {
   isSignedIn: clerkSignedIn,
 } = useAuth()
 const router = useRouter()
+const route = useRoute()
 const userMenuOpen = ref(false)
+const mobileMenuOpen = ref(false)
+
+function toggleMobileMenu() {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+watch(() => route.fullPath, () => {
+  mobileMenuOpen.value = false
+})
 const {
   avatarUrl: userAvatarUrl,
   displayName: userDisplayName,
@@ -310,4 +323,56 @@ function closeUserMenu() {
 }
 .footer a { color: #a0c0ff; text-decoration: none; }
 .footer a:hover { text-decoration: underline; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #a0aec0;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.hamburger:hover span { background: #e2b714; }
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 16px;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .subtitle { display: none; }
+  .hamburger { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: #1a1a2e;
+    border-bottom: 2px solid #0f3460;
+    padding: 12px 16px;
+    gap: 4px;
+    z-index: 50;
+  }
+  .nav-links.nav-open { display: flex; }
+  .nav-links a { padding: 10px 0; font-size: 15px; border-bottom: 1px solid #0f3460; }
+  .nav-links a:last-child { border-bottom: none; }
+  .user-menu { width: 100%; border-bottom: none; }
+  .user-button { width: auto; }
+  .user-dropdown { right: auto; left: 0; min-width: 100%; position: static; margin-top: 8px; }
+  .content { padding: 16px; }
+  .footer { flex-wrap: wrap; justify-content: center; padding: 12px 16px; gap: 10px; text-align: center; }
+}
 </style>

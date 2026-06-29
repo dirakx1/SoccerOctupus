@@ -317,4 +317,19 @@ select {
 .sc { color: #e2b714; font-weight: 700; }
 .conf { color: #8888aa; }
 .agent-reasoning { font-size: 12px; color: #6a6a8a; line-height: 1.5; }
+
+@media (max-width: 640px) {
+  .selectors { grid-template-columns: 1fr; gap: 12px; }
+  .vs-label { text-align: center; padding: 0; font-size: 16px; }
+  .stage-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .stage-row select { flex: none; width: 100%; }
+  .match-header { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+  .home-team, .away-team { text-align: center; }
+  .score { font-size: 28px; }
+  .sp-row { grid-template-columns: 44px 1fr 48px; }
+  .sp-badge { display: none; }
+  .form-panel { padding: 16px; }
+  .result-panel { padding: 16px; }
+  h1 { font-size: 22px; }
+}
 </style>
