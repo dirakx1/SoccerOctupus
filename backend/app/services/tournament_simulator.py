@@ -81,6 +81,7 @@ class TournamentSimulator:
         self.use_swarm = use_swarm and orchestrator is not None
         self.mc_simulations = mc_simulations
         self.groups = {k: list(v) for k, v in WC2026_GROUPS.items()}
+        self._swarm_failed = False  # once True all remaining matches use MC
 
     # ------------------------------------------------------------------
 
@@ -223,7 +224,8 @@ class TournamentSimulator:
                 # slightly tilted by team strength)
                 hw = pred.home_win_prob
                 aw = pred.away_win_prob
-                winner = home if random.random() < hw / (hw + aw) else away
+                total = hw + aw
+                winner = home if (total == 0 or random.random() < hw / total) else away
                 pred.went_to_penalties = True
                 pred.most_likely_score = pred.most_likely_score + " (AET/PKs)"
                 pred.outcome = MatchOutcome.HOME_WIN if winner == home else MatchOutcome.AWAY_WIN
@@ -238,11 +240,15 @@ class TournamentSimulator:
     def _predict_single(
         self, home: str, away: str, stage: MatchStage, group: Optional[str]
     ) -> MatchPrediction:
-        if self.use_swarm:
+        if self.use_swarm and not self._swarm_failed:
             try:
                 return self.orchestrator.predict_match(home, away, stage, group)
             except Exception as exc:
-                logger.warning(f"Swarm failed for {home} vs {away}: {exc}. Using MC.")
+                logger.warning(
+                    f"Swarm failed for {home} vs {away}: {exc}. "
+                    "Switching all remaining matches to MC fallback."
+                )
+                self._swarm_failed = True
         return self._mc_predict(home, away, stage, group)
 
     # ------------------------------------------------------------------
