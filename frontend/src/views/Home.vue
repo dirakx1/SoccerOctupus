@@ -37,22 +37,37 @@
     <div class="swarm-info">
       <h2>How the Swarm Works</h2>
       <div class="agents-grid">
-        <div class="agent-card" v-for="a in agents" :key="a.name">
+        <div
+          class="agent-card"
+          v-for="a in agents"
+          :key="a.name"
+          :class="{ 'agent-clickable': a.modal }"
+          @click="a.modal && openModal(a.modal)"
+        >
           <span class="agent-icon">{{ a.icon }}</span>
-          <div>
+          <div class="agent-body">
             <strong>{{ a.name }}</strong>
             <p>{{ a.desc }}</p>
+            <span v-if="a.modal" class="agent-more">View screenshots ↗</span>
           </div>
         </div>
       </div>
     </div>
+
+    <VideoAgentModal v-if="activeModal === 'video'" @close="activeModal = null" />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import VideoAgentModal from '../components/VideoAgentModal.vue'
+
+const activeModal = ref(null)
+function openModal(name) { activeModal.value = name }
+
 const agents = [
   { icon: '📊', name: 'Statistical Agent (weight 1.8×)', desc: 'ELO ratings, Poisson model, SofaScore attack/defence stats, H2H records' },
-  { icon: '🎥', name: 'Video Intelligence Agent (weight 1.0×)', desc: 'YouTube highlights engagement ratios, title sentiment, tactical momentum scores' },
+  { icon: '🎥', name: 'Video Intelligence Agent (weight 1.0×)', desc: 'YouTube highlights engagement ratios, title sentiment, tactical momentum scores', modal: 'video' },
   { icon: '🔥', name: 'Recent Form Agent (weight 1.3×)', desc: 'Points earned in last 10 official matches, goal rates adjusted by form trajectory' },
   { icon: '🧠', name: 'Tactical Agent (weight 1.2×)', desc: 'Style-matchup matrix (high-press vs counter, tiki-taka vs defensive block, etc.)' },
   { icon: '🤝', name: 'Aggregator Agent', desc: 'Confidence-weighted ensemble + LLM-synthesised narrative and key factor extraction' },
@@ -97,8 +112,20 @@ const agents = [
   border: 1px solid #0f3460;
 }
 .agent-icon { font-size: 28px; flex-shrink: 0; }
+.agent-body { display: flex; flex-direction: column; gap: 4px; }
 .agent-card strong { color: #e0e0e0; font-size: 15px; }
-.agent-card p { color: #8888aa; font-size: 13px; margin-top: 4px; }
+.agent-card p { color: #8888aa; font-size: 13px; }
+
+.agent-clickable { cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+.agent-clickable:hover { border-color: #e2b714; transform: translateY(-2px); }
+
+.agent-more {
+  font-size: 11px;
+  color: #e2b714;
+  margin-top: 4px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
 
 @media (max-width: 900px) {
   .cards { grid-template-columns: repeat(2, 1fr); }
