@@ -1,7 +1,7 @@
 <template>
   <div class="legal">
     <h1>Legal Notice</h1>
-    <p class="updated">Last updated: June 2026</p>
+    <p class="updated">Last updated: June 30, 2026</p>
 
     <section>
       <h2>1. Nature of Predictions</h2>
@@ -45,7 +45,20 @@
     </section>
 
     <section>
-      <h2>5. Responsible Gambling</h2>
+      <h2>5. No Affiliation with FIFA, Kalshi, or Polymarket</h2>
+      <p>
+        SoccerOctopus is an independent platform and is <strong>not affiliated with,
+        endorsed by, or connected in any form to FIFA</strong> (Fédération Internationale
+        de Football Association), <strong>Kalshi</strong>, or <strong>Polymarket</strong>.
+        The FIFA World Cup 2026 name, logo, and related trademarks are the exclusive
+        property of FIFA. Any reference to these organisations on this platform is purely
+        informational and descriptive. SoccerOctopus does not operate on behalf of, in
+        partnership with, or under licence from any of these entities.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Responsible Gambling</h2>
       <p>
         If you or someone you know may have a gambling problem, please seek help.
         Resources include <a href="https://www.begambleaware.org" target="_blank" rel="noopener">BeGambleAware</a>
