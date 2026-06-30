@@ -207,6 +207,66 @@ def list_teams():
 # World Cup 2026 groups
 # ------------------------------------------------------------------
 
+@bp.route("/live-results", methods=["GET"])
+@require_user(db)
+def get_live_results():
+    """GET /api/predictions/live-results — real WC2026 group-stage results from ESPN."""
+    from ..services.data_collectors.live_results import WC2026_RESULTS
+    from ..services.tournament_simulator import WC2026_GROUPS
+
+    standings: dict = {}
+    for g, teams in WC2026_GROUPS.items():
+        standings[g] = {
+            t: {"team": t, "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "points": 0}
+            for t in teams
+        }
+
+    for match in WC2026_RESULTS:
+        g = match.get("group", "?")
+        if g not in standings:
+            continue
+        home, away = match["home"], match["away"]
+        hg, ag = match["home_goals"], match["away_goals"]
+        if home not in standings[g] or away not in standings[g]:
+            continue
+        standings[g][home]["played"] += 1
+        standings[g][away]["played"] += 1
+        standings[g][home]["gf"] += hg
+        standings[g][home]["ga"] += ag
+        standings[g][away]["gf"] += ag
+        standings[g][away]["ga"] += hg
+        if hg > ag:
+            standings[g][home]["won"] += 1
+            standings[g][home]["points"] += 3
+            standings[g][away]["lost"] += 1
+        elif hg == ag:
+            standings[g][home]["drawn"] += 1
+            standings[g][home]["points"] += 1
+            standings[g][away]["drawn"] += 1
+            standings[g][away]["points"] += 1
+        else:
+            standings[g][away]["won"] += 1
+            standings[g][away]["points"] += 3
+            standings[g][home]["lost"] += 1
+
+    sorted_standings: dict = {}
+    for g, teams_dict in standings.items():
+        ranked = sorted(
+            teams_dict.values(),
+            key=lambda s: (s["points"], s["gf"] - s["ga"], s["gf"]),
+            reverse=True,
+        )
+        for s in ranked:
+            s["gd"] = s["gf"] - s["ga"]
+        sorted_standings[g] = ranked
+
+    return jsonify({
+        "matches": WC2026_RESULTS,
+        "standings": sorted_standings,
+        "total": len(WC2026_RESULTS),
+    }), 200
+
+
 @bp.route("/groups", methods=["GET"])
 @require_user(db)
 def get_groups():
