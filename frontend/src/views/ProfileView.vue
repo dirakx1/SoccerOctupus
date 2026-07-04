@@ -1,5 +1,7 @@
 <template>
   <div class="profile-page">
+    <ReverificationDialog :workflow="reverification" />
+
     <header class="profile-header">
       <div>
         <div class="eyebrow">Account</div>
@@ -95,7 +97,7 @@
     <section class="profile-card security-card">
       <h2>Security</h2>
       <p class="card-copy">Manage username visibility, authenticator app sign-in, and one-time backup codes.</p>
-      <TwoFactorSettings :is-loaded="isLoaded" :session="session" :user="user" />
+      <TwoFactorSettings :is-loaded="isLoaded" :reverification="reverification" :user="user" />
     </section>
 
     <section class="profile-card billing-card">
@@ -146,9 +148,11 @@ import { useClerk, useSession, useSignIn } from '@clerk/vue'
 
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
 import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import ReverificationDialog from '../components/ReverificationDialog.vue'
 import TwoFactorSettings from '../components/TwoFactorSettings.vue'
 import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
 import { usePasswordPolicy } from '../composables/usePasswordPolicy'
+import { useReverification } from '../composables/useReverification'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
@@ -166,6 +170,7 @@ const router = useRouter()
 const clerk = useClerk()
 const { session } = useSession()
 const { signIn } = useSignIn()
+const reverification = useReverification({ session })
 const profileLoading = ref(false)
 const passwordLoading = ref(false)
 const profileError = ref('')

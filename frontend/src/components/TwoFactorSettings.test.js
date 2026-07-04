@@ -22,16 +22,8 @@ function userFixture(overrides = {}) {
 }
 
 function sessionFixture(overrides = {}) {
-  return {
-    startVerification: vi.fn().mockResolvedValue({
-      status: 'needs_first_factor',
-      supportedFirstFactors: [{ strategy: 'password' }],
-    }),
-    attemptFirstFactorVerification: vi.fn().mockResolvedValue({ status: 'complete' }),
-    prepareFirstFactorVerification: vi.fn(),
-    verifyWithPasskey: vi.fn(),
-    ...overrides,
-  }
+  const runWithReverification = vi.fn(async (operation) => operation())
+  return { runWithReverification, ...overrides }
 }
 
 function findButton(wrapper, text) {
@@ -88,59 +80,58 @@ describe('TwoFactorSettings', () => {
 
   it('regenerates backup codes for an enabled authenticator', async () => {
     const user = userFixture({ totpEnabled: true, backupCodeEnabled: true })
+    const reverification = sessionFixture()
     const wrapper = mount(TwoFactorSettings, {
-      props: { user, isLoaded: true },
+      props: { user, reverification, isLoaded: true },
     })
 
     await findButton(wrapper, 'Regenerate backup codes').trigger('click')
     await flushPromises()
 
+    expect(reverification.runWithReverification).toHaveBeenCalledWith(expect.any(Function), {
+      message: 'Enter your password to generate new backup codes.',
+      title: 'Verify it is you',
+    })
     expect(user.createBackupCode).toHaveBeenCalled()
     expect(wrapper.text()).toContain('code-1')
   })
 
-  it('reverifies the session before enabling authenticator app when required', async () => {
+  it('delegates authenticator setup to the shared reverification workflow', async () => {
     const user = userFixture()
-    user.createTOTP
-      .mockRejectedValueOnce({
-        errors: [{ code: 'session_reverification_required', message: 'Reverification required' }],
-      })
-      .mockResolvedValueOnce({
-        secret: 'SECRET123',
-        uri: 'otpauth://totp/SoccerOctopus:alexmorgan',
-      })
-    const session = sessionFixture()
+    const reverification = sessionFixture({
+      runWithReverification: vi.fn(async (operation, options) => ({
+        ...(await operation()),
+        options,
+      })),
+    })
     const wrapper = mount(TwoFactorSettings, {
-      props: { user, session, isLoaded: true },
+      props: { user, reverification, isLoaded: true },
     })
 
     await findButton(wrapper, 'Enable authenticator app').trigger('click')
     await flushPromises()
 
-    expect(session.startVerification).toHaveBeenCalledWith({ level: 'first_factor' })
-    expect(wrapper.text()).toContain('Verify it is you')
-
-    await wrapper.find('input[autocomplete="current-password"]').setValue('current-pass')
-    await wrapper.find('form').trigger('submit.prevent')
-    await flushPromises()
-
-    expect(session.attemptFirstFactorVerification).toHaveBeenCalledWith({
-      strategy: 'password',
-      password: 'current-pass',
+    expect(reverification.runWithReverification).toHaveBeenCalledWith(expect.any(Function), {
+      message: 'Enter your password to continue with authenticator setup.',
+      title: 'Verify it is you',
     })
-    expect(user.createTOTP).toHaveBeenCalledTimes(2)
     expect(wrapper.find('[data-testid="authenticator-qr"]').exists()).toBe(true)
   })
 
   it('disables the authenticator app through Clerk', async () => {
     const user = userFixture({ totpEnabled: true, backupCodeEnabled: true })
+    const reverification = sessionFixture()
     const wrapper = mount(TwoFactorSettings, {
-      props: { user, isLoaded: true },
+      props: { user, reverification, isLoaded: true },
     })
 
     await findButton(wrapper, 'Disable authenticator app').trigger('click')
     await flushPromises()
 
+    expect(reverification.runWithReverification).toHaveBeenCalledWith(expect.any(Function), {
+      message: 'Enter your password to disable authenticator app sign-in.',
+      title: 'Verify it is you',
+    })
     expect(user.disableTOTP).toHaveBeenCalled()
     expect(user.reload).toHaveBeenCalled()
   })

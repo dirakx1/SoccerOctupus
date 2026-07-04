@@ -18,42 +18,6 @@
     <p v-if="error" class="error-box">{{ error }}</p>
     <p v-if="success" class="success-box">{{ success }}</p>
 
-    <form v-if="reverificationRequired" class="setup-panel" @submit.prevent="submitReverification">
-      <div class="setup-heading">
-        <h3>Verify it is you</h3>
-        <p>{{ reverificationCopy }}</p>
-      </div>
-      <label v-if="reverificationStrategy === 'password'" class="field">
-        <span>Password</span>
-        <input
-          v-model="reverificationPassword"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Enter your password"
-        />
-      </label>
-      <label v-if="usesVerificationCode" class="field">
-        <span>Verification code</span>
-        <input
-          v-model.trim="reverificationCode"
-          type="text"
-          inputmode="numeric"
-          autocomplete="one-time-code"
-          placeholder="123456"
-        />
-      </label>
-      <div class="action-row">
-        <button
-          class="btn-primary"
-          type="submit"
-          :disabled="loading || !canSubmitReverification"
-        >
-          {{ loadingAction === 'reverify' ? 'Verifying...' : 'Continue' }}
-        </button>
-        <button class="btn-secondary" type="button" :disabled="loading" @click="cancelReverification">Cancel</button>
-      </div>
-    </form>
-
     <div v-if="backupCodes.length" class="backup-panel" data-testid="backup-codes-panel">
       <div class="backup-heading">
         <h3>Save these backup codes</h3>
@@ -73,7 +37,7 @@
       </button>
     </div>
 
-    <div v-if="!reverificationRequired && setupResource" class="setup-panel">
+    <div v-if="setupResource" class="setup-panel">
       <div class="setup-heading">
         <h3>Connect authenticator app</h3>
         <p>Scan this QR code with your authenticator app, then enter the 6-digit code it shows.</p>
@@ -112,7 +76,7 @@
       </div>
     </div>
 
-    <div v-else-if="!reverificationRequired" class="action-row">
+    <div v-else class="action-row">
       <button
         v-if="!totpEnabled"
         class="btn-primary"
@@ -148,7 +112,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  session: {
+  reverification: {
     type: Object,
     default: null,
   },
@@ -157,12 +121,6 @@ const props = defineProps({
 const setupResource = ref(null)
 const setupCode = ref('')
 const showManualSetup = ref(false)
-const reverificationResource = ref(null)
-const reverificationStrategy = ref('')
-const reverificationPassword = ref('')
-const reverificationCode = ref('')
-const reverificationTarget = ref('')
-const pendingAction = ref('')
 const backupCodes = ref([])
 const backupSaved = ref(false)
 const loadingAction = ref('')
@@ -175,34 +133,9 @@ const username = computed(() => props.user?.username || '')
 const totpEnabled = computed(() => Boolean(props.user?.totpEnabled))
 const backupCodeEnabled = computed(() => Boolean(props.user?.backupCodeEnabled || backupCodes.value.length))
 const backupCodesText = computed(() => backupCodes.value.join('\n'))
-const reverificationRequired = computed(() => Boolean(reverificationResource.value || reverificationStrategy.value))
-const usesVerificationCode = computed(() => ['email_code', 'phone_code'].includes(reverificationStrategy.value))
-const canSubmitReverification = computed(() => {
-  if (reverificationStrategy.value === 'password') return Boolean(reverificationPassword.value)
-  if (usesVerificationCode.value) return Boolean(reverificationCode.value)
-  if (reverificationStrategy.value === 'passkey') return true
-  return false
-})
-const reverificationCopy = computed(() => {
-  if (reverificationStrategy.value === 'email_code') {
-    return `Enter the code sent to ${reverificationTarget.value || 'your email address'} to continue.`
-  }
-  if (reverificationStrategy.value === 'phone_code') {
-    return `Enter the code sent to ${reverificationTarget.value || 'your phone'} to continue.`
-  }
-  if (reverificationStrategy.value === 'passkey') {
-    return 'Use your passkey to continue with authenticator setup.'
-  }
-  return 'Enter your password to continue with authenticator setup.'
-})
 
 function clerkError(err, fallback) {
   return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || fallback
-}
-
-function isReverificationError(err) {
-  return err?.errors?.some?.((entry) => entry.code === 'session_reverification_required') ||
-    err?.response?.data?.errors?.some?.((entry) => entry.code === 'session_reverification_required')
 }
 
 function clearBackupCodes() {
@@ -215,17 +148,16 @@ function resetMessages() {
   success.value = ''
 }
 
-function clearReverification() {
-  reverificationResource.value = null
-  reverificationStrategy.value = ''
-  reverificationPassword.value = ''
-  reverificationCode.value = ''
-  reverificationTarget.value = ''
-  pendingAction.value = ''
-}
-
 async function reloadUser() {
   await props.user?.reload?.()
+}
+
+async function runProtected(operation, message) {
+  if (!props.reverification?.runWithReverification) return operation()
+  return props.reverification.runWithReverification(operation, {
+    message,
+    title: 'Verify it is you',
+  })
 }
 
 async function startSetup() {
@@ -237,103 +169,13 @@ async function startSetup() {
   showManualSetup.value = false
 
   try {
-    setupResource.value = await props.user.createTOTP()
+    setupResource.value = await runProtected(
+      () => props.user.createTOTP(),
+      'Enter your password to continue with authenticator setup.'
+    )
     setupCode.value = ''
   } catch (err) {
-    if (isReverificationError(err)) {
-      await startReverification('setup')
-      return
-    }
     error.value = clerkError(err, 'Unable to start authenticator setup.')
-  } finally {
-    loadingAction.value = ''
-  }
-}
-
-async function startReverification(action) {
-  if (!props.session?.startVerification) {
-    error.value = 'Please sign in again before changing authenticator settings.'
-    return
-  }
-
-  loadingAction.value = 'reverify'
-  resetMessages()
-  clearBackupCodes()
-  setupResource.value = null
-  setupCode.value = ''
-  showManualSetup.value = false
-  pendingAction.value = action
-
-  try {
-    const verification = await props.session.startVerification({ level: 'first_factor' })
-    await continueReverification(verification)
-  } catch (err) {
-    clearReverification()
-    error.value = clerkError(err, 'Unable to start verification. Please try again.')
-  } finally {
-    loadingAction.value = ''
-  }
-}
-
-async function continueReverification(verification) {
-  if (verification?.status === 'complete') {
-    const action = pendingAction.value
-    clearReverification()
-    if (action === 'setup') await startSetup()
-    return
-  }
-
-  reverificationResource.value = verification
-  const factors = verification?.supportedFirstFactors || []
-  const passwordFactor = factors.find((factor) => factor.strategy === 'password')
-  const emailFactor = factors.find((factor) => factor.strategy === 'email_code')
-  const phoneFactor = factors.find((factor) => factor.strategy === 'phone_code')
-  const passkeyFactor = factors.find((factor) => factor.strategy === 'passkey')
-
-  if (passwordFactor) {
-    reverificationStrategy.value = 'password'
-    return
-  }
-
-  if (emailFactor || phoneFactor) {
-    const factor = emailFactor || phoneFactor
-    reverificationStrategy.value = factor.strategy
-    reverificationTarget.value = factor.safeIdentifier || ''
-    const prepareParams = factor.strategy === 'email_code'
-      ? { strategy: factor.strategy, emailAddressId: factor.emailAddressId }
-      : { strategy: factor.strategy, phoneNumberId: factor.phoneNumberId, channel: factor.channel }
-    reverificationResource.value = await props.session.prepareFirstFactorVerification(prepareParams)
-    return
-  }
-
-  if (passkeyFactor) {
-    reverificationStrategy.value = 'passkey'
-    return
-  }
-
-  clearReverification()
-  error.value = 'Please sign in again before changing authenticator settings.'
-}
-
-async function submitReverification() {
-  if (!props.session) return
-
-  loadingAction.value = 'reverify'
-  resetMessages()
-
-  try {
-    let verification
-    if (reverificationStrategy.value === 'passkey') {
-      verification = await props.session.verifyWithPasskey()
-    } else {
-      const attempt = usesVerificationCode.value
-        ? { strategy: reverificationStrategy.value, code: reverificationCode.value }
-        : { strategy: 'password', password: reverificationPassword.value }
-      verification = await props.session.attemptFirstFactorVerification(attempt)
-    }
-    await continueReverification(verification)
-  } catch (err) {
-    error.value = clerkError(err, 'Unable to verify. Please try again.')
   } finally {
     loadingAction.value = ''
   }
@@ -346,7 +188,10 @@ async function verifySetup() {
   resetMessages()
 
   try {
-    const verified = await props.user.verifyTOTP({ code: setupCode.value })
+    const verified = await runProtected(
+      () => props.user.verifyTOTP({ code: setupCode.value }),
+      'Enter your password to continue with authenticator setup.'
+    )
     await showBackupCodes(verified)
     setupResource.value = null
     setupCode.value = ''
@@ -362,7 +207,10 @@ async function verifySetup() {
 
 async function showBackupCodes(source = null) {
   const generated = props.user?.createBackupCode
-    ? await props.user.createBackupCode()
+    ? await runProtected(
+      () => props.user.createBackupCode(),
+      'Enter your password to generate new backup codes.'
+    )
     : null
   backupCodes.value = generated?.codes?.length ? generated.codes : source?.backupCodes || []
   backupSaved.value = false
@@ -393,7 +241,10 @@ async function disableAuthenticator() {
   resetMessages()
 
   try {
-    await props.user.disableTOTP()
+    await runProtected(
+      () => props.user.disableTOTP(),
+      'Enter your password to disable authenticator app sign-in.'
+    )
     setupResource.value = null
     setupCode.value = ''
     showManualSetup.value = false
@@ -411,11 +262,6 @@ function cancelSetup() {
   setupResource.value = null
   setupCode.value = ''
   showManualSetup.value = false
-  resetMessages()
-}
-
-function cancelReverification() {
-  clearReverification()
   resetMessages()
 }
 
@@ -449,7 +295,6 @@ function downloadBackupCodes() {
 
 onBeforeUnmount(() => {
   clearBackupCodes()
-  clearReverification()
 })
 
 defineExpose({
