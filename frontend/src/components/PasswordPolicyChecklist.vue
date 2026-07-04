@@ -54,7 +54,7 @@ const localPolicy = usePasswordPolicy({
 const activePolicy = computed(() => props.policy || localPolicy)
 const rules = computed(() => activePolicy.value.rules?.value || activePolicy.value.rules || [])
 const source = computed(() => activePolicy.value.source?.value || activePolicy.value.source || 'fallback')
-const sourceLabel = computed(() => source.value === 'clerk' ? 'Synced from Clerk' : 'Fallback policy')
+const sourceLabel = computed(() => source.value === 'clerk' ? 'Current policy' : 'Default policy')
 
 function iconFor(status) {
   if (status === 'pass') return 'OK'

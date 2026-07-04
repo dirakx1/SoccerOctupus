@@ -66,7 +66,7 @@ function infoRule(key, label) {
 }
 
 function strengthLabel(score) {
-  if (score === null) return 'Clerk will evaluate password strength as you type'
+  if (score === null) return 'Password strength is evaluated as you type'
   if (score >= 4) return 'Password strength: strong'
   if (score >= 3) return 'Password strength: normal'
   return 'Password strength: weak'
@@ -157,11 +157,11 @@ export function usePasswordPolicy({ password, validator, clerk } = {}) {
     }
 
     if (policy.disable_hibp === false) {
-      required.push(infoRule('hibp', 'Not found in known breaches - Clerk checks this on submit'))
+      required.push(infoRule('hibp', 'Known-breach checks run when you submit'))
     }
 
     if (source.value === 'fallback') {
-      required.push(infoRule('fallback', 'Clerk will perform final password checks when you submit'))
+      required.push(infoRule('fallback', 'Final password checks run when you submit'))
     }
 
     if (validationError.value) {

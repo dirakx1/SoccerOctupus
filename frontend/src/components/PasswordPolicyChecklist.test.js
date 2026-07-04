@@ -20,10 +20,10 @@ describe('PasswordPolicyChecklist', () => {
       props: { password: 'short' },
     })
 
-    expect(wrapper.text()).toContain('Fallback policy')
+    expect(wrapper.text()).toContain('Default policy')
     expect(wrapper.text()).toContain('At least 8 characters')
     expect(wrapper.text()).toContain('No more than 72 characters')
-    expect(wrapper.text()).toContain('Clerk will perform final password checks when you submit')
+    expect(wrapper.text()).toContain('Final password checks run when you submit')
   })
 
   it('renders dynamic Clerk min, max, and character-class rules', () => {
@@ -45,7 +45,7 @@ describe('PasswordPolicyChecklist', () => {
       },
     })
 
-    expect(wrapper.text()).toContain('Synced from Clerk')
+    expect(wrapper.text()).toContain('Current policy')
     expect(wrapper.text()).toContain('At least 1 lowercase character')
     expect(wrapper.text()).toContain('At least 1 uppercase character')
     expect(wrapper.text()).toContain('At least 1 number')
@@ -99,6 +99,6 @@ describe('PasswordPolicyChecklist', () => {
       },
     })
 
-    expect(wrapper.text()).toContain('Not found in known breaches - Clerk checks this on submit')
+    expect(wrapper.text()).toContain('Known-breach checks run when you submit')
   })
 })

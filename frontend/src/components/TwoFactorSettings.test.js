@@ -47,7 +47,13 @@ describe('TwoFactorSettings', () => {
     await flushPromises()
 
     expect(user.createTOTP).toHaveBeenCalled()
+    expect(wrapper.find('[data-testid="authenticator-qr"]').exists()).toBe(true)
+    expect(wrapper.text()).not.toContain('SECRET123')
+    expect(wrapper.html()).not.toContain('otpauth://')
+
+    await findButton(wrapper, 'Use setup key instead').trigger('click')
     expect(wrapper.text()).toContain('SECRET123')
+    expect(wrapper.html()).not.toContain('otpauth://')
 
     await wrapper.find('input[autocomplete="one-time-code"]').setValue('123456')
     await findButton(wrapper, 'Verify and generate backup codes').trigger('click')

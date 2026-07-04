@@ -38,17 +38,25 @@
     </div>
 
     <div v-if="setupResource" class="setup-panel">
-      <p class="card-copy">Add this authenticator secret, then enter the current code from your app.</p>
-      <label v-if="setupResource.secret" class="readonly-field">
-        <span>Secret</span>
+      <div class="setup-heading">
+        <h3>Connect authenticator app</h3>
+        <p>Scan this QR code with your authenticator app, then enter the 6-digit code it shows.</p>
+      </div>
+      <div v-if="setupResource.uri" class="qr-setup">
+        <AuthenticatorQrCode :value="setupResource.uri" />
+      </div>
+      <button
+        v-if="setupResource.secret"
+        class="btn-link"
+        type="button"
+        @click="showManualSetup = !showManualSetup"
+      >
+        {{ showManualSetup ? 'Hide setup key' : 'Use setup key instead' }}
+      </button>
+      <label v-if="showManualSetup && setupResource.secret" class="readonly-field">
+        <span>Setup key</span>
         <code>{{ setupResource.secret }}</code>
-        <button class="btn-link" type="button" @click="copyText(setupResource.secret)">Copy secret</button>
-      </label>
-      <label v-if="setupResource.uri" class="readonly-field">
-        <span>Authenticator URI</span>
-        <code>{{ setupResource.uri }}</code>
-        <a class="btn-link" :href="setupResource.uri">Open in authenticator app</a>
-        <button class="btn-link" type="button" @click="copyText(setupResource.uri)">Copy URI</button>
+        <button class="btn-link" type="button" @click="copyText(setupResource.secret)">Copy setup key</button>
       </label>
       <label class="field">
         <span>Authenticator code</span>
@@ -93,6 +101,8 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
 
+import AuthenticatorQrCode from './AuthenticatorQrCode.vue'
+
 const props = defineProps({
   user: {
     type: Object,
@@ -106,6 +116,7 @@ const props = defineProps({
 
 const setupResource = ref(null)
 const setupCode = ref('')
+const showManualSetup = ref(false)
 const backupCodes = ref([])
 const backupSaved = ref(false)
 const loadingAction = ref('')
@@ -143,6 +154,7 @@ async function startSetup() {
   loadingAction.value = 'setup'
   resetMessages()
   clearBackupCodes()
+  showManualSetup.value = false
 
   try {
     setupResource.value = await props.user.createTOTP()
@@ -165,6 +177,7 @@ async function verifySetup() {
     await showBackupCodes(verified)
     setupResource.value = null
     setupCode.value = ''
+    showManualSetup.value = false
     success.value = 'Authenticator app enabled.'
     await reloadUser()
   } catch (err) {
@@ -210,6 +223,7 @@ async function disableAuthenticator() {
     await props.user.disableTOTP()
     setupResource.value = null
     setupCode.value = ''
+    showManualSetup.value = false
     clearBackupCodes()
     success.value = 'Authenticator app disabled.'
     await reloadUser()
@@ -223,6 +237,7 @@ async function disableAuthenticator() {
 function cancelSetup() {
   setupResource.value = null
   setupCode.value = ''
+  showManualSetup.value = false
   resetMessages()
 }
 
@@ -304,17 +319,25 @@ defineExpose({
   padding: 16px;
 }
 
-.backup-heading h3 {
+.backup-heading h3,
+.setup-heading h3 {
   color: #e0e0e0;
   font-size: 16px;
   margin-bottom: 4px;
 }
 
 .backup-heading p,
-.card-copy {
+.setup-heading p {
   color: #a0aec0;
   font-size: 13px;
   line-height: 1.5;
+}
+
+.qr-setup {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
 }
 
 pre,

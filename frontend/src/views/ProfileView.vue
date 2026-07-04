@@ -4,7 +4,7 @@
       <div>
         <div class="eyebrow">Account</div>
         <h1>Profile settings</h1>
-        <p>Update your Clerk profile and password for SoccerOctopus.</p>
+        <p>Update your profile and password for SoccerOctopus.</p>
       </div>
       <img v-if="avatarUrl" class="avatar" :src="avatarUrl" alt="Profile avatar" />
     </header>
@@ -12,7 +12,7 @@
     <div class="profile-grid">
       <section class="profile-card">
         <h2>Personal details</h2>
-        <p class="card-copy">These fields are stored in Clerk and synced into the local account table.</p>
+        <p class="card-copy">Keep your account details up to date.</p>
 
         <form class="profile-form" @submit.prevent="updateProfile">
           <div class="name-grid">
