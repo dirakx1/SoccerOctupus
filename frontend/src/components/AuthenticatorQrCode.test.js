@@ -1,30 +1,34 @@
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
 import AuthenticatorQrCode from './AuthenticatorQrCode.vue'
-import { createQrMatrix } from '../lib/qrCode'
 
 const setupUri = 'otpauth://totp/SoccerOctopus:alexmorgan?secret=SECRET123&issuer=SoccerOctopus'
 
 describe('AuthenticatorQrCode', () => {
-  it('renders a local SVG QR code without exposing the setup URI text', () => {
+  it('renders a standards-compliant local SVG QR code without exposing the setup URI text', async () => {
     const wrapper = mount(AuthenticatorQrCode, {
       props: { value: setupUri },
     })
 
+    await flushPromises()
+
     expect(wrapper.find('[data-testid="authenticator-qr"]').exists()).toBe(true)
-    expect(wrapper.findAll('rect').length).toBeGreaterThan(100)
+    expect(wrapper.find('svg').exists()).toBe(true)
+    expect(wrapper.findAll('path').length).toBeGreaterThan(0)
     expect(wrapper.html()).not.toContain('otpauth://')
     expect(wrapper.text()).not.toContain('SECRET123')
   })
 
-  it('generates square QR matrices for longer authenticator setup URIs', () => {
+  it('renders longer authenticator setup URIs', async () => {
     const longSetupUri = `otpauth://totp/SoccerOctopus:${'a'.repeat(80)}?secret=${'A'.repeat(32)}&issuer=SoccerOctopus`
-    const matrix = createQrMatrix(longSetupUri)
+    const wrapper = mount(AuthenticatorQrCode, {
+      props: { value: longSetupUri },
+    })
 
-    expect(matrix).toBeTruthy()
-    expect(matrix.length).toBeGreaterThanOrEqual(21)
-    expect(matrix.every((row) => row.length === matrix.length)).toBe(true)
-    expect(matrix.flat().some(Boolean)).toBe(true)
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="authenticator-qr"]').exists()).toBe(true)
+    expect(wrapper.find('svg').exists()).toBe(true)
   })
 })

@@ -1,32 +1,20 @@
 <template>
-  <svg
-    v-if="cells.length"
+  <div
+    v-if="svg"
     class="authenticator-qr"
     data-testid="authenticator-qr"
-    :viewBox="`0 0 ${size} ${size}`"
     role="img"
     aria-label="Authenticator app setup QR code"
-  >
-    <rect width="100%" height="100%" fill="#ffffff" />
-    <rect
-      v-for="cell in cells"
-      :key="`${cell.x}-${cell.y}`"
-      :x="cell.x"
-      :y="cell.y"
-      width="1"
-      height="1"
-      fill="#0a0a1a"
-    />
-  </svg>
+    v-html="svg"
+  />
   <div v-else class="qr-unavailable">
     QR code unavailable for this setup key.
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
-import { createQrMatrix } from '../lib/qrCode'
+import QRCode from 'qrcode'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   value: {
@@ -35,20 +23,32 @@ const props = defineProps({
   },
 })
 
-const quietZone = 4
-const matrix = computed(() => createQrMatrix(props.value) || [])
-const size = computed(() => (matrix.value.length ? matrix.value.length + quietZone * 2 : 0))
-const cells = computed(() => {
-  const result = []
-  for (let y = 0; y < matrix.value.length; y += 1) {
-    for (let x = 0; x < matrix.value.length; x += 1) {
-      if (matrix.value[y][x]) {
-        result.push({ x: x + quietZone, y: y + quietZone })
-      }
+const svg = ref('')
+
+watch(
+  () => props.value,
+  async (value) => {
+    if (!value) {
+      svg.value = ''
+      return
     }
-  }
-  return result
-})
+
+    try {
+      svg.value = await QRCode.toString(value, {
+        type: 'svg',
+        errorCorrectionLevel: 'M',
+        margin: 4,
+        color: {
+          dark: '#0a0a1aff',
+          light: '#ffffffff',
+        },
+      })
+    } catch {
+      svg.value = ''
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped>
@@ -58,8 +58,15 @@ const cells = computed(() => {
   display: block;
   height: 220px;
   image-rendering: pixelated;
+  overflow: hidden;
   padding: 12px;
   width: 220px;
+}
+
+.authenticator-qr :deep(svg) {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 .qr-unavailable {
