@@ -95,7 +95,7 @@
     <section class="profile-card security-card">
       <h2>Security</h2>
       <p class="card-copy">Manage username visibility, authenticator app sign-in, and one-time backup codes.</p>
-      <TwoFactorSettings :is-loaded="isLoaded" :user="user" />
+      <TwoFactorSettings :is-loaded="isLoaded" :session="session" :user="user" />
     </section>
 
     <section class="profile-card billing-card">
@@ -142,7 +142,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { CreditCard, LoaderCircle } from '@lucide/vue'
 import { useRouter } from 'vue-router'
-import { useClerk, useSignIn } from '@clerk/vue'
+import { useClerk, useSession, useSignIn } from '@clerk/vue'
 
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
 import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
@@ -164,6 +164,7 @@ const {
 
 const router = useRouter()
 const clerk = useClerk()
+const { session } = useSession()
 const { signIn } = useSignIn()
 const profileLoading = ref(false)
 const passwordLoading = ref(false)

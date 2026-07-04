@@ -29,6 +29,15 @@ const clerkState = vi.hoisted(() => ({
     },
     __v_isRef: true,
   },
+  session: {
+    value: {
+      startVerification: vi.fn(),
+      attemptFirstFactorVerification: vi.fn(),
+      prepareFirstFactorVerification: vi.fn(),
+      verifyWithPasskey: vi.fn(),
+    },
+    __v_isRef: true,
+  },
   user: {
     value: {
       firstName: 'Alex',
@@ -53,6 +62,9 @@ const clerkState = vi.hoisted(() => ({
 
 vi.mock('@clerk/vue', () => ({
   useClerk: () => clerkState.clerk,
+  useSession: () => ({
+    session: clerkState.session,
+  }),
   useSignIn: () => ({
     isLoaded: clerkState.isLoaded,
     signIn: clerkState.signIn,
