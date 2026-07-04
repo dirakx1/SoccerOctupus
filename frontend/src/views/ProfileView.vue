@@ -65,10 +65,10 @@
               type="password"
               autocomplete="new-password"
               required
-              minlength="8"
               placeholder="Enter new password"
             />
           </label>
+          <PasswordPolicyChecklist :policy="passwordPolicy" />
 
           <label class="field">
             <span>Confirm new password</span>
@@ -77,7 +77,6 @@
               type="password"
               autocomplete="new-password"
               required
-              minlength="8"
               placeholder="Repeat new password"
             />
           </label>
@@ -92,6 +91,12 @@
         </form>
       </section>
     </div>
+
+    <section class="profile-card security-card">
+      <h2>Security</h2>
+      <p class="card-copy">Manage username visibility, authenticator app sign-in, and one-time backup codes.</p>
+      <TwoFactorSettings :is-loaded="isLoaded" :user="user" />
+    </section>
 
     <section class="profile-card billing-card">
       <div class="billing-row">
@@ -137,9 +142,13 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { CreditCard, LoaderCircle } from '@lucide/vue'
 import { useRouter } from 'vue-router'
+import { useClerk, useSignIn } from '@clerk/vue'
 
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
+import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import TwoFactorSettings from '../components/TwoFactorSettings.vue'
 import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
+import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
@@ -154,6 +163,8 @@ const {
 } = useCurrentUserProfile()
 
 const router = useRouter()
+const clerk = useClerk()
+const { signIn } = useSignIn()
 const profileLoading = ref(false)
 const passwordLoading = ref(false)
 const profileError = ref('')
@@ -176,6 +187,11 @@ const passwordForm = reactive({
   currentPassword: '',
   newPassword: '',
   confirmPassword: '',
+})
+const passwordPolicy = usePasswordPolicy({
+  password: computed(() => passwordForm.newPassword),
+  validator: computed(() => signIn.value?.validatePassword),
+  clerk,
 })
 
 const tierLabel = computed(() => {
@@ -296,8 +312,8 @@ function validatePasswordForm() {
     return 'Enter your current password.'
   }
 
-  if (passwordForm.newPassword.length < 8) {
-    return 'New password must be at least 8 characters.'
+  if (!passwordPolicy.passesRequiredRules.value) {
+    return 'New password does not meet the password requirements.'
   }
 
   if (passwordForm.newPassword !== passwordForm.confirmPassword) {

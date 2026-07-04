@@ -2,14 +2,15 @@
   <div class="auth-page">
     <section class="auth-panel callback-panel">
       <div class="spinner" aria-hidden="true" />
-      <h1>Completing sign-in</h1>
-      <p class="subtitle">Securely finishing your Google authentication.</p>
+      <h1>Completing authentication</h1>
+      <p class="subtitle">Securely finishing your authentication.</p>
 
       <AuthenticateWithRedirectCallback
         :sign-in-force-redirect-url="redirectTarget"
         :sign-up-force-redirect-url="redirectTarget"
         :sign-in-fallback-redirect-url="redirectTarget"
         :sign-up-fallback-redirect-url="redirectTarget"
+        continue-sign-up-url="/complete-username"
         sign-in-url="/sign-in"
         sign-up-url="/sign-up"
       />

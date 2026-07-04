@@ -9,11 +9,13 @@ and sign-up components.
 | Area | File | Purpose |
 |---|---|---|
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
-| Sign in UI | `frontend/src/views/SignInView.vue` | Custom email/password sign-in, MFA, and Client Trust verification flow. |
-| Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation, CAPTCHA mount, and email-code verification flow. |
-| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow. |
-| OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles Google OAuth redirects from Clerk and returns users to the app. |
+| Sign in UI | `frontend/src/views/SignInView.vue` | Custom email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
+| Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
+| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow with password-policy guidance. |
+| OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles social OAuth redirects from Clerk and routes incomplete username sign-ups to the continuation page. |
+| Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Completes Clerk-owned OAuth sign-ups that are missing the required username. |
 | Session hydration | `frontend/src/lib/clerkSession.js` | Activates the Clerk session, fetches a token, calls `/api/me`, and updates local auth state. |
+| Profile security UI | `frontend/src/components/TwoFactorSettings.vue` | Custom authenticator-app and backup-code management backed by Clerk user APIs. |
 | API token injection | `frontend/src/App.vue` | Installs the Axios bearer-token interceptor from inside Vue setup. |
 | Backend auth | `backend/app/auth.py` | Verifies Clerk JWTs, syncs local users, and provides auth decorators. |
 | Webhook endpoint | `backend/app/api/webhooks.py` | Receives Clerk user lifecycle events and syncs the local `users` table. |
@@ -25,12 +27,23 @@ Configure these in the Clerk Dashboard:
 
 - Email sign-up enabled.
 - Email sign-in enabled.
+- Username enabled for sign-up and sign-in. This app requires both email and
+  username on custom sign-up, but username remains Clerk-owned and is not stored
+  in the local database.
 - Password authentication enabled.
 - Email verification code enabled for sign-up.
 - Password reset enabled with email verification code.
-- Google enabled as an SSO/social connection for sign-up and sign-in.
+- Password policy configured in Clerk. Current target:
+  - minimum length 8;
+  - reject compromised passwords;
+  - enforce strong password strength;
+  - avoid mandatory lowercase/uppercase/number/special-character rules unless
+    product/security explicitly accepts Clerk's NIST warning for those rules.
+- Google, Facebook, and X enabled as SSO/social connections for sign-up and sign-in.
 - Client Trust can be enabled; the custom sign-in flow supports `needs_client_trust`.
 - MFA can be enabled; the custom sign-in flow supports `email_code`, `phone_code`, `totp`, and `backup_code` as second factors.
+- Authenticator app and backup codes enabled for users that manage 2FA from the
+  custom profile security UI.
 - Clerk webhook endpoint points to `POST /api/webhooks/clerk`.
 
 ## Required Environment Variables
@@ -72,11 +85,12 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 
 1. User opens `/sign-up`.
 2. `SignUpView.vue` shows the custom account form with first name, last name,
-   email, and password fields.
+   email, username, password, and password-policy guidance.
 3. The form includes `<div id="clerk-captcha" />`, which Clerk uses for bot
    protection in custom sign-up flows.
 4. On submit, the page calls `signUp.create()` with:
    - `emailAddress`
+   - `username`
    - `password`
    - optional `firstName`
    - optional `lastName`
@@ -92,27 +106,31 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
    - stores `signedIn`, `isAdmin`, and user details in local auth state
    - redirects to `/`
 
-## Google OAuth Workflow
+## Social OAuth Workflow
 
-1. User selects `Continue with Google` on `/sign-in` or `/sign-up`.
+1. User selects `Continue with Google`, `Continue with Facebook`, or
+   `Continue with X` on `/sign-in` or `/sign-up`.
 2. The frontend calls `authenticateWithRedirect()` with:
-   - `strategy: 'oauth_google'`
+   - `strategy: 'oauth_google'`, `oauth_facebook`, or `oauth_x`
    - `redirectUrl: '/sso-callback'`
    - `redirectUrlComplete: '/'`
-3. Clerk redirects the browser through Google's OAuth consent flow.
-4. Google returns to `/sso-callback`.
+3. Clerk redirects the browser through the provider's OAuth consent flow.
+4. The provider returns to `/sso-callback`.
 5. `SSOCallbackView.vue` renders `AuthenticateWithRedirectCallback`, which lets
    Clerk finish the OAuth flow, activate the session, and return to `/`.
-6. The existing router guard calls `/api/me`, which verifies the Clerk session
+6. If Clerk reports an incomplete sign-up because username is required,
+   `continueSignUpUrl` sends the browser to `/complete-username`, where the
+   custom UI calls `signUp.update({ username })`. Username remains Clerk-owned.
+7. The existing router guard calls `/api/me`, which verifies the Clerk session
    token, syncs the local `users` row if needed, and updates local auth state.
 
 ## Sign-In Workflow
 
 1. User opens `/sign-in`.
-2. `SignInView.vue` shows the custom email/password form.
+2. `SignInView.vue` shows the custom email-or-username/password form.
 3. On submit, the page calls `signIn.create()` with:
    - `strategy: 'password'`
-   - `identifier: form.email`
+   - `identifier: form.identifier`
    - `password: form.password`
 4. The result is passed to `handleSignInResult()`.
 5. If Clerk already has a `createdSessionId` or returns `status === 'complete'`,
@@ -126,6 +144,24 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
    on the active stage.
 10. When Clerk returns a created session, the frontend activates the session and
     redirects to `/`.
+
+## Profile Security Workflow
+
+1. User opens `/profile`.
+2. `ProfileView.vue` renders `TwoFactorSettings.vue` in the Security section.
+3. The component reads Clerk user flags:
+   - `totpEnabled`
+   - `backupCodeEnabled`
+   - `twoFactorEnabled`
+4. To enable authenticator-app 2FA, the component calls `user.createTOTP()`,
+   displays the Clerk-provided secret and URI, and asks for an authenticator code.
+5. On verification, it calls `user.verifyTOTP({ code })` and then
+   `user.createBackupCode()` when backup codes are not returned by TOTP verify.
+6. Backup codes are shown once with copy/download actions and cleared from
+   component state after the user confirms they saved them.
+7. Regeneration calls `user.createBackupCode()` and again shows codes once.
+8. Disabling authenticator-app 2FA calls `user.disableTOTP()` and relies on
+   Clerk for any reverification or security errors.
 
 ## Password Reset Workflow
 
@@ -219,7 +255,9 @@ context.
 ## Backend User Sync
 
 The local `users` table is used for app authorization, especially `is_admin` and
-`is_active`. Clerk remains the identity source of truth.
+`is_active`. Clerk remains the identity source of truth. Username, password
+policy, social providers, authenticator-app 2FA, and backup codes are Clerk
+owned; the local app continues to use `clerk_user_id` after authentication.
 
 There are two sync paths:
 

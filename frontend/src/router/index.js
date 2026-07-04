@@ -18,6 +18,7 @@ const router = createRouter({
     { path: '/sign-up', component: () => import('../views/SignUpView.vue'), meta: { public: true } },
     { path: '/forgot-password', component: () => import('../views/ForgotPasswordView.vue'), meta: { public: true } },
     { path: '/sso-callback', component: () => import('../views/SSOCallbackView.vue'), meta: { public: true } },
+    { path: '/complete-username', component: () => import('../views/CompleteUsernameView.vue'), meta: { public: true } },
     { path: '/legal', component: () => import('../views/LegalNoticeView.vue'), meta: { public: true } },
     { path: '/cookie-policy', component: () => import('../views/CookiePolicyView.vue'), meta: { public: true } },
     { path: '/contact', component: () => import('../views/ContactView.vue'), meta: { public: true } },

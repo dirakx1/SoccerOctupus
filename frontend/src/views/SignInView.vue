@@ -6,26 +6,22 @@
       <p class="subtitle">Access the prediction workspace and admin settings.</p>
 
       <form v-if="step === 'credentials'" class="auth-form" @submit.prevent="submit">
-        <button
-          class="btn-google"
-          type="button"
-          :disabled="loading || googleLoading || !isLoaded"
-          @click="signInWithGoogle"
-        >
-          <span class="google-mark" aria-hidden="true">G</span>
-          {{ googleLoading ? 'Opening Google...' : 'Continue with Google' }}
-        </button>
+        <SocialAuthButtons
+          :disabled="loading || !isLoaded"
+          :loading-provider="loadingStrategy"
+          @select="signInWithProvider"
+        />
 
-        <div class="auth-divider"><span>or use email</span></div>
+        <div class="auth-divider"><span>or use password</span></div>
 
         <label class="field">
-          <span>Email address</span>
+          <span>Email or username</span>
           <input
-            v-model.trim="form.email"
-            type="email"
-            autocomplete="email"
+            v-model.trim="form.identifier"
+            type="text"
+            autocomplete="username"
             required
-            placeholder="you@example.com"
+            placeholder="you@example.com or username"
           />
         </label>
 
@@ -44,7 +40,7 @@
 
         <p v-if="error" class="error-box">{{ error }}</p>
 
-        <button class="btn-primary" :disabled="loading || !isLoaded">
+        <button class="btn-primary" :disabled="!canSubmit">
           {{ loading ? 'Signing in...' : 'Sign in' }}
         </button>
       </form>
@@ -98,6 +94,7 @@ import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useClerk, useSignIn } from '@clerk/vue'
 
+import SocialAuthButtons from '../components/SocialAuthButtons.vue'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
 
@@ -106,7 +103,7 @@ const clerk = useClerk()
 const { isLoaded, signIn, setActive } = useSignIn()
 
 const loading = ref(false)
-const googleLoading = ref(false)
+const loadingStrategy = ref('')
 const error = ref('')
 const step = ref('credentials')
 const verificationReason = ref('')
@@ -114,7 +111,7 @@ const verificationStage = ref('')
 const verificationStrategy = ref('')
 const verificationTarget = ref('')
 const form = reactive({
-  email: '',
+  identifier: '',
   password: '',
   code: '',
 })
@@ -123,6 +120,7 @@ const codeStrategies = ['email_code', 'phone_code']
 const supportedSecondFactorStrategies = ['totp', 'email_code', 'phone_code', 'backup_code']
 
 const canResendCode = computed(() => codeStrategies.includes(verificationStrategy.value))
+const canSubmit = computed(() => isLoaded.value && !loading.value && !loadingStrategy.value && Boolean(form.identifier && form.password))
 const codeInputMode = computed(() => verificationStrategy.value === 'backup_code' ? 'text' : 'numeric')
 const verificationLabel = computed(() => verificationStrategy.value === 'backup_code' ? 'Backup code' : 'Verification code')
 const verificationPlaceholder = computed(() => verificationStrategy.value === 'backup_code' ? 'abcd-1234' : '123456')
@@ -132,7 +130,7 @@ const verificationCopy = computed(() => {
       return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || 'your phone'}.`
     }
 
-    return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || form.email}.`
+    return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || form.identifier}.`
   }
 
   if (verificationStrategy.value === 'totp') {
@@ -147,7 +145,7 @@ const verificationCopy = computed(() => {
     return `Enter the verification code Clerk sent to ${verificationTarget.value || 'your phone'}.`
   }
 
-  return `Enter the verification code Clerk sent to ${verificationTarget.value || form.email}.`
+  return `Enter the verification code Clerk sent to ${verificationTarget.value || form.identifier}.`
 })
 
 function authError(err) {
@@ -233,7 +231,7 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
   }
 
   if (currentSignIn?.status === 'needs_identifier') {
-    error.value = 'Unable to find this account. Check your email address and try again.'
+    error.value = 'Unable to find this account. Check your email or username and try again.'
     return false
   }
 
@@ -304,6 +302,7 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
 
 async function submit() {
   if (!isLoaded.value || !signIn.value || !setActive.value) return
+  if (!canSubmit.value) return
 
   loading.value = true
   error.value = ''
@@ -312,7 +311,7 @@ async function submit() {
   try {
     const result = await signIn.value.create({
       strategy: 'password',
-      identifier: form.email,
+      identifier: form.identifier,
       password: form.password,
     })
 
@@ -324,20 +323,20 @@ async function submit() {
   }
 }
 
-async function signInWithGoogle() {
+async function signInWithProvider(strategy) {
   if (!isLoaded.value || !signIn.value) return
 
-  googleLoading.value = true
+  loadingStrategy.value = strategy
   error.value = ''
 
   try {
     await signIn.value.authenticateWithRedirect({
-      strategy: 'oauth_google',
+      strategy,
       redirectUrl: '/sso-callback',
       redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
-    googleLoading.value = false
+    loadingStrategy.value = ''
     error.value = authError(err)
   }
 }
@@ -440,42 +439,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.btn-google {
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  color: #1f2937;
-  cursor: pointer;
-  display: flex;
-  font-size: 15px;
-  font-weight: 700;
-  gap: 10px;
-  justify-content: center;
-  padding: 12px 20px;
-  transition: opacity 0.2s, transform 0.2s;
-}
-
-.btn-google:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.btn-google:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.google-mark {
-  align-items: center;
-  color: #4285f4;
-  display: inline-flex;
-  font-size: 17px;
-  font-weight: 800;
-  height: 20px;
-  justify-content: center;
-  width: 20px;
 }
 
 .auth-divider {

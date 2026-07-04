@@ -6,17 +6,13 @@
       <p class="subtitle">Join the workspace to run predictions and receive role-based access.</p>
 
       <form v-if="step === 'details'" class="auth-form" @submit.prevent="createAccount">
-        <button
-          class="btn-google"
-          type="button"
-          :disabled="loading || googleLoading || !isLoaded"
-          @click="signUpWithGoogle"
-        >
-          <span class="google-mark" aria-hidden="true">G</span>
-          {{ googleLoading ? 'Opening Google...' : 'Continue with Google' }}
-        </button>
+        <SocialAuthButtons
+          :disabled="loading || !isLoaded"
+          :loading-provider="loadingStrategy"
+          @select="signUpWithProvider"
+        />
 
-        <div class="auth-divider"><span>or use email</span></div>
+        <div class="auth-divider"><span>or use email and username</span></div>
 
         <div class="name-grid">
           <label class="field">
@@ -42,22 +38,33 @@
         </label>
 
         <label class="field">
+          <span>Username</span>
+          <input
+            v-model.trim="form.username"
+            type="text"
+            autocomplete="username"
+            required
+            placeholder="alexmorgan"
+          />
+        </label>
+
+        <label class="field">
           <span>Password</span>
           <input
             v-model="form.password"
             type="password"
             autocomplete="new-password"
             required
-            minlength="8"
             placeholder="Create a password"
           />
         </label>
+        <PasswordPolicyChecklist :policy="passwordPolicy" />
 
         <p v-if="error" class="error-box">{{ error }}</p>
 
         <div id="clerk-captcha" />
 
-        <button class="btn-primary" :disabled="loading || googleLoading || !isLoaded">
+        <button class="btn-primary" :disabled="!canSubmit">
           {{ loading ? 'Creating account...' : 'Create account' }}
         </button>
       </form>
@@ -99,10 +106,13 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useClerk, useSignUp } from '@clerk/vue'
 
+import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import SocialAuthButtons from '../components/SocialAuthButtons.vue'
+import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
 
@@ -112,14 +122,29 @@ const { isLoaded, signUp, setActive } = useSignUp()
 
 const step = ref('details')
 const loading = ref(false)
-const googleLoading = ref(false)
+const loadingStrategy = ref('')
 const error = ref('')
 const form = reactive({
   firstName: '',
   lastName: '',
   email: '',
+  username: '',
   password: '',
   code: '',
+})
+const passwordPolicy = usePasswordPolicy({
+  password: computed(() => form.password),
+  validator: computed(() => signUp.value?.validatePassword),
+  clerk,
+})
+const emailLooksValid = computed(() => /\S+@\S+\.\S+/.test(form.email))
+const canSubmit = computed(() => {
+  return isLoaded.value &&
+    !loading.value &&
+    !loadingStrategy.value &&
+    emailLooksValid.value &&
+    Boolean(form.username && form.password) &&
+    passwordPolicy.passesRequiredRules.value
 })
 
 function authError(err) {
@@ -170,6 +195,7 @@ async function handleSignUpResult(result) {
 
 async function createAccount() {
   if (!isLoaded.value || !signUp.value) return
+  if (!canSubmit.value) return
 
   loading.value = true
   error.value = ''
@@ -177,6 +203,7 @@ async function createAccount() {
   try {
     const result = await signUp.value.create({
       emailAddress: form.email,
+      username: form.username,
       password: form.password,
       firstName: form.firstName || undefined,
       lastName: form.lastName || undefined,
@@ -190,20 +217,20 @@ async function createAccount() {
   }
 }
 
-async function signUpWithGoogle() {
+async function signUpWithProvider(strategy) {
   if (!isLoaded.value || !signUp.value) return
 
-  googleLoading.value = true
+  loadingStrategy.value = strategy
   error.value = ''
 
   try {
     await signUp.value.authenticateWithRedirect({
-      strategy: 'oauth_google',
+      strategy,
       redirectUrl: '/sso-callback',
       redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
-    googleLoading.value = false
+    loadingStrategy.value = ''
     error.value = authError(err)
   }
 }
@@ -279,42 +306,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.btn-google {
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  color: #1f2937;
-  cursor: pointer;
-  display: flex;
-  font-size: 15px;
-  font-weight: 700;
-  gap: 10px;
-  justify-content: center;
-  padding: 12px 20px;
-  transition: opacity 0.2s, transform 0.2s;
-}
-
-.btn-google:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.btn-google:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.google-mark {
-  align-items: center;
-  color: #4285f4;
-  display: inline-flex;
-  font-size: 17px;
-  font-weight: 800;
-  height: 20px;
-  justify-content: center;
-  width: 20px;
 }
 
 .auth-divider {

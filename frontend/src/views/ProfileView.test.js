@@ -5,22 +5,59 @@ import ProfileView from './ProfileView.vue'
 
 const routerPush = vi.fn()
 const clerkState = vi.hoisted(() => ({
+  clerk: {
+    __unstable__environment: {
+      userSettings: {
+        passwordSettings: {
+          min_length: 8,
+          max_length: 72,
+          require_lowercase: false,
+          require_uppercase: false,
+          require_numbers: false,
+          require_special_char: false,
+          disable_hibp: true,
+          show_zxcvbn: false,
+          min_zxcvbn_strength: 0,
+        },
+      },
+    },
+  },
   isLoaded: { value: true, __v_isRef: true },
+  signIn: {
+    value: {
+      validatePassword: vi.fn(),
+    },
+    __v_isRef: true,
+  },
   user: {
     value: {
       firstName: 'Alex',
       lastName: 'Morgan',
+      username: 'alex',
       imageUrl: '',
       primaryEmailAddress: { emailAddress: 'alex@example.com' },
+      totpEnabled: false,
+      backupCodeEnabled: false,
+      twoFactorEnabled: false,
       update: vi.fn(),
       reload: vi.fn(),
       updatePassword: vi.fn(),
+      createTOTP: vi.fn(),
+      verifyTOTP: vi.fn(),
+      disableTOTP: vi.fn(),
+      createBackupCode: vi.fn(),
     },
     __v_isRef: true,
   },
 }))
 
 vi.mock('@clerk/vue', () => ({
+  useClerk: () => clerkState.clerk,
+  useSignIn: () => ({
+    isLoaded: clerkState.isLoaded,
+    signIn: clerkState.signIn,
+    setActive: { value: vi.fn(), __v_isRef: true },
+  }),
   useUser: () => ({
     isLoaded: clerkState.isLoaded,
     user: clerkState.user,
@@ -89,6 +126,8 @@ describe('ProfileView', () => {
     const wrapper = mount(ProfileView)
     await flushPromises()
 
+    expect(wrapper.text()).toContain('Security')
+    expect(wrapper.text()).toContain('alex')
     expect(wrapper.text()).toContain('Billing')
     expect(wrapper.text()).toContain('Current tier')
     expect(wrapper.text()).toContain('Pro')
@@ -155,5 +194,49 @@ describe('ProfileView', () => {
 
     expect(createPaymentMethodSession).toHaveBeenCalledWith({ return_path: '/profile' })
     expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/payment-method')
+  })
+
+  it('renders the account security section with 2FA state', async () => {
+    const wrapper = mount(ProfileView)
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Security')
+    expect(wrapper.text()).toContain('Authenticator app')
+    expect(wrapper.text()).toContain('Backup codes')
+    expect(wrapper.text()).toContain('alex')
+  })
+
+  it('blocks profile password updates that fail policy', async () => {
+    const wrapper = mount(ProfileView)
+    await flushPromises()
+
+    const passwordForm = wrapper.findAll('form')[1]
+    await passwordForm.find('input[autocomplete="current-password"]').setValue('current-pass')
+    await passwordForm.find('input[autocomplete="new-password"]').setValue('short')
+    await passwordForm.findAll('input[autocomplete="new-password"]')[1].setValue('short')
+    await passwordForm.trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.user.value.updatePassword).not.toHaveBeenCalled()
+    expect(wrapper.text()).toContain('New password does not meet the password requirements.')
+  })
+
+  it('updates password through Clerk when policy and confirmation pass', async () => {
+    clerkState.user.value.updatePassword.mockResolvedValue({})
+    const wrapper = mount(ProfileView)
+    await flushPromises()
+
+    const passwordForm = wrapper.findAll('form')[1]
+    await passwordForm.find('input[autocomplete="current-password"]').setValue('current-pass')
+    await passwordForm.find('input[autocomplete="new-password"]').setValue('longenough')
+    await passwordForm.findAll('input[autocomplete="new-password"]')[1].setValue('longenough')
+    await passwordForm.trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.user.value.updatePassword).toHaveBeenCalledWith({
+      currentPassword: 'current-pass',
+      newPassword: 'longenough',
+      signOutOfOtherSessions: true,
+    })
   })
 })
