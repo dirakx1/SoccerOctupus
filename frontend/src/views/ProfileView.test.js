@@ -139,7 +139,8 @@ describe('ProfileView', () => {
     await flushPromises()
 
     expect(wrapper.text()).toContain('Security')
-    expect(wrapper.text()).toContain('alex')
+    expect(wrapper.text()).toContain('Two-factor authentication')
+    expect(wrapper.text()).toContain('Not enabled')
     expect(wrapper.text()).toContain('Billing')
     expect(wrapper.text()).toContain('Current tier')
     expect(wrapper.text()).toContain('Pro')
@@ -213,9 +214,9 @@ describe('ProfileView', () => {
     await flushPromises()
 
     expect(wrapper.text()).toContain('Security')
-    expect(wrapper.text()).toContain('Authenticator app')
-    expect(wrapper.text()).toContain('Backup codes')
-    expect(wrapper.text()).toContain('alex')
+    expect(wrapper.text()).toContain('Two-factor authentication')
+    expect(wrapper.text()).toContain('Not enabled')
+    expect(wrapper.text()).toContain('Enable authenticator app')
   })
 
   it('blocks profile password updates that fail policy', async () => {

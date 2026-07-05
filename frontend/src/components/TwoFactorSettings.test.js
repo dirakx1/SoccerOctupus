@@ -78,6 +78,21 @@ describe('TwoFactorSettings', () => {
     expect(wrapper.find('[data-testid="backup-codes-panel"]').exists()).toBe(false)
   })
 
+  it('renders 2FA state and actions in a single control row', () => {
+    const user = userFixture()
+    const wrapper = mount(TwoFactorSettings, {
+      props: { user, isLoaded: true },
+    })
+
+    const row = wrapper.find('.security-control-row')
+    expect(row.exists()).toBe(true)
+    expect(row.text()).toContain('Two-factor authentication')
+    expect(row.text()).toContain('Not enabled')
+    expect(row.find('button').text()).toContain('Enable authenticator app')
+    expect(wrapper.find('.security-summary').exists()).toBe(false)
+    expect(wrapper.text()).not.toContain('Backup codesNot generated')
+  })
+
   it('regenerates backup codes for an enabled authenticator', async () => {
     const user = userFixture({ totpEnabled: true, backupCodeEnabled: true })
     const reverification = sessionFixture()

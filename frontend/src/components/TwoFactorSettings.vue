@@ -1,17 +1,28 @@
 <template>
   <div class="two-factor-settings">
-    <div class="security-summary">
-      <div v-if="username" class="security-row">
-        <span>Username</span>
-        <strong>{{ username }}</strong>
+    <div v-if="!setupResource" class="security-control-row">
+      <div class="security-control-copy">
+        <span>Two-factor authentication</span>
+        <strong>{{ twoFactorStatus }}</strong>
       </div>
-      <div class="security-row">
-        <span>Authenticator app</span>
-        <strong>{{ totpEnabled ? 'Enabled' : 'Not enabled' }}</strong>
-      </div>
-      <div class="security-row">
-        <span>Backup codes</span>
-        <strong>{{ backupCodeEnabled ? 'Enabled' : 'Not generated' }}</strong>
+      <div class="security-control-actions">
+        <button
+          v-if="!totpEnabled"
+          class="btn-primary"
+          type="button"
+          :disabled="!canManage || loading"
+          @click="startSetup"
+        >
+          {{ loadingAction === 'setup' ? 'Starting setup...' : 'Enable authenticator app' }}
+        </button>
+        <template v-else>
+          <button class="btn-secondary" type="button" :disabled="!canManage || loading" @click="regenerateBackupCodes">
+            {{ loadingAction === 'backup' ? 'Generating...' : 'Regenerate backup codes' }}
+          </button>
+          <button class="btn-danger" type="button" :disabled="!canManage || loading" @click="disableAuthenticator">
+            {{ loadingAction === 'disable' ? 'Disabling...' : 'Disable authenticator app' }}
+          </button>
+        </template>
       </div>
     </div>
 
@@ -76,25 +87,6 @@
       </div>
     </div>
 
-    <div v-else class="action-row">
-      <button
-        v-if="!totpEnabled"
-        class="btn-primary"
-        type="button"
-        :disabled="!canManage || loading"
-        @click="startSetup"
-      >
-        {{ loadingAction === 'setup' ? 'Starting setup...' : 'Enable authenticator app' }}
-      </button>
-      <template v-else>
-        <button class="btn-secondary" type="button" :disabled="!canManage || loading" @click="regenerateBackupCodes">
-          {{ loadingAction === 'backup' ? 'Generating...' : 'Regenerate backup codes' }}
-        </button>
-        <button class="btn-danger" type="button" :disabled="!canManage || loading" @click="disableAuthenticator">
-          {{ loadingAction === 'disable' ? 'Disabling...' : 'Disable authenticator app' }}
-        </button>
-      </template>
-    </div>
   </div>
 </template>
 
@@ -129,10 +121,13 @@ const success = ref('')
 
 const canManage = computed(() => props.isLoaded && Boolean(props.user))
 const loading = computed(() => Boolean(loadingAction.value))
-const username = computed(() => props.user?.username || '')
 const totpEnabled = computed(() => Boolean(props.user?.totpEnabled))
 const backupCodeEnabled = computed(() => Boolean(props.user?.backupCodeEnabled || backupCodes.value.length))
 const backupCodesText = computed(() => backupCodes.value.join('\n'))
+const twoFactorStatus = computed(() => {
+  if (!totpEnabled.value) return 'Not enabled'
+  return backupCodeEnabled.value ? 'Enabled with backup codes' : 'Enabled'
+})
 
 function clerkError(err, fallback) {
   return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || fallback
@@ -310,28 +305,37 @@ defineExpose({
   gap: 16px;
 }
 
-.security-summary {
-  display: grid;
-  gap: 10px;
-}
-
-.security-row {
+.security-control-row {
   align-items: center;
   border-bottom: 1px solid #0f3460;
   display: flex;
   gap: 16px;
   justify-content: space-between;
-  padding-bottom: 10px;
+  padding-bottom: 16px;
 }
 
-.security-row span {
+.security-control-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.security-control-copy span {
   color: #a0aec0;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.security-row strong {
+.security-control-copy strong {
   color: #e0e0e0;
   font-size: 13px;
+}
+
+.security-control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .setup-panel,
