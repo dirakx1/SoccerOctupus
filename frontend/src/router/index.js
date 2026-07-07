@@ -21,6 +21,7 @@ const router = createRouter({
     { path: '/legal', component: () => import('../views/LegalNoticeView.vue'), meta: { public: true } },
     { path: '/cookie-policy', component: () => import('../views/CookiePolicyView.vue'), meta: { public: true } },
     { path: '/contact', component: () => import('../views/ContactView.vue'), meta: { public: true } },
+    { path: '/about', component: () => import('../views/AboutView.vue'), meta: { public: true } },
   ]
 })
 

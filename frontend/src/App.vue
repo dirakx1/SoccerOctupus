@@ -62,6 +62,7 @@
       <router-link to="/legal">Legal Notice</router-link>
       <router-link to="/cookie-policy">Cookie Policy</router-link>
       <router-link to="/contact">Contact</router-link>
+      <router-link to="/about">About</router-link>
     </footer>
     <CookieBanner />
   </div>
