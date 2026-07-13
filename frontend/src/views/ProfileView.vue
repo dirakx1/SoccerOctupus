@@ -1,10 +1,12 @@
 <template>
   <div class="profile-page">
+    <ReverificationDialog :workflow="reverification" />
+
     <header class="profile-header">
       <div>
         <div class="eyebrow">Account</div>
         <h1>Profile settings</h1>
-        <p>Update your Clerk profile and password for SoccerOctopus.</p>
+        <p>Update your profile and password for SoccerOctopus.</p>
       </div>
       <img v-if="avatarUrl" class="avatar" :src="avatarUrl" alt="Profile avatar" />
     </header>
@@ -12,7 +14,7 @@
     <div class="profile-grid">
       <section class="profile-card">
         <h2>Personal details</h2>
-        <p class="card-copy">These fields are stored in Clerk and synced into the local account table.</p>
+        <p class="card-copy">Keep your account details up to date.</p>
 
         <form class="profile-form" @submit.prevent="updateProfile">
           <div class="name-grid">
@@ -65,10 +67,10 @@
               type="password"
               autocomplete="new-password"
               required
-              minlength="8"
               placeholder="Enter new password"
             />
           </label>
+          <PasswordPolicyChecklist :policy="passwordPolicy" />
 
           <label class="field">
             <span>Confirm new password</span>
@@ -77,7 +79,6 @@
               type="password"
               autocomplete="new-password"
               required
-              minlength="8"
               placeholder="Repeat new password"
             />
           </label>
@@ -92,6 +93,11 @@
         </form>
       </section>
     </div>
+
+    <section class="profile-card security-card">
+      <h2>Security</h2>
+      <TwoFactorSettings :is-loaded="isLoaded" :reverification="reverification" :user="user" />
+    </section>
 
     <section class="profile-card billing-card">
       <div class="billing-row">
@@ -137,9 +143,15 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { CreditCard, LoaderCircle } from '@lucide/vue'
 import { useRouter } from 'vue-router'
+import { useClerk, useSession, useSignIn } from '@clerk/vue'
 
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
+import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import ReverificationDialog from '../components/ReverificationDialog.vue'
+import TwoFactorSettings from '../components/TwoFactorSettings.vue'
 import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
+import { usePasswordPolicy } from '../composables/usePasswordPolicy'
+import { useReverification } from '../composables/useReverification'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
@@ -154,6 +166,10 @@ const {
 } = useCurrentUserProfile()
 
 const router = useRouter()
+const clerk = useClerk()
+const { session } = useSession()
+const { signIn } = useSignIn()
+const reverification = useReverification({ session })
 const profileLoading = ref(false)
 const passwordLoading = ref(false)
 const profileError = ref('')
@@ -176,6 +192,11 @@ const passwordForm = reactive({
   currentPassword: '',
   newPassword: '',
   confirmPassword: '',
+})
+const passwordPolicy = usePasswordPolicy({
+  password: computed(() => passwordForm.newPassword),
+  validator: computed(() => signIn.value?.validatePassword),
+  clerk,
 })
 
 const tierLabel = computed(() => {
@@ -296,8 +317,8 @@ function validatePasswordForm() {
     return 'Enter your current password.'
   }
 
-  if (passwordForm.newPassword.length < 8) {
-    return 'New password must be at least 8 characters.'
+  if (!passwordPolicy.passesRequiredRules.value) {
+    return 'New password does not meet the password requirements.'
   }
 
   if (passwordForm.newPassword !== passwordForm.confirmPassword) {
@@ -408,6 +429,11 @@ h2 {
   display: flex;
   flex-direction: column;
   padding: 28px;
+}
+
+.security-card {
+  gap: 20px;
+  overflow: hidden;
 }
 
 .billing-card {

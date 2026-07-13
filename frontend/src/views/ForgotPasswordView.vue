@@ -48,14 +48,14 @@
             type="password"
             autocomplete="new-password"
             required
-            minlength="8"
             placeholder="Create a new password"
           />
         </label>
+        <PasswordPolicyChecklist :policy="passwordPolicy" />
 
         <p v-if="error" class="error-box">{{ error }}</p>
 
-        <button class="btn-primary" :disabled="loading || !isLoaded">
+        <button class="btn-primary" :disabled="loading || !isLoaded || !passwordPolicy.passesRequiredRules.value">
           {{ loading ? 'Resetting password...' : 'Reset password' }}
         </button>
 
@@ -77,10 +77,12 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useClerk, useSignIn } from '@clerk/vue'
 
+import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 
 const router = useRouter()
@@ -94,6 +96,11 @@ const form = reactive({
   email: '',
   code: '',
   password: '',
+})
+const passwordPolicy = usePasswordPolicy({
+  password: computed(() => form.password),
+  validator: computed(() => signIn.value?.validatePassword),
+  clerk,
 })
 
 function authError(err) {
@@ -123,6 +130,11 @@ async function sendResetCode() {
 
 async function resetPassword() {
   if (!isLoaded.value || !signIn.value || !setActive.value) return
+
+  if (!passwordPolicy.passesRequiredRules.value) {
+    error.value = 'New password does not meet the password requirements.'
+    return
+  }
 
   loading.value = true
   error.value = ''

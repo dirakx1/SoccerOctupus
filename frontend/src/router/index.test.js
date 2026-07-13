@@ -19,6 +19,11 @@ describe('router meta', () => {
     expect(route.meta.public).toBe(true)
   })
 
+  it('marks complete-username as public', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/complete-username')
+    expect(route.meta.public).toBe(true)
+  })
+
   it('marks home as public', () => {
     const route = router.getRoutes().find((entry) => entry.path === '/')
     expect(route.meta.public).toBe(true)
@@ -46,6 +51,11 @@ describe('router meta', () => {
 
   it('lazy-loads route views', () => {
     const route = router.getRoutes().find((entry) => entry.path === '/profile')
+    expect(typeof route.components.default).toBe('function')
+  })
+
+  it('lazy-loads the username completion view', () => {
+    const route = router.getRoutes().find((entry) => entry.path === '/complete-username')
     expect(typeof route.components.default).toBe('function')
   })
 

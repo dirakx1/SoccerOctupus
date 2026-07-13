@@ -138,6 +138,9 @@ class MatchPrediction:
     # resolved by extra time / penalty shootout. Always False in group stage.
     went_to_penalties: bool = False
 
+    # True when this entry is an official played result, not a prediction.
+    is_actual: bool = False
+
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
     def to_dict(self) -> Dict:
@@ -156,6 +159,7 @@ class MatchPrediction:
             "score_probabilities": self.score_probabilities,
             "outcome": self.outcome.value,
             "went_to_penalties": self.went_to_penalties,
+            "is_actual": self.is_actual,
             "overall_confidence": round(self.overall_confidence, 3),
             "agent_predictions": [a.to_dict() for a in self.agent_predictions],
             "swarm_consensus": self.swarm_consensus,
