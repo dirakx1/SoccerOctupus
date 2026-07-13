@@ -141,8 +141,8 @@ describe('SignInView', () => {
     expect(wrapper.get('input[autocomplete="one-time-code"]').attributes('inputmode')).toBe('numeric')
   })
 
-  it('starts OAuth redirect for Google, Facebook, and X', async () => {
-    for (const strategy of ['oauth_google', 'oauth_facebook', 'oauth_x']) {
+  it('starts OAuth redirect for Google and X without exposing Facebook', async () => {
+    for (const strategy of ['oauth_google', 'oauth_x']) {
       clerkState.signIn.value.authenticateWithRedirect.mockClear()
       const wrapper = mount(SignInView, {
         global: { stubs: ['RouterLink'] },
@@ -157,5 +157,10 @@ describe('SignInView', () => {
       })
       wrapper.unmount()
     }
+
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    expect(wrapper.find('button[data-strategy="oauth_facebook"]').exists()).toBe(false)
   })
 })

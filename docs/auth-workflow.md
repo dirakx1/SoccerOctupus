@@ -39,7 +39,7 @@ Configure these in the Clerk Dashboard:
   - enforce strong password strength;
   - avoid mandatory lowercase/uppercase/number/special-character rules unless
     product/security explicitly accepts Clerk's NIST warning for those rules.
-- Google, Facebook, and X enabled as SSO/social connections for sign-up and sign-in.
+- Google and X enabled as SSO/social connections for sign-up and sign-in.
 - Client Trust can be enabled; the custom sign-in flow supports `needs_client_trust`.
 - MFA can be enabled; the custom sign-in flow supports `email_code`, `phone_code`, `totp`, and `backup_code` as second factors.
 - Authenticator app and backup codes enabled for users that manage 2FA from the
@@ -108,10 +108,10 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 
 ## Social OAuth Workflow
 
-1. User selects `Continue with Google`, `Continue with Facebook`, or
-   `Continue with X` on `/sign-in` or `/sign-up`.
+1. User selects `Continue with Google` or `Continue with X` on `/sign-in` or
+   `/sign-up`.
 2. The frontend calls `authenticateWithRedirect()` with:
-   - `strategy: 'oauth_google'`, `oauth_facebook`, or `oauth_x`
+   - `strategy: 'oauth_google'` or `oauth_x`
    - `redirectUrl: '/sso-callback'`
    - `redirectUrlComplete: '/'`
 3. Clerk redirects the browser through the provider's OAuth consent flow.

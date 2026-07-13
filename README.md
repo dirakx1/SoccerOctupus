@@ -843,7 +843,7 @@ Then configure Clerk:
 - enable username for sign-up and sign-in; the custom sign-up page requires both email and username, but the app continues to authorize by Clerk `clerk_user_id`
 - configure Clerk password policy: minimum length 8, reject compromised passwords, and strong minimum password strength
 - enable password reset with email verification code for the custom forgot-password page
-- enable Google, Facebook, and X as social connections if using those custom auth buttons
+- enable Google and X as social connections if using those custom auth buttons; keep Facebook disabled
 - enable authenticator app and backup codes if using the custom `/profile` security section
 - point a Clerk webhook at `POST /api/webhooks/clerk`
 - configure Stripe Dashboard products/prices for Basic and Pro, Customer Portal, and a webhook at `POST /api/webhooks/stripe`

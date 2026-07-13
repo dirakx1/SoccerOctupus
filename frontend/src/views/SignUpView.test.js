@@ -113,8 +113,8 @@ describe('SignUpView', () => {
     expect(clerkState.signUp.value.create).not.toHaveBeenCalled()
   })
 
-  it('starts OAuth redirect for Google, Facebook, and X', async () => {
-    for (const strategy of ['oauth_google', 'oauth_facebook', 'oauth_x']) {
+  it('starts OAuth redirect for Google and X without exposing Facebook', async () => {
+    for (const strategy of ['oauth_google', 'oauth_x']) {
       clerkState.signUp.value.authenticateWithRedirect.mockClear()
       const wrapper = mount(SignUpView, {
         global: { stubs: ['RouterLink'] },
@@ -129,6 +129,11 @@ describe('SignUpView', () => {
       })
       wrapper.unmount()
     }
+
+    const wrapper = mount(SignUpView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    expect(wrapper.find('button[data-strategy="oauth_facebook"]').exists()).toBe(false)
   })
 
   it('keeps email-code verification for unverified email sign-ups', async () => {

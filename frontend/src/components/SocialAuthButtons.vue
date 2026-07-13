@@ -31,7 +31,6 @@ defineEmits(['select'])
 
 const providers = [
   { name: 'Google', mark: 'G', strategy: 'oauth_google' },
-  { name: 'Facebook', mark: 'f', strategy: 'oauth_facebook' },
   { name: 'X', mark: 'X', strategy: 'oauth_x' },
 ]
 </script>
