@@ -66,7 +66,7 @@ function infoRule(key, label) {
 }
 
 function strengthLabel(score) {
-  if (score === null) return 'Password strength is evaluated as you type'
+  if (score === null) return 'Password strength'
   if (score >= 4) return 'Password strength: strong'
   if (score >= 3) return 'Password strength: normal'
   return 'Password strength: weak'
@@ -149,11 +149,7 @@ export function usePasswordPolicy({ password, validator, clerk } = {}) {
     if (policy.show_zxcvbn) {
       const score = strength.value.score
       const minScore = Number(policy.min_zxcvbn_strength || 0)
-      required.push({
-        key: 'min_zxcvbn_strength',
-        label: `${strength.value.label}; required score ${minScore}`,
-        status: score === null ? 'info' : score >= minScore ? 'pass' : 'fail',
-      })
+      required.push(rule('min_zxcvbn_strength', 'Minimum password strength', score !== null && score >= minScore))
     }
 
     if (policy.disable_hibp === false) {

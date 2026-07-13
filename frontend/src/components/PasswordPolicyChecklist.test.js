@@ -52,7 +52,7 @@ describe('PasswordPolicyChecklist', () => {
     expect(wrapper.text()).toContain('At least 1 special character from !@#')
   })
 
-  it('uses Clerk password strength validation callbacks', async () => {
+  it('renders password strength as a colored bar without score text', async () => {
     const validator = (password, callbacks) => {
       callbacks.onValidation({ strength: { score: password.length > 10 ? 4 : 1 } })
       callbacks.onValidationComplexity(true)
@@ -78,7 +78,18 @@ describe('PasswordPolicyChecklist', () => {
 
     await nextTick()
 
-    expect(wrapper.text()).toContain('Password strength: strong; required score 3')
+    expect(wrapper.find('[data-testid="password-strength-meter"]').exists()).toBe(true)
+    expect(wrapper.find('.strength-fill').classes()).toContain('strength-strong')
+    expect(wrapper.text()).toContain('Strong')
+    expect(wrapper.text()).not.toContain('required score')
+    expect(wrapper.text()).not.toContain('Password strength: strong')
+
+    await wrapper.setProps({ password: 'short' })
+    await nextTick()
+
+    expect(wrapper.find('.strength-fill').classes()).toContain('strength-weak')
+    expect(wrapper.text()).toContain('Low')
+    expect(wrapper.text()).not.toContain('Pending')
   })
 
   it('shows compromised-password checks as Clerk/server-checked info', () => {
