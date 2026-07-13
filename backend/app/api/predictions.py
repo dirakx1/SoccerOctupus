@@ -211,8 +211,10 @@ def list_teams():
 @require_user(db)
 def get_live_results():
     """GET /api/predictions/live-results — real WC2026 group-stage results from ESPN."""
-    from ..services.data_collectors.live_results import WC2026_RESULTS
+    from ..services.data_collectors.live_results import WC2026_RESULTS, refresh_results
     from ..services.tournament_simulator import WC2026_GROUPS
+
+    refresh_results()
 
     standings: dict = {}
     for g, teams in WC2026_GROUPS.items():

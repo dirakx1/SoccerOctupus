@@ -83,6 +83,19 @@ class TournamentSimulator:
         self.groups = {k: list(v) for k, v in WC2026_GROUPS.items()}
         self._swarm_failed = False  # once True all remaining matches use MC
 
+        # Official played results: matches already decided are taken as-is and
+        # never re-simulated, so eliminated teams cannot re-enter the bracket.
+        from .data_collectors.live_results import WC2026_RESULTS, refresh_results
+        refresh_results()
+        self._real_group: Dict[frozenset, Dict[str, Any]] = {}
+        self._real_knockout: List[Dict[str, Any]] = []
+        for m in WC2026_RESULTS:
+            if m.get("group") not in (None, "?"):
+                self._real_group[frozenset((m["home"], m["away"]))] = m
+            else:
+                self._real_knockout.append(m)
+        self._real_knockout.sort(key=lambda m: m["date"])
+
     # ------------------------------------------------------------------
 
     def simulate(self) -> TournamentResult:
@@ -109,31 +122,49 @@ class TournamentSimulator:
         logger.info(f"R32 qualifiers: {qualifiers}")
 
         # ── Knockout rounds ──────────────────────────────────────────
+        # Each round consumes official results first (in date order) and only
+        # simulates matches not yet played, so already-eliminated teams never
+        # re-enter the bracket.
         knockout_matches: List[MatchPrediction] = []
+        real_ko = self._real_knockout
+        idx = 0
 
-        r32_winners = self._simulate_round(
-            qualifiers["r32_pairs"], MatchStage.ROUND_OF_32, knockout_matches
-        )
-        r16_winners = self._simulate_round(
-            list(zip(r32_winners[::2], r32_winners[1::2])), MatchStage.ROUND_OF_16, knockout_matches
-        )
-        qf_winners = self._simulate_round(
-            list(zip(r16_winners[::2], r16_winners[1::2])), MatchStage.QUARTER_FINAL, knockout_matches
-        )
-        sf_winners = self._simulate_round(
-            list(zip(qf_winners[::2], qf_winners[1::2])), MatchStage.SEMI_FINAL, knockout_matches
-        )
-        sf_losers = [t for t in qf_winners if t not in sf_winners]
+        round_specs = [
+            (MatchStage.ROUND_OF_32, 16),
+            (MatchStage.ROUND_OF_16, 8),
+            (MatchStage.QUARTER_FINAL, 4),
+            (MatchStage.SEMI_FINAL, 2),
+        ]
 
-        # 3rd place
-        third_match = self._predict_single(sf_losers[0], sf_losers[1], MatchStage.THIRD_PLACE, None)
-        knockout_matches.append(third_match)
+        prev_winners: Optional[List[str]] = None
+        sf_entrants: List[str] = []
+        for stage, size in round_specs:
+            real_round = real_ko[idx: idx + size]
+            idx += len(real_round)
+            winners, entrants = self._advance_round(
+                stage, size, real_round, prev_winners,
+                qualifiers["r32_pairs"], knockout_matches,
+            )
+            if stage == MatchStage.SEMI_FINAL:
+                sf_entrants = entrants
+            prev_winners = winners
+
+        sf_winners = prev_winners
+        sf_losers = [t for t in sf_entrants if t not in sf_winners]
+
+        # 3rd place play-off and final (chronological in the real feed)
+        remaining_real = real_ko[idx:]
+        third_match = self._final_stage_match(
+            remaining_real[0] if remaining_real else None,
+            sf_losers, MatchStage.THIRD_PLACE, knockout_matches,
+        )
         third_place = third_match.home_team if third_match.outcome == MatchOutcome.HOME_WIN else third_match.away_team
         fourth_place = third_match.away_team if third_place == third_match.home_team else third_match.home_team
 
-        # Final
-        final_match = self._predict_single(sf_winners[0], sf_winners[1], MatchStage.FINAL, None)
-        knockout_matches.append(final_match)
+        final_match = self._final_stage_match(
+            remaining_real[1] if len(remaining_real) > 1 else None,
+            sf_winners, MatchStage.FINAL, knockout_matches,
+        )
         champion = final_match.home_team if final_match.outcome == MatchOutcome.HOME_WIN else final_match.away_team
         runner_up = final_match.away_team if champion == final_match.home_team else final_match.home_team
 
@@ -167,35 +198,44 @@ class TournamentSimulator:
         standings = {t: GroupStanding(team=t) for t in teams}
         matches = []
 
-        # Round-robin: every pair plays once
+        # Round-robin: every pair plays once. Matches already played use the
+        # official result instead of a prediction.
         for i, home in enumerate(teams):
             for away in teams[i + 1:]:
-                pred = self._predict_single(home, away, MatchStage.GROUP, group_name)
+                real = self._real_group.get(frozenset((home, away)))
+                if real:
+                    pred = self._actual_prediction(real, MatchStage.GROUP, group_name)
+                    h_goals, a_goals = real["home_goals"], real["away_goals"]
+                else:
+                    pred = self._predict_single(home, away, MatchStage.GROUP, group_name)
+                    h_goals = round(pred.predicted_home_goals)
+                    a_goals = round(pred.predicted_away_goals)
                 matches.append(pred)
 
-                h_goals = round(pred.predicted_home_goals)
-                a_goals = round(pred.predicted_away_goals)
+                # Orientation follows pred.home_team (real results may have
+                # home/away swapped relative to our loop order).
+                h, a = pred.home_team, pred.away_team
 
-                standings[home].played += 1
-                standings[away].played += 1
-                standings[home].goals_for += h_goals
-                standings[home].goals_against += a_goals
-                standings[away].goals_for += a_goals
-                standings[away].goals_against += h_goals
+                standings[h].played += 1
+                standings[a].played += 1
+                standings[h].goals_for += h_goals
+                standings[h].goals_against += a_goals
+                standings[a].goals_for += a_goals
+                standings[a].goals_against += h_goals
 
                 if pred.outcome == MatchOutcome.HOME_WIN:
-                    standings[home].won += 1
-                    standings[home].points += 3
-                    standings[away].lost += 1
+                    standings[h].won += 1
+                    standings[h].points += 3
+                    standings[a].lost += 1
                 elif pred.outcome == MatchOutcome.DRAW:
-                    standings[home].drawn += 1
-                    standings[home].points += 1
-                    standings[away].drawn += 1
-                    standings[away].points += 1
+                    standings[h].drawn += 1
+                    standings[h].points += 1
+                    standings[a].drawn += 1
+                    standings[a].points += 1
                 else:
-                    standings[away].won += 1
-                    standings[away].points += 3
-                    standings[home].lost += 1
+                    standings[a].won += 1
+                    standings[a].points += 3
+                    standings[h].lost += 1
 
         ranked = sorted(
             standings.values(),
@@ -236,6 +276,110 @@ class TournamentSimulator:
             suffix = " (AET/PKs)" if pred.went_to_penalties else ""
             logger.info(f"{stage.value}: {home} vs {away} → {winner}{suffix}")
         return winners
+
+    def _advance_round(
+        self,
+        stage: MatchStage,
+        size: int,
+        real_matches: List[Dict[str, Any]],
+        prev_winners: Optional[List[str]],
+        r32_pairs: List[Tuple[str, str]],
+        output_list: List[MatchPrediction],
+    ) -> Tuple[List[str], List[str]]:
+        """
+        Advance one knockout round: official results first, then simulate the
+        matches not yet played. Returns (winners, entrants).
+        """
+        winners: List[str] = []
+        entrants: List[str] = []
+
+        for m in real_matches:
+            pred = self._actual_prediction(m, stage)
+            output_list.append(pred)
+            entrants += [m["home"], m["away"]]
+            winner = self._real_winner(m)
+            winners.append(winner)
+            logger.info(f"{stage.value} (official): {m['home']} {m['home_goals']}-{m['away_goals']} {m['away']} → {winner}")
+
+        played = set(entrants)
+        n_missing = size - len(real_matches)
+        if n_missing > 0:
+            if prev_winners is not None:
+                remaining = [t for t in prev_winners if t not in played]
+                pairs = list(zip(remaining[::2], remaining[1::2]))
+            else:
+                # R32 seeds come from group standings; drop any pairing that
+                # touches a team whose R32 match was already played.
+                pairs = [
+                    p for p in r32_pairs
+                    if p[0] not in played and p[1] not in played
+                ]
+            pairs = pairs[:n_missing]
+            for h, a in pairs:
+                entrants += [h, a]
+            winners += self._simulate_round(pairs, stage, output_list)
+
+        return winners, entrants
+
+    def _final_stage_match(
+        self,
+        real_match: Optional[Dict[str, Any]],
+        pair: List[str],
+        stage: MatchStage,
+        output_list: List[MatchPrediction],
+    ) -> MatchPrediction:
+        """3rd place play-off / final: official result if played, else simulated."""
+        if real_match:
+            pred = self._actual_prediction(real_match, stage)
+            output_list.append(pred)
+            return pred
+        self._simulate_round([(pair[0], pair[1])], stage, output_list)
+        return output_list[-1]
+
+    def _actual_prediction(
+        self, m: Dict[str, Any], stage: MatchStage, group: Optional[str] = None
+    ) -> MatchPrediction:
+        """Wrap an official played result as a MatchPrediction."""
+        import uuid
+
+        hg, ag = m["home_goals"], m["away_goals"]
+        went_to_pens = stage != MatchStage.GROUP and hg == ag
+
+        if stage == MatchStage.GROUP and hg == ag:
+            outcome = MatchOutcome.DRAW
+        elif self._real_winner(m) == m["home"]:
+            outcome = MatchOutcome.HOME_WIN
+        else:
+            outcome = MatchOutcome.AWAY_WIN
+
+        hw = 1.0 if outcome == MatchOutcome.HOME_WIN else 0.0
+        dr = 1.0 if outcome == MatchOutcome.DRAW else 0.0
+        aw = 1.0 if outcome == MatchOutcome.AWAY_WIN else 0.0
+
+        return MatchPrediction(
+            prediction_id=f"actual_{uuid.uuid4().hex[:8]}",
+            home_team=m["home"], away_team=m["away"],
+            stage=stage, group=group,
+            home_win_prob=hw, draw_prob=dr, away_win_prob=aw,
+            predicted_home_goals=float(hg), predicted_away_goals=float(ag),
+            most_likely_score=f"{hg}-{ag}" + (" (AET/PKs)" if went_to_pens else ""),
+            outcome=outcome,
+            overall_confidence=1.0,
+            swarm_consensus=f"Official result ({m['date']}): {m['home']} {hg}-{ag} {m['away']}",
+            key_factors=["Official result"],
+            went_to_penalties=went_to_pens,
+            is_actual=True,
+        )
+
+    def _real_winner(self, m: Dict[str, Any]) -> str:
+        hg, ag = m["home_goals"], m["away_goals"]
+        if hg != ag:
+            return m["home"] if hg > ag else m["away"]
+        if m.get("winner"):
+            return m["winner"]
+        # Level score with no shootout-winner info from the feed
+        logger.warning(f"No winner recorded for drawn knockout match {m['home']} vs {m['away']} — coin flip")
+        return m["home"] if random.random() < 0.5 else m["away"]
 
     def _predict_single(
         self, home: str, away: str, stage: MatchStage, group: Optional[str]

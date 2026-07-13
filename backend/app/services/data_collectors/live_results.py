@@ -26,6 +26,10 @@ logger = get_logger("fifaoctopus.live_results")
 # Tournament date range
 # ---------------------------------------------------------------------------
 _TOURNAMENT_START = datetime.date(2026, 6, 11)
+# Last day of the group stage. Matches after this date are knockout matches,
+# even when both teams share a group (same-group rematches are possible from
+# the quarter-finals onward and must not be counted in group standings).
+GROUP_STAGE_END = datetime.date(2026, 6, 27)
 _ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
 _FETCH_TIMEOUT = 6  # seconds per request
 
@@ -37,10 +41,12 @@ _NAME_MAP: Dict[str, str] = {
     "United States":               "USA",
     "Korea Republic":              "South Korea",
     "Turkiye":                     "Turkey",
+    "Türkiye":                     "Turkey",
     "Turkey":                      "Turkey",
     "Côte d'Ivoire":               "Ivory Coast",
     "Cote d'Ivoire":               "Ivory Coast",
     "DR Congo":                    "DR Congo",
+    "Congo DR":                    "DR Congo",
     "Democratic Republic of Congo": "DR Congo",
     "Curacao":                     "Curacao",
     "Curaçao":                     "Curacao",
@@ -111,11 +117,15 @@ def _fetch_date(date: datetime.date) -> List[Dict[str, Any]]:
         logger.debug(f"ESPN fetch failed for {date_str}: {exc}")
         return []
 
+    # Knockout matches decided in extra time / on penalties get their own
+    # final statuses — they are finished results and must not be dropped.
+    finished_statuses = {"STATUS_FULL_TIME", "STATUS_FINAL_AET", "STATUS_FINAL_PEN", "STATUS_FINAL"}
+
     results = []
     for event in events:
         comp = event.get("competitions", [{}])[0]
         status = comp.get("status", {}).get("type", {}).get("name", "")
-        if status != "STATUS_FULL_TIME":
+        if status not in finished_statuses:
             continue
 
         competitors = comp.get("competitors", [])
@@ -132,13 +142,25 @@ def _fetch_date(date: datetime.date) -> List[Dict[str, Any]]:
         except (TypeError, ValueError):
             continue
 
+        # Winner: needed for knockout matches decided on penalties, where the
+        # full-time score is level. ESPN flags the shootout winner.
+        if hg != ag:
+            winner = home if hg > ag else away
+        elif home_data.get("winner"):
+            winner = home
+        elif away_data.get("winner"):
+            winner = away
+        else:
+            winner = None
+
         results.append({
             "date": date.isoformat(),
-            "group": _group_for(home, away),
+            "group": _group_for(home, away) if date <= GROUP_STAGE_END else "?",
             "home": home,
             "away": away,
             "home_goals": hg,
             "away_goals": ag,
+            "winner": winner,
         })
 
     return results
@@ -172,6 +194,40 @@ def _fetch_all_results() -> List[Dict[str, Any]]:
 # Module-level population (runs once on import)
 # ---------------------------------------------------------------------------
 WC2026_RESULTS: List[Dict[str, Any]] = _fetch_all_results()
+_LAST_FETCH: float = time.time()
+_REFRESH_TTL = 3600  # seconds
+
+
+def refresh_results() -> None:
+    """
+    Re-fetch the last few tournament days if the cache is older than the TTL.
+    Mutates WC2026_RESULTS in place so existing imports stay valid.
+    """
+    global _LAST_FETCH
+    if time.time() - _LAST_FETCH < _REFRESH_TTL:
+        return
+
+    today = datetime.date.today()
+    if today < _TOURNAMENT_START:
+        return
+
+    # Matches finish at most ~2 days before they appear missing; re-fetch a
+    # 3-day window ending today and replace those dates in the cache.
+    window_start = max(_TOURNAMENT_START, today - datetime.timedelta(days=2))
+    fresh: List[Dict[str, Any]] = []
+    date = window_start
+    while date <= today:
+        fresh.extend(_fetch_date(date))
+        date += datetime.timedelta(days=1)
+
+    _LAST_FETCH = time.time()
+    if not fresh:
+        return
+
+    window_dates = {d["date"] for d in fresh}
+    kept = [m for m in WC2026_RESULTS if m["date"] not in window_dates]
+    WC2026_RESULTS[:] = kept + fresh
+    logger.info(f"Live results refreshed: {len(fresh)} matches in window, {len(WC2026_RESULTS)} total")
 
 # ---------------------------------------------------------------------------
 # ELO helpers
