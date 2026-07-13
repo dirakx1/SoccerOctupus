@@ -101,10 +101,14 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 8. The frontend calls `attemptEmailAddressVerification({ code })`.
 9. When Clerk returns `complete`, `activateSessionAndHydrateAuth()`:
    - calls `setActive({ session })`
-   - waits for a usable Clerk token
+   - waits for a usable token from that exact Clerk session
    - calls `/api/me` with `Authorization: Bearer <token>`
    - stores `signedIn`, `isAdmin`, and user details in local auth state
    - redirects to `/`
+10. If Clerk activates the session before the token or `/api/me` is ready, the
+    frontend enters a pending auth state. The application retries normal auth
+    hydration without repeating sign-up or verification and shows a dedicated
+    retry action if account loading still fails.
 
 ## Social OAuth Workflow
 
@@ -113,7 +117,7 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 2. The frontend calls `authenticateWithRedirect()` with:
    - `strategy: 'oauth_google'` or `oauth_x`
    - `redirectUrl: '/sso-callback'`
-   - `redirectUrlComplete: '/'`
+   - `redirectUrlComplete` set to the stored post-auth destination or `/`
 3. Clerk redirects the browser through the provider's OAuth consent flow.
 4. The provider returns to `/sso-callback`.
 5. `SSOCallbackView.vue` renders `AuthenticateWithRedirectCallback`, which lets
@@ -154,14 +158,22 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
    - `backupCodeEnabled`
    - `twoFactorEnabled`
 4. To enable authenticator-app 2FA, the component calls `user.createTOTP()`,
-   displays the Clerk-provided secret and URI, and asks for an authenticator code.
+   renders a QR code, offers the secret as an optional setup key, and asks for an
+   authenticator code. The raw provisioning URI is never displayed.
 5. On verification, it calls `user.verifyTOTP({ code })` and then
    `user.createBackupCode()` when backup codes are not returned by TOTP verify.
 6. Backup codes are shown once with copy/download actions and cleared from
    component state after the user confirms they saved them.
 7. Regeneration calls `user.createBackupCode()` and again shows codes once.
-8. Disabling authenticator-app 2FA calls `user.disableTOTP()` and relies on
-   Clerk for any reverification or security errors.
+   The user is warned that this replaces all existing codes, and multi-factor
+   reverification is required before generation.
+8. Empty or malformed backup-code responses are never reported as successful.
+9. Disabling authenticator-app 2FA calls `user.disableTOTP()` through the shared
+   multi-factor reverification workflow.
+10. These Clerk mutations use verify-first mode: reverification completes before
+    the mutation is invoked, so a committed operation is never replayed.
+    Cancellation, overlapping requests, expired windows, and late SDK responses
+    settle the active workflow instead of leaving it pending.
 
 ## Password Reset Workflow
 

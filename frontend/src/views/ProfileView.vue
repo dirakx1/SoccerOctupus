@@ -302,9 +302,17 @@ async function updateProfile() {
       firstName: profileForm.firstName,
       lastName: profileForm.lastName,
     })
-    await user.value.reload()
-    await refreshLocalUser()
     profileSuccess.value = 'Profile updated.'
+
+    try {
+      await user.value.reload()
+      await refreshLocalUser()
+    } catch (err) {
+      profileError.value = clerkError(
+        err,
+        'Your changes were saved, but the latest profile could not be refreshed. Reload the page to confirm them.',
+      )
+    }
   } catch (err) {
     profileError.value = clerkError(err, 'Unable to update your profile. Please try again.')
   } finally {

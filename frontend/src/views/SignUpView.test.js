@@ -75,6 +75,24 @@ describe('SignUpView', () => {
       status: 'complete',
       createdSessionId: 'sess_123',
     })
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue(undefined)
+  })
+
+  it('does not repeat account creation when Clerk activated the session before hydration finished', async () => {
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue({ hydrated: false })
+    const wrapper = mount(SignUpView, {
+      global: { stubs: ['RouterLink'] },
+    })
+
+    await wrapper.find('input[autocomplete="email"]').setValue('alex@example.com')
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('input[autocomplete="new-password"]').setValue('longenough')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.signUp.value.create).toHaveBeenCalledTimes(1)
+    expect(routerPush).toHaveBeenCalledWith('/')
+    expect(wrapper.text()).not.toContain('Unable to create your account')
   })
 
   it('requires username and sends it to Clerk on sign-up', async () => {

@@ -52,6 +52,23 @@ describe('SignInView', () => {
       createdSessionId: 'sess_123',
     })
     clerkState.signIn.value.authenticateWithRedirect.mockResolvedValue(undefined)
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue(undefined)
+  })
+
+  it('does not repeat sign-in when Clerk activated the session before hydration finished', async () => {
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue({ hydrated: false })
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('input[autocomplete="current-password"]').setValue('secret-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.signIn.value.create).toHaveBeenCalledTimes(1)
+    expect(routerPush).toHaveBeenCalledWith('/')
+    expect(wrapper.text()).not.toContain('Unable to sign in')
   })
 
   it('signs in with an email-or-username identifier', async () => {

@@ -52,6 +52,22 @@ describe('CompleteUsernameView', () => {
       status: 'complete',
       createdSessionId: 'sess_complete',
     })
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue(undefined)
+  })
+
+  it('does not repeat the username mutation when Clerk activated the session before hydration finished', async () => {
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue({ hydrated: false })
+    const wrapper = mount(CompleteUsernameView, {
+      global: { stubs: ['RouterLink'] },
+    })
+
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.signUp.value.update).toHaveBeenCalledTimes(1)
+    expect(routerPush).toHaveBeenCalledWith('/')
+    expect(wrapper.text()).not.toContain('Unable to save username')
   })
 
   it('updates the pending Clerk sign-up username and activates the session', async () => {

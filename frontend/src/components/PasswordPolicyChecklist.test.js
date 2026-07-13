@@ -20,13 +20,12 @@ describe('PasswordPolicyChecklist', () => {
       props: { password: 'short' },
     })
 
-    expect(wrapper.text()).toContain('Default policy')
     expect(wrapper.text()).toContain('At least 8 characters')
     expect(wrapper.text()).toContain('No more than 72 characters')
     expect(wrapper.text()).toContain('Final password checks run when you submit')
   })
 
-  it('renders dynamic Clerk min, max, and character-class rules', () => {
+  it('renders dynamic Clerk min, max, and character-class rules', async () => {
     const wrapper = mount(PasswordPolicyChecklist, {
       props: {
         password: 'Abcdef1!',
@@ -45,11 +44,21 @@ describe('PasswordPolicyChecklist', () => {
       },
     })
 
-    expect(wrapper.text()).toContain('Current policy')
     expect(wrapper.text()).toContain('At least 1 lowercase character')
     expect(wrapper.text()).toContain('At least 1 uppercase character')
     expect(wrapper.text()).toContain('At least 1 number')
     expect(wrapper.text()).toContain('At least 1 special character from !@#')
+    const specialRule = wrapper.findAll('li').find((rule) =>
+      rule.text().includes('At least 1 special character'),
+    )
+    expect(specialRule.classes()).toContain('policy-rule-pass')
+
+    await wrapper.setProps({ password: 'Abcdef1$' })
+    await nextTick()
+
+    expect(wrapper.findAll('li').find((rule) =>
+      rule.text().includes('At least 1 special character'),
+    ).classes()).toContain('policy-rule-fail')
   })
 
   it('renders password strength as a colored bar without score text', async () => {

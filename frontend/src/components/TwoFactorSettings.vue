@@ -235,10 +235,15 @@ const confirmingBackupRegeneration = ref(false);
 const loadingAction = ref("");
 const error = ref("");
 const success = ref("");
+const committedTotpEnabled = ref(null);
 
 const canManage = computed(() => props.isLoaded && Boolean(props.user));
 const loading = computed(() => Boolean(loadingAction.value));
-const totpEnabled = computed(() => Boolean(props.user?.totpEnabled));
+const totpEnabled = computed(() =>
+  committedTotpEnabled.value === null
+    ? Boolean(props.user?.totpEnabled)
+    : committedTotpEnabled.value,
+);
 const backupCodesText = computed(() => backupCodes.value.join("\n"));
 
 function clerkError(err, fallback) {
@@ -275,10 +280,19 @@ async function reloadUser() {
   await props.user?.reload?.();
 }
 
+function isAlreadyConnectedError(err) {
+  const message = clerkError(err, "").toLowerCase();
+  return (
+    message.includes("already") &&
+    (message.includes("connect") || message.includes("enabled"))
+  );
+}
+
 async function runProtected(operation, message, options = {}) {
   if (!props.reverification?.runWithReverification) return operation();
   return props.reverification.runWithReverification(operation, {
     message,
+    retryPolicy: "verify_first",
     title: "Verify it is you",
     ...options,
   });
@@ -299,6 +313,24 @@ async function startSetup() {
     );
     setupCode.value = "";
   } catch (err) {
+    if (isAlreadyConnectedError(err)) {
+      try {
+        await reloadUser();
+        if (props.user?.totpEnabled) {
+          committedTotpEnabled.value = true;
+          setupResource.value = null;
+          error.value =
+            "Authenticator app is already enabled. You can regenerate backup codes below.";
+          return;
+        }
+      } catch (reloadErr) {
+        error.value = clerkError(
+          reloadErr,
+          "Authenticator setup may already be enabled, but your account state could not be refreshed.",
+        );
+        return;
+      }
+    }
     error.value = clerkError(err, "Unable to start authenticator setup.");
   } finally {
     loadingAction.value = "";
@@ -316,12 +348,40 @@ async function verifySetup() {
       () => props.user.verifyTOTP({ code: setupCode.value }),
       "Enter your password to continue with authenticator setup.",
     );
-    await showBackupCodes(verified);
+    committedTotpEnabled.value = true;
     setupResource.value = null;
     setupCode.value = "";
     showManualSetup.value = false;
-    success.value = "Authenticator app enabled.";
-    await reloadUser();
+
+    let backupError = null;
+    try {
+      await showBackupCodes(verified);
+    } catch (err) {
+      backupError = clerkError(
+        err,
+        "Backup codes could not be generated. You can regenerate them below.",
+      );
+    }
+
+    let refreshError = null;
+    try {
+      await reloadUser();
+    } catch (err) {
+      refreshError = `Authenticator app enabled, but your account state could not be refreshed. ${clerkError(
+        err,
+        "Reload the page to confirm the current state.",
+      )}`;
+    }
+
+    if (backupError && refreshError) {
+      error.value = `${backupError} ${refreshError}`;
+    } else if (backupError) {
+      error.value = `Authenticator app enabled, but ${backupError.toLowerCase()}`;
+    } else if (refreshError) {
+      error.value = refreshError;
+    } else {
+      success.value = "Authenticator app enabled.";
+    }
   } catch (err) {
     error.value = clerkError(err, "Unable to verify this authenticator code.");
   } finally {
@@ -330,6 +390,12 @@ async function verifySetup() {
 }
 
 async function showBackupCodes(source = null, options = {}) {
+  if (source?.backupCodes?.length) {
+    backupCodes.value = source.backupCodes;
+    backupSaved.value = false;
+    return;
+  }
+
   const generated = props.user?.createBackupCode
     ? await runProtected(
         () => props.user.createBackupCode(),
@@ -337,9 +403,12 @@ async function showBackupCodes(source = null, options = {}) {
         options,
       )
     : null;
-  backupCodes.value = generated?.codes?.length
-    ? generated.codes
-    : source?.backupCodes || [];
+  if (!generated?.codes?.length) {
+    throw new Error(
+      "Clerk did not return new backup codes. Existing codes may have been replaced; generate another set before leaving this page.",
+    );
+  }
+  backupCodes.value = generated.codes;
   backupSaved.value = false;
 }
 
@@ -353,8 +422,16 @@ async function regenerateBackupCodes() {
   try {
     await showBackupCodes(null, { level: "multi_factor" });
     confirmingBackupRegeneration.value = false;
-    success.value = "New backup codes generated.";
-    await reloadUser();
+    committedTotpEnabled.value = true;
+    try {
+      await reloadUser();
+      success.value = "New backup codes generated.";
+    } catch (err) {
+      error.value = `New backup codes were generated, but your account state could not be refreshed. ${clerkError(
+        err,
+        "Reload the page to confirm the current state.",
+      )}`;
+    }
   } catch (err) {
     error.value = clerkError(err, "Unable to generate backup codes.");
   } finally {
@@ -374,12 +451,20 @@ async function disableAuthenticator() {
       "Enter your password to disable authenticator app sign-in.",
       { level: "multi_factor" },
     );
+    committedTotpEnabled.value = false;
     setupResource.value = null;
     setupCode.value = "";
     showManualSetup.value = false;
     clearBackupCodes();
-    success.value = "Authenticator app disabled.";
-    await reloadUser();
+    try {
+      await reloadUser();
+      success.value = "Authenticator app disabled.";
+    } catch (err) {
+      error.value = `Authenticator app disabled, but your account state could not be refreshed. ${clerkError(
+        err,
+        "Reload the page to confirm the current state.",
+      )}`;
+    }
   } catch (err) {
     error.value = clerkError(err, "Unable to disable authenticator app.");
   } finally {

@@ -37,7 +37,10 @@ function hasNumber(value) {
   return /\d/.test(value)
 }
 
-function hasSpecial(value) {
+function hasSpecial(value, allowedSpecialCharacters) {
+  if (typeof allowedSpecialCharacters === 'string' && allowedSpecialCharacters.length > 0) {
+    return Array.from(value).some((character) => allowedSpecialCharacters.includes(character))
+  }
   return /[^A-Za-z0-9]/.test(value)
 }
 
@@ -143,7 +146,11 @@ export function usePasswordPolicy({ password, validator, clerk } = {}) {
       const suffix = policy.allowed_special_characters
         ? ` from ${policy.allowed_special_characters}`
         : ''
-      required.push(rule('require_special_char', `At least 1 special character${suffix}`, hasSpecial(value)))
+      required.push(rule(
+        'require_special_char',
+        `At least 1 special character${suffix}`,
+        hasSpecial(value, policy.allowed_special_characters),
+      ))
     }
 
     if (policy.show_zxcvbn) {

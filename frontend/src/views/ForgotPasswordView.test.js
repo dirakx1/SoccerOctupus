@@ -44,6 +44,26 @@ describe('ForgotPasswordView', () => {
       status: 'complete',
       createdSessionId: 'sess_reset',
     })
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue(undefined)
+  })
+
+  it('does not reuse a reset code when Clerk activated the session before hydration finished', async () => {
+    clerkState.activateSessionAndHydrateAuth.mockResolvedValue({ hydrated: false })
+    const wrapper = mount(ForgotPasswordView, {
+      global: { stubs: ['RouterLink'] },
+    })
+
+    await wrapper.find('input[autocomplete="email"]').setValue('alex@example.com')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+    await wrapper.find('input[autocomplete="one-time-code"]').setValue('123456')
+    await wrapper.find('input[autocomplete="new-password"]').setValue('longenough')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.signIn.value.attemptFirstFactor).toHaveBeenCalledTimes(1)
+    expect(routerPush).toHaveBeenCalledWith('/')
+    expect(wrapper.text()).not.toContain('Unable to reset')
   })
 
   it('renders password policy on reset and submits the new password to Clerk', async () => {

@@ -1,4 +1,4 @@
-import { computed, ref, unref } from 'vue'
+import { computed, getCurrentScope, onScopeDispose, ref, shallowRef, unref } from 'vue'
 
 function valueOf(source) {
   return typeof source === 'function' ? source() : unref(source)
@@ -27,7 +27,8 @@ export function useReverification({ session } = {}) {
   const code = ref('')
   const target = ref('')
   const availableSecondFactors = ref([])
-  const pending = ref(null)
+  const activeRequest = shallowRef(null)
+  let requestId = 0
 
   const usesVerificationCode = computed(() => ['email_code', 'phone_code', 'totp', 'backup_code'].includes(strategy.value))
   const verificationCodeLabel = computed(() => {
@@ -92,26 +93,40 @@ export function useReverification({ session } = {}) {
     error.value = ''
   }
 
+  function isCurrent(request) {
+    return activeRequest.value === request && !request.cancelled
+  }
+
   function close() {
     isOpen.value = false
     loading.value = false
     resetInputs()
-    pending.value = null
+    activeRequest.value = null
   }
 
-  function settle(err = null) {
-    const active = pending.value
-    pending.value = null
+  function settle(request, err = null) {
+    if (!request || request.settled) return
+    request.settled = true
     if (err) {
-      active?.reject(err)
+      request.reject(err)
     } else {
-      active?.resolve()
+      request.resolve()
     }
   }
 
-  async function continueVerification(verification) {
+  function rejectActiveRequest(message) {
+    const request = activeRequest.value
+    if (!request) return
+    request.cancelled = true
+    settle(request, new Error(message))
+    activeRequest.value = null
+  }
+
+  async function continueVerification(verification, request) {
+    if (!isCurrent(request)) return
+
     if (verification?.status === 'complete') {
-      settle()
+      settle(request)
       close()
       return
     }
@@ -139,6 +154,7 @@ export function useReverification({ session } = {}) {
           phoneNumberId: factor.phoneNumberId,
         })
       }
+      if (!isCurrent(request)) return
       return
     }
 
@@ -163,6 +179,7 @@ export function useReverification({ session } = {}) {
         ? { strategy: factor.strategy, emailAddressId: factor.emailAddressId }
         : { strategy: factor.strategy, phoneNumberId: factor.phoneNumberId, channel: factor.channel }
       await currentSession().prepareFirstFactorVerification(prepareParams)
+      if (!isCurrent(request)) return
       return
     }
 
@@ -180,6 +197,7 @@ export function useReverification({ session } = {}) {
       throw new Error('Please sign in again before changing account security settings.')
     }
 
+    rejectActiveRequest('Verification was superseded by a newer request.')
     title.value = options.title || 'Verify it is you'
     message.value = options.message || 'Enter your password to continue.'
     resetInputs()
@@ -187,28 +205,38 @@ export function useReverification({ session } = {}) {
     loading.value = true
 
     return new Promise((resolve, reject) => {
-      pending.value = { resolve, reject }
-      activeSession.startVerification({ level: options.level || 'first_factor' })
-        .then(continueVerification)
+      const request = {
+        id: ++requestId,
+        resolve,
+        reject,
+        settled: false,
+        cancelled: false,
+      }
+      activeRequest.value = request
+      Promise.resolve()
+        .then(() => activeSession.startVerification({ level: options.level || 'first_factor' }))
+        .then((verification) => continueVerification(verification, request))
         .catch((err) => {
-          settle(err)
+          if (!isCurrent(request)) return
+          settle(request, err)
           close()
         })
         .finally(() => {
-          loading.value = false
+          if (isCurrent(request)) loading.value = false
         })
     })
   }
 
   async function submit() {
     const activeSession = currentSession()
-    if (!activeSession) return
+    const request = activeRequest.value
+    if (!activeSession || !isCurrent(request)) return
 
     loading.value = true
     error.value = ''
 
+    let verification
     try {
-      let verification
       if (strategy.value === 'passkey') {
         verification = await activeSession.verifyWithPasskey()
       } else if (verificationStage.value === 'second_factor') {
@@ -222,11 +250,21 @@ export function useReverification({ session } = {}) {
           : { strategy: 'password', password: password.value }
         verification = await activeSession.attemptFirstFactorVerification(attempt)
       }
-      await continueVerification(verification)
     } catch (err) {
-      error.value = clerkError(err, 'Unable to verify. Please try again.')
+      if (isCurrent(request)) error.value = clerkError(err, 'Unable to verify. Please try again.')
+      if (isCurrent(request)) loading.value = false
+      return
+    }
+
+    try {
+      await continueVerification(verification, request)
+    } catch (err) {
+      if (isCurrent(request)) {
+        settle(request, err)
+        close()
+      }
     } finally {
-      loading.value = false
+      if (isCurrent(request)) loading.value = false
     }
   }
 
@@ -240,19 +278,56 @@ export function useReverification({ session } = {}) {
   }
 
   function cancel() {
-    const err = new Error('Verification was cancelled.')
-    settle(err)
+    const request = activeRequest.value
+    if (request) {
+      request.cancelled = true
+      settle(request, new Error('Verification was cancelled.'))
+    }
     close()
   }
 
   async function runWithReverification(operation, options = {}) {
-    try {
-      return await operation()
-    } catch (err) {
-      if (!isReverificationError(err)) throw err
+    const maxReverificationAttempts = Number.isInteger(options.maxReverificationAttempts)
+      ? Math.max(0, options.maxReverificationAttempts)
+      : 2
+    const retryPolicy = typeof options.retryPolicy === 'string'
+      ? { mode: options.retryPolicy }
+      : (options.retryPolicy || { mode: 'reject' })
+
+    if (retryPolicy.mode === 'verify_first') {
       await start(options)
       return operation()
     }
+    let reverificationAttempts = 0
+    let operationError = null
+
+    while (true) {
+      try {
+        if (retryPolicy.mode === 'reconcile' && reverificationAttempts > 0) {
+          return await retryPolicy.reconcile({
+            attempt: reverificationAttempts,
+            operationError,
+          })
+        }
+        return await operation()
+      } catch (err) {
+        if (!isReverificationError(err) || reverificationAttempts >= maxReverificationAttempts) throw err
+        if (retryPolicy.mode === 'reconcile' && typeof retryPolicy.reconcile !== 'function') {
+          throw new TypeError('A reconcile function is required for the reconcile retry policy.')
+        }
+        operationError = err
+        reverificationAttempts += 1
+        await start(options)
+        if (retryPolicy.mode === 'reject') throw operationError
+      }
+    }
+  }
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      rejectActiveRequest('Verification was cancelled because the security screen was closed.')
+      close()
+    })
   }
 
   return {

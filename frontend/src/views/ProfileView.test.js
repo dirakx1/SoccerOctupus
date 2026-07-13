@@ -219,6 +219,26 @@ describe('ProfileView', () => {
     expect(wrapper.text()).toContain('Enable authenticator app')
   })
 
+  it('keeps profile-update success truthful when the following reload fails', async () => {
+    clerkState.user.value.update.mockResolvedValue({})
+    clerkState.user.value.reload.mockRejectedValue(new Error('Network unavailable'))
+    const wrapper = mount(ProfileView)
+    await flushPromises()
+
+    const profileForm = wrapper.findAll('form')[0]
+    await profileForm.find('input[autocomplete="given-name"]').setValue('Alexandra')
+    await profileForm.trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.user.value.update).toHaveBeenCalledWith({
+      firstName: 'Alexandra',
+      lastName: 'Morgan',
+    })
+    expect(wrapper.text()).toContain('Profile updated.')
+    expect(wrapper.text()).toContain('Network unavailable')
+    expect(api.get).not.toHaveBeenCalledWith('/api/me')
+  })
+
   it('blocks profile password updates that fail policy', async () => {
     const wrapper = mount(ProfileView)
     await flushPromises()

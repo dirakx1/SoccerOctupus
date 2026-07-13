@@ -55,6 +55,15 @@
       @action="openShellBillingRecovery"
     />
     <main class="content">
+      <section v-if="showAuthRecovery" class="auth-recovery" aria-live="polite">
+        <LoaderCircle v-if="authRefreshing" :size="28" class="spin" aria-hidden="true" />
+        <h1>Finishing sign-in</h1>
+        <p v-if="authRecoveryError">{{ authRecoveryError }}</p>
+        <p v-else>Loading your account securely.</p>
+        <button v-if="authRecoveryError" class="auth-retry" type="button" @click="recoverAuthState">
+          Try again
+        </button>
+      </section>
       <router-view v-if="canRenderRoute" />
     </main>
     <footer class="footer">
@@ -71,13 +80,14 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useAuth, useClerk } from '@clerk/vue'
+import { LoaderCircle } from '@lucide/vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import BillingStatusNotice from './components/BillingStatusNotice.vue'
 import { useBillingStatus } from './composables/useBillingStatus'
 import { useCurrentUserProfile } from './composables/useCurrentUserProfile'
 import { installAuthInterceptor } from './lib/api'
-import { clearAuthState, refreshAuthState, useAuthState } from './lib/auth'
+import { clearAuthState, refreshAuthState, setAuthPendingState, useAuthState } from './lib/auth'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from './lib/postAuthRedirect'
 import CookieBanner from './components/CookieBanner.vue'
 
@@ -92,6 +102,8 @@ const router = useRouter()
 const route = useRoute()
 const userMenuOpen = ref(false)
 const mobileMenuOpen = ref(false)
+const authRecoveryError = ref('')
+const authRefreshing = ref(false)
 
 function toggleMobileMenu() {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -124,6 +136,9 @@ const canRenderRoute = computed(() => {
   if (!current.meta.requiresAuth) return true
   return auth.state.loaded && auth.state.signedIn && (!current.meta.admin || auth.state.isAdmin)
 })
+const showAuthRecovery = computed(() => (
+  clerkLoaded.value && clerkSignedIn.value && !auth.state.loaded
+))
 
 function redirectAfterAuthRefresh() {
   const current = router.currentRoute.value
@@ -147,6 +162,22 @@ function redirectAfterAuthRefresh() {
 function redirectAfterSignOut() {
   if (router.currentRoute.value.meta.requiresAuth) {
     router.replace('/sign-in')
+  }
+}
+
+async function recoverAuthState() {
+  if (authRefreshing.value || !clerkSignedIn.value) return
+
+  authRefreshing.value = true
+  authRecoveryError.value = ''
+  try {
+    await refreshAuthState({ force: true })
+    redirectAfterAuthRefresh()
+  } catch {
+    authRecoveryError.value = 'Your session is active, but your account could not be loaded. Check your connection and try again.'
+    setAuthPendingState()
+  } finally {
+    authRefreshing.value = false
   }
 }
 
@@ -175,22 +206,23 @@ watch(
 )
 
 watch(
-  [clerkLoaded, clerkSignedIn],
-  async ([loaded, signedIn]) => {
+  [clerkLoaded, clerkSignedIn, () => auth.state.loaded],
+  async ([loaded, signedIn, authLoaded]) => {
     if (!loaded) return
 
     if (!signedIn) {
+      authRecoveryError.value = ''
       clearAuthState()
       redirectAfterSignOut()
       return
     }
 
-    try {
-      await refreshAuthState({ force: !auth.state.signedIn })
-      redirectAfterAuthRefresh()
-    } catch {
-      redirectAfterSignOut()
+    if (!authLoaded) {
+      if (!authRecoveryError.value) await recoverAuthState()
+      return
     }
+
+    redirectAfterAuthRefresh()
   },
   { immediate: true }
 )
@@ -303,6 +335,48 @@ function closeUserMenu() {
 }
 
 .content { flex: 1; padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+.auth-recovery {
+  align-items: center;
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 48px auto;
+  max-width: 520px;
+  padding: 28px;
+  text-align: center;
+}
+
+.auth-recovery h1 {
+  color: #e0e0e0;
+  font-size: 22px;
+}
+
+.auth-recovery p {
+  color: #a0aec0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.auth-retry {
+  background: #e2b714;
+  border: 0;
+  border-radius: 8px;
+  color: #0a0a1a;
+  cursor: pointer;
+  font-weight: 700;
+  min-height: 42px;
+  padding: 10px 18px;
+}
+
+.spin { animation: spin 0.8s linear infinite; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 .shell-billing-notice {
   border-left: 0;
