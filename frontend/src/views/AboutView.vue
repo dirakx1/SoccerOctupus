@@ -15,7 +15,7 @@
     <section>
       <h2>Tech Stack</h2>
       <ul>
-        <li><strong>Frontend:</strong> Vue 3 + Vite, Vue Router, Clerk auth</li>
+        <li><strong>Frontend:</strong> Vue 3 + Vite, Vue Router, account authentication</li>
         <li><strong>Backend:</strong> Python 3.11 / 3.12, Flask 3, SQLAlchemy 2, Alembic</li>
         <li><strong>Inference:</strong> OpenAI API (GPT-4o) — aggregator narrative synthesis</li>
         <li><strong>Serving:</strong> Gunicorn (sync workers, 240 s timeout) behind Nginx</li>

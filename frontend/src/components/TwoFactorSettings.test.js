@@ -144,7 +144,7 @@ describe('TwoFactorSettings', () => {
     expect(user.createBackupCode).not.toHaveBeenCalled()
   })
 
-  it('does not report backup-code regeneration as successful when Clerk returns no codes', async () => {
+  it('does not report backup-code regeneration as successful when authentication returns no codes', async () => {
     const user = userFixture({
       totpEnabled: true,
       backupCodeEnabled: true,
@@ -158,7 +158,7 @@ describe('TwoFactorSettings', () => {
     await findButton(wrapper, 'Generate new codes').trigger('click')
     await flushPromises()
 
-    expect(wrapper.text()).toContain('did not return new backup codes')
+    expect(wrapper.text()).toContain('New backup codes were not returned')
     expect(wrapper.text()).toContain('Existing codes may have been replaced')
     expect(wrapper.text()).not.toContain('New backup codes generated.')
     expect(wrapper.find('[data-testid="backup-regeneration-confirmation"]').exists()).toBe(true)

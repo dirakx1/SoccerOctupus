@@ -26,7 +26,7 @@
 
       <form v-else class="auth-form" @submit.prevent="resetPassword">
         <p class="verification-copy">
-          Enter the verification code Clerk sent to {{ form.email }} and choose a new password.
+          Enter the verification code sent to {{ form.email }} and choose a new password.
         </p>
 
         <label class="field">
@@ -84,6 +84,7 @@ import { useClerk, useSignIn } from '@clerk/vue'
 import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
 import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
+import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
 const clerk = useClerk()
@@ -104,7 +105,7 @@ const passwordPolicy = usePasswordPolicy({
 })
 
 function authError(err) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || 'Unable to reset your password. Please try again.'
+  return userFacingError(err, 'Unable to reset your password. Please try again.')
 }
 
 async function sendResetCode() {
@@ -153,9 +154,7 @@ async function resetPassword() {
     }
 
     if (result.status !== 'complete' || !result.createdSessionId) {
-      error.value = result.status
-        ? `Unable to complete password reset from Clerk status: ${result.status}.`
-        : 'Unable to complete password reset. Clerk did not return a session.'
+      error.value = 'Unable to complete password reset. Please request a new code and try again.'
       return
     }
 

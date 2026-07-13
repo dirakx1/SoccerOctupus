@@ -122,6 +122,12 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 4. The provider returns to `/sso-callback`.
 5. `SSOCallbackView.vue` renders `AuthenticateWithRedirectCallback`, which lets
    Clerk finish the OAuth flow, activate the session, and return to `/`.
+   If the OAuth sign-in requires another factor, the callback routes to
+   `/sign-in?resume=oauth` through `firstFactorUrl` or `secondFactorUrl` instead
+   of opening provider-hosted UI. The query marker limits automatic resource
+   resumption to OAuth callbacks, preventing races with normal password sign-in.
+   `SignInView.vue` resumes with the app's password, authenticator, backup-code,
+   email-code, or phone-code interface.
 6. If Clerk reports an incomplete sign-up because username is required,
    `continueSignUpUrl` sends the browser to `/complete-username`, where the
    custom UI calls `signUp.update({ username })`. Username remains Clerk-owned.

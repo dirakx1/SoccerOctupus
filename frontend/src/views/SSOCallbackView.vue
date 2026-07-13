@@ -11,6 +11,8 @@
         :sign-in-fallback-redirect-url="redirectTarget"
         :sign-up-fallback-redirect-url="redirectTarget"
         continue-sign-up-url="/complete-username"
+        first-factor-url="/sign-in?resume=oauth"
+        second-factor-url="/sign-in?resume=oauth"
         sign-in-url="/sign-in"
         sign-up-url="/sign-up"
       />

@@ -27,7 +27,7 @@
         <div class="table-row">
           <span class="mono">__session, __client*</span>
           <span class="badge necessary">Necessary</span>
-          <span>Clerk authentication — keeps you signed in and identifies your session securely.</span>
+          <span>Authentication — keeps you signed in and identifies your session securely.</span>
           <span>Session / up to 1 year</span>
         </div>
 
@@ -64,10 +64,10 @@
     <section>
       <h2>4. Third-Party Cookies</h2>
       <p>
-        Authentication is provided by <strong>Clerk</strong> (clerk.com), which may set
-        its own cookies as part of the sign-in flow. These cookies are strictly necessary
-        to operate the service. Clerk's own cookie and privacy policy is available at
-        <a href="https://clerk.com/privacy" target="_blank" rel="noopener">clerk.com/privacy</a>.
+        Authentication is provided by an external authentication service, which may set
+        cookies as part of the sign-in flow. These cookies are strictly necessary
+        to operate the service. Contact us if you need more information about the
+        authentication service's privacy practices.
       </p>
     </section>
 

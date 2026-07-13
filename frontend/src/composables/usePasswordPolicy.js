@@ -1,4 +1,5 @@
 import { computed, ref, unref, watch } from 'vue'
+import { userFacingError } from '../lib/userFacingError'
 
 const FALLBACK_SETTINGS = {
   allowed_special_characters: '',
@@ -109,7 +110,7 @@ export function usePasswordPolicy({ password, validator, clerk } = {}) {
         },
       })
     } catch (err) {
-      validationError.value = err?.message || 'Password validation is unavailable.'
+      validationError.value = userFacingError(err, 'Password validation is unavailable.')
     }
   }
 

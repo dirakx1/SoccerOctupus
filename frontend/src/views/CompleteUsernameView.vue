@@ -40,6 +40,7 @@ import { useClerk, useSignUp } from '@clerk/vue'
 
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect } from '../lib/postAuthRedirect'
+import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
 const clerk = useClerk()
@@ -69,12 +70,12 @@ watch(
 )
 
 function authError(err) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || 'Unable to save username. Please try again.'
+  return userFacingError(err, 'Unable to save username. Please try again.')
 }
 
 async function completeSession(result) {
   if (!setActive.value || !result.createdSessionId) {
-    error.value = 'Username saved, but Clerk did not return a session. Please sign in.'
+    error.value = 'Username saved, but your session could not be started. Please sign in.'
     return
   }
 
@@ -102,9 +103,7 @@ async function handleSignUpResult(result) {
     return
   }
 
-  error.value = result.status
-    ? `Unable to complete sign-up from Clerk status: ${result.status}.`
-    : 'Unable to complete sign-up. Clerk did not return a sign-up status.'
+  error.value = 'Unable to complete sign-up. Please try again.'
 }
 
 async function completeUsername() {

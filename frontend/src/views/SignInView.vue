@@ -6,24 +6,28 @@
       <p class="subtitle">Access the prediction workspace and admin settings.</p>
 
       <form v-if="step === 'credentials'" class="auth-form" @submit.prevent="submit">
-        <SocialAuthButtons
-          :disabled="loading || !isLoaded"
-          :loading-provider="loadingStrategy"
-          @select="signInWithProvider"
-        />
-
-        <div class="auth-divider"><span>or use password</span></div>
-
-        <label class="field">
-          <span>Email or username</span>
-          <input
-            v-model.trim="form.identifier"
-            type="text"
-            autocomplete="username"
-            required
-            placeholder="you@example.com or username"
+        <template v-if="!resumingPasswordFirstFactor">
+          <SocialAuthButtons
+            :disabled="loading || !isLoaded"
+            :loading-provider="loadingStrategy"
+            @select="signInWithProvider"
           />
-        </label>
+
+          <div class="auth-divider"><span>or use password</span></div>
+
+          <label class="field">
+            <span>Email or username</span>
+            <input
+              v-model.trim="form.identifier"
+              type="text"
+              autocomplete="username"
+              required
+              placeholder="you@example.com or username"
+            />
+          </label>
+        </template>
+
+        <p v-else class="verification-copy">Enter your password to continue signing in.</p>
 
         <label class="field">
           <span>Password</span>
@@ -36,12 +40,12 @@
           />
         </label>
 
-        <router-link class="forgot-link" to="/forgot-password">Forgot password?</router-link>
+        <router-link v-if="!resumingPasswordFirstFactor" class="forgot-link" to="/forgot-password">Forgot password?</router-link>
 
         <p v-if="error" class="error-box">{{ error }}</p>
 
         <button class="btn-primary" :disabled="!canSubmit">
-          {{ loading ? 'Signing in...' : 'Sign in' }}
+          {{ loading ? 'Signing in...' : (resumingPasswordFirstFactor ? 'Continue' : 'Sign in') }}
         </button>
       </form>
 
@@ -100,15 +104,17 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useClerk, useSignIn } from '@clerk/vue'
 
 import SocialAuthButtons from '../components/SocialAuthButtons.vue'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
+import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
+const route = useRoute()
 const clerk = useClerk()
 const { isLoaded, signIn, setActive } = useSignIn()
 
@@ -116,6 +122,7 @@ const loading = ref(false)
 const loadingStrategy = ref('')
 const error = ref('')
 const step = ref('credentials')
+const resumingPasswordFirstFactor = ref(false)
 const verificationReason = ref('')
 const verificationStage = ref('')
 const verificationStrategy = ref('')
@@ -126,12 +133,19 @@ const form = reactive({
   password: '',
   code: '',
 })
+let resumedSignIn = null
 
 const codeStrategies = ['email_code', 'phone_code']
 const supportedSecondFactorStrategies = ['totp', 'email_code', 'phone_code', 'backup_code']
 
 const canResendCode = computed(() => codeStrategies.includes(verificationStrategy.value))
-const canSubmit = computed(() => isLoaded.value && !loading.value && !loadingStrategy.value && Boolean(form.identifier && form.password))
+const canSubmit = computed(() => (
+  isLoaded.value
+  && !loading.value
+  && !loadingStrategy.value
+  && Boolean(form.password)
+  && (resumingPasswordFirstFactor.value || Boolean(form.identifier))
+))
 const codeInputMode = computed(() => verificationStrategy.value === 'backup_code' ? 'text' : 'numeric')
 const verificationLabel = computed(() => verificationStrategy.value === 'backup_code' ? 'Backup code' : 'Verification code')
 const verificationPlaceholder = computed(() => verificationStrategy.value === 'backup_code' ? 'abcd-1234' : '123456')
@@ -147,10 +161,10 @@ const secondFactorSwitchLabel = computed(() => verificationStrategy.value === 't
 const verificationCopy = computed(() => {
   if (verificationReason.value === 'client_trust') {
     if (verificationStrategy.value === 'phone_code') {
-      return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || 'your phone'}.`
+      return `This device needs one more verification. Enter the code sent to ${verificationTarget.value || 'your phone'}.`
     }
 
-    return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || form.identifier}.`
+    return `This device needs one more verification. Enter the code sent to ${verificationTarget.value || form.identifier}.`
   }
 
   if (verificationStrategy.value === 'totp') {
@@ -162,14 +176,14 @@ const verificationCopy = computed(() => {
   }
 
   if (verificationStrategy.value === 'phone_code') {
-    return `Enter the verification code Clerk sent to ${verificationTarget.value || 'your phone'}.`
+    return `Enter the verification code sent to ${verificationTarget.value || 'your phone'}.`
   }
 
-  return `Enter the verification code Clerk sent to ${verificationTarget.value || form.identifier}.`
+  return `Enter the verification code sent to ${verificationTarget.value || form.identifier}.`
 })
 
 function authError(err) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || 'Unable to sign in. Check your details and try again.'
+  return userFacingError(err, 'Unable to sign in. Check your details and try again.')
 }
 
 function findFactor(factors = [], strategies = []) {
@@ -327,11 +341,45 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
     return false
   }
 
-  error.value = currentSignIn?.status
-    ? `Unable to complete sign-in from Clerk status: ${currentSignIn.status}.`
-    : 'Unable to complete sign-in. Clerk did not return a sign-in status.'
+  error.value = 'Unable to complete sign-in. Please try again.'
   return false
 }
+
+async function resumePendingSignIn() {
+  if (route.query.resume !== 'oauth') return
+  if (!isLoaded.value || !signIn.value || resumedSignIn === signIn.value) return
+
+  if (!['needs_first_factor', 'needs_second_factor', 'needs_client_trust'].includes(signIn.value.status)) return
+
+  resumedSignIn = signIn.value
+  loading.value = true
+  error.value = ''
+
+  try {
+    if (signIn.value.status === 'needs_first_factor') {
+      const firstFactors = signIn.value.supportedFirstFactors || []
+      const passwordFactor = findFactor(firstFactors, ['password'])
+      const codeFactor = findFactor(firstFactors, codeStrategies)
+
+      if (codeFactor) {
+        await handleSignInResult(signIn.value, true)
+      } else if (passwordFactor) {
+        resumingPasswordFirstFactor.value = true
+        step.value = 'credentials'
+      } else {
+        error.value = unsupportedFactorMessage(firstFactors)
+      }
+    } else {
+      await handleSignInResult(signIn.value)
+    }
+  } catch (err) {
+    error.value = authError(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+watch([isLoaded, () => signIn.value?.status], resumePendingSignIn, { immediate: true })
 
 async function submit() {
   if (!isLoaded.value || !signIn.value || !setActive.value) return
@@ -342,13 +390,20 @@ async function submit() {
   form.code = ''
 
   try {
-    const result = await signIn.value.create({
-      strategy: 'password',
-      identifier: form.identifier,
-      password: form.password,
-    })
+    const wasResumingPasswordFirstFactor = resumingPasswordFirstFactor.value
+    const result = wasResumingPasswordFirstFactor
+      ? await signIn.value.attemptFirstFactor({
+        strategy: 'password',
+        password: form.password,
+      })
+      : await signIn.value.create({
+        strategy: 'password',
+        identifier: form.identifier,
+        password: form.password,
+      })
 
-    await handleSignInResult(result)
+    if (wasResumingPasswordFirstFactor) resumingPasswordFirstFactor.value = false
+    await handleSignInResult(result, wasResumingPasswordFirstFactor)
   } catch (err) {
     error.value = authError(err)
   } finally {

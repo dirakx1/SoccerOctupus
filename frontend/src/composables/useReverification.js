@@ -1,11 +1,12 @@
 import { computed, getCurrentScope, onScopeDispose, ref, shallowRef, unref } from 'vue'
+import { userFacingError } from '../lib/userFacingError'
 
 function valueOf(source) {
   return typeof source === 'function' ? source() : unref(source)
 }
 
 export function clerkError(err, fallback) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || fallback
+  return userFacingError(err, fallback)
 }
 
 export function isReverificationError(err) {

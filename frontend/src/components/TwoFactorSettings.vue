@@ -209,6 +209,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from "vue";
 
+import { userFacingError } from "../lib/userFacingError";
 import AuthenticatorQrCode from "./AuthenticatorQrCode.vue";
 
 const props = defineProps({
@@ -247,13 +248,7 @@ const totpEnabled = computed(() =>
 const backupCodesText = computed(() => backupCodes.value.join("\n"));
 
 function clerkError(err, fallback) {
-  return (
-    err?.response?.data?.error ||
-    err?.errors?.[0]?.longMessage ||
-    err?.errors?.[0]?.message ||
-    err?.message ||
-    fallback
-  );
+  return userFacingError(err, fallback);
 }
 
 function clearBackupCodes() {
@@ -405,7 +400,7 @@ async function showBackupCodes(source = null, options = {}) {
     : null;
   if (!generated?.codes?.length) {
     throw new Error(
-      "Clerk did not return new backup codes. Existing codes may have been replaced; generate another set before leaving this page.",
+      "New backup codes were not returned. Existing codes may have been replaced; generate another set before leaving this page.",
     );
   }
   backupCodes.value = generated.codes;

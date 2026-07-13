@@ -155,6 +155,7 @@ import { useReverification } from '../composables/useReverification'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
+import { userFacingError } from '../lib/userFacingError'
 
 const {
   avatarUrl,
@@ -222,7 +223,7 @@ watch(
 )
 
 function clerkError(err, fallback) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || fallback
+  return userFacingError(err, fallback)
 }
 
 async function refreshLocalUser() {
@@ -261,7 +262,7 @@ async function openBillingPortal() {
     const res = await createPortalSession({ return_path: '/profile' })
     window.location.assign(res.data.url)
   } catch (err) {
-    billingError.value = err.response?.data?.error || 'Could not open Stripe billing portal.'
+    billingError.value = err.response?.data?.error || 'Could not open the billing portal.'
   } finally {
     portalLoading.value = false
   }

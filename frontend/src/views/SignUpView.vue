@@ -71,7 +71,7 @@
 
       <form v-else class="auth-form" @submit.prevent="verifyEmail">
         <p class="verification-copy">
-          Enter the verification code Clerk sent to {{ form.email }}.
+          Enter the verification code sent to {{ form.email }}.
         </p>
 
         <label class="field">
@@ -115,6 +115,7 @@ import SocialAuthButtons from '../components/SocialAuthButtons.vue'
 import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
+import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
 const clerk = useClerk()
@@ -148,7 +149,7 @@ const canSubmit = computed(() => {
 })
 
 function authError(err) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || 'Unable to create your account. Check your details and try again.'
+  return userFacingError(err, 'Unable to create your account. Check your details and try again.')
 }
 
 async function completeSignUp(result) {

@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import SignInView from './SignInView.vue'
 
 const routerPush = vi.fn()
+const routeQuery = vi.hoisted(() => ({}))
 const clerkState = vi.hoisted(() => ({
   activateSessionAndHydrateAuth: vi.fn(),
   clerk: {},
@@ -32,6 +33,7 @@ vi.mock('@clerk/vue', () => ({
 }))
 
 vi.mock('vue-router', () => ({
+  useRoute: () => ({ query: routeQuery }),
   useRouter: () => ({ push: routerPush }),
 }))
 
@@ -47,6 +49,10 @@ vi.mock('../lib/postAuthRedirect', () => ({
 describe('SignInView', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    Object.keys(routeQuery).forEach((key) => delete routeQuery[key])
+    delete clerkState.signIn.value.status
+    delete clerkState.signIn.value.supportedFirstFactors
+    delete clerkState.signIn.value.supportedSecondFactors
     clerkState.signIn.value.create.mockResolvedValue({
       status: 'complete',
       createdSessionId: 'sess_123',
@@ -123,6 +129,115 @@ describe('SignInView', () => {
 
     expect(wrapper.text()).toContain('Enter one of your backup codes.')
     expect(wrapper.text()).toContain('Backup code')
+  })
+
+  it('resumes an OAuth sign-in that needs TOTP on mount', async () => {
+    routeQuery.resume = 'oauth'
+    clerkState.signIn.value.status = 'needs_second_factor'
+    clerkState.signIn.value.supportedSecondFactors = [{ strategy: 'totp' }]
+
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    await flushPromises()
+
+    expect(clerkState.signIn.value.create).not.toHaveBeenCalled()
+    expect(wrapper.text()).toContain('Enter the code from your authenticator app.')
+  })
+
+  it('does not auto-resume a pending resource outside the OAuth callback path', async () => {
+    clerkState.signIn.value.status = 'needs_second_factor'
+    clerkState.signIn.value.supportedSecondFactors = [{
+      strategy: 'email_code',
+      emailAddressId: 'idn_email',
+    }]
+
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    await flushPromises()
+
+    expect(clerkState.signIn.value.prepareSecondFactor).not.toHaveBeenCalled()
+    expect(wrapper.find('input[autocomplete="username"]').exists()).toBe(true)
+  })
+
+  it('resumes an OAuth sign-in that needs a password without restarting OAuth', async () => {
+    routeQuery.resume = 'oauth'
+    clerkState.signIn.value.status = 'needs_first_factor'
+    clerkState.signIn.value.supportedFirstFactors = [{ strategy: 'password' }]
+    clerkState.signIn.value.attemptFirstFactor.mockResolvedValue({
+      status: 'complete',
+      createdSessionId: 'sess_oauth',
+    })
+
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Enter your password to continue signing in.')
+    expect(wrapper.find('input[autocomplete="username"]').exists()).toBe(false)
+    await wrapper.find('input[autocomplete="current-password"]').setValue('secret-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.signIn.value.create).not.toHaveBeenCalled()
+    expect(clerkState.signIn.value.attemptFirstFactor).toHaveBeenCalledWith({
+      strategy: 'password',
+      password: 'secret-pass',
+    })
+  })
+
+  it('keeps OAuth password continuation active after an incorrect password', async () => {
+    routeQuery.resume = 'oauth'
+    clerkState.signIn.value.status = 'needs_first_factor'
+    clerkState.signIn.value.supportedFirstFactors = [{ strategy: 'password' }]
+    clerkState.signIn.value.attemptFirstFactor
+      .mockRejectedValueOnce(new Error('Incorrect password'))
+      .mockResolvedValueOnce({ status: 'complete', createdSessionId: 'sess_oauth' })
+
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    await flushPromises()
+
+    const passwordInput = wrapper.find('input[autocomplete="current-password"]')
+    await passwordInput.setValue('wrong-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Incorrect password')
+    expect(wrapper.find('input[autocomplete="username"]').exists()).toBe(false)
+
+    await passwordInput.setValue('correct-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.signIn.value.attemptFirstFactor).toHaveBeenCalledTimes(2)
+    expect(clerkState.signIn.value.create).not.toHaveBeenCalled()
+  })
+
+  it('resumes an OAuth sign-in that needs client trust code verification', async () => {
+    routeQuery.resume = 'oauth'
+    clerkState.signIn.value.status = 'needs_client_trust'
+    clerkState.signIn.value.supportedSecondFactors = [{
+      strategy: 'email_code',
+      emailAddressId: 'idn_email',
+      safeIdentifier: 'a***@example.com',
+    }]
+
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+    await flushPromises()
+
+    expect(clerkState.signIn.value.create).not.toHaveBeenCalled()
+    expect(clerkState.signIn.value.prepareSecondFactor).toHaveBeenCalledWith({
+      strategy: 'email_code',
+      emailAddressId: 'idn_email',
+    })
+    expect(wrapper.text()).toContain('This device needs one more verification.')
+    expect(wrapper.text()).toContain('a***@example.com')
   })
 
   it('switches between TOTP and backup code locally without preparing either factor', async () => {
