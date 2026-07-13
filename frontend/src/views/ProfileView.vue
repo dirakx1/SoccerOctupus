@@ -96,7 +96,6 @@
 
     <section class="profile-card security-card">
       <h2>Security</h2>
-      <p class="card-copy">Manage username visibility, authenticator app sign-in, and one-time backup codes.</p>
       <TwoFactorSettings :is-loaded="isLoaded" :reverification="reverification" :user="user" />
     </section>
 
@@ -430,6 +429,11 @@ h2 {
   display: flex;
   flex-direction: column;
   padding: 28px;
+}
+
+.security-card {
+  gap: 20px;
+  overflow: hidden;
 }
 
 .billing-card {

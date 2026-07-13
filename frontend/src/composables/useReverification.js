@@ -22,12 +22,37 @@ export function useReverification({ session } = {}) {
   const title = ref('Verify it is you')
   const message = ref('Verify your identity to continue.')
   const strategy = ref('')
+  const verificationStage = ref('first_factor')
   const password = ref('')
   const code = ref('')
   const target = ref('')
+  const availableSecondFactors = ref([])
   const pending = ref(null)
 
-  const usesVerificationCode = computed(() => ['email_code', 'phone_code'].includes(strategy.value))
+  const usesVerificationCode = computed(() => ['email_code', 'phone_code', 'totp', 'backup_code'].includes(strategy.value))
+  const verificationCodeLabel = computed(() => {
+    if (strategy.value === 'totp') return 'Authenticator code'
+    if (strategy.value === 'backup_code') return 'Backup code'
+    return 'Verification code'
+  })
+  const codePlaceholder = computed(() => strategy.value === 'backup_code' ? 'Enter backup code' : '123456')
+  const codeInputMode = computed(() => strategy.value === 'backup_code' ? 'text' : 'numeric')
+  const alternativeSecondFactor = computed(() => {
+    if (verificationStage.value !== 'second_factor') return null
+    if (strategy.value === 'totp') {
+      return availableSecondFactors.value.find((factor) => factor.strategy === 'backup_code') || null
+    }
+    if (strategy.value === 'backup_code') {
+      return availableSecondFactors.value.find((factor) => factor.strategy === 'totp') || null
+    }
+    return null
+  })
+  const canSwitchSecondFactor = computed(() => Boolean(alternativeSecondFactor.value))
+  const alternativeSecondFactorLabel = computed(() => {
+    if (alternativeSecondFactor.value?.strategy === 'backup_code') return 'Use a backup code instead'
+    if (alternativeSecondFactor.value?.strategy === 'totp') return 'Use authenticator app instead'
+    return ''
+  })
   const copy = computed(() => {
     if (strategy.value === 'email_code') {
       return `Enter the code sent to ${target.value || 'your email address'} to continue.`
@@ -37,6 +62,12 @@ export function useReverification({ session } = {}) {
     }
     if (strategy.value === 'passkey') {
       return 'Use your passkey to continue.'
+    }
+    if (strategy.value === 'totp') {
+      return 'Enter the 6-digit code from your authenticator app to continue.'
+    }
+    if (strategy.value === 'backup_code') {
+      return 'Enter one of your backup codes to continue.'
     }
     return message.value
   })
@@ -53,9 +84,11 @@ export function useReverification({ session } = {}) {
 
   function resetInputs() {
     strategy.value = ''
+    verificationStage.value = 'first_factor'
     password.value = ''
     code.value = ''
     target.value = ''
+    availableSecondFactors.value = []
     error.value = ''
   }
 
@@ -83,6 +116,34 @@ export function useReverification({ session } = {}) {
       return
     }
 
+    if (verification?.status === 'needs_second_factor') {
+      verificationStage.value = 'second_factor'
+      const factors = verification?.supportedSecondFactors || []
+      availableSecondFactors.value = factors
+      const totpFactor = factors.find((factor) => factor.strategy === 'totp')
+      const phoneFactor = factors.find((factor) => factor.strategy === 'phone_code')
+      const backupCodeFactor = factors.find((factor) => factor.strategy === 'backup_code')
+      const factor = totpFactor || phoneFactor || backupCodeFactor
+
+      if (!factor) {
+        throw new Error('Please sign in again before changing account security settings.')
+      }
+
+      strategy.value = factor.strategy
+      code.value = ''
+      target.value = factor.safeIdentifier || ''
+
+      if (factor.strategy === 'phone_code') {
+        await currentSession().prepareSecondFactorVerification({
+          strategy: factor.strategy,
+          phoneNumberId: factor.phoneNumberId,
+        })
+      }
+      return
+    }
+
+    verificationStage.value = 'first_factor'
+    availableSecondFactors.value = []
     const factors = verification?.supportedFirstFactors || []
     const passwordFactor = factors.find((factor) => factor.strategy === 'password')
     const emailFactor = factors.find((factor) => factor.strategy === 'email_code')
@@ -150,6 +211,11 @@ export function useReverification({ session } = {}) {
       let verification
       if (strategy.value === 'passkey') {
         verification = await activeSession.verifyWithPasskey()
+      } else if (verificationStage.value === 'second_factor') {
+        verification = await activeSession.attemptSecondFactorVerification({
+          strategy: strategy.value,
+          code: code.value,
+        })
       } else {
         const attempt = usesVerificationCode.value
           ? { strategy: strategy.value, code: code.value }
@@ -162,6 +228,15 @@ export function useReverification({ session } = {}) {
     } finally {
       loading.value = false
     }
+  }
+
+  function switchSecondFactor() {
+    const factor = alternativeSecondFactor.value
+    if (!factor) return
+    strategy.value = factor.strategy
+    code.value = ''
+    target.value = factor.safeIdentifier || ''
+    error.value = ''
   }
 
   function cancel() {
@@ -181,9 +256,13 @@ export function useReverification({ session } = {}) {
   }
 
   return {
+    alternativeSecondFactorLabel,
     canSubmit,
+    canSwitchSecondFactor,
     cancel,
     code,
+    codeInputMode,
+    codePlaceholder,
     copy,
     error,
     isOpen,
@@ -193,7 +272,10 @@ export function useReverification({ session } = {}) {
     start,
     strategy,
     submit,
+    switchSecondFactor,
     title,
     usesVerificationCode,
+    verificationCodeLabel,
+    verificationStage,
   }
 }

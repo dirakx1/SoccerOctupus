@@ -10,9 +10,13 @@ function workflowFixture(overrides = {}) {
   const code = ref('')
 
   return {
+    alternativeSecondFactorLabel: computed(() => ''),
     canSubmit: computed(() => Boolean(password.value || code.value)),
+    canSwitchSecondFactor: computed(() => false),
     cancel: vi.fn(),
     code,
+    codeInputMode: computed(() => 'numeric'),
+    codePlaceholder: computed(() => '123456'),
     copy: computed(() => 'Enter your password to continue.'),
     error: ref(''),
     isOpen: ref(true),
@@ -20,8 +24,10 @@ function workflowFixture(overrides = {}) {
     password,
     strategy,
     submit: vi.fn(),
+    switchSecondFactor: vi.fn(),
     title: ref('Verify it is you'),
     usesVerificationCode: computed(() => ['email_code', 'phone_code'].includes(strategy.value)),
+    verificationCodeLabel: computed(() => 'Verification code'),
     ...overrides,
   }
 }
@@ -60,6 +66,46 @@ describe('ReverificationDialog', () => {
     await wrapper.find('input[autocomplete="one-time-code"]').setValue('123456')
 
     expect(workflow.code.value).toBe('123456')
+    wrapper.unmount()
+  })
+
+  it('renders authenticator code copy for second-factor verification', () => {
+    const workflow = workflowFixture({
+      strategy: ref('totp'),
+      copy: computed(() => 'Enter the 6-digit code from your authenticator app to continue.'),
+      usesVerificationCode: computed(() => true),
+      verificationCodeLabel: computed(() => 'Authenticator code'),
+    })
+    const wrapper = mount(ReverificationDialog, {
+      props: { workflow },
+      global: { stubs: { Teleport: true } },
+    })
+
+    expect(wrapper.text()).toContain('authenticator app')
+    expect(wrapper.text()).toContain('Authenticator code')
+    expect(wrapper.find('input[autocomplete="one-time-code"]').exists()).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('switches from authenticator code to a backup code', async () => {
+    const switchSecondFactor = vi.fn()
+    const workflow = workflowFixture({
+      alternativeSecondFactorLabel: computed(() => 'Use a backup code instead'),
+      canSwitchSecondFactor: computed(() => true),
+      codeInputMode: computed(() => 'numeric'),
+      copy: computed(() => 'Enter the 6-digit code from your authenticator app to continue.'),
+      strategy: ref('totp'),
+      switchSecondFactor,
+      usesVerificationCode: computed(() => true),
+      verificationCodeLabel: computed(() => 'Authenticator code'),
+    })
+    const wrapper = mount(ReverificationDialog, {
+      props: { workflow },
+      global: { stubs: { Teleport: true } },
+    })
+
+    await wrapper.get('button.btn-link').trigger('click')
+    expect(switchSecondFactor).toHaveBeenCalled()
     wrapper.unmount()
   })
 })

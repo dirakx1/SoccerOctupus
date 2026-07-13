@@ -21,16 +21,26 @@
         </label>
 
         <label v-if="workflow.usesVerificationCode.value" class="field">
-          <span>Verification code</span>
+          <span>{{ workflow.verificationCodeLabel.value }}</span>
           <input
             v-model.trim="workflow.code.value"
             type="text"
-            inputmode="numeric"
+            :inputmode="workflow.codeInputMode.value"
             autocomplete="one-time-code"
             autofocus
-            placeholder="123456"
+            :placeholder="workflow.codePlaceholder.value"
           />
         </label>
+
+        <button
+          v-if="workflow.canSwitchSecondFactor.value"
+          class="btn-link"
+          type="button"
+          :disabled="workflow.loading.value"
+          @click="workflow.switchSecondFactor"
+        >
+          {{ workflow.alternativeSecondFactorLabel.value }}
+        </button>
 
         <div class="action-row">
           <button class="btn-primary" type="submit" :disabled="workflow.loading.value || !workflow.canSubmit.value">
@@ -123,13 +133,23 @@ input:focus {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-link {
   border-radius: 10px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
   min-height: 40px;
   padding: 10px 14px;
+}
+
+.btn-link {
+  align-self: flex-start;
+  background: transparent;
+  border: none;
+  color: #e2b714;
+  min-height: auto;
+  padding: 0;
 }
 
 .btn-primary {

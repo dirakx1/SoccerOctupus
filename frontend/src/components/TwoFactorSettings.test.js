@@ -53,15 +53,19 @@ describe('TwoFactorSettings', () => {
 
     expect(user.createTOTP).toHaveBeenCalled()
     expect(wrapper.find('[data-testid="authenticator-qr"]').exists()).toBe(true)
+    expect(wrapper.find('.setup-panel').exists()).toBe(true)
+    expect(wrapper.find('.security-control-row').exists()).toBe(false)
     expect(wrapper.text()).not.toContain('SECRET123')
     expect(wrapper.html()).not.toContain('otpauth://')
 
     await findButton(wrapper, 'Use setup key instead').trigger('click')
     expect(wrapper.text()).toContain('SECRET123')
     expect(wrapper.html()).not.toContain('otpauth://')
+    expect(wrapper.find('.setup-qr-column .readonly-field').exists()).toBe(false)
+    expect(wrapper.find('.setup-confirmation .readonly-field').exists()).toBe(true)
 
     await wrapper.find('input[autocomplete="one-time-code"]').setValue('123456')
-    await findButton(wrapper, 'Verify and generate backup codes').trigger('click')
+    await findButton(wrapper, 'Verify and continue').trigger('click')
     await flushPromises()
 
     expect(user.verifyTOTP).toHaveBeenCalledWith({ code: '123456' })
@@ -76,9 +80,12 @@ describe('TwoFactorSettings', () => {
     await doneButton.trigger('click')
 
     expect(wrapper.find('[data-testid="backup-codes-panel"]').exists()).toBe(false)
+    expect(wrapper.vm.backupCodes).toEqual([])
+    expect(wrapper.text()).not.toContain('code-1')
+    expect(wrapper.text()).not.toContain('code-2')
   })
 
-  it('renders 2FA state and actions in a single control row', () => {
+  it('renders the authenticator action without redundant status copy', () => {
     const user = userFixture()
     const wrapper = mount(TwoFactorSettings, {
       props: { user, isLoaded: true },
@@ -86,11 +93,10 @@ describe('TwoFactorSettings', () => {
 
     const row = wrapper.find('.security-control-row')
     expect(row.exists()).toBe(true)
-    expect(row.text()).toContain('Two-factor authentication')
-    expect(row.text()).toContain('Not enabled')
+    expect(row.text()).toContain('Authenticator app')
     expect(row.find('button').text()).toContain('Enable authenticator app')
-    expect(wrapper.find('.security-summary').exists()).toBe(false)
-    expect(wrapper.text()).not.toContain('Backup codesNot generated')
+    expect(row.text()).not.toContain('Not enabled')
+    expect(row.text()).not.toContain('Two-factor authentication')
   })
 
   it('regenerates backup codes for an enabled authenticator', async () => {
@@ -103,12 +109,37 @@ describe('TwoFactorSettings', () => {
     await findButton(wrapper, 'Regenerate backup codes').trigger('click')
     await flushPromises()
 
+    expect(user.createBackupCode).not.toHaveBeenCalled()
+    expect(wrapper.text()).toContain('immediately invalidates every current backup code')
+
+    await findButton(wrapper, 'Generate new codes').trigger('click')
+    await flushPromises()
+
     expect(reverification.runWithReverification).toHaveBeenCalledWith(expect.any(Function), {
+      level: 'multi_factor',
       message: 'Enter your password to generate new backup codes.',
       title: 'Verify it is you',
     })
     expect(user.createBackupCode).toHaveBeenCalled()
     expect(wrapper.text()).toContain('code-1')
+  })
+
+  it('does not regenerate backup codes until replacement is confirmed', async () => {
+    const user = userFixture({ totpEnabled: true, backupCodeEnabled: true })
+    const wrapper = mount(TwoFactorSettings, {
+      props: { user, isLoaded: true },
+    })
+
+    await findButton(wrapper, 'Regenerate backup codes').trigger('click')
+
+    expect(wrapper.find('[data-testid="backup-regeneration-confirmation"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('invalidates every current backup code')
+    expect(user.createBackupCode).not.toHaveBeenCalled()
+
+    await findButton(wrapper, 'Cancel').trigger('click')
+
+    expect(wrapper.find('[data-testid="backup-regeneration-confirmation"]').exists()).toBe(false)
+    expect(user.createBackupCode).not.toHaveBeenCalled()
   })
 
   it('delegates authenticator setup to the shared reverification workflow', async () => {
@@ -144,6 +175,7 @@ describe('TwoFactorSettings', () => {
     await flushPromises()
 
     expect(reverification.runWithReverification).toHaveBeenCalledWith(expect.any(Function), {
+      level: 'multi_factor',
       message: 'Enter your password to disable authenticator app sign-in.',
       title: 'Verify it is you',
     })
@@ -158,6 +190,9 @@ describe('TwoFactorSettings', () => {
     })
 
     await findButton(wrapper, 'Regenerate backup codes').trigger('click')
+    await flushPromises()
+
+    await findButton(wrapper, 'Generate new codes').trigger('click')
     await flushPromises()
 
     expect(wrapper.vm.backupCodes).toEqual(['code-1', 'code-2'])

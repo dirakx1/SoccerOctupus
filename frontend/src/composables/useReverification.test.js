@@ -17,7 +17,9 @@ function sessionFixture(overrides = {}) {
       supportedFirstFactors: [{ strategy: 'password' }],
     }),
     attemptFirstFactorVerification: vi.fn().mockResolvedValue({ status: 'complete' }),
+    attemptSecondFactorVerification: vi.fn().mockResolvedValue({ status: 'complete' }),
     prepareFirstFactorVerification: vi.fn(),
+    prepareSecondFactorVerification: vi.fn(),
     verifyWithPasskey: vi.fn(),
     ...overrides,
   }
@@ -85,5 +87,48 @@ describe('useReverification', () => {
     workflow.code.value = '123456'
     await workflow.submit()
     await expect(startPromise).resolves.toBeUndefined()
+  })
+
+  it('completes password and authenticator code for multi-factor reverification', async () => {
+    const session = sessionFixture({
+      attemptFirstFactorVerification: vi.fn().mockResolvedValue({
+        status: 'needs_second_factor',
+        supportedSecondFactors: [{ strategy: 'totp' }, { strategy: 'backup_code' }],
+      }),
+    })
+    const workflow = useReverification({ session: ref(session) })
+    const protectedAction = vi.fn()
+      .mockRejectedValueOnce(reverificationError())
+      .mockResolvedValueOnce('disabled')
+
+    const resultPromise = workflow.runWithReverification(protectedAction, {
+      level: 'multi_factor',
+      message: 'Enter your password to continue.',
+    })
+    await flushPromises()
+
+    workflow.password.value = 'current-pass'
+    await workflow.submit()
+
+    expect(workflow.isOpen.value).toBe(true)
+    expect(workflow.strategy.value).toBe('totp')
+    expect(workflow.copy.value).toContain('authenticator app')
+    expect(workflow.canSwitchSecondFactor.value).toBe(true)
+    expect(workflow.alternativeSecondFactorLabel.value).toBe('Use a backup code instead')
+
+    workflow.switchSecondFactor()
+    expect(workflow.strategy.value).toBe('backup_code')
+    expect(workflow.copy.value).toContain('backup codes')
+
+    workflow.code.value = 'backup-1234'
+    await workflow.submit()
+
+    await expect(resultPromise).resolves.toBe('disabled')
+    expect(session.startVerification).toHaveBeenCalledWith({ level: 'multi_factor' })
+    expect(session.attemptSecondFactorVerification).toHaveBeenCalledWith({
+      strategy: 'backup_code',
+      code: 'backup-1234',
+    })
+    expect(protectedAction).toHaveBeenCalledTimes(2)
   })
 })

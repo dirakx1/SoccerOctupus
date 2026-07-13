@@ -108,6 +108,39 @@ describe('SignInView', () => {
     expect(wrapper.text()).toContain('Backup code')
   })
 
+  it('switches between TOTP and backup code locally without preparing either factor', async () => {
+    clerkState.signIn.value.create.mockResolvedValue({
+      status: 'needs_second_factor',
+      supportedSecondFactors: [{ strategy: 'totp' }, { strategy: 'backup_code' }],
+    })
+    const wrapper = mount(SignInView, {
+      global: { stubs: ['RouterLink'] },
+    })
+
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('input[autocomplete="current-password"]').setValue('secret-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    const switchButton = wrapper.get('button.second-factor-switch')
+    expect(switchButton.text()).toBe('Use a backup code instead')
+    expect(clerkState.signIn.value.prepareFirstFactor).not.toHaveBeenCalled()
+    expect(clerkState.signIn.value.prepareSecondFactor).not.toHaveBeenCalled()
+
+    await switchButton.trigger('click')
+
+    expect(wrapper.text()).toContain('Enter one of your backup codes.')
+    expect(wrapper.get('input[autocomplete="one-time-code"]').attributes('inputmode')).toBe('text')
+    expect(wrapper.get('button.second-factor-switch').text()).toBe('Use authenticator app instead')
+    expect(clerkState.signIn.value.prepareFirstFactor).not.toHaveBeenCalled()
+    expect(clerkState.signIn.value.prepareSecondFactor).not.toHaveBeenCalled()
+
+    await wrapper.get('button.second-factor-switch').trigger('click')
+
+    expect(wrapper.text()).toContain('Enter the code from your authenticator app.')
+    expect(wrapper.get('input[autocomplete="one-time-code"]').attributes('inputmode')).toBe('numeric')
+  })
+
   it('starts OAuth redirect for Google, Facebook, and X', async () => {
     for (const strategy of ['oauth_google', 'oauth_facebook', 'oauth_x']) {
       clerkState.signIn.value.authenticateWithRedirect.mockClear()

@@ -139,8 +139,8 @@ describe('ProfileView', () => {
     await flushPromises()
 
     expect(wrapper.text()).toContain('Security')
-    expect(wrapper.text()).toContain('Two-factor authentication')
-    expect(wrapper.text()).toContain('Not enabled')
+    expect(wrapper.text()).toContain('Authenticator app')
+    expect(wrapper.text()).not.toContain('Not enabled')
     expect(wrapper.text()).toContain('Billing')
     expect(wrapper.text()).toContain('Current tier')
     expect(wrapper.text()).toContain('Pro')
@@ -209,13 +209,13 @@ describe('ProfileView', () => {
     expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/payment-method')
   })
 
-  it('renders the account security section with 2FA state', async () => {
+  it('renders the account security action without redundant status copy', async () => {
     const wrapper = mount(ProfileView)
     await flushPromises()
 
     expect(wrapper.text()).toContain('Security')
-    expect(wrapper.text()).toContain('Two-factor authentication')
-    expect(wrapper.text()).toContain('Not enabled')
+    expect(wrapper.text()).toContain('Authenticator app')
+    expect(wrapper.text()).not.toContain('Not enabled')
     expect(wrapper.text()).toContain('Enable authenticator app')
   })
 

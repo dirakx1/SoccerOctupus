@@ -67,6 +67,16 @@
         </button>
 
         <button
+          v-if="canSwitchSecondFactor"
+          class="btn-link second-factor-switch"
+          type="button"
+          :disabled="loading"
+          @click="switchSecondFactor"
+        >
+          {{ secondFactorSwitchLabel }}
+        </button>
+
+        <button
           v-if="canResendCode"
           class="btn-link"
           type="button"
@@ -110,6 +120,7 @@ const verificationReason = ref('')
 const verificationStage = ref('')
 const verificationStrategy = ref('')
 const verificationTarget = ref('')
+const availableSecondFactorStrategies = ref([])
 const form = reactive({
   identifier: '',
   password: '',
@@ -124,6 +135,15 @@ const canSubmit = computed(() => isLoaded.value && !loading.value && !loadingStr
 const codeInputMode = computed(() => verificationStrategy.value === 'backup_code' ? 'text' : 'numeric')
 const verificationLabel = computed(() => verificationStrategy.value === 'backup_code' ? 'Backup code' : 'Verification code')
 const verificationPlaceholder = computed(() => verificationStrategy.value === 'backup_code' ? 'abcd-1234' : '123456')
+const canSwitchSecondFactor = computed(() => (
+  verificationStage.value === 'second'
+  && availableSecondFactorStrategies.value.includes('totp')
+  && availableSecondFactorStrategies.value.includes('backup_code')
+  && ['totp', 'backup_code'].includes(verificationStrategy.value)
+))
+const secondFactorSwitchLabel = computed(() => verificationStrategy.value === 'totp'
+  ? 'Use a backup code instead'
+  : 'Use authenticator app instead')
 const verificationCopy = computed(() => {
   if (verificationReason.value === 'client_trust') {
     if (verificationStrategy.value === 'phone_code') {
@@ -222,6 +242,14 @@ function prepareLocalVerification(stage, factor) {
   step.value = 'verify'
 }
 
+function switchSecondFactor() {
+  if (!canSwitchSecondFactor.value) return
+
+  verificationStrategy.value = verificationStrategy.value === 'totp' ? 'backup_code' : 'totp'
+  form.code = ''
+  error.value = ''
+}
+
 async function handleSignInResult(result, attemptedPasswordFactor = false) {
   const currentSignIn = result || signIn.value
 
@@ -266,7 +294,12 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
       return false
     }
 
+    availableSecondFactorStrategies.value = secondFactors
+      .map((factor) => factor.strategy)
+      .filter((strategy) => ['totp', 'backup_code'].includes(strategy))
+
     if (codeStrategies.includes(secondFactor.strategy)) {
+      availableSecondFactorStrategies.value = []
       await prepareCodeVerification('second', secondFactor)
     } else {
       prepareLocalVerification('second', secondFactor)
@@ -395,6 +428,7 @@ function backToCredentials() {
   verificationStage.value = ''
   verificationStrategy.value = ''
   verificationTarget.value = ''
+  availableSecondFactorStrategies.value = []
   form.code = ''
   error.value = ''
 }
