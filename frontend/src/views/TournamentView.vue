@@ -67,6 +67,10 @@
           {{ loading ? '⏳ Simulating… this may take a minute' : '▶ Run Tournament Simulation' }}
         </button>
       </div>
+      <p class="sim-note">
+        Matches already played use official results — only the remaining fixtures are predicted,
+        so eliminated teams never reappear.
+      </p>
 
       <div v-if="error" class="error-box">
         {{ error }}
@@ -109,10 +113,13 @@
           </div>
           <div class="matches-list">
             <div class="match-item" v-for="m in round.matches" :key="m.prediction_id">
+              <span v-if="m.is_actual" class="official-badge">Official</span>
+              <span v-else class="predicted-badge">Predicted</span>
               <span class="mt-home" :class="{ winner: m.outcome === 'home_win' }">{{ m.home_team }}</span>
               <span class="score">{{ m.most_likely_score }}</span>
               <span class="mt-away" :class="{ winner: m.outcome === 'away_win' }">{{ m.away_team }}</span>
-              <span class="probs">H {{ pct(m.home_win_prob) }} / D {{ pct(m.draw_prob) }} / A {{ pct(m.away_win_prob) }}</span>
+              <span v-if="m.is_actual" class="probs">Final result</span>
+              <span v-else class="probs">H {{ pct(m.home_win_prob) }} / D {{ pct(m.draw_prob) }} / A {{ pct(m.away_win_prob) }}</span>
             </div>
           </div>
         </div>
@@ -308,6 +315,7 @@ h1 { color: #e2b714; font-size: 26px; }
 
 .error-box { background: #3d1a1a; border: 1px solid #c53030; border-radius: 8px; padding: 14px; color: #fc8181; }
 .hint { color: #6a6a8a; font-size: 14px; }
+.sim-note { color: #6a6a8a; font-size: 12px; margin-top: -12px; }
 
 .result-panel { display: flex; flex-direction: column; gap: 28px; }
 
@@ -336,6 +344,20 @@ h1 { color: #e2b714; font-size: 26px; }
 .round-count { color: #6a6a8a; font-size: 12px; }
 
 .probs { color: #6a6a8a; font-size: 11px; min-width: 180px; text-align: right; flex-shrink: 0; }
+
+.official-badge, .predicted-badge {
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-weight: 600;
+  font-size: 10px;
+  min-width: 52px;
+  text-align: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.official-badge { background: rgba(46, 160, 67, 0.18); color: #4ade80; }
+.predicted-badge { background: #0f3460; color: #a0c0ff; }
 
 /* ── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
