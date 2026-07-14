@@ -428,7 +428,7 @@ h2 {
 .profile-grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .profile-card {
@@ -603,12 +603,6 @@ input:focus {
   background: #123322;
   border: 1px solid #38a169;
   color: #9ae6b4;
-}
-
-@media (max-width: 860px) {
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 640px) {
