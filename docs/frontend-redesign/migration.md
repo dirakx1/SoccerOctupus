@@ -52,7 +52,8 @@ Remaining localization foundation:
 
 - Localized route integration for authentication, account, legal, and other
   public workflows.
-- Production message domains added alongside their first translated consumers.
+- Production `home` and `groups` message domains added alongside their first
+  translated consumers; remaining domains are added with later slices.
 - Translation completeness and locale-formatting tests.
 - Localized page content and a Locale switcher, which belong to later migration
   work.
@@ -105,8 +106,8 @@ Exit criteria:
 
 ## Phase 2: Localized Application Shell
 
-Status: In progress. The Competition Workspace URL layer is implemented; the
-new application shell and localized presentation are not.
+Status: In progress. The Competition Workspace URL layer and shell are
+implemented; Home and Groups are the first localized production consumers.
 
 Implemented routing foundation:
 
@@ -141,8 +142,8 @@ Remaining Phase 2 work:
 - Localized authentication, account, billing, admin, legal, and public routes.
 - Page translations, localized metadata, and localized route aliases if later
   requirements justify aliases.
-- Migrating page-local styles and copy into the shell and shared design-system
-  patterns.
+- Migrating remaining page-local styles and copy into the shell and shared
+  design-system patterns.
 
 Deliverables:
 
@@ -161,7 +162,31 @@ Exit criteria:
 
 ## Phase 3: First Vertical Slice
 
-Migrate Home and Groups together using real World Cup 2026 data.
+Status: In progress. Home and Groups implementation and behavior parity are
+landed; visual QA across all required themes and viewport sizes remains before
+this phase can be marked complete.
+
+Implemented:
+
+- Home uses the real SoccerOctopus/FIFA World Cup 2026 scope, four current
+  workflow destinations, five current Swarm Agent roles with their existing
+  weights and descriptions, and the existing Video Agent modal behavior.
+- Home workflow links use `workspaceLocation` with the active Locale and
+  Competition Edition rather than flat legacy URLs.
+- Groups keeps `GET /api/predictions/groups`, descending ELO sorting, and the
+  Team/ELO/rank fields while adding dynamic group/team counts, semantic tables,
+  loading skeletons, an empty state, and retryable inline errors.
+- English and Spanish page message domains and focused component tests cover
+  canonical Home links, localized copy, modal access, Groups success/sorting,
+  loading, empty, error/retry, and localized output.
+
+Remaining before completion:
+
+- Complete light, dark, desktop, tablet, mobile, and text-expansion visual QA.
+- Confirm direct navigation and refresh behavior for both migrated routes in
+  the running application.
+- Keep Predict, Tournament, Markets, auth, billing, admin, and other public
+  routes explicitly pending their own migration slices.
 
 Exit criteria:
 

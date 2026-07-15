@@ -4,9 +4,10 @@
 > Last reviewed: 2026-07-16
 > Source of truth: `frontend/src/`
 
-This document records the frontend behavior that exists before the Tournament
-Atlas migration. It is a parity checklist, not a target architecture. Update it
-when the current production frontend changes before its replacement is complete.
+This document records the frontend behavior and migration status during the
+Tournament Atlas rollout. It is a parity checklist, not a target architecture.
+Update it when the current production frontend changes before its replacement is
+complete.
 
 ## Application Shell
 
@@ -23,8 +24,9 @@ Signed-out navigation exposes the canonical Competition overview, Pricing, Sign
 In, and Sign Up. Signed-in workspace navigation is derived from the registered
 Competition Capabilities; unsupported `table` and `fixtures` items are not
 shown. The Competition Edition button lists only registered editions and shows
-the current display-name key; it does not invent a selector option. Page copy and
-page-local styling remain legacy until each view migrates.
+the current display-name key; it does not invent a selector option. Home and
+Groups now use Atlas page structure, semantic tokens, canonical workspace links,
+and localized page messages; other views remain legacy until each view migrates.
 
 ## Localization Core
 
@@ -35,12 +37,14 @@ preferences, then English; an explicit Locale has higher priority when a caller
 provides one. Applying a Locale persists it when storage is available and updates
 the document `lang` attribute. Blocked browser storage does not prevent startup.
 
-Namespaced `common`, `navigation`, and `competitions` messages exist. Canonical
+Namespaced `common`, `navigation`, `competitions`, `home`, and `groups` messages
+exist. Canonical
 Competition Workspace routes apply their URL Locale over saved and browser
 preferences, including persistence and the document `lang` attribute. The shell
 navigation, account controls, footer, recovery labels, theme preferences, and
-Competition context are translated; feature-view copy, API-generated narrative,
-authentication, account, legal, and other public routes are not localized yet.
+Competition context are translated. Home and Groups copy is translated in the
+new page domains; API-generated narrative, authentication, account, legal, and
+other public routes are not localized yet.
 
 ## Competition Registry
 
@@ -52,10 +56,11 @@ Competition and Competition Edition IDs, the `world-cup-2026` slug,
 
 The public interface lists Competition Editions, resolves one by slug, and checks
 Competition Capability support without exposing shared registry state. The
-router uses listing and lookup to derive the transitional default and reject
-unknown or blank workspace route context. The registry does not yet drive
-navigation, view data, or API requests. Existing World Cup views and endpoints
-remain the production behavior.
+router and shell use listing and lookup to derive the transitional default,
+validate workspace route context, and derive navigation. Home uses the active
+edition to build canonical workflow links; Groups uses it for localized context
+while retaining its existing endpoint. The registry does not yet adapt API
+requests, and only FIFA World Cup 2026 is registered.
 
 ## Theme Foundation
 
@@ -64,28 +69,29 @@ while `frontend/src/ui/theme.js` initializes the effective theme before Vue
 mounts. The runtime supports `light`, `dark`, and `system` preferences, persists
 the normalized value under `socceroctopus.theme`, and sets the root `data-theme`
 attribute plus `color-scheme`. Startup safely reads local storage and the current
-`prefers-color-scheme` signal once; there is no visible selector or live system
-listener yet.
+`prefers-color-scheme` signal once; the shell exposes a compact icon menu, but
+there is no live system listener yet.
 
 The token layer defines semantic typography, spacing, radius, border, shadow,
 motion, control, icon, and layering values without a global reset. Theme values
 cover background, surfaces, text, borders, accent, focus, and distinct status
-roles for light and dark modes. Existing production views still use their
-page-local styles, so loading the foundation does not change their appearance
-until each view is migrated.
+roles for light and dark modes. Home and Groups consume these semantic roles;
+other production views still use their page-local styles, so loading the
+foundation does not change their appearance until each view is migrated.
 
 `AppShell` exposes the current theme preference through a keyboard-accessible
-select and applies it through the existing runtime without a reload. System
-preference changes are intentionally not observed live in this phase.
+icon button and labeled menu and applies it through the existing runtime without
+a reload. System preference changes are intentionally not observed live in this
+phase.
 
 ## Production Route Inventory
 
 | Route | Access | View or behavior | Current responsibility |
 |---|---|---|---|
 | `/` | Public | Redirect | Redirects to `/en/competitions/world-cup-2026`. |
-| `/:locale/competitions/:competitionEditionSlug` | Public | `Home.vue` | World Cup 2026 product overview and links to the four prediction areas. |
+| `/:locale/competitions/:competitionEditionSlug` | Public | `Home.vue` | Atlas overview with localized World Cup 2026 scope, four canonical workflow links, five current Swarm Agent roles, and the existing Video Agent evidence modal trigger. |
 | `/groups` | Signed in | Redirect | Redirects to the canonical English Groups workspace. |
-| `/:locale/competitions/:competitionEditionSlug/groups` | Signed in | `GroupsView.vue` | Twelve groups with Team name, ELO, and rank, sorted by ELO. |
+| `/:locale/competitions/:competitionEditionSlug/groups` | Signed in | `GroupsView.vue` | Atlas standings tables from `GET /api/predictions/groups`, with Team name, ELO, and rank sorted by descending ELO, response-derived counts, loading, empty, and retryable error states. |
 | `/predict` | Signed in | Redirect | Redirects to the canonical English Match Prediction workspace. |
 | `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Team and stage selection, Match Prediction, probabilities, predicted score, xG, narrative, key factors, and Swarm Agent detail. |
 | `/tournament` | Signed in | Redirect | Redirects to the canonical English Knockout Bracket workspace. |

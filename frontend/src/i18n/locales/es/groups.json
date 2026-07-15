@@ -1,0 +1,19 @@
+{
+  "eyebrow": "Fase de grupos / {competition}",
+  "title": "El campo, ordenado por señal.",
+  "description": "{teamCount} equipos en {groupCount} grupos. Sede: {host}.",
+  "groupCountLabel": "grupos",
+  "teamCountLabel": "equipos",
+  "teamLabel": "Equipo",
+  "eloLabel": "ELO",
+  "rankLabel": "Rango",
+  "groupLabel": "Grupo {group}",
+  "loading": "Cargando datos de grupos",
+  "loadingDescription": "Obteniendo el campo registrado del Mundial.",
+  "empty": "Todavía no hay datos de grupos.",
+  "emptyDescription": "El registro de la competición está listo, pero el feed no devolvió equipos.",
+  "error": "No pudimos cargar los grupos.",
+  "errorDescription": "El feed de grupos no respondió. Inténtalo de nuevo para actualizar la clasificación.",
+  "retry": "Reintentar",
+  "tableLabel": "Clasificación del grupo {group}"
+}

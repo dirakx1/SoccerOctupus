@@ -1,0 +1,19 @@
+{
+  "eyebrow": "Group stage / {competition}",
+  "title": "The field, sorted by signal.",
+  "description": "{teamCount} teams across {groupCount} groups. Hosted in {host}.",
+  "groupCountLabel": "groups",
+  "teamCountLabel": "teams",
+  "teamLabel": "Team",
+  "eloLabel": "ELO",
+  "rankLabel": "Rank",
+  "groupLabel": "Group {group}",
+  "loading": "Loading group data",
+  "loadingDescription": "Retrieving the registered World Cup field.",
+  "empty": "No group data is available yet.",
+  "emptyDescription": "The competition registry is ready, but the group feed returned no teams.",
+  "error": "We couldn't load groups.",
+  "errorDescription": "The groups feed did not respond. Try again to refresh the standings.",
+  "retry": "Retry",
+  "tableLabel": "{group} group standings"
+}

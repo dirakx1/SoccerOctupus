@@ -2,9 +2,13 @@ import { createI18n } from 'vue-i18n'
 
 import enCommon from './locales/en/common.json'
 import enCompetitions from './locales/en/competitions.json'
+import enGroups from './locales/en/groups.json'
+import enHome from './locales/en/home.json'
 import enNavigation from './locales/en/navigation.json'
 import esCommon from './locales/es/common.json'
 import esCompetitions from './locales/es/competitions.json'
+import esGroups from './locales/es/groups.json'
+import esHome from './locales/es/home.json'
 import esNavigation from './locales/es/navigation.json'
 import {
   applyLocale as applyLocaleToRuntime,
@@ -26,8 +30,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { common: enCommon, competitions: enCompetitions, navigation: enNavigation },
-    es: { common: esCommon, competitions: esCompetitions, navigation: esNavigation },
+    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, navigation: enNavigation },
+    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, navigation: esNavigation },
   },
 })
 

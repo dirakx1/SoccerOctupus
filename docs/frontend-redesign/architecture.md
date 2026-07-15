@@ -30,11 +30,11 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core and Competition Workspace URL application implemented; page content and remaining routes pending |
-| Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented and used for workspace route validation; navigation and view data integration pending |
-| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented; production page migration pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Home, and Groups messages implemented; remaining routes pending |
+| Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
+| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, Home, and Groups |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
-| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | First production slice implemented; page visual migration pending |
+| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | Implemented; Home and Groups are the first migrated production pages |
 | Workspace navigation | Registry-derived navigation mapped through `workspaceLocation` | Implemented for current Competition Capabilities; future editions pending real adapters |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
@@ -107,8 +107,30 @@ are presentational and emit intent events.
 
 Authentication, account, billing, admin, public-information, and legal routes
 remain flat and unlocalized until their owning migration phases. The three
-`/design-lab` routes remain unchanged and public. Existing production views keep
-their page-local copy and styling while they migrate into the shell incrementally.
+`/design-lab` routes remain unchanged and public. Home and Groups now consume the
+shell's Atlas context, semantic tokens, canonical workspace links, and English /
+Spanish page messages. Other production views keep their page-local copy and
+styling while they migrate into the shell incrementally.
+
+## Production Page Slices
+
+The first vertical slice migrates the public Competition overview and the
+protected Groups workflow while preserving their existing route and data seams:
+
+- `Home.vue` keeps SoccerOctopus identity, FIFA World Cup 2026 scope, four
+  workflow destinations, five current Swarm Agent roles, weights, descriptions,
+  and the existing `VideoAgentModal` behavior. Workflow targets are built with
+  `workspaceLocation` from the active Locale and Competition Edition.
+- `GroupsView.vue` keeps `GET /api/predictions/groups`, Team/ELO/rank fields,
+  descending ELO sorting, and World Cup 2026 scope. It adds response-derived
+  group/team counts, semantic standings tables, loading skeleton, empty state,
+  and retryable inline error state.
+- `AtlasPageHeader.vue` is the small shared presentation pattern used by both
+  pages. It owns no domain state or data fetching.
+
+Both pages load `home` and `groups` message domains for English and Spanish.
+Predict, Tournament, Markets, auth, billing, admin, and other public routes
+remain pending migration.
 
 ## Competition Module
 
@@ -168,8 +190,8 @@ requires one.
 
 The Tournament Atlas theme foundation is implemented behind a small
 framework-independent module at `frontend/src/ui/theme.js` and loaded globally
-from `main.js`. It has no visible selector and no live system-preference listener
-in this phase.
+from `main.js`. The shell exposes compact Locale and theme menus, while live
+system-preference updates remain deferred in this phase.
 
 | Export | Behavior |
 |---|---|
@@ -207,9 +229,9 @@ deep green-black surfaces with pale text in dark mode (`#111514`, `#1b211f`,
 distinct semantic hues in both modes. Font stacks use system and locally
 available fallbacks; no remote font dependency is introduced.
 
-All production views still own their existing styles and do not consume these
-tokens yet. Page migration, a visible theme control, live system preference
-updates, component primitives, and Storybook remain later work.
+Home and Groups now consume these semantic tokens through their Atlas page
+styles. Other production views still own their existing styles; live system
+preference updates, component primitives, and Storybook remain later work.
 
 ## Localization Module
 
@@ -253,11 +275,10 @@ storage failures do not prevent startup, route navigation, or document-language
 updates. Flat non-workspace routes retain the current Locale until their
 localized route migration is implemented.
 
-The `common`, `navigation`, and `competitions` domains exist today. The latter
-two are consumed by the shell and Competition context; no feature-view message
-domains exist because production views have not been translated. Add another
-domain file in both Locales when its first real consumer is migrated; do not
-create empty resource files in advance.
+The `common`, `navigation`, `competitions`, `home`, and `groups` domains exist
+today. The latter three are consumed by the shell and first migrated production
+pages; remaining feature-view domains are added in the same change as their
+first real consumer. Do not create empty resource files in advance.
 
 Pending localization rules:
 
