@@ -5,6 +5,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: () => import('../views/Home.vue'), meta: { public: true } },
+    { path: '/design-lab', component: () => import('../views/DesignLabView.vue'), meta: { public: true } },
+    { path: '/design-lab/atlas', component: () => import('../views/AtlasPortalPreviewView.vue'), meta: { public: true } },
+    { path: '/design-lab/orbit', component: () => import('../views/OrbitPortalPreviewView.vue'), meta: { public: true } },
     { path: '/groups', component: () => import('../views/GroupsView.vue'), meta: { requiresAuth: true } },
     { path: '/predict', component: () => import('../views/PredictView.vue'), meta: { requiresAuth: true } },
     { path: '/tournament', component: () => import('../views/TournamentView.vue'), meta: { requiresAuth: true } },
