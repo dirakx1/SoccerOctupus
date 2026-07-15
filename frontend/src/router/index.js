@@ -1,17 +1,88 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getCompetitionEdition } from '../competition/index.js'
+import { applyLocale } from '../i18n/index.js'
 import { useAuthState } from '../lib/auth'
+import { setPostAuthRedirect } from '../lib/postAuthRedirect.js'
+import { WORKSPACE_ROUTE_NAMES, workspaceLocation } from './workspace.js'
+
+function workspaceRedirect(area) {
+  return (to) => workspaceLocation(area, { query: to.query, hash: to.hash })
+}
+
+function localizedWorkspaceFallback(to) {
+  return workspaceLocation('overview', {
+    locale: to.params.locale,
+    query: to.query,
+    hash: to.hash,
+  })
+}
+
+function getBrowserStorage() {
+  try {
+    return window.localStorage
+  } catch {
+    return undefined
+  }
+}
+
+function applyWorkspaceLocale(locale) {
+  return applyLocale(locale, {
+    storage: getBrowserStorage(),
+    documentElement: typeof document === 'undefined' ? undefined : document.documentElement,
+  })
+}
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: () => import('../views/Home.vue'), meta: { public: true } },
+    { path: '/', redirect: workspaceRedirect('overview'), meta: { public: true } },
+    {
+      path: '/:locale(en|es)/competitions',
+      redirect: localizedWorkspaceFallback,
+      meta: { public: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug',
+      name: WORKSPACE_ROUTE_NAMES.overview,
+      component: () => import('../views/Home.vue'),
+      meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug/groups',
+      name: WORKSPACE_ROUTE_NAMES.groups,
+      component: () => import('../views/GroupsView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug/predict',
+      name: WORKSPACE_ROUTE_NAMES.predict,
+      component: () => import('../views/PredictView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug/bracket',
+      name: WORKSPACE_ROUTE_NAMES.bracket,
+      component: () => import('../views/TournamentView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug/markets',
+      name: WORKSPACE_ROUTE_NAMES.markets,
+      component: () => import('../views/MarketsView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:pathMatch(.*)*',
+      redirect: localizedWorkspaceFallback,
+      meta: { public: true },
+    },
     { path: '/design-lab', component: () => import('../views/DesignLabView.vue'), meta: { public: true } },
     { path: '/design-lab/atlas', component: () => import('../views/AtlasPortalPreviewView.vue'), meta: { public: true } },
     { path: '/design-lab/orbit', component: () => import('../views/OrbitPortalPreviewView.vue'), meta: { public: true } },
-    { path: '/groups', component: () => import('../views/GroupsView.vue'), meta: { requiresAuth: true } },
-    { path: '/predict', component: () => import('../views/PredictView.vue'), meta: { requiresAuth: true } },
-    { path: '/tournament', component: () => import('../views/TournamentView.vue'), meta: { requiresAuth: true } },
-    { path: '/markets', component: () => import('../views/MarketsView.vue'), meta: { requiresAuth: true } },
+    { path: '/groups', redirect: workspaceRedirect('groups') },
+    { path: '/predict', redirect: workspaceRedirect('predict') },
+    { path: '/tournament', redirect: workspaceRedirect('bracket') },
+    { path: '/markets', redirect: workspaceRedirect('markets') },
     { path: '/profile', component: () => import('../views/ProfileView.vue'), meta: { requiresAuth: true } },
     { path: '/pricing', component: () => import('../views/PricingView.vue'), meta: { public: true } },
     { path: '/billing', redirect: '/profile', meta: { requiresAuth: true } },
@@ -32,9 +103,25 @@ const router = createRouter({
 const auth = useAuthState()
 
 router.beforeEach((to) => {
+  if (to.meta.competitionWorkspace) {
+    if (!getCompetitionEdition(to.params.competitionEditionSlug)) {
+      return localizedWorkspaceFallback(to)
+    }
+
+    applyWorkspaceLocale(to.params.locale)
+  }
+
   if (!auth.state.loaded) return true
 
   if (to.meta.requiresAuth && !auth.state.signedIn) {
+    if (to.meta.competitionWorkspace) {
+      try {
+        setPostAuthRedirect(to.fullPath)
+      } catch {
+        // Authentication remains reachable when browser storage is blocked.
+      }
+    }
+
     return { path: '/sign-in' }
   }
 

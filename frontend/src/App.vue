@@ -88,7 +88,11 @@ import { useBillingStatus } from './composables/useBillingStatus'
 import { useCurrentUserProfile } from './composables/useCurrentUserProfile'
 import { installAuthInterceptor } from './lib/api'
 import { clearAuthState, refreshAuthState, setAuthPendingState, useAuthState } from './lib/auth'
-import { consumePostAuthRedirect, peekPostAuthRedirect } from './lib/postAuthRedirect'
+import {
+  consumePostAuthRedirect,
+  peekPostAuthRedirect,
+  setPostAuthRedirect,
+} from './lib/postAuthRedirect'
 import CookieBanner from './components/CookieBanner.vue'
 
 const auth = useAuthState()
@@ -104,6 +108,7 @@ const userMenuOpen = ref(false)
 const mobileMenuOpen = ref(false)
 const authRecoveryError = ref('')
 const authRefreshing = ref(false)
+let signingOut = false
 
 function toggleMobileMenu() {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -143,8 +148,12 @@ const showAuthRecovery = computed(() => (
 function redirectAfterAuthRefresh() {
   const current = router.currentRoute.value
   const storedRedirect = peekPostAuthRedirect()
+  const isWorkspaceLanding = current.meta.competitionWorkspace && !current.meta.requiresAuth
 
-  if (storedRedirect && ['/', '/sign-in', '/sign-up', '/sso-callback'].includes(current.path)) {
+  if (storedRedirect && (
+    isWorkspaceLanding
+    || ['/', '/sign-in', '/sign-up', '/sso-callback'].includes(current.path)
+  )) {
     router.replace(consumePostAuthRedirect())
     return
   }
@@ -160,9 +169,18 @@ function redirectAfterAuthRefresh() {
 }
 
 function redirectAfterSignOut() {
-  if (router.currentRoute.value.meta.requiresAuth) {
-    router.replace('/sign-in')
+  const current = router.currentRoute.value
+  if (!current.meta.requiresAuth) return
+
+  if (!signingOut && current.meta.competitionWorkspace) {
+    try {
+      setPostAuthRedirect(current.fullPath)
+    } catch {
+      // Authentication remains reachable when browser storage is blocked.
+    }
   }
+
+  router.replace('/sign-in')
 }
 
 async function recoverAuthState() {
@@ -182,11 +200,16 @@ async function recoverAuthState() {
 }
 
 async function signOut() {
+  signingOut = true
   closeUserMenu()
-  await clerk.value?.signOut()
-  clearBillingStatus()
-  clearAuthState()
-  router.push('/sign-in')
+  try {
+    await clerk.value?.signOut()
+    clearBillingStatus()
+    clearAuthState()
+    await router.push('/sign-in')
+  } finally {
+    signingOut = false
+  }
 }
 
 async function openShellBillingRecovery() {

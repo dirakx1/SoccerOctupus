@@ -28,9 +28,11 @@ preferences, then English; an explicit Locale has higher priority when a caller
 provides one. Applying a Locale persists it when storage is available and updates
 the document `lang` attribute. Blocked browser storage does not prevent startup.
 
-Only namespaced `common.localeName` messages exist. Production routes, navigation,
-views, authentication redirects, and API-generated narrative are not localized
-yet, and there is no Locale switcher. The current flat routes remain canonical.
+Only namespaced `common.localeName` messages exist. Canonical Competition
+Workspace routes now apply their URL Locale over saved and browser preferences,
+including persistence and the document `lang` attribute. Navigation labels, view
+copy, API-generated narrative, authentication, account, legal, and other public
+routes are not localized yet, and there is no Locale switcher.
 
 ## Competition Registry
 
@@ -41,9 +43,11 @@ Competition and Competition Edition IDs, the `world-cup-2026` slug,
 `predictions`, `bracket`, and `markets` Competition Capabilities.
 
 The public interface lists Competition Editions, resolves one by slug, and checks
-Competition Capability support without exposing shared registry state. It does
-not yet drive routes, navigation, views, or API requests. Existing World Cup
-views and endpoints remain the production behavior.
+Competition Capability support without exposing shared registry state. The
+router uses listing and lookup to derive the transitional default and reject
+unknown or blank workspace route context. The registry does not yet drive
+navigation, view data, or API requests. Existing World Cup views and endpoints
+remain the production behavior.
 
 ## Theme Foundation
 
@@ -66,11 +70,16 @@ until each view is migrated.
 
 | Route | Access | View or behavior | Current responsibility |
 |---|---|---|---|
-| `/` | Public | `Home.vue` | World Cup 2026 product overview and links to the four prediction areas. |
-| `/groups` | Signed in | `GroupsView.vue` | Twelve groups with Team name, ELO, and rank, sorted by ELO. |
-| `/predict` | Signed in | `PredictView.vue` | Team and stage selection, Match Prediction, probabilities, predicted score, xG, narrative, key factors, and Swarm Agent detail. |
-| `/tournament` | Signed in | `TournamentView.vue` | Live group results and standings plus optional-swarm Tournament Simulation and knockout results. |
-| `/markets` | Signed in | `MarketsView.vue` | Match markets and tournament futures, filters, fair-value contract prices, and generated Market Questions. |
+| `/` | Public | Redirect | Redirects to `/en/competitions/world-cup-2026`. |
+| `/:locale/competitions/:competitionEditionSlug` | Public | `Home.vue` | World Cup 2026 product overview and links to the four prediction areas. |
+| `/groups` | Signed in | Redirect | Redirects to the canonical English Groups workspace. |
+| `/:locale/competitions/:competitionEditionSlug/groups` | Signed in | `GroupsView.vue` | Twelve groups with Team name, ELO, and rank, sorted by ELO. |
+| `/predict` | Signed in | Redirect | Redirects to the canonical English Match Prediction workspace. |
+| `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Team and stage selection, Match Prediction, probabilities, predicted score, xG, narrative, key factors, and Swarm Agent detail. |
+| `/tournament` | Signed in | Redirect | Redirects to the canonical English Knockout Bracket workspace. |
+| `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Live group results and standings plus optional-swarm Tournament Simulation and knockout results. |
+| `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |
+| `/:locale/competitions/:competitionEditionSlug/markets` | Signed in | `MarketsView.vue` | Match markets and tournament futures, filters, fair-value contract prices, and generated Market Questions. |
 | `/profile` | Signed in | `ProfileView.vue` | User profile, subscription, usage, billing health, portal access, payment recovery, and two-factor settings. |
 | `/pricing` | Public | `PricingView.vue` | Plan comparison, checkout or plan change, cancellation, and signed-in subscription context. |
 | `/billing` | Signed in | Redirect | Redirects to `/profile`. |
@@ -86,9 +95,13 @@ until each view is migrated.
 | `/contact` | Public | `ContactView.vue` | Contact information. |
 | `/about` | Public | `AboutView.vue` | Product and methodology information. |
 
-The router redirects signed-out users away from protected routes, redirects
-non-admin users away from Admin, and redirects signed-in users away from Sign In
-and Sign Up. The current redirect helpers use flat, non-localized paths.
+Workspace routes accept only `en` and `es`, validate Competition Edition slugs
+through the registry, and preserve query/hash across legacy and fallback
+redirects. Signed-out protected workspace navigation stores the full canonical
+destination before redirecting to flat `/sign-in`. The router also redirects
+non-admin users away from Admin and signed-in users away from Sign In and Sign
+Up. Account, billing, admin, authentication, legal, and public-information routes
+remain transitional flat routes.
 
 ## Current Data Dependencies
 

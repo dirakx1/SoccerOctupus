@@ -44,12 +44,14 @@ Implemented localization foundation:
 - Vue I18n Composition API plugin with `en` and `es` support and English fallback.
 - Explicit, saved, browser-preference, and fallback Locale resolution.
 - Best-effort preference persistence and document-language updates.
+- URL Locale application for canonical Competition Workspace routes.
 - Namespaced `common` resources and automated tests for the public localization
   interface.
 
 Remaining localization foundation:
 
-- URL Locale parsing and localized route integration.
+- Localized route integration for authentication, account, legal, and other
+  public workflows.
 - Production message domains added alongside their first translated consumers.
 - Translation completeness and locale-formatting tests.
 - Localized page content and a Locale switcher, which belong to later migration
@@ -64,7 +66,7 @@ Implemented competition foundation:
 
 Deferred competition integration, owned by later migration phases:
 
-- Competition-aware route context and capability-driven navigation.
+- Capability-driven navigation from the active Competition Edition.
 - Integration with production views and existing endpoint ownership as each
   workflow migrates.
 - Additional Competition Edition adapters only when their real requirements and
@@ -102,6 +104,32 @@ Exit criteria:
 - No production view depends directly on Reka UI internals.
 
 ## Phase 2: Localized Application Shell
+
+Status: In progress. The Competition Workspace URL layer is implemented; the
+new application shell and localized presentation are not.
+
+Implemented routing foundation:
+
+- Canonical `en` and `es` Competition Workspace routes for overview, Groups,
+  Match Prediction, Knockout Bracket, and Markets using existing production
+  views.
+- Stable route names and a registry-derived `workspaceLocation` helper for
+  redirects and future shell callers.
+- Registry-backed unknown and blank Competition Edition fallback to the
+  same-locale World Cup overview.
+- Root and flat workflow redirects with query/hash preservation, including
+  `/tournament` to canonical `/bracket`.
+- URL Locale application before auth handling and full canonical post-auth
+  destination preservation for protected workspace routes.
+
+Remaining Phase 2 work:
+
+- New `AppShell` and `CompetitionShell` presentation.
+- Competition, Locale, theme, and account controls.
+- Capability-driven Competition Workspace navigation.
+- Localized authentication, account, billing, admin, legal, and public routes.
+- Page translations, localized metadata, and localized route aliases if later
+  requirements justify aliases.
 
 Deliverables:
 

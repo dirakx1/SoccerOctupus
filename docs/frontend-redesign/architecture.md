@@ -1,7 +1,7 @@
 # Frontend Redesign Architecture
 
-> Status: Tournament Atlas, localization, Competition registry, and theme
-> foundations are accepted; remaining architecture is proposed
+> Status: Tournament Atlas foundations and localized Competition Workspace
+> routing are implemented; remaining architecture is proposed
 > Last reviewed: 2026-07-16
 > Applies to: `frontend/` and frontend-facing competition data contracts
 
@@ -30,10 +30,10 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core implemented; routes and page content pending |
-| Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented; route, navigation, and view integration pending |
+| Localization | Vue I18n Composition API with English fallback | Core and Competition Workspace URL application implemented; page content and remaining routes pending |
+| Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented and used for workspace route validation; navigation and view data integration pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented; production page migration pending |
-| Canonical routes | Locale-prefixed Competition Workspace routes | Proposed |
+| Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
 | Component catalogue | Storybook for Vue 3 and Vite | Proposed |
@@ -44,25 +44,39 @@ unapproved and must not be installed until their architecture is accepted.
 
 ## Route Model
 
-Canonical Competition Workspace routes use stable, untranslated path segments:
+Implemented Competition Workspace routes use stable, untranslated path segments:
 
 ```text
 /:locale(en|es)/competitions/:competitionEditionSlug
 /:locale(en|es)/competitions/:competitionEditionSlug/groups
-/:locale(en|es)/competitions/:competitionEditionSlug/table
-/:locale(en|es)/competitions/:competitionEditionSlug/fixtures
 /:locale(en|es)/competitions/:competitionEditionSlug/predict
 /:locale(en|es)/competitions/:competitionEditionSlug/bracket
 /:locale(en|es)/competitions/:competitionEditionSlug/markets
 ```
 
-Spanish changes the navigation labels and content, not the resource identifiers.
-For example, `/es/competitions/world-cup-2026/groups` displays `Grupos`. Localized
-path aliases can be added later if search requirements justify their complexity.
+`table` and `fixtures` paths remain reserved for Competition Editions that expose
+those capabilities; no route is registered before a real view exists. A Spanish
+workspace URL applies `es` to Vue I18n, persisted preference, and the document
+language before auth handling. Page copy and navigation labels remain English
+until their owning views and shell migrate. Localized path aliases can be added
+later if search requirements justify their complexity.
+
+`frontend/src/router/workspace.js` is the route-construction interface:
+
+| Export | Behavior |
+|---|---|
+| `WORKSPACE_ROUTE_NAMES` | Stable names for overview, groups, predict, bracket, and markets. |
+| `DEFAULT_COMPETITION_EDITION_SLUG` | Default slug derived from the Competition registry rather than duplicated in the router. |
+| `workspaceLocation(area, options)` | Builds a named route location with Locale, Competition Edition slug, query, and hash. |
+
+The router validates every canonical Competition Edition slug through
+`getCompetitionEdition`. Unknown or blank edition paths redirect to the
+same-locale World Cup overview while preserving query and hash.
 
 Current flat routes redirect to their World Cup 2026 equivalents during migration:
 
 ```text
+/             -> /en/competitions/world-cup-2026
 /groups       -> /en/competitions/world-cup-2026/groups
 /predict      -> /en/competitions/world-cup-2026/predict
 /tournament   -> /en/competitions/world-cup-2026/bracket
@@ -76,8 +90,16 @@ Locale resolution order is:
 3. Supported browser preference.
 4. English fallback.
 
-A locale switch preserves the named route, Competition Edition, query, and hash.
-Authentication redirects must preserve the full localized destination.
+Legacy redirects preserve query and hash. A future locale switch uses the named
+route helper to preserve the Competition Edition, query, and hash. Signed-out
+protected workspace navigation stores the full canonical destination through the
+existing post-auth redirect seam before using flat `/sign-in`; existing sign-in,
+sign-up, OAuth callback, and username-completion flows consume that destination.
+
+The application shell and its links remain transitional. Authentication,
+account, billing, admin, public-information, and legal routes remain flat and
+unlocalized until their owning migration phases. The three `/design-lab` routes
+remain unchanged and public.
 
 ## Competition Module
 
@@ -126,10 +148,12 @@ No exact date range is stored yet. Add verified dates only when a schedule-aware
 consumer requires them. The display-name key also remains unconsumed until the
 competition UI introduces the `competitions` localization domain.
 
-The registry does not fetch data, build navigation, change routes, or adapt API
-requests. Current views retain their existing endpoint calls. Navigation and
-endpoint/view integration are later migration work; do not add a speculative
-data-fetching seam before a second real adapter requires one.
+The registry does not fetch data, build navigation, or adapt API requests. The
+router consumes its listing and lookup interfaces to derive the default edition
+and validate route context; current views retain their existing endpoint calls.
+Capability-driven navigation and endpoint/view integration are later migration
+work; do not add a speculative data-fetching seam before a second real adapter
+requires one.
 
 ## Theme Foundation
 
@@ -204,9 +228,11 @@ src/i18n/
 | `i18n` | Vue I18n plugin configured with `en` and `es`, English fallback, and namespaced messages. |
 
 The application entry point initializes the Locale from saved and browser
-preferences and installs the plugin. URL Locale input is not connected until
-localized routing is implemented. Browser-storage failures do not prevent startup
-or document-language updates.
+preferences and installs the plugin. Each matched Competition Workspace route
+then applies its URL Locale, so route context wins over startup preference before
+auth handling. Browser-storage failures do not prevent startup, route navigation,
+or document-language updates. Flat non-workspace routes retain the current Locale
+until their localized route migration is implemented.
 
 Only the `common` domain exists today because no production view has been
 translated. Add another domain file in both Locales when its first real consumer
