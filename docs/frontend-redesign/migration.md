@@ -122,14 +122,25 @@ Implemented routing foundation:
 - URL Locale application before auth handling and full canonical post-auth
   destination preservation for protected workspace routes.
 
+Implemented shell foundation:
+
+- `AppShell` and `CompetitionShell` presentational patterns using Tournament
+  Atlas semantic tokens and Lucide controls.
+- Capability-derived workspace navigation and visible current Competition Edition
+  context, with no unsupported table or fixtures links.
+- English and Spanish shell navigation, account, footer, auth-recovery, theme,
+  and mobile-control messages.
+- Keyboard-accessible Locale and light/dark/system theme controls. Locale changes
+  preserve the current named workspace route, Competition Edition, query, and
+  hash; theme changes persist through the existing runtime without OS listeners.
+
 Remaining Phase 2 work:
 
-- New `AppShell` and `CompetitionShell` presentation.
-- Competition, Locale, theme, and account controls.
-- Capability-driven Competition Workspace navigation.
 - Localized authentication, account, billing, admin, legal, and public routes.
 - Page translations, localized metadata, and localized route aliases if later
   requirements justify aliases.
+- Migrating page-local styles and copy into the shell and shared design-system
+  patterns.
 
 Deliverables:
 

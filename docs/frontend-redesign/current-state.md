@@ -10,14 +10,19 @@ when the current production frontend changes before its replacement is complete.
 
 ## Application Shell
 
-`App.vue` currently owns the global navigation, responsive menu, account menu,
-billing-attention notice, authentication recovery state, footer, and cookie
-banner. Navigation is a fixed World Cup-oriented list rather than being derived
-from the active Competition Edition.
+`App.vue` owns auth, billing, recovery, and menu state while composing the
+presentational `AppShell` and `CompetitionShell` patterns. The shell exposes the
+active Competition Edition, registry-derived Overview, Groups, Predict, Bracket,
+and Markets links, Pricing, admin visibility, account actions, responsive mobile
+navigation, Locale selection on canonical workspace routes, and light/dark/system
+theme selection. Existing billing-attention, auth recovery, sign-out, footer,
+legal links, and cookie-banner behavior remain mounted through explicit slots.
 
-Signed-in navigation exposes Home, Groups, Predict Match, Tournament, Markets,
-Pricing, Profile through the account menu, and Admin for administrators. Public
-navigation exposes Home, Pricing, Sign In, and Sign Up.
+Signed-out navigation exposes the canonical Competition overview, Pricing, Sign
+In, and Sign Up. Signed-in workspace navigation is derived from the registered
+Competition Capabilities; unsupported `table` and `fixtures` items are not
+shown. The shell context label uses the current Competition Edition display-name
+key. Page copy and page-local styling remain legacy until each view migrates.
 
 ## Localization Core
 
@@ -28,11 +33,12 @@ preferences, then English; an explicit Locale has higher priority when a caller
 provides one. Applying a Locale persists it when storage is available and updates
 the document `lang` attribute. Blocked browser storage does not prevent startup.
 
-Only namespaced `common.localeName` messages exist. Canonical Competition
-Workspace routes now apply their URL Locale over saved and browser preferences,
-including persistence and the document `lang` attribute. Navigation labels, view
-copy, API-generated narrative, authentication, account, legal, and other public
-routes are not localized yet, and there is no Locale switcher.
+Namespaced `common`, `navigation`, and `competitions` messages exist. Canonical
+Competition Workspace routes apply their URL Locale over saved and browser
+preferences, including persistence and the document `lang` attribute. The shell
+navigation, account controls, footer, recovery labels, theme preferences, and
+Competition context are translated; feature-view copy, API-generated narrative,
+authentication, account, legal, and other public routes are not localized yet.
 
 ## Competition Registry
 
@@ -65,6 +71,10 @@ cover background, surfaces, text, borders, accent, focus, and distinct status
 roles for light and dark modes. Existing production views still use their
 page-local styles, so loading the foundation does not change their appearance
 until each view is migrated.
+
+`AppShell` exposes the current theme preference through a keyboard-accessible
+select and applies it through the existing runtime without a reload. System
+preference changes are intentionally not observed live in this phase.
 
 ## Production Route Inventory
 

@@ -1,0 +1,51 @@
+{
+  "brand": {
+    "name": "SoccerOctopus",
+    "strapline": "Atlas del torneo"
+  },
+  "workspace": {
+    "overview": "Resumen",
+    "groups": "Grupos",
+    "predict": "Predecir",
+    "bracket": "Cuadro",
+    "markets": "Mercados"
+  },
+  "public": {
+    "pricing": "Precios",
+    "signIn": "Iniciar sesión",
+    "signUp": "Crear cuenta"
+  },
+  "account": {
+    "profile": "Perfil",
+    "signOut": "Cerrar sesión",
+    "admin": "Administración"
+  },
+  "controls": {
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "language": "Idioma",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema",
+    "openAccount": "Abrir menú de cuenta",
+    "closeAccount": "Cerrar menú de cuenta"
+  },
+  "competition": {
+    "label": "Espacio de competición"
+  },
+  "authRecovery": {
+    "title": "Finalizando el inicio de sesión",
+    "loading": "Cargando tu cuenta de forma segura.",
+    "error": "Tu sesión está activa, pero no se pudo cargar tu cuenta. Comprueba la conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "footer": {
+    "label": "Pie de página",
+    "disclaimer": "© 2026 SoccerOctopus. Las predicciones son aproximaciones, no consejos de apuestas.",
+    "legal": "Aviso legal",
+    "cookies": "Política de cookies",
+    "contact": "Contacto",
+    "about": "Acerca de"
+  }
+}

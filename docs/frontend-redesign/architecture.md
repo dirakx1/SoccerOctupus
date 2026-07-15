@@ -34,6 +34,8 @@ The client-approved visual direction is recorded in
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented and used for workspace route validation; navigation and view data integration pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented; production page migration pending |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
+| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | First production slice implemented; page visual migration pending |
+| Workspace navigation | Registry-derived navigation mapped through `workspaceLocation` | Implemented for current Competition Capabilities; future editions pending real adapters |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
 | Component catalogue | Storybook for Vue 3 and Vite | Proposed |
@@ -96,10 +98,16 @@ protected workspace navigation stores the full canonical destination through the
 existing post-auth redirect seam before using flat `/sign-in`; existing sign-in,
 sign-up, OAuth callback, and username-completion flows consume that destination.
 
-The application shell and its links remain transitional. Authentication,
-account, billing, admin, public-information, and legal routes remain flat and
-unlocalized until their owning migration phases. The three `/design-lab` routes
-remain unchanged and public.
+`AppShell` owns the page frame, footer, route-content slots, billing and recovery
+slots, while `CompetitionShell` owns the Atlas header, Competition Edition
+context, capability-derived navigation, account menu, mobile menu, Locale select,
+and theme preference select. App state remains the owner of auth, billing, and
+menu state; the patterns are presentational and emit intent events.
+
+Authentication, account, billing, admin, public-information, and legal routes
+remain flat and unlocalized until their owning migration phases. The three
+`/design-lab` routes remain unchanged and public. Existing production views keep
+their page-local copy and styling while they migrate into the shell incrementally.
 
 ## Competition Module
 
@@ -173,8 +181,12 @@ in this phase.
 The runtime uses `socceroctopus.theme` as its storage key. DOM and storage writes
 are best effort: blocked storage, unavailable style access, or a missing document
 must not prevent application startup. The entry point reads `localStorage` and
-`matchMedia('(prefers-color-scheme: dark)')` once before mounting; a future shell
-control can call `applyTheme` when an explicit theme switcher is introduced.
+`matchMedia('(prefers-color-scheme: dark)')` once before mounting; the current
+shell control calls `applyTheme` for explicit preference changes.
+
+The current shell uses `frontend/src/ui/themePreference.js` as a small reactive
+adapter over that runtime. It exposes the saved preference, effective theme, and
+`setPreference` action to `App.vue`; it does not add an operating-system listener.
 
 Theme CSS is split into stable, non-visual foundations:
 
@@ -213,8 +225,12 @@ src/i18n/
   locales/
     en/
       common.json
+      competitions.json
+      navigation.json
     es/
       common.json
+      competitions.json
+      navigation.json
 ```
 
 `index.js` is the public interface:
@@ -230,13 +246,17 @@ src/i18n/
 The application entry point initializes the Locale from saved and browser
 preferences and installs the plugin. Each matched Competition Workspace route
 then applies its URL Locale, so route context wins over startup preference before
-auth handling. Browser-storage failures do not prevent startup, route navigation,
-or document-language updates. Flat non-workspace routes retain the current Locale
-until their localized route migration is implemented.
+auth handling. `AppShell` switches Locale by preserving the current named route,
+Competition Edition, query, and hash through `workspaceLocaleLocation`. Browser-
+storage failures do not prevent startup, route navigation, or document-language
+updates. Flat non-workspace routes retain the current Locale until their
+localized route migration is implemented.
 
-Only the `common` domain exists today because no production view has been
-translated. Add another domain file in both Locales when its first real consumer
-is migrated; do not create empty resource files in advance.
+The `common`, `navigation`, and `competitions` domains exist today. The latter
+two are consumed by the shell and Competition context; no feature-view message
+domains exist because production views have not been translated. Add another
+domain file in both Locales when its first real consumer is migrated; do not
+create empty resource files in advance.
 
 Pending localization rules:
 
@@ -264,6 +284,7 @@ src/ui/
   foundations/
     tokens.css
     themes.css
+  themePreference.js
     typography.css
     base.css
   primitives/

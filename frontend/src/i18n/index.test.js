@@ -18,6 +18,16 @@ describe('localization core', () => {
     expect(i18n.global.t('common.localeName')).toBe('Español')
   })
 
+  it('provides localized shell navigation and Competition Edition labels', () => {
+    applyLocale('en')
+    expect(i18n.global.t('navigation.workspace.overview')).toBe('Overview')
+    expect(i18n.global.t('competitions.editions.worldCup2026.name')).toBe('FIFA World Cup 2026')
+
+    applyLocale('es')
+    expect(i18n.global.t('navigation.workspace.overview')).toBe('Resumen')
+    expect(i18n.global.t('competitions.editions.worldCup2026.name')).toBe('Copa Mundial de la FIFA 2026')
+  })
+
   it('initializes from a saved preference before browser preferences', () => {
     const values = new Map([[LOCALE_STORAGE_KEY, 'es-ES']])
     const storage = {

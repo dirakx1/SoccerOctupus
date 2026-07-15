@@ -1,5 +1,5 @@
 import { listCompetitionEditions } from '../competition/index.js'
-import { DEFAULT_LOCALE } from '../i18n/index.js'
+import { DEFAULT_LOCALE, normalizeLocale } from '../i18n/index.js'
 
 const [defaultCompetitionEdition] = listCompetitionEditions()
 
@@ -31,5 +31,17 @@ export function workspaceLocation(area = 'overview', {
     params: { locale, competitionEditionSlug },
     ...(query ? { query } : {}),
     ...(hash ? { hash } : {}),
+  }
+}
+
+export function workspaceLocaleLocation(route, locale) {
+  const nextLocale = normalizeLocale(locale)
+  if (!nextLocale || !route?.name || !route.meta?.competitionWorkspace) return null
+
+  return {
+    name: route.name,
+    params: { ...route.params, locale: nextLocale },
+    query: route.query,
+    hash: route.hash,
   }
 }
