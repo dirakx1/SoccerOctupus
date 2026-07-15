@@ -3,20 +3,36 @@ import { clerkPlugin } from '@clerk/vue'
 
 import App from './App.vue'
 import { i18n, initializeLocale } from './i18n/index.js'
+import { initializeTheme } from './ui/theme.js'
 import router from './router/index.js'
+import './ui/foundations/tokens.css'
+import './ui/foundations/themes.css'
 
 const app = createApp(App)
-let localeStorage
+let browserStorage
 
 try {
-  localeStorage = window.localStorage
+  browserStorage = window.localStorage
 } catch {
-  localeStorage = undefined
+  browserStorage = undefined
 }
 
 initializeLocale({
-  storage: localeStorage,
+  storage: browserStorage,
   browserLocales: window.navigator?.languages ?? [],
+  documentElement: document.documentElement,
+})
+
+let prefersDark = false
+try {
+  prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+} catch {
+  prefersDark = false
+}
+
+initializeTheme({
+  storage: browserStorage,
+  prefersDark,
   documentElement: document.documentElement,
 })
 

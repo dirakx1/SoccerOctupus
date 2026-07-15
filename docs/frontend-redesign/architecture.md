@@ -1,7 +1,7 @@
 # Frontend Redesign Architecture
 
-> Status: Tournament Atlas, the localization core, and the Competition registry
-> are accepted; remaining architecture is proposed
+> Status: Tournament Atlas, localization, Competition registry, and theme
+> foundations are accepted; remaining architecture is proposed
 > Last reviewed: 2026-07-16
 > Applies to: `frontend/` and frontend-facing competition data contracts
 
@@ -32,6 +32,7 @@ The client-approved visual direction is recorded in
 | Visual language | Tournament Atlas | Accepted |
 | Localization | Vue I18n Composition API with English fallback | Core implemented; routes and page content pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented; route, navigation, and view integration pending |
+| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented; production page migration pending |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Proposed |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
@@ -129,6 +130,49 @@ The registry does not fetch data, build navigation, change routes, or adapt API
 requests. Current views retain their existing endpoint calls. Navigation and
 endpoint/view integration are later migration work; do not add a speculative
 data-fetching seam before a second real adapter requires one.
+
+## Theme Foundation
+
+The Tournament Atlas theme foundation is implemented behind a small
+framework-independent module at `frontend/src/ui/theme.js` and loaded globally
+from `main.js`. It has no visible selector and no live system-preference listener
+in this phase.
+
+| Export | Behavior |
+|---|---|
+| `normalizeThemePreference(value)` | Accepts `light`, `dark`, or `system` and returns `null` for unsupported input. |
+| `resolveThemePreference(options)` | Uses an explicit preference, then a saved preference, then `system`. |
+| `getEffectiveTheme(preference, options)` | Converts `system` to `light` or `dark` using the current `prefers-color-scheme` signal. |
+| `applyTheme(preference, dependencies)` | Sets the root `data-theme` attribute and `color-scheme`, persists the normalized preference, and returns both preference values. |
+| `initializeTheme(options)` | Reads saved preference safely, resolves it, and applies it before Vue mounts. |
+
+The runtime uses `socceroctopus.theme` as its storage key. DOM and storage writes
+are best effort: blocked storage, unavailable style access, or a missing document
+must not prevent application startup. The entry point reads `localStorage` and
+`matchMedia('(prefers-color-scheme: dark)')` once before mounting; a future shell
+control can call `applyTheme` when an explicit theme switcher is introduced.
+
+Theme CSS is split into stable, non-visual foundations:
+
+```text
+src/ui/foundations/
+  tokens.css
+  themes.css
+```
+
+`tokens.css` owns typography stacks, type scale, spacing, radii, borders,
+shadows, motion, control sizes, icon sizes, and layering. It deliberately has no
+global reset or element styling. `themes.css` maps semantic roles to concrete
+light and dark values. The current anchor palette is warm off-white surfaces and
+charcoal text in light mode (`#eee9df`, `#f8f4eb`, `#24201c`, `#1f7771`) and
+deep green-black surfaces with pale text in dark mode (`#111514`, `#1b211f`,
+`#edf1e9`, `#72b6a5`). Success, warning, danger, information, and focus use
+distinct semantic hues in both modes. Font stacks use system and locally
+available fallbacks; no remote font dependency is introduced.
+
+All production views still own their existing styles and do not consume these
+tokens yet. Page migration, a visible theme control, live system preference
+updates, component primitives, and Storybook remain later work.
 
 ## Localization Module
 

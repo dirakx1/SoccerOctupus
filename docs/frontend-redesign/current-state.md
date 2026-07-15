@@ -45,6 +45,23 @@ Competition Capability support without exposing shared registry state. It does
 not yet drive routes, navigation, views, or API requests. Existing World Cup
 views and endpoints remain the production behavior.
 
+## Theme Foundation
+
+`frontend/src/ui/foundations/tokens.css` and `themes.css` are loaded globally,
+while `frontend/src/ui/theme.js` initializes the effective theme before Vue
+mounts. The runtime supports `light`, `dark`, and `system` preferences, persists
+the normalized value under `socceroctopus.theme`, and sets the root `data-theme`
+attribute plus `color-scheme`. Startup safely reads local storage and the current
+`prefers-color-scheme` signal once; there is no visible selector or live system
+listener yet.
+
+The token layer defines semantic typography, spacing, radius, border, shadow,
+motion, control, icon, and layering values without a global reset. Theme values
+cover background, surfaces, text, borders, accent, focus, and distinct status
+roles for light and dark modes. Existing production views still use their
+page-local styles, so loading the foundation does not change their appearance
+until each view is migrated.
+
 ## Production Route Inventory
 
 | Route | Access | View or behavior | Current responsibility |

@@ -70,10 +70,26 @@ Deferred competition integration, owned by later migration phases:
 - Additional Competition Edition adapters only when their real requirements and
   data contracts are known.
 
+Implemented theme foundation:
+
+- Tournament Atlas semantic tokens for typography, spacing, radii, borders,
+  shadows, motion, controls, icons, layering, and semantic colors.
+- Light and dark theme maps with a `system` preference and a framework-independent
+  runtime that initializes before Vue mounts.
+- Best-effort preference persistence and root `data-theme`/`color-scheme`
+  updates, with focused tests for fallback and failure behavior.
+
+Deferred theme integration, owned by later migration phases:
+
+- Migrating production views and shared modules from page-local colors to
+  semantic tokens.
+- A visible theme control and live updates when the operating-system preference
+  changes.
+- Shared primitives, component states, and Storybook coverage in both themes.
+
 Deliverables:
 
 - Complete the remaining localization foundation listed above.
-- Tournament Atlas semantic tokens for light and dark themes.
 - Storybook with accessibility and interaction testing.
 - First UI primitives: button, icon button, input, select, tabs, dialog, notice,
   and skeleton.
