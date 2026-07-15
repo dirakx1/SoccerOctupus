@@ -1,7 +1,7 @@
 # Frontend Redesign Migration
 
 > Status: Proposed
-> Last reviewed: 2026-07-15
+> Last reviewed: 2026-07-16
 > Depends on: [Frontend Redesign Architecture](architecture.md)
 
 ## Migration Strategy
@@ -55,10 +55,24 @@ Remaining localization foundation:
 - Localized page content and a Locale switcher, which belong to later migration
   work.
 
+Implemented competition foundation:
+
+- Framework-independent Competition Edition registry and defensive lookup
+  interface.
+- FIFA World Cup 2026 configuration adapter with stable identifiers,
+  `group-and-knockout` format, and current-portal Competition Capabilities.
+
+Deferred competition integration, owned by later migration phases:
+
+- Competition-aware route context and capability-driven navigation.
+- Integration with production views and existing endpoint ownership as each
+  workflow migrates.
+- Additional Competition Edition adapters only when their real requirements and
+  data contracts are known.
+
 Deliverables:
 
 - Complete the remaining localization foundation listed above.
-- Competition registry, capability model, and World Cup 2026 adapter.
 - Tournament Atlas semantic tokens for light and dark themes.
 - Storybook with accessibility and interaction testing.
 - First UI primitives: button, icon button, input, select, tabs, dialog, notice,

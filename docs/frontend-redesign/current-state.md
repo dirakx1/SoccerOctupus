@@ -1,7 +1,7 @@
 # Current Frontend Baseline
 
 > Status: Current implementation
-> Last reviewed: 2026-07-15
+> Last reviewed: 2026-07-16
 > Source of truth: `frontend/src/`
 
 This document records the frontend behavior that exists before the Tournament
@@ -31,6 +31,19 @@ the document `lang` attribute. Blocked browser storage does not prevent startup.
 Only namespaced `common.localeName` messages exist. Production routes, navigation,
 views, authentication redirects, and API-generated narrative are not localized
 yet, and there is no Locale switcher. The current flat routes remain canonical.
+
+## Competition Registry
+
+`frontend/src/competition/` owns a framework-independent Competition Edition
+registry. It currently contains one record for FIFA World Cup 2026 with stable
+Competition and Competition Edition IDs, the `world-cup-2026` slug,
+`group-and-knockout` format, a display-name localization key, and the `groups`,
+`predictions`, `bracket`, and `markets` Competition Capabilities.
+
+The public interface lists Competition Editions, resolves one by slug, and checks
+Competition Capability support without exposing shared registry state. It does
+not yet drive routes, navigation, views, or API requests. Existing World Cup
+views and endpoints remain the production behavior.
 
 ## Production Route Inventory
 

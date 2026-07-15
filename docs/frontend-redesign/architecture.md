@@ -1,8 +1,8 @@
 # Frontend Redesign Architecture
 
-> Status: Tournament Atlas and the localization core are accepted; remaining
-> architecture is proposed
-> Last reviewed: 2026-07-15
+> Status: Tournament Atlas, the localization core, and the Competition registry
+> are accepted; remaining architecture is proposed
+> Last reviewed: 2026-07-16
 > Applies to: `frontend/` and frontend-facing competition data contracts
 
 ## Purpose
@@ -31,6 +31,7 @@ The client-approved visual direction is recorded in
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
 | Localization | Vue I18n Composition API with English fallback | Core implemented; routes and page content pending |
+| Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented; route, navigation, and view integration pending |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Proposed |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
@@ -79,21 +80,55 @@ Authentication redirects must preserve the full localized destination.
 
 ## Competition Module
 
-The Competition module hides registry lookup, capability validation, navigation,
-and current API adaptation behind a small interface.
+The Competition registry core is implemented as a framework-independent module:
 
 ```text
-getCompetitionEdition(slug) -> CompetitionEdition
-getCompetitionNavigation(edition, locale) -> NavigationItem[]
+src/competition/
+  index.js
+  editions/
+    worldCup2026.js
+```
+
+`index.js` is the public interface:
+
+```text
+listCompetitionEditions() -> CompetitionEdition[]
+getCompetitionEdition(slug) -> CompetitionEdition | null
 supportsCapability(edition, capability) -> boolean
 ```
 
-An edition record includes a stable slug, Competition identity, display-name key,
-format, date range, and capabilities. Example capabilities are `groups`, `table`,
-`fixtures`, `predictions`, `bracket`, and `markets`.
+Listing and lookup return defensive copies, so callers cannot mutate shared
+registry state. Lookup returns `null` for blank or unknown slugs. Capability
+checks return `false` for invalid Competition Editions and capabilities and use
+the registered record rather than trusting caller-mutated capability lists.
 
-The initial World Cup adapter may call existing endpoints. Future backend work can
-introduce competition-scoped endpoints without changing view interfaces.
+`worldCup2026.js` is the first Competition Edition configuration adapter:
+
+| Field | Value |
+|---|---|
+| Competition Edition ID | `fifa-world-cup-2026` |
+| Competition ID | `fifa-world-cup` |
+| Slug | `world-cup-2026` |
+| Competition Format | `group-and-knockout` |
+| Display-name key | `competitions.editions.worldCup2026.name` |
+| Competition Capabilities | `groups`, `predictions`, `bracket`, `markets` |
+
+The capabilities match current production workflows. `groups` maps to the group
+roster, `predictions` to Match Prediction, `bracket` to the existing combined
+Tournament view and Tournament Simulation, and `markets` to Market Questions.
+`table` is excluded because the glossary reserves League Table for league-format
+Competition Editions. `fixtures` is excluded because the current portal has no
+fixtures workflow. A Competition overview is common workspace context rather
+than an optional capability.
+
+No exact date range is stored yet. Add verified dates only when a schedule-aware
+consumer requires them. The display-name key also remains unconsumed until the
+competition UI introduces the `competitions` localization domain.
+
+The registry does not fetch data, build navigation, change routes, or adapt API
+requests. Current views retain their existing endpoint calls. Navigation and
+endpoint/view integration are later migration work; do not add a speculative
+data-fetching seam before a second real adapter requires one.
 
 ## Localization Module
 
