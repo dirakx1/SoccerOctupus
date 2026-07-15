@@ -19,6 +19,19 @@ Signed-in navigation exposes Home, Groups, Predict Match, Tournament, Markets,
 Pricing, Profile through the account menu, and Admin for administrators. Public
 navigation exposes Home, Pricing, Sign In, and Sign Up.
 
+## Localization Core
+
+`frontend/src/i18n/` owns the current localization interface. Vue I18n runs in
+Composition API mode with supported Locales `en` and `es` and English fallback.
+At startup, the frontend resolves a saved preference, then supported browser
+preferences, then English; an explicit Locale has higher priority when a caller
+provides one. Applying a Locale persists it when storage is available and updates
+the document `lang` attribute. Blocked browser storage does not prevent startup.
+
+Only namespaced `common.localeName` messages exist. Production routes, navigation,
+views, authentication redirects, and API-generated narrative are not localized
+yet, and there is no Locale switcher. The current flat routes remain canonical.
+
 ## Production Route Inventory
 
 | Route | Access | View or behavior | Current responsibility |

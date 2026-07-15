@@ -36,10 +36,28 @@ Exit criteria:
 
 ## Phase 1: Platform Foundations
 
+Status: In progress. The localization core is implemented, but Phase 1 is not
+complete.
+
+Implemented localization foundation:
+
+- Vue I18n Composition API plugin with `en` and `es` support and English fallback.
+- Explicit, saved, browser-preference, and fallback Locale resolution.
+- Best-effort preference persistence and document-language updates.
+- Namespaced `common` resources and automated tests for the public localization
+  interface.
+
+Remaining localization foundation:
+
+- URL Locale parsing and localized route integration.
+- Production message domains added alongside their first translated consumers.
+- Translation completeness and locale-formatting tests.
+- Localized page content and a Locale switcher, which belong to later migration
+  work.
+
 Deliverables:
 
-- Vue I18n bootstrap with English and Spanish locale loading.
-- Locale route parsing, persistence, fallback, and document-language updates.
+- Complete the remaining localization foundation listed above.
 - Competition registry, capability model, and World Cup 2026 adapter.
 - Tournament Atlas semantic tokens for light and dark themes.
 - Storybook with accessibility and interaction testing.

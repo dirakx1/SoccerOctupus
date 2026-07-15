@@ -1,6 +1,7 @@
 # Frontend Redesign Architecture
 
-> Status: Proposed, except for the accepted Tournament Atlas direction
+> Status: Tournament Atlas and the localization core are accepted; remaining
+> architecture is proposed
 > Last reviewed: 2026-07-15
 > Applies to: `frontend/` and frontend-facing competition data contracts
 
@@ -26,17 +27,18 @@ The client-approved visual direction is recorded in
 
 ## Decision Status
 
-| Concern | Proposed direction | Status |
+| Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Proposed |
+| Localization | Vue I18n Composition API with English fallback | Core implemented; routes and page content pending |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Proposed |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
 | Component catalogue | Storybook for Vue 3 and Vite | Proposed |
 | Styling migration | Keep Vue scoped CSS; introduce global tokens and foundations | Proposed |
 
-No proposed dependency should be installed until this architecture is approved.
+Vue I18n is approved and installed. Other proposed dependencies remain
+unapproved and must not be installed until their architecture is accepted.
 
 ## Route Model
 
@@ -95,8 +97,11 @@ introduce competition-scoped endpoints without changing view interfaces.
 
 ## Localization Module
 
-Use Vue I18n in Composition API mode (`legacy: false`). Locale resources are
-loaded by product domain instead of stored in one growing file:
+The localization core is implemented with Vue I18n 11.4.6 in Composition API
+mode (`legacy: false`). The frontend declares Node.js 22 or newer because that is
+the installed release's runtime requirement.
+
+Current structure:
 
 ```text
 src/i18n/
@@ -105,35 +110,40 @@ src/i18n/
   locales/
     en/
       common.json
-      navigation.json
-      competitions.json
-      predictions.json
-      markets.json
-      auth.json
-      billing.json
-      errors.json
     es/
       common.json
-      navigation.json
-      competitions.json
-      predictions.json
-      markets.json
-      auth.json
-      billing.json
-      errors.json
 ```
 
-Rules:
+`index.js` is the public interface:
 
-- English is the fallback locale; missing Spanish messages fail CI.
+| Export | Behavior |
+|---|---|
+| `normalizeLocale(value)` | Converts supported regional forms such as `es-MX` to `es`; returns `null` for unsupported input. |
+| `resolveLocale(options)` | Resolves explicit input, saved preference, supported browser preferences, then English. |
+| `applyLocale(locale, dependencies)` | Applies a normalized Locale, persists it when storage is available, and updates the injected document element. |
+| `initializeLocale(options)` | Reads the saved preference safely, resolves the startup Locale, and applies it. |
+| `i18n` | Vue I18n plugin configured with `en` and `es`, English fallback, and namespaced messages. |
+
+The application entry point initializes the Locale from saved and browser
+preferences and installs the plugin. URL Locale input is not connected until
+localized routing is implemented. Browser-storage failures do not prevent startup
+or document-language updates.
+
+Only the `common` domain exists today because no production view has been
+translated. Add another domain file in both Locales when its first real consumer
+is migrated; do not create empty resource files in advance.
+
+Pending localization rules:
+
 - Use locale-aware date, number, percentage, and currency formatting.
 - Translation keys describe meaning, not English wording.
+- Missing Spanish messages fail CI once production message domains are added.
 - Components receive IDs, values, and error codes rather than preformatted English.
 - API errors use stable codes that map to localized frontend messages.
 - Match Prediction requests include locale for Swarm Consensus and key factors.
 - Cached generated narrative is keyed by locale.
 - Team and Competition display names are resolved from stable IDs or codes.
-- The document language and localized metadata change with the route locale.
+- Localized metadata changes with the route Locale.
 
 The implementation should follow the official Vue I18n
 [Composition API](https://vue-i18n.intlify.dev/guide/advanced/composition) and
@@ -242,8 +252,7 @@ The frontend must not parse English display strings to recover domain state.
 
 ## Open Decisions
 
-- Approve Vue I18n, Reka UI, and Storybook as foundation dependencies.
+- Approve Reka UI and Storybook as foundation dependencies.
 - Confirm whether English receives an explicit `/en` prefix at cutover.
-- Confirm generic Spanish (`es`) or a regional locale such as `es-ES`.
 - Decide whether Team names are localized by the backend or frontend catalogue.
 - Decide whether public competition pages require translated path aliases for SEO.
