@@ -1,6 +1,7 @@
 <template>
   <AppShell
     :edition="activeEdition"
+    :editions="competitionEditions"
     :navigation="competitionNavigation"
     :home-location="homeLocation"
     :locale="currentLocale"
@@ -16,6 +17,7 @@
     :mobile-menu-open="mobileMenuOpen"
     :user-menu-open="userMenuOpen"
     @close-menus="closeMenus"
+    @edition-change="changeEdition"
     @locale-change="changeLocale"
     @sign-out="signOut"
     @theme-change="changeTheme"
@@ -104,7 +106,8 @@ const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 const browserStorage = getBrowserStorage()
-const defaultEdition = listCompetitionEditions()[0]
+const competitionEditions = listCompetitionEditions()
+const defaultEdition = competitionEditions[0]
 const userMenuOpen = ref(false)
 const mobileMenuOpen = ref(false)
 const authRecoveryError = ref('')
@@ -181,6 +184,17 @@ function closeMenus() {
 async function changeLocale(value) {
   const nextLocation = workspaceLocaleLocation(route, value)
   if (nextLocation) await router.push(nextLocation)
+}
+
+async function changeEdition(edition) {
+  if (!isWorkspaceRoute.value || !route.name || !edition?.slug) return
+
+  await router.push({
+    name: route.name,
+    params: { ...route.params, competitionEditionSlug: edition.slug },
+    query: route.query,
+    hash: route.hash,
+  })
 }
 
 watch(() => route.fullPath, closeMenus)

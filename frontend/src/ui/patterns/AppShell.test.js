@@ -13,6 +13,7 @@ const RouterLink = {
 
 const props = {
   edition: worldCup2026,
+  editions: [worldCup2026],
   navigation: getCompetitionNavigation(worldCup2026, { locale: 'en' }),
   homeLocation: { name: 'competition-workspace-overview' },
   locale: 'en',
@@ -37,13 +38,14 @@ describe('AppShell', () => {
       global: { plugins: [i18n], stubs: { RouterLink } },
     })
 
-    expect(wrapper.find('[data-testid="competition-context"]').text()).toContain('Copa Mundial de la FIFA 2026')
+    expect(wrapper.find('[data-testid="competition-toggle"]').text()).toContain('Copa Mundial de la FIFA 2026')
     expect(wrapper.find('[data-testid="page-content"]').text()).toBe('Groups page')
     expect(wrapper.find('footer').text()).toContain('Aviso legal')
     expect(wrapper.find('footer').text()).toContain('Política de cookies')
   })
 
   it('keeps recovery, billing, and cookie regions as explicit slots', () => {
+    applyLocale('en')
     const wrapper = mount(AppShell, {
       props,
       slots: {

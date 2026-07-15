@@ -2,6 +2,7 @@
   <div class="atlas-app-shell">
     <CompetitionShell
       :edition="edition"
+      :editions="editions"
       :navigation="navigation"
       :home-location="homeLocation"
       :locale="locale"
@@ -17,6 +18,7 @@
       :mobile-menu-open="mobileMenuOpen"
       :user-menu-open="userMenuOpen"
       @close-menus="emit('close-menus')"
+      @edition-change="(value) => emit('edition-change', value)"
       @locale-change="(value) => emit('locale-change', value)"
       @sign-out="emit('sign-out')"
       @theme-change="(value) => emit('theme-change', value)"
@@ -52,6 +54,7 @@ import CompetitionShell from './CompetitionShell.vue'
 
 defineProps({
   edition: { type: Object, required: true },
+  editions: { type: Array, default: () => [] },
   navigation: { type: Array, default: () => [] },
   homeLocation: { type: [String, Object], required: true },
   locale: { type: String, default: 'en' },
@@ -70,6 +73,7 @@ defineProps({
 
 const emit = defineEmits([
   'close-menus',
+  'edition-change',
   'locale-change',
   'sign-out',
   'theme-change',

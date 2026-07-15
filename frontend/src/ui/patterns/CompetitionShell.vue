@@ -1,50 +1,155 @@
 <template>
-  <header class="competition-shell" :data-effective-theme="effectiveTheme">
+  <header ref="shellRef" class="competition-shell" :data-effective-theme="effectiveTheme">
     <div class="shell-bar">
-      <router-link :to="homeLocation" class="shell-brand" @click="emit('close-menus')">
-        <span class="shell-mark" aria-hidden="true">SO</span>
-        <span class="shell-brand-copy">
-          <strong>{{ t('navigation.brand.name') }}</strong>
-          <small>{{ t('navigation.brand.strapline') }}</small>
-        </span>
-      </router-link>
+      <div class="shell-identity">
+        <router-link :to="homeLocation" class="shell-brand" @click="emit('close-menus')">
+          <img data-testid="brand-mark" class="shell-mark" src="/favicon.svg" alt="" />
+          <span class="shell-brand-copy">
+            <strong>{{ t('navigation.brand.name') }}</strong>
+          </span>
+        </router-link>
 
-      <div class="competition-context" data-testid="competition-context">
-        <span>{{ t('navigation.competition.label') }}</span>
-        <strong>{{ t(edition.displayNameKey) }}</strong>
+        <div class="competition-context">
+          <button
+            data-testid="competition-toggle"
+            class="competition-toggle"
+            type="button"
+            aria-haspopup="menu"
+            :aria-expanded="competitionMenuOpen"
+            :aria-label="t('navigation.controls.competitionMenu')"
+            :title="t('navigation.controls.competitionMenu')"
+            @click="toggleMenu('competition')"
+          >
+            <strong>{{ t(edition.displayNameKey) }}</strong>
+            <ChevronDown :size="15" aria-hidden="true" />
+          </button>
+          <div v-if="competitionMenuOpen" data-testid="competition-menu" class="header-menu competition-menu" role="menu">
+            <button
+              v-for="registeredEdition in editions"
+              :key="registeredEdition.id"
+              :data-testid="`competition-option-${registeredEdition.slug}`"
+              type="button"
+              role="menuitemradio"
+              :aria-checked="registeredEdition.slug === edition.slug"
+              @click="selectEdition(registeredEdition)"
+            >
+              <Trophy :size="15" aria-hidden="true" />
+              <span>{{ t(registeredEdition.displayNameKey) }}</span>
+              <Check v-if="registeredEdition.slug === edition.slug" :size="15" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="shell-controls">
-        <label v-if="workspaceRoute" class="shell-select">
-          <Globe2 :size="15" aria-hidden="true" />
-          <span class="sr-only">{{ t('navigation.controls.language') }}</span>
-          <select
-            data-testid="locale-control"
-            :aria-label="t('navigation.controls.language')"
-            :value="locale"
-            @change="emit('locale-change', $event.target.value)"
+      <nav
+        id="competition-navigation"
+        data-testid="workspace-navigation"
+        class="workspace-navigation"
+        :class="{ 'is-open': mobileMenuOpen }"
+      >
+        <template v-if="signedIn">
+          <router-link
+            v-for="item in navigation"
+            :key="item.key"
+            :to="item.route"
+            class="workspace-link"
+            @click="emit('close-menus')"
           >
-            <option value="en">EN</option>
-            <option value="es">ES</option>
-          </select>
-        </label>
+            <span>{{ t(item.labelKey) }}</span>
+          </router-link>
+          <router-link to="/pricing" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
+            <span>{{ t('navigation.public.pricing') }}</span>
+          </router-link>
+          <router-link v-if="isAdmin" to="/admin/settings" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
+            <span>{{ t('navigation.account.admin') }}</span>
+          </router-link>
+        </template>
+        <template v-else>
+          <router-link :to="homeLocation" class="workspace-link" @click="emit('close-menus')">
+            <span>{{ t('navigation.workspace.overview') }}</span>
+          </router-link>
+          <router-link to="/pricing" class="workspace-link" @click="emit('close-menus')">
+            <span>{{ t('navigation.public.pricing') }}</span>
+          </router-link>
+          <router-link to="/sign-in" class="workspace-link" @click="emit('close-menus')">
+            <span>{{ t('navigation.public.signIn') }}</span>
+          </router-link>
+          <router-link to="/sign-up" class="workspace-link workspace-link-primary" @click="emit('close-menus')">
+            <span>{{ t('navigation.public.signUp') }}</span>
+          </router-link>
+        </template>
+      </nav>
 
-        <label class="shell-select">
-          <Sun v-if="themePreference === 'light'" :size="15" aria-hidden="true" />
-          <Moon v-else-if="themePreference === 'dark'" :size="15" aria-hidden="true" />
-          <Monitor v-else :size="15" aria-hidden="true" />
-          <span class="sr-only">{{ t('navigation.controls.theme') }}</span>
-          <select
-            data-testid="theme-control"
-            :aria-label="t('navigation.controls.theme')"
-            :value="themePreference"
-            @change="emit('theme-change', $event.target.value)"
+      <div class="shell-controls">
+        <div v-if="workspaceRoute" class="header-menu-control">
+          <button
+            data-testid="locale-toggle"
+            class="icon-menu-toggle"
+            type="button"
+            aria-haspopup="menu"
+            :aria-expanded="localeMenuOpen"
+            :aria-label="t('navigation.controls.languageMenu')"
+            :title="t('navigation.controls.languageMenu')"
+            @click="toggleMenu('locale')"
           >
-            <option value="light">{{ t('navigation.controls.themeLight') }}</option>
-            <option value="dark">{{ t('navigation.controls.themeDark') }}</option>
-            <option value="system">{{ t('navigation.controls.themeSystem') }}</option>
-          </select>
-        </label>
+            <Globe2 :size="17" aria-hidden="true" />
+            <span>{{ locale.toUpperCase() }}</span>
+          </button>
+          <div v-if="localeMenuOpen" data-testid="locale-menu" class="header-menu control-menu" role="menu">
+            <button
+              data-testid="locale-option-en"
+              type="button"
+              role="menuitemradio"
+              :aria-checked="locale === 'en'"
+              @click="selectLocale('en')"
+            >
+              <Globe2 :size="15" aria-hidden="true" />
+              <span>{{ t('navigation.controls.localeEnglish') }}</span>
+              <Check v-if="locale === 'en'" :size="15" aria-hidden="true" />
+            </button>
+            <button
+              data-testid="locale-option-es"
+              type="button"
+              role="menuitemradio"
+              :aria-checked="locale === 'es'"
+              @click="selectLocale('es')"
+            >
+              <Globe2 :size="15" aria-hidden="true" />
+              <span>{{ t('navigation.controls.localeSpanish') }}</span>
+              <Check v-if="locale === 'es'" :size="15" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <div class="header-menu-control">
+          <button
+            data-testid="theme-toggle"
+            class="icon-menu-toggle"
+            type="button"
+            aria-haspopup="menu"
+            :aria-expanded="themeMenuOpen"
+            :aria-label="themeButtonLabel"
+            :title="themeButtonLabel"
+            @click="toggleMenu('theme')"
+          >
+            <component :is="themeIcon(effectiveTheme)" :size="17" aria-hidden="true" />
+          </button>
+          <div v-if="themeMenuOpen" data-testid="theme-menu" class="header-menu control-menu" role="menu">
+            <button
+              v-for="option in themeOptions"
+              :key="option.value"
+              :data-testid="`theme-option-${option.value}`"
+              type="button"
+              role="menuitemradio"
+              :aria-checked="themePreference === option.value"
+              @click="selectTheme(option.value)"
+            >
+              <component :is="option.icon" :size="15" aria-hidden="true" />
+              <span>{{ t(option.labelKey) }}</span>
+              <Check v-if="themePreference === option.value" :size="15" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
 
         <div v-if="signedIn" class="account-control">
           <button
@@ -90,83 +195,29 @@
         </button>
       </div>
     </div>
-
-    <div class="shell-subbar">
-      <span class="shell-rule" aria-hidden="true"></span>
-      <nav
-        id="competition-navigation"
-        data-testid="workspace-navigation"
-        class="workspace-navigation"
-        :class="{ 'is-open': mobileMenuOpen }"
-        :aria-label="t('navigation.competition.label')"
-      >
-        <template v-if="signedIn">
-          <router-link
-            v-for="item in navigation"
-            :key="item.key"
-            :to="item.route"
-            class="workspace-link"
-            @click="emit('close-menus')"
-          >
-            <component :is="iconFor(item.key)" :size="15" aria-hidden="true" />
-            <span>{{ t(item.labelKey) }}</span>
-          </router-link>
-          <router-link to="/pricing" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
-            <CreditCard :size="15" aria-hidden="true" />
-            <span>{{ t('navigation.public.pricing') }}</span>
-          </router-link>
-          <router-link v-if="isAdmin" to="/admin/settings" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
-            <ShieldCheck :size="15" aria-hidden="true" />
-            <span>{{ t('navigation.account.admin') }}</span>
-          </router-link>
-        </template>
-        <template v-else>
-          <router-link :to="homeLocation" class="workspace-link" @click="emit('close-menus')">
-            <Compass :size="15" aria-hidden="true" />
-            <span>{{ t('navigation.workspace.overview') }}</span>
-          </router-link>
-          <router-link to="/pricing" class="workspace-link" @click="emit('close-menus')">
-            <CreditCard :size="15" aria-hidden="true" />
-            <span>{{ t('navigation.public.pricing') }}</span>
-          </router-link>
-          <router-link to="/sign-in" class="workspace-link" @click="emit('close-menus')">
-            <LogIn :size="15" aria-hidden="true" />
-            <span>{{ t('navigation.public.signIn') }}</span>
-          </router-link>
-          <router-link to="/sign-up" class="workspace-link workspace-link-primary" @click="emit('close-menus')">
-            <UserPlus :size="15" aria-hidden="true" />
-            <span>{{ t('navigation.public.signUp') }}</span>
-          </router-link>
-        </template>
-      </nav>
-    </div>
   </header>
 </template>
 
 <script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  Activity,
-  BarChart3,
+  Check,
   ChevronDown,
-  Compass,
-  CreditCard,
   Globe2,
-  LayoutGrid,
-  LogIn,
   LogOut,
   Menu,
-  Monitor,
   Moon,
-  ShieldCheck,
+  Monitor,
   Sun,
-  UserPlus,
+  Trophy,
   UserRound,
   X,
 } from '@lucide/vue'
 
-defineProps({
+const props = defineProps({
   edition: { type: Object, required: true },
+  editions: { type: Array, default: () => [] },
   navigation: { type: Array, default: () => [] },
   homeLocation: { type: [String, Object], required: true },
   locale: { type: String, default: 'en' },
@@ -185,6 +236,7 @@ defineProps({
 
 const emit = defineEmits([
   'close-menus',
+  'edition-change',
   'locale-change',
   'sign-out',
   'theme-change',
@@ -193,18 +245,69 @@ const emit = defineEmits([
 ])
 
 const { t } = useI18n()
-const iconByKey = {
-  overview: Compass,
-  groups: LayoutGrid,
-  predict: Activity,
-  bracket: BarChart3,
-  markets: BarChart3,
+const shellRef = ref(null)
+const localeMenuOpen = ref(false)
+const themeMenuOpen = ref(false)
+const competitionMenuOpen = ref(false)
+const themeOptions = [
+  { value: 'light', labelKey: 'navigation.controls.themeLight', icon: Sun },
+  { value: 'dark', labelKey: 'navigation.controls.themeDark', icon: Moon },
+  { value: 'system', labelKey: 'navigation.controls.themeSystem', icon: Monitor },
+]
+
+const themeButtonLabel = computed(() => (
+  `${t('navigation.controls.themeMenu')}: ${t(`navigation.controls.theme${props.effectiveTheme.charAt(0).toUpperCase()}${props.effectiveTheme.slice(1)}`)}`
+))
+
+function themeIcon(value) {
+  if (value === 'dark') return Moon
+  if (value === 'system') return Monitor
+  return Sun
 }
 
-function iconFor(key) {
-  return iconByKey[key] || Compass
+function closeHeaderMenus() {
+  localeMenuOpen.value = false
+  themeMenuOpen.value = false
+  competitionMenuOpen.value = false
 }
 
+function toggleMenu(menu) {
+  const nextValue = menu === 'locale'
+    ? !localeMenuOpen.value
+    : menu === 'theme'
+      ? !themeMenuOpen.value
+      : !competitionMenuOpen.value
+
+  closeHeaderMenus()
+  if (menu === 'locale') localeMenuOpen.value = nextValue
+  if (menu === 'theme') themeMenuOpen.value = nextValue
+  if (menu === 'competition') competitionMenuOpen.value = nextValue
+}
+
+function selectLocale(value) {
+  closeHeaderMenus()
+  emit('locale-change', value)
+}
+
+function selectTheme(value) {
+  closeHeaderMenus()
+  emit('theme-change', value)
+}
+
+function selectEdition(value) {
+  closeHeaderMenus()
+  emit('edition-change', value)
+}
+
+function handleDocumentClick(event) {
+  if (!shellRef.value?.contains(event.target)) {
+    closeHeaderMenus()
+    emit('close-menus')
+  }
+}
+
+onMounted(() => document.addEventListener('click', handleDocumentClick))
+onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick))
 </script>
 
 <style scoped>
@@ -216,19 +319,23 @@ function iconFor(key) {
   z-index: var(--z-sticky);
 }
 
-.shell-bar,
-.shell-subbar {
+.shell-bar {
+  align-items: center;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(13rem, auto) minmax(0, 1fr) auto;
   margin: 0 auto;
   max-width: var(--content-max-width);
+  min-height: 4.5rem;
+  padding: var(--space-3) var(--space-6);
   width: 100%;
 }
 
-.shell-bar {
+.shell-identity {
   align-items: center;
   display: flex;
-  gap: var(--space-6);
-  min-height: 4.5rem;
-  padding: var(--space-3) var(--space-6);
+  gap: var(--space-4);
+  min-width: 0;
 }
 
 .shell-brand {
@@ -243,9 +350,11 @@ function iconFor(key) {
 
 .shell-brand:focus-visible,
 .workspace-link:focus-visible,
+.icon-menu-toggle:focus-visible,
+.competition-toggle:focus-visible,
 .account-toggle:focus-visible,
 .mobile-menu-toggle:focus-visible,
-.shell-select:focus-within,
+.header-menu button:focus-visible,
 .account-menu a:focus-visible,
 .account-menu button:focus-visible {
   outline: var(--border-width-strong) solid var(--color-focus);
@@ -253,23 +362,10 @@ function iconFor(key) {
 }
 
 .shell-mark {
-  align-items: center;
-  background: var(--color-accent);
-  color: var(--color-accent-contrast);
-  display: inline-flex;
-  font-family: var(--font-family-data);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
+  display: block;
   height: 2rem;
-  justify-content: center;
-  letter-spacing: 0;
+  object-fit: contain;
   width: 2rem;
-}
-
-.shell-brand-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
 }
 
 .shell-brand-copy strong {
@@ -280,27 +376,31 @@ function iconFor(key) {
   line-height: var(--line-height-tight);
 }
 
-.shell-brand-copy small,
-.competition-context span {
-  color: var(--color-text-muted);
-  font-family: var(--font-family-data);
-  font-size: var(--font-size-xs);
-  letter-spacing: 0;
-  text-transform: uppercase;
+.competition-context,
+.header-menu-control,
+.account-control {
+  position: relative;
 }
 
-.competition-context {
-  border-left: var(--border-width-thin) solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  min-width: 0;
-  padding-left: var(--space-5);
+.competition-context { min-width: 0; }
+
+.competition-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  gap: var(--space-2);
+  max-width: 15rem;
+  min-height: var(--control-height-md);
+  padding: 0 var(--space-2);
+  text-align: left;
 }
 
-.competition-context strong {
+.competition-toggle strong {
   font-family: var(--font-family-display);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -311,34 +411,10 @@ function iconFor(key) {
   align-items: center;
   display: flex;
   gap: var(--space-2);
-  margin-left: auto;
+  justify-content: flex-end;
 }
 
-.shell-select {
-  align-items: center;
-  color: var(--color-text-muted);
-  display: inline-flex;
-  gap: var(--space-1);
-  min-height: var(--control-height-md);
-}
-
-.shell-select select {
-  appearance: none;
-  background: var(--color-surface-raised);
-  border: var(--border-width-thin) solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text);
-  cursor: pointer;
-  font: var(--font-weight-semibold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data);
-  min-height: var(--control-height-md);
-  min-width: 3.5rem;
-  padding: 0 var(--space-2);
-}
-
-.shell-select select:hover { border-color: var(--color-border-strong); }
-
-.account-control { position: relative; }
-
+.icon-menu-toggle,
 .account-toggle,
 .mobile-menu-toggle {
   align-items: center;
@@ -351,10 +427,17 @@ function iconFor(key) {
   min-height: var(--control-height-md);
 }
 
-.account-toggle {
-  gap: var(--space-2);
+.icon-menu-toggle {
+  gap: var(--space-1);
+  min-width: var(--control-height-md);
   padding: 0 var(--space-2);
 }
+
+.icon-menu-toggle span {
+  font: var(--font-weight-semibold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data);
+}
+
+.account-toggle { gap: var(--space-2); padding: 0 var(--space-2); }
 
 .account-toggle img,
 .account-toggle > span {
@@ -370,6 +453,41 @@ function iconFor(key) {
   object-fit: cover;
   width: 1.5rem;
 }
+
+.header-menu {
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  min-width: 12rem;
+  padding: var(--space-2);
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-2));
+  z-index: var(--z-dropdown);
+}
+
+.competition-menu { left: 0; right: auto; }
+
+.header-menu button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body);
+  gap: var(--space-2);
+  min-height: var(--control-height-md);
+  padding: 0 var(--space-2);
+  text-align: left;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.header-menu button span { flex: 1; }
+.header-menu button:hover { background: var(--color-surface-inset); }
 
 .account-menu {
   background: var(--color-surface-raised);
@@ -419,15 +537,13 @@ function iconFor(key) {
 
 .mobile-menu-toggle { display: none; padding: 0 var(--space-2); }
 
-.shell-subbar { padding: 0 var(--space-6); }
-.shell-rule { border-top: var(--border-width-thin) solid var(--color-border); display: block; }
-
 .workspace-navigation {
   align-items: center;
   display: flex;
   gap: var(--space-1);
-  min-height: 3.25rem;
+  min-width: 0;
   overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .workspace-link {
@@ -438,9 +554,8 @@ function iconFor(key) {
   flex: 0 0 auto;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  gap: var(--space-2);
   min-height: 3.25rem;
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-2);
   text-decoration: none;
   transition: background-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard), border-color var(--duration-fast) var(--easing-standard);
 }
@@ -455,42 +570,40 @@ function iconFor(key) {
 .workspace-link-secondary { color: var(--color-text-subtle); }
 .workspace-link-primary { color: var(--color-accent); }
 
-.sr-only {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+@media (max-width: 1080px) {
+  .shell-bar { gap: var(--space-2); padding-left: var(--space-4); padding-right: var(--space-4); }
+  .shell-identity { gap: var(--space-2); }
+  .competition-toggle { max-width: 12rem; }
+  .workspace-link { padding-left: var(--space-1); padding-right: var(--space-1); }
 }
 
 @media (max-width: 820px) {
-  .shell-bar { gap: var(--space-3); padding: var(--space-3) var(--space-4); }
-  .competition-context { border-left: 0; display: flex; flex: 1; min-width: 6rem; padding-left: 0; }
-  .competition-context span { display: none; }
-  .shell-subbar { padding: 0 var(--space-4); }
-  .mobile-menu-toggle { display: inline-flex; }
+  .shell-bar { grid-template-columns: minmax(0, 1fr) auto; }
+  .shell-identity { min-width: 0; }
+  .competition-toggle { max-width: 12rem; }
   .workspace-navigation {
     align-items: stretch;
     background: var(--color-surface-raised);
+    border-top: var(--border-width-thin) solid var(--color-border);
     display: none;
     flex-direction: column;
     gap: 0;
+    grid-column: 1 / -1;
     padding: var(--space-2) 0 var(--space-3);
   }
   .workspace-navigation.is-open { display: flex; }
   .workspace-link { min-height: var(--control-height-lg); padding: 0 var(--space-2); }
   .workspace-link:hover,
   .workspace-link.router-link-active { border-left: var(--border-width-strong) solid var(--color-accent); border-bottom-color: transparent; }
+  .mobile-menu-toggle { display: inline-flex; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 560px) {
+  .shell-bar { gap: var(--space-2); padding: var(--space-3) var(--space-4); }
   .shell-brand-copy { display: none; }
-  .shell-bar { gap: var(--space-2); }
-  .competition-context strong { font-size: var(--font-size-xs); }
+  .competition-toggle { max-width: 10rem; padding-left: 0; }
+  .icon-menu-toggle span { display: none; }
+  .shell-controls { gap: var(--space-1); }
 }
 
 @media (prefers-reduced-motion: reduce) {

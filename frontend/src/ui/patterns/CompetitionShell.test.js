@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import { describe, expect, it } from 'vitest'
 
 import { i18n, applyLocale } from '../../i18n/index.js'
@@ -13,6 +14,7 @@ const RouterLink = {
 
 const baseProps = {
   edition: worldCup2026,
+  editions: [worldCup2026],
   navigation: getCompetitionNavigation(worldCup2026, { locale: 'en' }),
   homeLocation: { name: 'competition-workspace-overview' },
   locale: 'en',
@@ -30,8 +32,10 @@ const baseProps = {
 }
 
 function mountShell(props = {}) {
+  const resolvedProps = { ...baseProps, ...props }
+  applyLocale(resolvedProps.locale)
   return mount(CompetitionShell, {
-    props: { ...baseProps, ...props },
+    props: resolvedProps,
     global: { plugins: [i18n], stubs: { RouterLink } },
   })
 }
@@ -41,9 +45,14 @@ describe('CompetitionShell', () => {
     applyLocale('en')
     const wrapper = mountShell()
 
-    expect(wrapper.find('[data-testid="competition-context"]').text()).toContain('FIFA World Cup 2026')
+    expect(wrapper.find('[data-testid="competition-toggle"]').text()).toContain('FIFA World Cup 2026')
+    expect(wrapper.find('[data-testid="brand-mark"]').attributes('src')).toBe('/favicon.svg')
+    expect(wrapper.find('.shell-brand-copy small').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="competition-context-label"]').exists()).toBe(false)
     expect(wrapper.find('[data-testid="workspace-navigation"]').text()).toContain('Overview')
     expect(wrapper.find('[data-testid="workspace-navigation"]').text()).toContain('Bracket')
+    expect(wrapper.find('[data-testid="workspace-navigation"] svg').exists()).toBe(false)
+    expect(wrapper.find('.shell-subbar').exists()).toBe(false)
     expect(wrapper.text()).toContain('AM')
     expect(wrapper.text()).toContain('Admin')
   })
@@ -61,6 +70,11 @@ describe('CompetitionShell', () => {
     expect(wrapper.text()).toContain('Iniciar sesión')
     expect(wrapper.find('[data-testid="mobile-menu-toggle"]').attributes('aria-expanded')).toBe('false')
     expect(wrapper.find('[data-testid="account-menu-toggle"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="locale-control"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="theme-control"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="locale-toggle"]').text()).toContain('ES')
+    expect(wrapper.find('[data-testid="locale-toggle"]').attributes('aria-haspopup')).toBe('menu')
+    expect(wrapper.find('[data-testid="theme-toggle"]').attributes('title')).toContain('Cambiar tema')
   })
 
   it('emits mobile and account menu actions with expanded state', async () => {
@@ -79,10 +93,45 @@ describe('CompetitionShell', () => {
   it('emits locale and theme preference changes from keyboard-selectable controls', async () => {
     const wrapper = mountShell()
 
-    await wrapper.find('[data-testid="locale-control"]').setValue('es')
-    await wrapper.find('[data-testid="theme-control"]').setValue('dark')
+    await wrapper.find('[data-testid="locale-toggle"]').trigger('click')
+    expect(wrapper.find('[data-testid="locale-toggle"]').attributes('aria-expanded')).toBe('true')
+    expect(wrapper.find('[data-testid="locale-menu"]').text()).toContain('English')
+    expect(wrapper.find('[data-testid="locale-menu"]').text()).toContain('Español')
+    await wrapper.find('[data-testid="locale-option-es"]').trigger('click')
+
+    await wrapper.find('[data-testid="theme-toggle"]').trigger('click')
+    expect(wrapper.find('[data-testid="theme-toggle"]').attributes('aria-haspopup')).toBe('menu')
+    expect(wrapper.find('[data-testid="theme-menu"]').text()).toContain('Light')
+    expect(wrapper.find('[data-testid="theme-menu"]').text()).toContain('System')
+    await wrapper.find('[data-testid="theme-option-dark"]').trigger('click')
 
     expect(wrapper.emitted('locale-change')).toEqual([['es']])
     expect(wrapper.emitted('theme-change')).toEqual([['dark']])
+  })
+
+  it('opens a registered Competition Edition menu without inventing editions', async () => {
+    const wrapper = mountShell()
+
+    await wrapper.find('[data-testid="competition-toggle"]').trigger('click')
+
+    expect(wrapper.find('[data-testid="competition-menu"]').text()).toContain('FIFA World Cup 2026')
+    expect(wrapper.findAll('[data-testid^="competition-option-"]')).toHaveLength(1)
+    expect(wrapper.find('[data-testid="competition-toggle"]').attributes('aria-expanded')).toBe('true')
+
+    await wrapper.find('[data-testid="competition-option-world-cup-2026"]').trigger('click')
+    expect(wrapper.emitted('edition-change')).toEqual([[worldCup2026]])
+    expect(wrapper.find('[data-testid="competition-menu"]').exists()).toBe(false)
+  })
+
+  it('closes an open control menu when focus moves outside the shell', async () => {
+    const wrapper = mountShell()
+
+    await wrapper.find('[data-testid="theme-toggle"]').trigger('click')
+    expect(wrapper.find('[data-testid="theme-menu"]').exists()).toBe(true)
+
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    await nextTick()
+
+    expect(wrapper.find('[data-testid="theme-menu"]').exists()).toBe(false)
   })
 })

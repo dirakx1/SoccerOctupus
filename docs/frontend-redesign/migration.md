@@ -125,14 +125,16 @@ Implemented routing foundation:
 Implemented shell foundation:
 
 - `AppShell` and `CompetitionShell` presentational patterns using Tournament
-  Atlas semantic tokens and Lucide controls.
+  Atlas semantic tokens and Lucide controls, with a compact inline desktop
+  header and expanded mobile navigation panel.
 - Capability-derived workspace navigation and visible current Competition Edition
-  context, with no unsupported table or fixtures links.
+  dropdown, with no unsupported table or fixtures links.
 - English and Spanish shell navigation, account, footer, auth-recovery, theme,
   and mobile-control messages.
-- Keyboard-accessible Locale and light/dark/system theme controls. Locale changes
-  preserve the current named workspace route, Competition Edition, query, and
-  hash; theme changes persist through the existing runtime without OS listeners.
+- Keyboard-accessible icon-only Locale and light/dark/system theme controls with
+  labeled menus. Locale changes preserve the current named workspace route,
+  Competition Edition, query, and hash; theme changes persist through the
+  existing runtime without OS listeners.
 
 Remaining Phase 2 work:
 

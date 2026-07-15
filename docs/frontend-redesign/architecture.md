@@ -99,10 +99,11 @@ existing post-auth redirect seam before using flat `/sign-in`; existing sign-in,
 sign-up, OAuth callback, and username-completion flows consume that destination.
 
 `AppShell` owns the page frame, footer, route-content slots, billing and recovery
-slots, while `CompetitionShell` owns the Atlas header, Competition Edition
-context, capability-derived navigation, account menu, mobile menu, Locale select,
-and theme preference select. App state remains the owner of auth, billing, and
-menu state; the patterns are presentational and emit intent events.
+slots, while `CompetitionShell` owns the compact Atlas header, favicon brand mark,
+registered Competition Edition menu, capability-derived inline navigation,
+account menu, mobile menu, icon-only Locale and theme controls, and their labeled
+menus. App state remains the owner of auth, billing, and menu state; the patterns
+are presentational and emit intent events.
 
 Authentication, account, billing, admin, public-information, and legal routes
 remain flat and unlocalized until their owning migration phases. The three

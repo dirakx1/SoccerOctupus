@@ -11,18 +11,20 @@ when the current production frontend changes before its replacement is complete.
 ## Application Shell
 
 `App.vue` owns auth, billing, recovery, and menu state while composing the
-presentational `AppShell` and `CompetitionShell` patterns. The shell exposes the
-active Competition Edition, registry-derived Overview, Groups, Predict, Bracket,
-and Markets links, Pricing, admin visibility, account actions, responsive mobile
-navigation, Locale selection on canonical workspace routes, and light/dark/system
-theme selection. Existing billing-attention, auth recovery, sign-out, footer,
-legal links, and cookie-banner behavior remain mounted through explicit slots.
+presentational `AppShell` and `CompetitionShell` patterns. The compact desktop
+header contains the favicon brand mark, SoccerOctopus name, registered Competition
+Edition dropdown, registry-derived Overview, Groups, Predict, Bracket, and Markets
+links, Pricing, admin visibility, account actions, icon-only Locale and theme
+controls, and their labeled menus. On mobile the workspace links become an
+expanded panel. Existing billing-attention, auth recovery, sign-out, footer, legal
+links, and cookie-banner behavior remain mounted through explicit slots.
 
 Signed-out navigation exposes the canonical Competition overview, Pricing, Sign
 In, and Sign Up. Signed-in workspace navigation is derived from the registered
 Competition Capabilities; unsupported `table` and `fixtures` items are not
-shown. The shell context label uses the current Competition Edition display-name
-key. Page copy and page-local styling remain legacy until each view migrates.
+shown. The Competition Edition button lists only registered editions and shows
+the current display-name key; it does not invent a selector option. Page copy and
+page-local styling remain legacy until each view migrates.
 
 ## Localization Core
 

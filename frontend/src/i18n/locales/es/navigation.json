@@ -24,12 +24,17 @@
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "language": "Idioma",
+    "languageMenu": "Cambiar idioma",
+    "localeEnglish": "English",
+    "localeSpanish": "Español",
     "theme": "Tema",
+    "themeMenu": "Cambiar tema",
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeSystem": "Sistema",
     "openAccount": "Abrir menú de cuenta",
-    "closeAccount": "Cerrar menú de cuenta"
+    "closeAccount": "Cerrar menú de cuenta",
+    "competitionMenu": "Elegir competición"
   },
   "competition": {
     "label": "Espacio de competición"
