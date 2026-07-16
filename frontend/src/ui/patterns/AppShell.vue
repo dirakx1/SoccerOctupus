@@ -178,7 +178,7 @@ const { t } = useI18n()
   color: var(--color-accent-contrast);
   cursor: pointer;
   font-weight: var(--font-weight-semibold);
-  min-height: var(--control-height-md);
+  min-height: var(--control-height-lg);
   padding: 0 var(--space-4);
 }
 

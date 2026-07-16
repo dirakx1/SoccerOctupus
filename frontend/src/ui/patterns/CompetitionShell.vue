@@ -345,6 +345,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
   flex-shrink: 0;
   gap: var(--space-3);
   min-height: var(--control-height-lg);
+  min-width: var(--control-height-lg);
   text-decoration: none;
 }
 
@@ -393,7 +394,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
   display: inline-flex;
   gap: var(--space-2);
   max-width: 15rem;
-  min-height: var(--control-height-md);
+  min-height: var(--control-height-lg);
   padding: 0 var(--space-2);
   text-align: left;
 }
@@ -424,12 +425,12 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
-  min-height: var(--control-height-md);
+  min-height: var(--control-height-lg);
 }
 
 .icon-menu-toggle {
   gap: var(--space-1);
-  min-width: var(--control-height-md);
+  min-width: var(--control-height-lg);
   padding: 0 var(--space-2);
 }
 
@@ -479,7 +480,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
   display: flex;
   font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body);
   gap: var(--space-2);
-  min-height: var(--control-height-md);
+  min-height: var(--control-height-lg);
   padding: 0 var(--space-2);
   text-align: left;
   white-space: nowrap;
@@ -525,7 +526,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
   display: flex;
   font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body);
   gap: var(--space-2);
-  min-height: var(--control-height-md);
+  min-height: var(--control-height-lg);
   padding: 0 var(--space-2);
   text-align: left;
   text-decoration: none;
@@ -535,7 +536,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
 .account-menu a:hover,
 .account-menu button:hover { background: var(--color-surface-inset); }
 
-.mobile-menu-toggle { display: none; padding: 0 var(--space-2); }
+.mobile-menu-toggle { display: none; min-width: var(--control-height-lg); padding: 0 var(--space-2); }
 
 .workspace-navigation {
   align-items: center;

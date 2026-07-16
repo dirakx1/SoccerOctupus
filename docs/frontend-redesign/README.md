@@ -1,7 +1,7 @@
 # Frontend Redesign Documentation
 
 > Status: Active
-> Last reviewed: 2026-07-15
+> Last reviewed: 2026-07-16
 > Scope: Multi-competition, localized Tournament Atlas frontend
 
 This directory is the entry point for the frontend redesign. Each document has
@@ -14,6 +14,7 @@ one job. Do not copy the same decision or requirement into several documents.
 | [Current Baseline](current-state.md) | Source-derived inventory of existing routes, workflows, data dependencies, and temporary mockup routes. |
 | [Architecture](architecture.md) | Intended frontend structure, module interfaces, routes, localization, design system, and data contracts. |
 | [Migration](migration.md) | Delivery sequence, compatibility strategy, verification, and completion criteria. |
+| [Visual QA](visual-qa.md) | Dated viewport, theme, locale, interaction, and responsive evidence for the migrated Competition Workspace. |
 | [Domain Language](../../CONTEXT.md) | Canonical product terminology only. It contains no implementation details. |
 | [ADR-0001](../adr/0001-tournament-atlas-design-direction.md) | Accepted decision to use Tournament Atlas as the production design direction. |
 

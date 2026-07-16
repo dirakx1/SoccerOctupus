@@ -388,7 +388,7 @@ tbody th { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibo
 .state-panel h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
 .state-panel p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; max-width: 52ch; }
 .state-error { background: var(--color-danger-surface); color: var(--color-danger); }
-.state-panel button { align-items: center; background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-weight: var(--font-weight-semibold); gap: var(--space-2); min-height: var(--control-height-md); margin-top: var(--space-4); padding: 0 var(--space-4); }
+.state-panel button { align-items: center; background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-weight: var(--font-weight-semibold); gap: var(--space-2); min-height: var(--control-height-lg); margin-top: var(--space-4); padding: 0 var(--space-4); }
 .simulation-controls { align-items: end; background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: flex; gap: var(--space-6); justify-content: space-between; padding: var(--space-5); }
 .simulation-controls label { align-items: flex-start; cursor: pointer; display: flex; gap: var(--space-3); }
 .simulation-controls input { accent-color: var(--color-accent); height: 1.125rem; margin-top: 0.125rem; width: 1.125rem; }

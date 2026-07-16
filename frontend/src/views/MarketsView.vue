@@ -116,6 +116,7 @@ color:var(--color-text);
 display:inline-flex;
 font-size:var(--font-size-xs);
 gap:var(--space-2);
+min-height:var(--control-height-lg);
 padding:var(--space-2) var(--space-3);
 text-decoration:none}
 .platforms a:hover{
@@ -260,7 +261,7 @@ color:var(--color-text-muted);
 cursor:pointer;
 display:flex;
 gap:var(--space-2);
-min-height:var(--control-height-md);
+min-height:var(--control-height-lg);
 padding:0 var(--space-3)}
 .filter-bar button[aria-pressed="true"]{
 border-color:var(--color-accent);

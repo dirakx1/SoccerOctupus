@@ -199,7 +199,7 @@ tbody th { font-weight: var(--font-weight-semibold); }
 
 .groups-state h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
 .groups-state p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; max-width: 48ch; }
-.groups-state button { align-items: center; background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-weight: var(--font-weight-semibold); gap: var(--space-2); min-height: var(--control-height-md); margin-top: var(--space-4); padding: 0 var(--space-4); }
+.groups-state button { align-items: center; background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-weight: var(--font-weight-semibold); gap: var(--space-2); min-height: var(--control-height-lg); margin-top: var(--space-4); padding: 0 var(--space-4); }
 .groups-state button:hover { background: var(--color-accent-hover); }
 .groups-state button:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
 

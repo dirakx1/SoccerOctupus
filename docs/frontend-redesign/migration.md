@@ -164,7 +164,8 @@ Exit criteria:
 
 Status: In progress. Home and Groups implementation and behavior parity are
 landed; visual QA across all required themes and viewport sizes remains before
-this phase can be marked complete.
+this phase can be marked complete. The current live matrix is recorded as
+blocked in [Visual QA](visual-qa.md).
 
 Implemented:
 
@@ -189,10 +190,10 @@ Remaining before completion:
 - Complete light, dark, desktop, tablet, mobile, and text-expansion visual QA.
 - Confirm direct navigation and refresh behavior for both migrated routes in
   the running application.
-- Keep Tournament, Markets, auth, billing, admin, and other public routes
+- Keep account, authentication, admin, billing-page, and other public routes
   explicitly pending their own migration slices.
-- Keep market modules, authentication controls, reverification, password policy,
-  and two-factor settings pending their own shared-component migrations.
+- Keep authentication controls, reverification, password policy, and two-factor
+  settings pending their own shared-component migrations.
 
 Exit criteria:
 
@@ -209,7 +210,8 @@ and API-adapter path before migrating higher-risk workflows.
 
 Status: In progress. Predict Match, the combined live-results / Tournament
 Simulation workflow, and Prediction Markets are migrated. Phase 4 remains open
-for generated-text localization and visual QA.
+for generated-text localization and visual QA. The current live matrix is
+blocked as documented in [Visual QA](visual-qa.md).
 
 Implemented for Predict Match:
 

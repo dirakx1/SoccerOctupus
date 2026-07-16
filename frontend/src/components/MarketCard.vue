@@ -125,7 +125,7 @@ h3 { font-family: var(--font-family-display); font-size: var(--font-size-lg); li
 .price-list dt { color: var(--color-text-muted); font-size: var(--font-size-xs); }
 .price-list dd { font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); margin: 0; }
 .price-list dd span { color: var(--color-text-subtle); padding: 0 var(--space-1); }
-.criteria-toggle, .copy-button { align-items: center; background: transparent; border: 0; color: var(--color-text-muted); cursor: pointer; display: inline-flex; gap: var(--space-2); padding: 0; }
+.criteria-toggle, .copy-button { align-items: center; background: transparent; border: 0; color: var(--color-text-muted); cursor: pointer; display: inline-flex; gap: var(--space-2); min-height: var(--control-height-lg); padding: 0; }
 .criteria-toggle:hover, .copy-button:hover { color: var(--color-accent); }
 .criteria-toggle:focus-visible, .copy-button:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 4px; }
 .criteria-toggle svg { transition: transform var(--motion-duration-fast) var(--motion-easing-standard); }

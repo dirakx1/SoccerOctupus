@@ -300,6 +300,7 @@ onBeforeUnmount(() => {
   background: var(--color-surface-raised);
   border: var(--border-width-thin) solid var(--color-border-strong);
   box-shadow: var(--shadow-lg);
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
