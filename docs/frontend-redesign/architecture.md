@@ -30,11 +30,11 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Home, and Groups messages implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Home, Groups, Predict, and migrated shared-component messages implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
-| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, Home, and Groups |
+| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, Home, Groups, Predict, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
-| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | Implemented; Home and Groups are the first migrated production pages |
+| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | Implemented; Home, Groups, and Predict are migrated production pages |
 | Workspace navigation | Registry-derived navigation mapped through `workspaceLocation` | Implemented for current Competition Capabilities; future editions pending real adapters |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
@@ -128,9 +128,28 @@ protected Groups workflow while preserving their existing route and data seams:
 - `AtlasPageHeader.vue` is the small shared presentation pattern used by both
   pages. It owns no domain state or data fetching.
 
-Both pages load `home` and `groups` message domains for English and Spanish.
-Predict, Tournament, Markets, auth, billing, admin, and other public routes
-remain pending migration.
+Home and Groups load `home` and `groups` message domains for English and Spanish.
+Tournament, Markets, auth, billing, admin, and other public routes remain pending
+migration.
+
+The Match Prediction slice preserves the current backend and billing contracts:
+
+- `PredictView.vue` keeps `GET /api/predictions/teams` and
+  `POST /api/predictions/match` with only `home_team`, `away_team`, and `stage`.
+  It renders the existing probability, score, predicted-goals, confidence,
+  consensus, factor, and Agent Prediction fields without adapting generated
+  evidence.
+- Frontend-owned Predict copy and number/percentage formatting use the English /
+  Spanish `predictions` domain. Team names, Agent names/reasoning, Swarm
+  Consensus, and Key Factors remain backend/source values.
+- `ProbMeter.vue`, `BillingStatusNotice.vue`, and `BillingPlansLink.vue` retain
+  their public props, events, and `/pricing` route while consuming semantic Atlas
+  tokens and localized frontend labels.
+
+The backend Match Prediction request does not accept or apply Locale. Generated
+narrative, Key Factors, and Agent reasoning therefore remain English until a
+backend contract explicitly adds locale-aware generation and caching. The
+frontend must not add a speculative `locale` payload field.
 
 The first shared-overlay slice completes the migrated Home presentation without
 introducing a generic dialog framework:
@@ -268,6 +287,7 @@ src/i18n/
       home.json
       navigation.json
       overlays.json
+      predictions.json
     es/
       common.json
       competitions.json
@@ -275,6 +295,7 @@ src/i18n/
       home.json
       navigation.json
       overlays.json
+      predictions.json
 ```
 
 `index.js` is the public interface:
@@ -296,11 +317,11 @@ storage failures do not prevent startup, route navigation, or document-language
 updates. Flat non-workspace routes retain the current Locale until their
 localized route migration is implemented.
 
-The `common`, `navigation`, `competitions`, `home`, `groups`, and `overlays`
-domains exist today. They are consumed by the shell, first migrated production
-pages, Cookie Banner, and Video Agent evidence overlay. Remaining feature-view
-domains are added in the same change as their first real consumer. Do not create
-empty resource files in advance.
+The `common`, `navigation`, `competitions`, `home`, `groups`, `overlays`, and
+`predictions` domains exist today. They are consumed by the shell, migrated
+production pages, and migrated shared components. Remaining feature-view domains
+are added in the same change as their first real consumer. Do not create empty
+resource files in advance.
 
 Pending localization rules:
 
@@ -309,8 +330,9 @@ Pending localization rules:
 - Missing Spanish messages fail CI once production message domains are added.
 - Components receive IDs, values, and error codes rather than preformatted English.
 - API errors use stable codes that map to localized frontend messages.
-- Match Prediction requests include locale for Swarm Consensus and key factors.
-- Cached generated narrative is keyed by locale.
+- When the backend supports Locale, Match Prediction requests include it for
+  Swarm Consensus and Key Factors, and generated narrative caches are keyed by
+  Locale. Neither behavior exists in the current backend contract.
 - Team and Competition display names are resolved from stable IDs or codes.
 - Localized metadata changes with the route Locale.
 

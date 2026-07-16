@@ -37,14 +37,16 @@ preferences, then English; an explicit Locale has higher priority when a caller
 provides one. Applying a Locale persists it when storage is available and updates
 the document `lang` attribute. Blocked browser storage does not prevent startup.
 
-Namespaced `common`, `navigation`, `competitions`, `home`, `groups`, and
-`overlays` messages exist. Canonical
+Namespaced `common`, `navigation`, `competitions`, `home`, `groups`, `overlays`,
+and `predictions` messages exist. Canonical
 Competition Workspace routes apply their URL Locale over saved and browser
 preferences, including persistence and the document `lang` attribute. The shell
 navigation, account controls, footer, recovery labels, theme preferences, and
-Competition context are translated. Home, Groups, Cookie Banner, and Video Agent
-overlay copy is translated in the new production domains; API-generated
-narrative, authentication, account, legal, and other public routes are not
+Competition context are translated. Home, Groups, Predict frontend copy, Cookie
+Banner, Video Agent overlay, Probability Meter, and billing-notice controls are
+translated in production domains. Predict's backend-generated Swarm Consensus,
+Key Factors, and Agent reasoning remain English because the endpoint does not
+accept Locale. Authentication, account, legal, and other public routes are not
 localized yet.
 
 ## Competition Registry
@@ -94,7 +96,7 @@ phase.
 | `/groups` | Signed in | Redirect | Redirects to the canonical English Groups workspace. |
 | `/:locale/competitions/:competitionEditionSlug/groups` | Signed in | `GroupsView.vue` | Atlas standings tables from `GET /api/predictions/groups`, with Team name, ELO, and rank sorted by descending ELO, response-derived counts, loading, empty, and retryable error states. |
 | `/predict` | Signed in | Redirect | Redirects to the canonical English Match Prediction workspace. |
-| `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Team and stage selection, Match Prediction, probabilities, predicted score, xG, narrative, key factors, and Swarm Agent detail. |
+| `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Atlas Match Prediction workflow with localized team/stage controls, complete team-feed and run states, exact existing API payload/billing gates, probabilities, predicted score/xG, confidence, four-agent agreement, source narrative, key factors, and Agent detail. |
 | `/tournament` | Signed in | Redirect | Redirects to the canonical English Knockout Bracket workspace. |
 | `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Live group results and standings plus optional-swarm Tournament Simulation and knockout results. |
 | `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |
@@ -160,18 +162,22 @@ are authoritative for their workflows.
 
 ## Existing Shared Components
 
-`CookieBanner.vue` and `VideoAgentModal.vue` now consume Atlas tokens and the
-localized `overlays` domain. Cookie consent retains the `so_cookie_consent` key,
-`all`/`necessary` values, in-session dismissal when storage is unavailable, and
-the existing Cookie Policy route. Video Agent detail retains every evidence
-source while adding semantic modal/lightbox roles, native screenshot buttons,
-localized controls and captions, layered Escape handling, focus
-capture/restoration, and background scroll lock.
+`CookieBanner.vue`, `VideoAgentModal.vue`, `ProbMeter.vue`,
+`BillingStatusNotice.vue`, and `BillingPlansLink.vue` now consume Atlas tokens
+and localized message domains. The latter three preserve their public props,
+events, and routes for Tournament, Markets, Profile, and shell callers.
 
-The current frontend also shares billing notices and plan links, probability
-meters, market cards, authentication controls, reverification, password policy,
-and two-factor settings. Those components remain pending Atlas migration. The
-redesign should adapt or wrap working domain behavior before replacing it;
+Cookie Banner and Video Agent detail retain their existing behavior. Cookie
+Banner preserves the `so_cookie_consent` key, `all`/`necessary` values,
+in-session dismissal when storage is unavailable, and the existing Cookie Policy
+route. Video Agent detail retains every evidence source while adding semantic
+modal/lightbox roles, native screenshot buttons, localized controls and captions,
+layered Escape handling, focus capture/restoration, and background scroll lock.
+
+The current frontend also shares market cards, authentication controls,
+reverification, password policy, and two-factor settings. Those components
+remain pending Atlas migration. The redesign should adapt or wrap working domain
+behavior before replacing it;
 visual similarity alone is not a reason to discard tested workflow components.
 
 ## Design-Lab Routes

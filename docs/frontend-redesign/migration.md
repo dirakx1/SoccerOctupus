@@ -189,11 +189,10 @@ Remaining before completion:
 - Complete light, dark, desktop, tablet, mobile, and text-expansion visual QA.
 - Confirm direct navigation and refresh behavior for both migrated routes in
   the running application.
-- Keep Predict, Tournament, Markets, auth, billing, admin, and other public
-  routes explicitly pending their own migration slices.
-- Keep billing notices, market/probability modules, authentication controls,
-  reverification, password policy, and two-factor settings pending their own
-  shared-component migrations.
+- Keep Tournament, Markets, auth, billing, admin, and other public routes
+  explicitly pending their own migration slices.
+- Keep market modules, authentication controls, reverification, password policy,
+  and two-factor settings pending their own shared-component migrations.
 
 Exit criteria:
 
@@ -208,11 +207,33 @@ and API-adapter path before migrating higher-risk workflows.
 
 ## Phase 4: Prediction Workflows
 
+Status: In progress. Predict Match and its visible Probability Meter / billing
+components are migrated. Tournament Simulation and Prediction Markets remain
+pending, so Phase 4 is not complete.
+
+Implemented for Predict Match:
+
+- Existing team-list and Match Prediction endpoints, request payload, result
+  fields, billing codes, recovery actions, and Pricing link behavior are
+  preserved.
+- English/Spanish frontend copy, locale-aware numeric presentation, distinct-team
+  validation, team-feed states, long-running state, run error, complete result
+  rendering, and four-specialized-agent agreement have focused tests.
+- `ProbMeter`, `BillingStatusNotice`, and `BillingPlansLink` use Atlas tokens and
+  localized labels without changing their interfaces for other callers.
+
+Current limitation:
+
+- The backend does not accept Locale for Match Prediction. Swarm Consensus, Key
+  Factors, and Agent reasoning remain English/source values. The frontend does
+  not add an unsupported payload field; locale-aware generation remains required
+  before this phase can satisfy the generated-narrative exit criterion.
+
 Migration order:
 
-1. Predict Match.
-2. Tournament Simulation.
-3. Prediction Markets.
+1. Predict Match. Implemented; visual QA remains.
+2. Tournament Simulation. Pending.
+3. Prediction Markets. Pending.
 
 Exit criteria for each workflow:
 

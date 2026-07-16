@@ -1,0 +1,89 @@
+{
+  "page": {
+    "eyebrow": "Predicción de partido / {competition}",
+    "title": "Lee el partido antes de que empiece.",
+    "description": "Selecciona dos equipos y una fase del torneo. Los agentes especializados combinan estadísticas, forma, inteligencia de vídeo y evidencia táctica en una sola predicción."
+  },
+  "form": {
+    "homeTeam": "Equipo local",
+    "awayTeam": "Equipo visitante",
+    "selectTeam": "Selecciona un equipo",
+    "stage": "Fase",
+    "versus": "contra",
+    "stages": {
+      "group": "Fase de grupos",
+      "roundOf32": "Dieciseisavos de final",
+      "roundOf16": "Octavos de final",
+      "quarterFinal": "Cuartos de final",
+      "semiFinal": "Semifinal",
+      "final": "Final"
+    }
+  },
+  "actions": {
+    "run": "Ejecutar predicción del enjambre",
+    "running": "Análisis del enjambre en curso",
+    "retryTeams": "Reintentar lista de equipos"
+  },
+  "validation": {
+    "selectBoth": "Selecciona ambos equipos para ejecutar una predicción.",
+    "differentTeams": "Los equipos local y visitante deben ser diferentes."
+  },
+  "teams": {
+    "loading": "Cargando equipos",
+    "loadingDescription": "Obteniendo la lista actual de equipos del Mundial.",
+    "empty": "No hay equipos disponibles.",
+    "emptyDescription": "El feed de equipos no devolvió opciones seleccionables.",
+    "error": "No pudimos cargar la lista de equipos.",
+    "errorDescription": "Vuelve a intentar cargar el feed antes de ejecutar una predicción."
+  },
+  "run": {
+    "longRunningTitle": "El enjambre sigue analizando este partido.",
+    "longRunningDescription": "Los agentes especializados pueden tardar un poco más mientras recopilan evidencia.",
+    "errorTitle": "No pudimos ejecutar esta predicción.",
+    "errorFallback": "El servicio de predicción no devolvió un resultado. Inténtalo de nuevo."
+  },
+  "result": {
+    "label": "Resultado de la predicción",
+    "mostLikelyScore": "Marcador más probable",
+    "afterExtraTime": "Después de la prórroga o los penaltis",
+    "swarmConfidence": "Confianza del enjambre",
+    "scoreProbabilities": "Probabilidades de marcador",
+    "expectedGoals": "Goles esperados",
+    "mostLikely": "Más probable",
+    "consensus": "Consenso del enjambre",
+    "keyFactors": "Factores clave",
+    "agents": "Desglose de agentes",
+    "agreement": "Acuerdo de agentes",
+    "agreementValue": "{count} de {total} agentes favorecen {outcome}",
+    "predictedScore": "Marcador previsto",
+    "confidence": "Confianza",
+    "homeShort": "L",
+    "drawShort": "E",
+    "awayShort": "V"
+  },
+  "outcomes": {
+    "home": "victoria local",
+    "draw": "empate",
+    "away": "victoria visitante"
+  },
+  "probabilityMeter": {
+    "draw": "Empate",
+    "convergence": "Convergencia del enjambre · {count} agentes",
+    "summary": "{homeTeam} {home}; empate {draw}; {awayTeam} {away}"
+  },
+  "billing": {
+    "pricing": "Ver precios",
+    "opening": "Abriendo facturación",
+    "actions": {
+      "manage_billing": "Gestionar facturación",
+      "update_payment_method": "Pagar factura",
+      "choose_plan": "Elegir plan"
+    },
+    "states": {
+      "payment_failed": "El pago falló. Paga la factura para mantener el acceso.",
+      "payment_required": "El pago está vencido. Paga la factura para recuperar el acceso.",
+      "canceled": "Tu suscripción está inactiva. Elige un plan para continuar.",
+      "plan_ending": "Tu plan termina al final del periodo actual."
+    }
+  }
+}

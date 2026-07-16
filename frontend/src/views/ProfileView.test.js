@@ -2,6 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import ProfileView from './ProfileView.vue'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
 const clerkState = vi.hoisted(() => ({
@@ -96,10 +97,15 @@ vi.mock('../lib/billing', () => ({
 import { api } from '../lib/api'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
 
+function mountProfile() {
+  return mount(ProfileView, { global: { plugins: [i18n] } })
+}
+
 describe('ProfileView', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     routerPush.mockClear()
+    applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
     api.get.mockResolvedValue({ data: { is_admin: false } })
     getSubscription.mockResolvedValue({
       data: {
@@ -135,7 +141,7 @@ describe('ProfileView', () => {
   })
 
   it('shows the current billing tier on the profile page', async () => {
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Security')
@@ -149,7 +155,7 @@ describe('ProfileView', () => {
   })
 
   it('opens the Stripe customer portal from profile', async () => {
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     await wrapper.find('.billing-action').trigger('click')
@@ -167,7 +173,7 @@ describe('ProfileView', () => {
         is_paid_entitled: false,
       },
     })
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Plans')
@@ -195,7 +201,7 @@ describe('ProfileView', () => {
         },
       },
     })
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Payment failed. Pay the invoice to keep access.')
@@ -210,7 +216,7 @@ describe('ProfileView', () => {
   })
 
   it('renders the account security action without redundant status copy', async () => {
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Security')
@@ -222,7 +228,7 @@ describe('ProfileView', () => {
   it('keeps profile-update success truthful when the following reload fails', async () => {
     clerkState.user.value.update.mockResolvedValue({})
     clerkState.user.value.reload.mockRejectedValue(new Error('Network unavailable'))
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     const profileForm = wrapper.findAll('form')[0]
@@ -240,7 +246,7 @@ describe('ProfileView', () => {
   })
 
   it('blocks profile password updates that fail policy', async () => {
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     const passwordForm = wrapper.findAll('form')[1]
@@ -256,7 +262,7 @@ describe('ProfileView', () => {
 
   it('updates password through Clerk when policy and confirmation pass', async () => {
     clerkState.user.value.updatePassword.mockResolvedValue({})
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     const passwordForm = wrapper.findAll('form')[1]
