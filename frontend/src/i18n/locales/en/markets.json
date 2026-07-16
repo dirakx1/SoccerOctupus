@@ -1,0 +1,34 @@
+{
+  "eyebrow": "World Cup 2026 / Market intelligence",
+  "title": "Price the prediction.",
+  "description": "Turn swarm probabilities into fair-value contract questions for Kalshi and Polymarket. No bookmaker margin is applied.",
+  "platforms": "Market platforms",
+  "platformNote": "Prices are reference values for listing formats, not live offers.",
+  "modes": { "label": "Market mode", "match": "Match markets", "tournament": "Tournament futures" },
+  "teams": {
+    "loadingTitle": "Loading the team field",
+    "loadingBody": "Preparing the available World Cup teams.",
+    "emptyTitle": "No teams are available.",
+    "emptyBody": "The team feed returned no selectable teams.",
+    "errorTitle": "We couldn't load the team list.",
+    "errorBody": "Check the connection and try the team feed again.",
+    "retry": "Retry team feed"
+  },
+  "form": {
+    "home": "Home team", "away": "Away team", "stage": "Stage", "select": "Select a team", "versus": "versus",
+    "stages": { "group": "Group stage", "roundOf32": "Round of 32", "roundOf16": "Round of 16", "quarterFinal": "Quarter-final", "semiFinal": "Semi-final", "final": "Final" },
+    "selectBoth": "Select both teams to generate match markets.", "differentTeams": "Home and away teams must be different.",
+    "matchAction": "Generate market questions", "matchLoading": "Running the market swarm",
+    "tournamentDescription": "Simulate the complete tournament and generate futures for teams, groups, and milestones.",
+    "tournamentAction": "Generate futures markets", "tournamentLoading": "Simulating tournament futures"
+  },
+  "run": { "errorTitle": "Markets could not be generated.", "errorFallback": "The market run failed. Try again.", "working": "This can take several minutes. Keep this page open while the swarm completes." },
+  "summary": {
+    "matchTitle": "Match market summary", "home": "Home", "draw": "Draw", "away": "Away", "likelyScore": "Most likely score", "questions": "{count} market questions",
+    "champion": "Predicted champion", "championProbability": "{probability} final win probability", "futures": "{count} futures contracts"
+  },
+  "filters": { "label": "Filter market questions", "all": "All", "matchWinner": "Match winner", "draw": "Draw", "btts": "Both teams score", "overUnder": "Over / under", "cleanSheet": "Clean sheet", "penalties": "Penalties", "correctScore": "Exact score", "tournamentWinner": "Champion", "reachStage": "Advancement", "groupWinner": "Group winner", "confederationWin": "Confederation", "hostNation": "Host nation" },
+  "results": { "emptyTitle": "No questions match this filter.", "emptyBody": "Choose another market type to inspect the returned contracts.", "winnerTitle": "Tournament winner outcomes", "team": "Team", "probability": "Probability", "kalshiYes": "Kalshi YES", "polymarketYes": "Polymarket YES", "kalshiNo": "Kalshi NO" },
+  "card": { "yes": "YES", "no": "NO", "probability": "{answer} probability", "resolveDate": "Resolves {date}", "copy": "Copy question ID {id}", "copyShort": "Copy ID", "copied": "Question ID copied.", "copyFailed": "Question ID could not be copied.", "showCriteria": "Show resolution criteria", "hideCriteria": "Hide resolution criteria", "criteria": "Resolution criteria", "ticker": "Question ID", "kalshiPrices": "Kalshi prices", "polymarketPrices": "Polymarket prices", "unknownType": "Market type" },
+  "billing": { "plans": "View plans" }
+}

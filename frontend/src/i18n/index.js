@@ -4,6 +4,7 @@ import enCommon from './locales/en/common.json'
 import enCompetitions from './locales/en/competitions.json'
 import enGroups from './locales/en/groups.json'
 import enHome from './locales/en/home.json'
+import enMarkets from './locales/en/markets.json'
 import enNavigation from './locales/en/navigation.json'
 import enOverlays from './locales/en/overlays.json'
 import enPredictions from './locales/en/predictions.json'
@@ -12,6 +13,7 @@ import esCommon from './locales/es/common.json'
 import esCompetitions from './locales/es/competitions.json'
 import esGroups from './locales/es/groups.json'
 import esHome from './locales/es/home.json'
+import esMarkets from './locales/es/markets.json'
 import esNavigation from './locales/es/navigation.json'
 import esOverlays from './locales/es/overlays.json'
 import esPredictions from './locales/es/predictions.json'
@@ -36,8 +38,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, navigation: enNavigation, overlays: enOverlays, predictions: enPredictions, tournament: enTournament },
-    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, navigation: esNavigation, overlays: esOverlays, predictions: esPredictions, tournament: esTournament },
+    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, overlays: enOverlays, predictions: enPredictions, tournament: enTournament },
+    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, overlays: esOverlays, predictions: esPredictions, tournament: esTournament },
   },
 })
 

@@ -30,11 +30,11 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Home, Groups, Predict, and migrated shared-component messages implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Home, Groups, Predict, Tournament, Markets, and migrated shared-component messages implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
-| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, Home, Groups, Predict, and migrated shared components |
+| Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, all Competition workflows, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
-| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | Implemented; Home, Groups, and Predict are migrated production pages |
+| Application shell | Internal `AppShell` and `CompetitionShell` patterns using semantic tokens | Implemented; Home and all current Competition workflows are migrated production pages |
 | Workspace navigation | Registry-derived navigation mapped through `workspaceLocation` | Implemented for current Competition Capabilities; future editions pending real adapters |
 | Design system | Internal SoccerOctopus modules using semantic CSS tokens | Proposed |
 | Accessible primitives | Reka UI wrapped behind internal interfaces | Proposed |
@@ -129,7 +129,7 @@ protected Groups workflow while preserving their existing route and data seams:
   pages. It owns no domain state or data fetching.
 
 Home and Groups load `home` and `groups` message domains for English and Spanish.
-Markets, auth, billing, admin, and other public routes remain pending migration.
+Authentication, account, admin, and other public routes remain pending migration.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 
@@ -149,6 +149,25 @@ The backend Match Prediction request does not accept or apply Locale. Generated
 narrative, Key Factors, and Agent reasoning therefore remain English until a
 backend contract explicitly adds locale-aware generation and caching. The
 frontend must not add a speculative `locale` payload field.
+
+The Prediction Markets slice preserves both current generation contracts:
+
+- `MarketsView.vue` keeps `GET /api/predictions/teams`, sends only `home_team`,
+  `away_team`, and `stage` to `POST /api/markets/match`, and invokes
+  `POST /api/markets/tournament` without a request body.
+- Match and Tournament modes preserve all binary filters, returned counts,
+  Prediction Summary, champion fields, and categorical winner outcomes.
+- `MarketCard.vue` preserves its `question` prop and displays the returned
+  Question ID, Market Question, probabilities, Kalshi cent values, Polymarket
+  USDC values, resolution date, and Resolution Criteria.
+- Frontend-owned Markets copy and numeric formatting use the English / Spanish
+  `markets` domain. Team and platform names, generated questions, Resolution
+  Criteria, Question IDs, and dates remain source values.
+
+Neither Markets endpoint accepts Locale. Generated Market Questions and
+Resolution Criteria therefore remain source English until a backend contract
+explicitly adds locale-aware generation. The frontend does not rewrite them or
+add a speculative `locale` request field.
 
 The Tournament slice preserves the live-results, simulation, and billing
 contracts while separating feature presentation from workflow state:

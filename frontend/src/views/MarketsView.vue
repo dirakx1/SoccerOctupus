@@ -1,517 +1,382 @@
 <template>
-  <div class="markets-view">
+  <main class="markets-page">
+    <AtlasPageHeader :eyebrow="t('markets.eyebrow')" :title="t('markets.title')" :description="t('markets.description')">
+      <template #actions>
+        <div class="platforms" :aria-label="t('markets.platforms')">
+          <a href="https://kalshi.com" target="_blank" rel="noopener">Kalshi <ExternalLink :size="13" />
+</a>
+          <a href="https://polymarket.com" target="_blank" rel="noopener">Polymarket <ExternalLink :size="13" />
+</a>
+        </div>
+      </template>
+    </AtlasPageHeader>
 
-    <!-- ── Header ──────────────────────────────────────────────────────── -->
-    <div class="page-header">
-      <div>
-        <h1>📈 Prediction Markets</h1>
-        <p class="subtitle">
-          SoccerOctopus swarm probabilities formatted as ready-to-list contracts
-          for <a href="https://kalshi.com" target="_blank" rel="noopener">Kalshi</a> and
-          <a href="https://polymarket.com" target="_blank" rel="noopener">Polymarket</a>.
-          All prices are fair-value — no bookmaker margin applied.
-        </p>
-      </div>
-      <div class="platform-badges">
-        <span class="badge kalshi">Kalshi</span>
-        <span class="badge polymarket">Polymarket</span>
-      </div>
+    <p class="platform-note"><Info :size="16" />{{ t('markets.platformNote') }}</p>
+
+    <div class="mode-tabs" role="tablist" :aria-label="t('markets.modes.label')">
+      <button id="match-tab" type="button" role="tab" :aria-selected="mode === 'match'" aria-controls="match-panel" @click="mode = 'match'">{{ t('markets.modes.match') }}</button>
+      <button id="tournament-tab" type="button" role="tab" :aria-selected="mode === 'tournament'" aria-controls="tournament-panel" @click="mode = 'tournament'">{{ t('markets.modes.tournament') }}</button>
     </div>
 
-    <!-- ── Mode tabs ────────────────────────────────────────────────────── -->
-    <div class="mode-tabs">
-      <button :class="['mode-tab', { active: mode === 'match' }]" @click="mode = 'match'">
-        ⚽ Match Markets
-      </button>
-      <button :class="['mode-tab', { active: mode === 'tournament' }]" @click="mode = 'tournament'">
-        🌍 Tournament Futures
-      </button>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- MATCH MARKETS                                                       -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <template v-if="mode === 'match'">
-      <div v-if="teamsError" class="error-box">⚠️ {{ teamsError }}</div>
-      <div class="form-panel">
+    <section v-if="mode === 'match'" id="match-panel" role="tabpanel" aria-labelledby="match-tab" class="mode-panel">
+      <section v-if="teamLoading" class="state-panel" data-testid="team-loading" aria-busy="true"><LoaderCircle class="spin" /><div><h2>{{ t('markets.teams.loadingTitle') }}</h2><p>{{ t('markets.teams.loadingBody') }}</p></div></section>
+      <section v-else-if="teamError" class="state-panel error-panel"><AlertTriangle /><div><h2>{{ t('markets.teams.errorTitle') }}</h2><p>{{ t('markets.teams.errorBody') }}</p><button type="button" data-testid="retry-teams" @click="loadTeams"><RotateCcw :size="16" />{{ t('markets.teams.retry') }}</button></div></section>
+      <section v-else-if="!teams.length" class="state-panel"><Inbox /><div><h2>{{ t('markets.teams.emptyTitle') }}</h2><p>{{ t('markets.teams.emptyBody') }}</p></div></section>
+      <form v-else class="market-form" @submit.prevent="runMatchMarkets">
         <div class="selectors">
-          <div class="select-group">
-            <label>Home Team</label>
-            <select v-model="homeTeam" :disabled="!teams.length">
-              <option value="">{{ teams.length ? '— select —' : 'Loading…' }}</option>
-              <option v-for="t in teams" :key="t.name" :value="t.name">
-                {{ t.name }} (ELO {{ t.elo }})
-              </option>
-            </select>
-          </div>
-          <div class="vs-label">VS</div>
-          <div class="select-group">
-            <label>Away Team</label>
-            <select v-model="awayTeam" :disabled="!teams.length">
-              <option value="">{{ teams.length ? '— select —' : 'Loading…' }}</option>
-              <option v-for="t in teams" :key="t.name" :value="t.name">
-                {{ t.name }} (ELO {{ t.elo }})
-              </option>
-            </select>
-          </div>
-          <div class="select-group">
-            <label>Stage</label>
-            <select v-model="stage">
-              <option value="group">Group Stage</option>
-              <option value="round_of_32">Round of 32</option>
-              <option value="round_of_16">Round of 16</option>
-              <option value="quarter_final">Quarter Final</option>
-              <option value="semi_final">Semi Final</option>
-              <option value="final">Final</option>
-            </select>
-          </div>
+          <label><span>{{ t('markets.form.home') }}</span><select v-model="homeTeam" data-testid="home-team" :aria-invalid="sameTeam"><option value="">{{ t('markets.form.select') }}</option><option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }} (ELO {{ integer(team.elo) }})</option></select></label>
+          <span class="versus">{{ t('markets.form.versus') }}</span>
+          <label><span>{{ t('markets.form.away') }}</span><select v-model="awayTeam" data-testid="away-team" :aria-invalid="sameTeam"><option value="">{{ t('markets.form.select') }}</option><option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }} (ELO {{ integer(team.elo) }})</option></select></label>
+          <label><span>{{ t('markets.form.stage') }}</span><select v-model="stage" data-testid="match-stage"><option v-for="item in stages" :key="item.value" :value="item.value">{{ t(item.label) }}</option></select></label>
         </div>
-        <button
-          class="btn-run"
-          :disabled="!homeTeam || !awayTeam || matchLoading"
-          @click="runMatchMarkets"
-        >
-          {{ matchLoading ? '🐙 Running swarm…' : '📈 Generate Market Questions' }}
-        </button>
-      </div>
+        <div class="form-footer"><p :class="{ 'is-error': sameTeam }">{{ validationMessage }}</p><button type="submit" data-testid="run-match" :disabled="!canRun || matchLoading"><LoaderCircle v-if="matchLoading" class="spin" :size="17" /><Sparkles v-else :size="17" />{{ matchLoading ? t('markets.form.matchLoading') : t('markets.form.matchAction') }}</button></div>
+      </form>
 
-      <div v-if="matchError" class="error-box">
-        {{ matchError }}
-        <BillingStatusNotice
-          v-if="matchBillingHealth?.requires_attention"
-          compact
-          :health="matchBillingHealth"
-          :loading="billingActionLoading"
-          @action="openBillingRecovery('/markets', matchBillingHealth)"
-        />
-        <BillingPlansLink v-else-if="matchSubscriptionRequired" />
-      </div>
+      <RunState v-if="matchLoading" :title="t('markets.form.matchLoading')" :body="t('markets.run.working')" />
+      <section v-if="matchError" class="run-error" role="alert"><AlertTriangle /><div><h2>{{ t('markets.run.errorTitle') }}</h2><p>{{ matchError }}</p><BillingStatusNotice v-if="matchBillingHealth?.requires_attention" compact :health="matchBillingHealth" :loading="billingActionLoading" @action="openBillingRecovery('/markets', matchBillingHealth)" /><BillingPlansLink v-else-if="matchSubscriptionRequired" /></div></section>
 
-      <!-- Match result summary -->
-      <div v-if="matchData" class="match-summary">
-        <div class="match-teams">
-          <span class="team-name">{{ matchData.prediction_summary ? homeTeam : '' }}</span>
-          <div class="prob-pills">
-            <span class="pill home">H {{ pct(matchData.prediction_summary?.home_win_prob) }}</span>
-            <span class="pill draw">D {{ pct(matchData.prediction_summary?.draw_prob) }}</span>
-            <span class="pill away">A {{ pct(matchData.prediction_summary?.away_win_prob) }}</span>
-          </div>
-          <span class="team-name">{{ matchData.prediction_summary ? awayTeam : '' }}</span>
-        </div>
-        <div class="summary-meta">
-          Most likely score: <strong>{{ matchData.prediction_summary?.most_likely_score }}</strong>
-          &nbsp;·&nbsp;
-          {{ matchData.total_questions }} market questions generated
-        </div>
-      </div>
+      <template v-if="matchData && !matchLoading">
+        <section class="match-summary" aria-labelledby="match-summary-title"><div><span>{{ t('markets.summary.home') }}</span><strong>{{ percentage(matchData.prediction_summary?.home_win_prob) }}</strong></div><div><span>{{ t('markets.summary.draw') }}</span><strong>{{ percentage(matchData.prediction_summary?.draw_prob) }}</strong></div><div><span>{{ t('markets.summary.away') }}</span><strong>{{ percentage(matchData.prediction_summary?.away_win_prob) }}</strong></div><div class="summary-meta"><h2 id="match-summary-title">{{ homeTeam }} / {{ awayTeam }}</h2><p>{{ t('markets.summary.likelyScore') }} <strong>{{ matchData.prediction_summary?.most_likely_score }}</strong> · {{ t('markets.summary.questions', { count: integer(matchData.total_questions) }) }}</p></div></section>
+        <FilterBar :items="matchPropTypes" :selected="matchFilter" :count="matchCountByType" @select="matchFilter = $event" />
+        <section v-if="filteredMatchQuestions.length" class="question-list"><MarketCard v-for="question in filteredMatchQuestions" :key="question.question_id" :question="question" /></section>
+        <EmptyResults v-else />
+      </template>
+    </section>
 
-      <!-- Prop type filter -->
-      <div v-if="matchData" class="filter-bar">
-        <button
-          v-for="pt in matchPropTypes"
-          :key="pt.key"
-          :class="['filter-btn', { active: matchFilter === pt.key }]"
-          @click="matchFilter = pt.key"
-        >
-          {{ pt.icon }} {{ pt.label }}
-          <span class="count">{{ matchCountByType(pt.key) }}</span>
-        </button>
-      </div>
-
-      <!-- Question cards -->
-      <div v-if="matchData" class="questions-grid">
-        <MarketCard
-          v-for="q in filteredMatchQuestions"
-          :key="q.question_id"
-          :question="q"
-        />
-      </div>
-    </template>
-
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- TOURNAMENT FUTURES                                                  -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <template v-else>
-      <div class="form-panel tournament-form">
-        <p class="form-description">
-          Simulates the full 104-match bracket via Monte Carlo and generates
-          futures contracts for every team, group, and tournament milestone.
-        </p>
-        <button class="btn-run" :disabled="tourneyLoading" @click="runTournamentMarkets">
-          {{ tourneyLoading ? '⏳ Simulating…' : '🌍 Generate Futures Markets' }}
-        </button>
-      </div>
-
-      <div v-if="tourneyError" class="error-box">
-        {{ tourneyError }}
-        <BillingStatusNotice
-          v-if="tourneyBillingHealth?.requires_attention"
-          compact
-          :health="tourneyBillingHealth"
-          :loading="billingActionLoading"
-          @action="openBillingRecovery('/markets', tourneyBillingHealth)"
-        />
-        <BillingPlansLink v-else-if="tourneySubscriptionRequired" />
-      </div>
-
-      <!-- Champion banner -->
-      <div v-if="tourneyData" class="champion-banner">
-        <div class="champion-info">
-          <span class="trophy">🏆</span>
-          <div>
-            <div class="champion-name">{{ tourneyData.simulation.champion }}</div>
-            <div class="champion-sub">Predicted Champion · {{ pct(tourneyData.simulation.champion_probability) }} final win prob</div>
-          </div>
-        </div>
-        <div class="summary-meta">
-          {{ tourneyData.total_questions }} futures contracts generated
-        </div>
-      </div>
-
-      <!-- Section filters -->
-      <div v-if="tourneyData" class="filter-bar">
-        <button
-          v-for="pt in tourneyPropTypes"
-          :key="pt.key"
-          :class="['filter-btn', { active: tourneyFilter === pt.key }]"
-          @click="tourneyFilter = pt.key"
-        >
-          {{ pt.icon }} {{ pt.label }}
-          <span class="count">{{ tourneyCountByType(pt.key) }}</span>
-        </button>
-      </div>
-
-      <!-- Categorical winner market -->
-      <div
-        v-if="tourneyData && (tourneyFilter === 'all' || tourneyFilter === 'tournament_winner')"
-        class="categorical-panel"
-      >
-        <div class="section-title">🏆 Tournament Winner Odds</div>
-        <div class="winner-table">
-          <div class="winner-row header-row">
-            <span>Team</span>
-            <span>Probability</span>
-            <span>Kalshi YES price</span>
-            <span>Polymarket YES</span>
-            <span>Kalshi NO price</span>
-          </div>
-          <div
-            v-for="o in categoricalOutcomes"
-            :key="o.outcome"
-            class="winner-row"
-          >
-            <span class="team-cell">{{ o.outcome }}</span>
-            <span>
-              <span class="mini-bar-bg">
-                <span class="mini-bar-fill" :style="{ width: (o.probability * 100).toFixed(1) + '%' }"></span>
-              </span>
-              {{ pct(o.probability) }}
-            </span>
-            <span class="price-cell kalshi-price">{{ (o.probability * 100).toFixed(1) }}¢</span>
-            <span class="price-cell poly-price">${{ o.probability.toFixed(4) }}</span>
-            <span class="price-cell no-price">{{ (100 - o.probability * 100).toFixed(1) }}¢</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Binary question cards -->
-      <div v-if="tourneyData" class="questions-grid">
-        <MarketCard
-          v-for="q in filteredTourneyQuestions"
-          :key="q.question_id"
-          :question="q"
-        />
-      </div>
-    </template>
-
-  </div>
+    <section v-else id="tournament-panel" role="tabpanel" aria-labelledby="tournament-tab" class="mode-panel">
+      <section class="tournament-run"><div><h2>{{ t('markets.modes.tournament') }}</h2><p>{{ t('markets.form.tournamentDescription') }}</p></div><button type="button" data-testid="run-tournament" :disabled="tourneyLoading" @click="runTournamentMarkets"><LoaderCircle v-if="tourneyLoading" class="spin" :size="17" /><Globe2 v-else :size="17" />{{ tourneyLoading ? t('markets.form.tournamentLoading') : t('markets.form.tournamentAction') }}</button></section>
+      <RunState v-if="tourneyLoading" :title="t('markets.form.tournamentLoading')" :body="t('markets.run.working')" />
+      <section v-if="tourneyError" class="run-error" role="alert"><AlertTriangle /><div><h2>{{ t('markets.run.errorTitle') }}</h2><p>{{ tourneyError }}</p><BillingStatusNotice v-if="tourneyBillingHealth?.requires_attention" compact :health="tourneyBillingHealth" :loading="billingActionLoading" @action="openBillingRecovery('/markets', tourneyBillingHealth)" /><BillingPlansLink v-else-if="tourneySubscriptionRequired" /></div></section>
+      <template v-if="tourneyData && !tourneyLoading">
+        <section class="champion-summary"><Trophy /><div><span>{{ t('markets.summary.champion') }}</span><h2>{{ tourneyData.simulation?.champion }}</h2><p>{{ t('markets.summary.championProbability', { probability: percentage(tourneyData.simulation?.champion_probability) }) }} · {{ t('markets.summary.futures', { count: integer(tourneyData.total_questions) }) }}</p></div></section>
+        <FilterBar :items="tourneyPropTypes" :selected="tourneyFilter" :count="tourneyCountByType" @select="tourneyFilter = $event" />
+        <section v-if="showCategorical && categoricalOutcomes.length" class="winner-section"><h2>{{ t('markets.results.winnerTitle') }}</h2><div class="table-wrap"><table><thead><tr><th>{{ t('markets.results.team') }}</th><th>{{ t('markets.results.probability') }}</th><th>{{ t('markets.results.kalshiYes') }}</th><th>{{ t('markets.results.polymarketYes') }}</th><th>{{ t('markets.results.kalshiNo') }}</th></tr></thead><tbody><tr v-for="outcome in categoricalOutcomes" :key="outcome.outcome"><th scope="row">{{ outcome.outcome }}</th><td>{{ percentage(outcome.probability) }}</td><td>{{ cents(outcome.probability * 100) }}</td><td>{{ usdc(outcome.probability) }}</td><td>{{ cents(100 - outcome.probability * 100) }}</td></tr></tbody></table></div></section>
+        <section v-if="filteredTourneyQuestions.length" class="question-list"><MarketCard v-for="question in filteredTourneyQuestions" :key="question.question_id" :question="question" /></section>
+        <EmptyResults v-if="!filteredTourneyQuestions.length && (!showCategorical || !categoricalOutcomes.length)" />
+      </template>
+    </section>
+  </main>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { api } from '../lib/api'
+import { computed, defineComponent, h, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { AlertTriangle, ExternalLink, Globe2, Inbox, Info, LoaderCircle, RotateCcw, Sparkles, Trophy } from '@lucide/vue'
+import AtlasPageHeader from '../ui/patterns/AtlasPageHeader.vue'
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
 import BillingPlansLink from '../components/BillingPlansLink.vue'
 import MarketCard from '../components/MarketCard.vue'
 import { useBillingStatus } from '../composables/useBillingStatus'
+import { api } from '../lib/api'
 
-// ── State ───────────────────────────────────────────────────────────────────
-const mode         = ref('match')
-const teams        = ref([])
-const teamsError   = ref('')
-const homeTeam     = ref('')
-const awayTeam     = ref('')
-const stage        = ref('group')
+const { locale, t } = useI18n()
+const mode = ref('match'), teams = ref([]), teamLoading = ref(true), teamError = ref(false), homeTeam = ref(''), awayTeam = ref(''), stage = ref('group')
+const matchLoading = ref(false), matchError = ref(''), matchData = ref(null), matchFilter = ref('all'), matchSubscriptionRequired = ref(false), matchBillingHealth = ref(null)
+const tourneyLoading = ref(false), tourneyError = ref(''), tourneyData = ref(null), tourneyFilter = ref('all'), tourneySubscriptionRequired = ref(false), tourneyBillingHealth = ref(null)
+const { actionLoading: billingActionLoading, openBillingRecovery } = useBillingStatus()
+const billingCodes = ['subscription_required', 'billing_payment_required', 'feature_limit_reached']
+const stages = [{ value:'group',label:'markets.form.stages.group'},{value:'round_of_32',label:'markets.form.stages.roundOf32'},{value:'round_of_16',label:'markets.form.stages.roundOf16'},{value:'quarter_final',label:'markets.form.stages.quarterFinal'},{value:'semi_final',label:'markets.form.stages.semiFinal'},{value:'final',label:'markets.form.stages.final'}]
+const matchPropTypes = ['all','match_winner','draw','btts','over_under','clean_sheet','penalties','correct_score'].map(key => ({ key, label: `markets.filters.${({match_winner:'matchWinner',over_under:'overUnder',clean_sheet:'cleanSheet',correct_score:'correctScore'}[key] || key)}` }))
+const tourneyPropTypes = ['all','tournament_winner','reach_stage','group_winner','confederation_win','host_nation','penalties'].map(key => ({ key, label: `markets.filters.${({tournament_winner:'tournamentWinner',reach_stage:'reachStage',group_winner:'groupWinner',confederation_win:'confederationWin',host_nation:'hostNation'}[key] || key)}` }))
+const sameTeam = computed(() => Boolean(homeTeam.value && awayTeam.value && homeTeam.value === awayTeam.value)), canRun = computed(() => Boolean(homeTeam.value && awayTeam.value && !sameTeam.value))
+const validationMessage = computed(() => sameTeam.value ? t('markets.form.differentTeams') : t('markets.form.selectBoth'))
+const allMatchQuestions = computed(() => (matchData.value?.questions || []).filter(q => q.market_type === 'binary'))
+const filteredMatchQuestions = computed(() => matchFilter.value === 'all' ? allMatchQuestions.value : allMatchQuestions.value.filter(q => q.prop_type === matchFilter.value))
+const allTourneyQuestions = computed(() => (tourneyData.value?.questions || []).filter(q => q.market_type === 'binary'))
+const filteredTourneyQuestions = computed(() => tourneyFilter.value === 'all' ? allTourneyQuestions.value : allTourneyQuestions.value.filter(q => q.prop_type === tourneyFilter.value))
+const categoricalOutcomes = computed(() => (tourneyData.value?.questions || []).find(q => q.market_type === 'categorical')?.outcomes || [])
+const showCategorical = computed(() => ['all','tournament_winner'].includes(tourneyFilter.value))
+const matchCountByType = key => key === 'all' ? allMatchQuestions.value.length : allMatchQuestions.value.filter(q => q.prop_type === key).length
+const tourneyCountByType = key => key === 'all' ? allTourneyQuestions.value.length : allTourneyQuestions.value.filter(q => q.prop_type === key).length
+const number = options => new Intl.NumberFormat(locale.value, options), integer = value => number({ maximumFractionDigits:0 }).format(value ?? 0), percentage = value => value == null ? '—' : number({ style:'percent',minimumFractionDigits:1,maximumFractionDigits:1 }).format(value), cents = value => value == null ? '—' : `${number({minimumFractionDigits:1,maximumFractionDigits:1}).format(value)}¢`, usdc = value => value == null ? '—' : number({style:'currency',currency:'USD',minimumFractionDigits:4,maximumFractionDigits:4}).format(value)
 
-const matchLoading = ref(false)
-const matchError   = ref('')
-const matchData    = ref(null)
-const matchFilter  = ref('all')
-const matchSubscriptionRequired = ref(false)
-const matchBillingHealth = ref(null)
+const FilterBar = defineComponent({ props:{items:Array,selected:String,count:Function}, emits:['select'], setup(props,{emit}) { return () => h('div',{class:'filter-bar',role:'group','aria-label':t('markets.filters.label')},props.items.map(item=>h('button',{type:'button','aria-pressed':props.selected===item.key,onClick:()=>emit('select',item.key)},[t(item.label),h('span',props.count(item.key))]))) } })
+const RunState = defineComponent({ props:{title:String,body:String}, setup(props){return()=>h('section',{class:'state-panel','aria-busy':'true'},[h(LoaderCircle,{class:'spin'}),h('div',[h('h2',props.title),h('p',props.body)])])} })
+const EmptyResults = defineComponent({ setup(){return()=>h('section',{class:'state-panel'},[h(Inbox),h('div',[h('h2',t('markets.results.emptyTitle')),h('p',t('markets.results.emptyBody'))])])} })
 
-const tourneyLoading = ref(false)
-const tourneyError   = ref('')
-const tourneyData    = ref(null)
-const tourneyFilter  = ref('all')
-const tourneySubscriptionRequired = ref(false)
-const tourneyBillingHealth = ref(null)
-const {
-  actionLoading: billingActionLoading,
-  openBillingRecovery,
-} = useBillingStatus()
-
-// ── Prop type definitions ────────────────────────────────────────────────────
-const matchPropTypes = [
-  { key: 'all',          icon: '🗂️',  label: 'All'          },
-  { key: 'match_winner', icon: '🏆',  label: 'Match Winner' },
-  { key: 'draw',         icon: '🤝',  label: 'Draw'         },
-  { key: 'btts',         icon: '⚽',  label: 'BTTS'         },
-  { key: 'over_under',   icon: '📈',  label: 'Over/Under'   },
-  { key: 'clean_sheet',  icon: '🛡️', label: 'Clean Sheet'  },
-  { key: 'penalties',    icon: '🥅',  label: 'Penalties'    },
-  { key: 'correct_score',icon: '🎯', label: 'Score'        },
-]
-const tourneyPropTypes = [
-  { key: 'all',               icon: '🗂️',  label: 'All'            },
-  { key: 'tournament_winner', icon: '🏆',  label: 'Champion'       },
-  { key: 'reach_stage',       icon: '📍',  label: 'Advancement'    },
-  { key: 'group_winner',      icon: '🏅',  label: 'Group Winners'  },
-  { key: 'confederation_win', icon: '🌐',  label: 'Confederation'  },
-  { key: 'host_nation',       icon: '🏟️', label: 'Host Nation'    },
-  { key: 'penalties',         icon: '🥅',  label: 'Penalties'      },
-]
-
-// ── Computed ─────────────────────────────────────────────────────────────────
-const allMatchQuestions = computed(() =>
-  (matchData.value?.questions ?? []).filter(q => q.market_type === 'binary')
-)
-const filteredMatchQuestions = computed(() =>
-  matchFilter.value === 'all'
-    ? allMatchQuestions.value
-    : allMatchQuestions.value.filter(q => q.prop_type === matchFilter.value)
-)
-const matchCountByType = (key) =>
-  key === 'all'
-    ? allMatchQuestions.value.length
-    : allMatchQuestions.value.filter(q => q.prop_type === key).length
-
-const allTourneyQuestions = computed(() =>
-  (tourneyData.value?.questions ?? []).filter(q => q.market_type === 'binary')
-)
-const filteredTourneyQuestions = computed(() =>
-  tourneyFilter.value === 'all'
-    ? allTourneyQuestions.value
-    : allTourneyQuestions.value.filter(q => q.prop_type === tourneyFilter.value)
-)
-const tourneyCountByType = (key) =>
-  key === 'all'
-    ? allTourneyQuestions.value.length
-    : allTourneyQuestions.value.filter(q => q.prop_type === key).length
-
-const categoricalOutcomes = computed(() => {
-  const cats = (tourneyData.value?.questions ?? []).find(q => q.market_type === 'categorical')
-  return cats?.outcomes ?? []
-})
-
-// ── Methods ──────────────────────────────────────────────────────────────────
-onMounted(async () => {
-  try {
-    const res = await api.get('/api/predictions/teams')
-    teams.value = res.data.teams
-    if (!teams.value?.length) {
-      teamsError.value = 'Team list returned empty — backend may not have data.'
-    }
-  } catch (e) {
-    teamsError.value = 'Could not load teams — is the backend running on port 5002?'
-  }
-})
-
-async function runMatchMarkets() {
-  matchLoading.value = true
-  matchError.value = ''
-  matchSubscriptionRequired.value = false
-  matchBillingHealth.value = null
-  matchData.value = null
-  matchFilter.value = 'all'
-  try {
-    const res = await api.post('/api/markets/match', {
-      home_team: homeTeam.value,
-      away_team: awayTeam.value,
-      stage: stage.value,
-    })
-    matchData.value = res.data
-  } catch (e) {
-    matchError.value = e.response?.data?.error ?? e.message
-    matchBillingHealth.value = e.response?.data?.billing_health || null
-    matchSubscriptionRequired.value = ['subscription_required', 'billing_payment_required', 'feature_limit_reached'].includes(e.response?.data?.code)
-  } finally {
-    matchLoading.value = false
-  }
-}
-
-async function runTournamentMarkets() {
-  tourneyLoading.value = true
-  tourneyError.value = ''
-  tourneySubscriptionRequired.value = false
-  tourneyBillingHealth.value = null
-  tourneyData.value = null
-  tourneyFilter.value = 'all'
-  try {
-    const res = await api.post('/api/markets/tournament')
-    tourneyData.value = res.data
-  } catch (e) {
-    tourneyError.value = e.response?.data?.error ?? e.message
-    tourneyBillingHealth.value = e.response?.data?.billing_health || null
-    tourneySubscriptionRequired.value = ['subscription_required', 'billing_payment_required', 'feature_limit_reached'].includes(e.response?.data?.code)
-  } finally {
-    tourneyLoading.value = false
-  }
-}
-
-const pct = v => v != null ? (v * 100).toFixed(1) + '%' : '—'
+async function loadTeams(){teamLoading.value=true;teamError.value=false;try{const response=await api.get('/api/predictions/teams');teams.value=Array.isArray(response.data?.teams)?[...response.data.teams].sort((a,b)=>Number(b.elo)-Number(a.elo)):[]}catch{teams.value=[];teamError.value=true}finally{teamLoading.value=false}}
+async function runMatchMarkets(){if(!canRun.value||matchLoading.value)return;matchLoading.value=true;matchError.value='';matchData.value=null;matchFilter.value='all';matchSubscriptionRequired.value=false;matchBillingHealth.value=null;try{matchData.value=(await api.post('/api/markets/match',{home_team:homeTeam.value,away_team:awayTeam.value,stage:stage.value})).data}catch(error){matchError.value=error.response?.data?.error||error.message||t('markets.run.errorFallback');matchBillingHealth.value=error.response?.data?.billing_health||null;matchSubscriptionRequired.value=billingCodes.includes(error.response?.data?.code)}finally{matchLoading.value=false}}
+async function runTournamentMarkets(){if(tourneyLoading.value)return;tourneyLoading.value=true;tourneyError.value='';tourneyData.value=null;tourneyFilter.value='all';tourneySubscriptionRequired.value=false;tourneyBillingHealth.value=null;try{tourneyData.value=(await api.post('/api/markets/tournament')).data}catch(error){tourneyError.value=error.response?.data?.error||error.message||t('markets.run.errorFallback');tourneyBillingHealth.value=error.response?.data?.billing_health||null;tourneySubscriptionRequired.value=billingCodes.includes(error.response?.data?.code)}finally{tourneyLoading.value=false}}
+onMounted(loadTeams)
 </script>
 
 <style scoped>
-.markets-view { display: flex; flex-direction: column; gap: 22px; }
+.markets-page,.mode-panel {
+ display:flex;
+flex-direction:column;
+gap:var(--space-7);
+ }
+.platforms{
+display:flex;
+gap:var(--space-2)}
+.platforms a{
+align-items:center;
+border:var(--border-width-thin) solid var(--color-border);
+color:var(--color-text);
+display:inline-flex;
+font-size:var(--font-size-xs);
+gap:var(--space-2);
+padding:var(--space-2) var(--space-3);
+text-decoration:none}
+.platforms a:hover{
+border-color:var(--color-accent);
+color:var(--color-accent)}
+.platform-note{
+align-items:center;
+color:var(--color-text-muted);
+display:flex;
+font-size:var(--font-size-sm);
+gap:var(--space-2);
+margin:calc(var(--space-4) * -1) 0 0}
+.mode-tabs{
+border-bottom:var(--border-width-thin) solid var(--color-border);
+display:flex}
+.mode-tabs button{
+background:transparent;
+border:0;
+border-bottom:var(--border-width-strong) solid transparent;
+color:var(--color-text-muted);
+cursor:pointer;
+font-weight:var(--font-weight-bold);
+min-height:var(--control-height-lg);
+padding:0 var(--space-5)}
+.mode-tabs button[aria-selected="true"]{
+border-bottom-color:var(--color-accent);
+color:var(--color-accent)}
+.mode-tabs button:focus-visible,.market-form button:focus-visible,.tournament-run button:focus-visible,.state-panel button:focus-visible,.filter-bar button:focus-visible{
+outline:var(--border-width-strong) solid var(--color-focus);
+outline-offset:2px}
+.market-form,.tournament-run,.state-panel,.run-error{
+background:var(--color-surface);
+border:var(--border-width-thin) solid var(--color-border);
+padding:var(--space-6)}
+.selectors{
+align-items:end;
+display:grid;
+gap:var(--space-4);
+grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) minmax(10rem,.55fr)}
+.selectors label{
+color:var(--color-text-muted);
+display:flex;
+flex-direction:column;
+font-size:var(--font-size-sm);
+gap:var(--space-2)}
+.selectors label>span{
+font-weight:var(--font-weight-semibold)}
+select{
+background:var(--color-surface-raised);
+border:var(--border-width-thin) solid var(--color-border);
+border-radius:var(--radius-md);
+color:var(--color-text);
+min-height:var(--control-height-lg);
+padding:0 var(--space-3);
+width:100%}
+.versus{
+color:var(--color-accent);
+font:var(--font-weight-bold) var(--font-size-xs)/var(--control-height-lg) var(--font-family-data)}
+.form-footer{
+align-items:center;
+border-top:var(--border-width-thin) solid var(--color-border);
+display:flex;
+gap:var(--space-4);
+justify-content:space-between;
+margin-top:var(--space-5);
+padding-top:var(--space-5)}
+.form-footer p{
+color:var(--color-text-muted);
+font-size:var(--font-size-sm);
+margin:0}
+.form-footer p.is-error{
+color:var(--color-danger)}
+.form-footer button,.tournament-run button,.state-panel button{
+align-items:center;
+background:var(--color-accent);
+border:0;
+border-radius:var(--radius-md);
+color:var(--color-accent-contrast);
+cursor:pointer;
+display:inline-flex;
+font-weight:var(--font-weight-bold);
+gap:var(--space-2);
+justify-content:center;
+min-height:var(--control-height-lg);
+padding:0 var(--space-5)}
+button:disabled{
+cursor:not-allowed;
+opacity:.55}
+.state-panel,.run-error{
+align-items:flex-start;
+display:flex;
+gap:var(--space-4)}
+.state-panel h2,.run-error h2,.tournament-run h2{
+font-family:var(--font-family-display);
+font-size:var(--font-size-xl);
+margin:0}
+.state-panel p,.run-error p,.tournament-run p{
+color:var(--color-text-muted);
+line-height:var(--line-height-relaxed);
+margin:var(--space-2) 0 0}
+.state-panel button{
+margin-top:var(--space-4)}
+.error-panel,.run-error{
+background:var(--color-danger-surface);
+border-color:var(--color-danger)}
+.error-panel>svg,.run-error>svg{
+color:var(--color-danger)}
+.match-summary{
+border-bottom:var(--border-width-thin) solid var(--color-border);
+border-top:var(--border-width-strong) solid var(--color-accent);
+display:grid;
+grid-template-columns:repeat(3,minmax(5rem,.35fr)) minmax(16rem,1.5fr)}
+.match-summary>div{
+border-right:var(--border-width-thin) solid var(--color-border);
+display:flex;
+flex-direction:column;
+gap:var(--space-2);
+padding:var(--space-5)}
+.match-summary>div:last-child{
+border-right:0}
+.match-summary span,.match-summary p{
+color:var(--color-text-muted);
+font-size:var(--font-size-xs)}
+.match-summary strong{
+color:var(--color-accent);
+font-family:var(--font-family-data)}
+.summary-meta h2{
+font-family:var(--font-family-display);
+font-size:var(--font-size-lg);
+margin:0}
+.summary-meta p{
+margin:0}
+.filter-bar{
+display:flex;
+flex-wrap:wrap;
+gap:var(--space-2)}
+.filter-bar button{
+align-items:center;
+background:var(--color-surface);
+border:var(--border-width-thin) solid var(--color-border);
+color:var(--color-text-muted);
+cursor:pointer;
+display:flex;
+gap:var(--space-2);
+min-height:var(--control-height-md);
+padding:0 var(--space-3)}
+.filter-bar button[aria-pressed="true"]{
+border-color:var(--color-accent);
+color:var(--color-accent)}
+.filter-bar span{
+background:var(--color-surface-inset);
+font-family:var(--font-family-data);
+padding:var(--space-1) var(--space-2)}
+.question-list{
+display:grid;
+gap:var(--space-4);
+grid-template-columns:repeat(2,minmax(0,1fr))}
+.tournament-run{
+align-items:center;
+display:flex;
+gap:var(--space-6);
+justify-content:space-between}
+.tournament-run p{
+max-width:60ch}
+.champion-summary{
+align-items:center;
+border-bottom:var(--border-width-thin) solid var(--color-border);
+border-top:var(--border-width-strong) solid var(--color-accent);
+display:flex;
+gap:var(--space-5);
+padding:var(--space-6)}
+.champion-summary>svg{
+color:var(--color-accent)}
+.champion-summary span,.champion-summary p{
+color:var(--color-text-muted);
+font-size:var(--font-size-sm)}
+.champion-summary h2{
+font-family:var(--font-family-display);
+font-size:var(--font-size-2xl);
+margin:var(--space-1) 0}
+.champion-summary p{
+margin:0}
+.winner-section{
+border:var(--border-width-thin) solid var(--color-border)}
+.winner-section h2{
+font-family:var(--font-family-display);
+font-size:var(--font-size-xl);
+margin:0;
+padding:var(--space-5)}
+.table-wrap{
+overflow-x:auto}
+table{
+border-collapse:collapse;
+min-width:48rem;
+width:100%}
+th,td{
+border-top:var(--border-width-thin) solid var(--color-border);
+font-size:var(--font-size-sm);
+padding:var(--space-3) var(--space-4);
+text-align:right}
+th:first-child{
+text-align:left}
+thead th{
+color:var(--color-text-muted);
+font-size:var(--font-size-xs)}
+tbody th{
+font-weight:var(--font-weight-semibold)}
+tbody td{
+font-family:var(--font-family-data);
+font-variant-numeric:tabular-nums}
+.spin{
+animation:market-spin .85s linear infinite}
+@keyframes market-spin{
+to{
+transform:rotate(360deg)}
+}
 
-/* ── Header ─────────────────────────────────────────────────────────────── */
-.page-header {
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
-}
-h1 { color: #e2b714; font-size: 26px; margin-bottom: 6px; }
-.subtitle { color: #8888aa; font-size: 14px; line-height: 1.6; max-width: 620px; }
-.subtitle a { color: #a0c0ff; text-decoration: none; }
-.subtitle a:hover { text-decoration: underline; }
-
-.platform-badges { display: flex; gap: 8px; flex-shrink: 0; padding-top: 4px; }
-.badge {
-  padding: 5px 14px; border-radius: 20px;
-  font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
-}
-.badge.kalshi    { background: #0b4d2e; color: #4ade80; border: 1px solid #22c55e; }
-.badge.polymarket { background: #0f2d5e; color: #60a5fa; border: 1px solid #3b82f6; }
-
-/* ── Mode tabs ───────────────────────────────────────────────────────────── */
-.mode-tabs { display: flex; gap: 0; border-bottom: 2px solid #0f3460; }
-.mode-tab {
-  padding: 10px 24px; background: transparent; border: none;
-  color: #8888aa; font-size: 15px; font-weight: 600; cursor: pointer;
-  border-bottom: 3px solid transparent; margin-bottom: -2px;
-  transition: color 0.15s, border-color 0.15s;
-}
-.mode-tab.active { color: #e2b714; border-bottom-color: #e2b714; }
-.mode-tab:hover:not(.active) { color: #c0c0d0; }
-
-/* ── Form panel ──────────────────────────────────────────────────────────── */
-.form-panel {
-  background: #16213e; border: 1px solid #0f3460; border-radius: 12px;
-  padding: 24px; display: flex; flex-direction: column; gap: 16px;
-}
-.selectors { display: grid; grid-template-columns: 1fr auto 1fr 1fr; align-items: end; gap: 16px; }
-.select-group { display: flex; flex-direction: column; gap: 6px; }
-.select-group label { color: #8888aa; font-size: 13px; }
-select {
-  background: #0a0a1a; color: #e0e0e0; border: 1px solid #0f3460;
-  border-radius: 8px; padding: 9px 12px; font-size: 14px;
-}
-select:disabled { opacity: 0.5; cursor: not-allowed; }
-option { background: #0a0a1a; color: #e0e0e0; }
-.vs-label { color: #e2b714; font-size: 18px; font-weight: 700; padding-bottom: 9px; }
-.tournament-form { flex-direction: row; align-items: center; justify-content: space-between; }
-.form-description { color: #a0aec0; font-size: 14px; max-width: 520px; line-height: 1.5; }
-.btn-run {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  color: #0a0a1a; font-weight: 700; font-size: 15px;
-  border: none; border-radius: 10px; padding: 12px 28px;
-  cursor: pointer; white-space: nowrap; align-self: flex-end;
-  transition: opacity 0.2s;
-}
-.btn-run:disabled { opacity: 0.5; cursor: default; }
-
-/* ── Match summary ───────────────────────────────────────────────────────── */
-.match-summary {
-  background: #16213e; border: 1px solid #0f3460; border-radius: 10px;
-  padding: 16px 20px; display: flex; align-items: center;
-  justify-content: space-between; gap: 16px;
-}
-.match-teams { display: flex; align-items: center; gap: 12px; }
-.team-name { font-size: 16px; font-weight: 700; color: #e0e0e0; }
-.prob-pills { display: flex; gap: 6px; }
-.pill {
-  padding: 3px 10px; border-radius: 12px; font-size: 13px; font-weight: 600;
-}
-.pill.home  { background: #1a3a1a; color: #4ade80; }
-.pill.draw  { background: #2a2a10; color: #fbbf24; }
-.pill.away  { background: #3a1a1a; color: #f87171; }
-.summary-meta { font-size: 13px; color: #8888aa; }
-.summary-meta strong { color: #e2b714; }
-
-/* ── Filter bar ──────────────────────────────────────────────────────────── */
-.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; }
-.filter-btn {
-  display: flex; align-items: center; gap: 6px;
-  padding: 7px 14px; background: #16213e; border: 1px solid #0f3460;
-  border-radius: 20px; color: #8888aa; font-size: 13px; cursor: pointer;
-  transition: all 0.15s;
-}
-.filter-btn:hover { border-color: #e2b714; color: #e0e0e0; }
-.filter-btn.active { background: #1e3a10; border-color: #e2b714; color: #e2b714; }
-.count {
-  background: #0f3460; color: #a0c0ff; border-radius: 10px;
-  padding: 0 7px; font-size: 11px; font-weight: 700;
-}
-.filter-btn.active .count { background: #2a4a10; color: #e2b714; }
-
-/* ── Champion banner ─────────────────────────────────────────────────────── */
-.champion-banner {
-  background: linear-gradient(135deg, #1e2a00 0%, #2d3800 100%);
-  border: 1px solid #e2b714; border-radius: 12px;
-  padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;
-}
-.champion-info { display: flex; align-items: center; gap: 14px; }
-.trophy { font-size: 36px; }
-.champion-name { font-size: 22px; font-weight: 800; color: #e2b714; }
-.champion-sub { font-size: 13px; color: #a0b040; margin-top: 2px; }
-
-/* ── Categorical table ───────────────────────────────────────────────────── */
-.categorical-panel {
-  background: #16213e; border: 1px solid #0f3460; border-radius: 12px;
-  overflow: hidden;
-}
-.section-title {
-  padding: 14px 20px; background: #0f3460;
-  color: #e2b714; font-weight: 700; font-size: 15px;
-}
-.winner-table { padding: 8px 0; }
-.winner-row {
-  display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
-  padding: 10px 20px; font-size: 13px; align-items: center; gap: 8px;
-  border-bottom: 1px solid #0f1e35;
-}
-.winner-row:last-child { border-bottom: none; }
-.header-row { color: #6a6a8a; font-size: 12px; font-weight: 600; }
-.team-cell { font-weight: 600; color: #e0e0e0; }
-.mini-bar-bg {
-  display: inline-block; width: 80px; height: 6px;
-  background: #0f1e35; border-radius: 3px; overflow: hidden; vertical-align: middle;
-  margin-right: 8px;
-}
-.mini-bar-fill { display: block; height: 100%; background: #e2b714; border-radius: 3px; }
-.price-cell { font-weight: 700; }
-.kalshi-price { color: #4ade80; }
-.poly-price   { color: #60a5fa; }
-.no-price     { color: #f87171; }
-
-/* ── Questions grid ──────────────────────────────────────────────────────── */
-.questions-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px;
+@media(max-width:860px){
+.selectors{
+grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.selectors label:last-child{
+grid-column:1/-1}
+.question-list{
+grid-template-columns:1fr}
+.match-summary{
+grid-template-columns:repeat(3,1fr)}
+.summary-meta{
+grid-column:1/-1;
+border-top:var(--border-width-thin) solid var(--color-border)}
 }
 
-/* ── Error ───────────────────────────────────────────────────────────────── */
-.error-box {
-  background: #3d1a1a; border: 1px solid #c53030;
-  border-radius: 8px; padding: 14px; color: #fc8181; font-size: 14px;
+@media(max-width:640px){
+.platforms{
+flex-wrap:wrap}
+.mode-tabs button{
+flex:1;
+padding:0 var(--space-2)}
+.selectors{
+grid-template-columns:1fr}
+.selectors label:last-child{
+grid-column:auto}
+.versus{
+text-align:center}
+.form-footer,.tournament-run{
+align-items:stretch;
+flex-direction:column}
+.form-footer button,.tournament-run button{
+width:100%}
+.match-summary{
+grid-template-columns:1fr}
+.match-summary>div{
+border-bottom:var(--border-width-thin) solid var(--color-border);
+border-right:0}
+.summary-meta{
+grid-column:auto;
+border-top:0}
 }
-.error-box a { color: #f6d860; font-weight: 700; margin-left: 10px; }
+
+@media(prefers-reduced-motion:reduce){
+.spin{
+animation:none}
+}
+
 </style>

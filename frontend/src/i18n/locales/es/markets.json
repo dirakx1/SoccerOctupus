@@ -1,0 +1,34 @@
+{
+  "eyebrow": "Mundial 2026 / Inteligencia de mercados",
+  "title": "Ponle precio a la predicción.",
+  "description": "Convierte las probabilidades del enjambre en preguntas de contratos de valor razonable para Kalshi y Polymarket. Sin margen de casa de apuestas.",
+  "platforms": "Plataformas de mercado",
+  "platformNote": "Los precios son valores de referencia para formatos de publicación, no ofertas en vivo.",
+  "modes": { "label": "Modo de mercado", "match": "Mercados de partido", "tournament": "Futuros del torneo" },
+  "teams": {
+    "loadingTitle": "Cargando las selecciones",
+    "loadingBody": "Preparando las selecciones disponibles del Mundial.",
+    "emptyTitle": "No hay selecciones disponibles.",
+    "emptyBody": "La fuente no devolvió selecciones disponibles.",
+    "errorTitle": "No pudimos cargar las selecciones.",
+    "errorBody": "Comprueba la conexión y vuelve a consultar la fuente.",
+    "retry": "Reintentar"
+  },
+  "form": {
+    "home": "Selección local", "away": "Selección visitante", "stage": "Fase", "select": "Selecciona una selección", "versus": "contra",
+    "stages": { "group": "Fase de grupos", "roundOf32": "Dieciseisavos", "roundOf16": "Octavos de final", "quarterFinal": "Cuartos de final", "semiFinal": "Semifinal", "final": "Final" },
+    "selectBoth": "Selecciona dos equipos para generar mercados.", "differentTeams": "Los equipos local y visitante deben ser distintos.",
+    "matchAction": "Generar preguntas de mercado", "matchLoading": "Ejecutando el enjambre de mercados",
+    "tournamentDescription": "Simula el torneo completo y genera futuros para selecciones, grupos e hitos.",
+    "tournamentAction": "Generar mercados de futuros", "tournamentLoading": "Simulando futuros del torneo"
+  },
+  "run": { "errorTitle": "No se pudieron generar los mercados.", "errorFallback": "La ejecución falló. Inténtalo de nuevo.", "working": "Puede tardar varios minutos. Mantén esta página abierta mientras termina el enjambre." },
+  "summary": {
+    "matchTitle": "Resumen del mercado del partido", "home": "Local", "draw": "Empate", "away": "Visitante", "likelyScore": "Marcador más probable", "questions": "{count} preguntas de mercado",
+    "champion": "Campeón pronosticado", "championProbability": "{probability} de probabilidad de ganar la final", "futures": "{count} contratos de futuros"
+  },
+  "filters": { "label": "Filtrar preguntas de mercado", "all": "Todos", "matchWinner": "Ganador del partido", "draw": "Empate", "btts": "Ambos marcan", "overUnder": "Más / menos", "cleanSheet": "Portería a cero", "penalties": "Penaltis", "correctScore": "Marcador exacto", "tournamentWinner": "Campeón", "reachStage": "Avance", "groupWinner": "Ganador de grupo", "confederationWin": "Confederación", "hostNation": "País anfitrión" },
+  "results": { "emptyTitle": "Ninguna pregunta coincide con el filtro.", "emptyBody": "Elige otro tipo para consultar los contratos devueltos.", "winnerTitle": "Resultados del ganador del torneo", "team": "Selección", "probability": "Probabilidad", "kalshiYes": "Kalshi SÍ", "polymarketYes": "Polymarket SÍ", "kalshiNo": "Kalshi NO" },
+  "card": { "yes": "SÍ", "no": "NO", "probability": "Probabilidad de {answer}", "resolveDate": "Se resuelve {date}", "copy": "Copiar ID de pregunta {id}", "copyShort": "Copiar ID", "copied": "ID de pregunta copiado.", "copyFailed": "No se pudo copiar el ID de pregunta.", "showCriteria": "Mostrar criterios de resolución", "hideCriteria": "Ocultar criterios de resolución", "criteria": "Criterios de resolución", "ticker": "ID de pregunta", "kalshiPrices": "Precios de Kalshi", "polymarketPrices": "Precios de Polymarket", "unknownType": "Tipo de mercado" },
+  "billing": { "plans": "Ver planes" }
+}

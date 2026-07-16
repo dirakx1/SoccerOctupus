@@ -1,229 +1,144 @@
 <template>
-  <div class="market-card" :class="propClass">
+  <article class="market-card">
+    <header class="market-card-header">
+      <span class="type-label"><component :is="meta.icon" :size="14" />{{ typeLabel }}</span>
+      <span v-if="question.resolution?.date" class="resolve-date">
+        <CalendarDays :size="14" />{{ t('markets.card.resolveDate', { date: question.resolution.date }) }}
+      </span>
+    </header>
 
-    <!-- ── Top row: badge + copy ──────────────────────────────────────── -->
-    <div class="card-top">
-      <span class="prop-badge" :class="propClass">{{ propIcon }} {{ propLabel }}</span>
-      <div class="top-actions">
-        <span class="resolve-date">📅 {{ question.resolution?.date }}</span>
-        <button class="copy-btn" :class="{ copied }" @click="copyTicker" :title="'Copy ticker: ' + question.question_id">
-          {{ copied ? '✓' : '⎘' }}
-        </button>
+    <h3>{{ question.question }}</h3>
+
+    <div class="probabilities">
+      <div v-for="answer in probabilityRows" :key="answer.key" class="probability-row">
+        <span>{{ answer.label }}</span>
+        <div
+          class="probability-track"
+          role="meter"
+          :aria-label="t('markets.card.probability', { answer: answer.label })"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          :aria-valuenow="answer.raw * 100"
+        ><span :style="{ width: answer.width }" /></div>
+        <strong>{{ answer.display }}</strong>
       </div>
     </div>
 
-    <!-- ── Question text ──────────────────────────────────────────────── -->
-    <div class="question-text">{{ question.question }}</div>
+    <dl class="price-list">
+      <div>
+        <dt>{{ t('markets.card.kalshiPrices') }}</dt>
+        <dd>{{ t('markets.card.yes') }} {{ cents(question.pricing?.kalshi_yes_cents) }} <span>/</span> {{ t('markets.card.no') }} {{ cents(question.pricing?.kalshi_no_cents) }}</dd>
+      </div>
+      <div>
+        <dt>{{ t('markets.card.polymarketPrices') }}</dt>
+        <dd>{{ t('markets.card.yes') }} {{ usdc(question.pricing?.polymarket_yes_usdc) }} <span>/</span> {{ t('markets.card.no') }} {{ usdc(question.pricing?.polymarket_no_usdc) }}</dd>
+      </div>
+    </dl>
 
-    <!-- ── Probability bars ───────────────────────────────────────────── -->
-    <div class="prob-section">
-      <div class="prob-row yes-row">
-        <span class="prob-label yes-label">YES</span>
-        <div class="bar-bg">
-          <div class="bar-fill yes-fill" :style="{ width: yesPct }"></div>
-        </div>
-        <span class="prob-value yes-value">{{ yesPct }}</span>
-      </div>
-      <div class="prob-row no-row">
-        <span class="prob-label no-label">NO</span>
-        <div class="bar-bg">
-          <div class="bar-fill no-fill" :style="{ width: noPct }"></div>
-        </div>
-        <span class="prob-value no-value">{{ noPct }}</span>
-      </div>
-    </div>
-
-    <!-- ── Platform pricing ───────────────────────────────────────────── -->
-    <div class="pricing-row">
-      <div class="platform-price kalshi-block">
-        <span class="platform-logo">⚡ Kalshi</span>
-        <div class="price-pair">
-          <span class="yes-price">YES {{ question.pricing?.kalshi_yes_cents?.toFixed(1) }}¢</span>
-          <span class="sep">/</span>
-          <span class="no-price">NO {{ question.pricing?.kalshi_no_cents?.toFixed(1) }}¢</span>
-        </div>
-      </div>
-      <div class="platform-price poly-block">
-        <span class="platform-logo">🔵 Polymarket</span>
-        <div class="price-pair">
-          <span class="yes-price">${{ question.pricing?.polymarket_yes_usdc?.toFixed(4) }}</span>
-          <span class="sep">/</span>
-          <span class="no-price">${{ question.pricing?.polymarket_no_usdc?.toFixed(4) }}</span>
-        </div>
+    <div v-if="question.resolution?.criteria" class="criteria-block">
+      <button
+        type="button"
+        class="criteria-toggle"
+        :aria-expanded="showCriteria"
+        :aria-controls="criteriaId"
+        @click="showCriteria = !showCriteria"
+      >
+        <ChevronDown :size="16" :class="{ expanded: showCriteria }" />
+        {{ showCriteria ? t('markets.card.hideCriteria') : t('markets.card.showCriteria') }}
+      </button>
+      <div v-if="showCriteria" :id="criteriaId" class="criteria-text">
+        <strong>{{ t('markets.card.criteria') }}</strong>
+        <p>{{ question.resolution.criteria }}</p>
       </div>
     </div>
 
-    <!-- ── Resolution criteria (collapsed) ───────────────────────────── -->
-    <button class="criteria-toggle" @click="showCriteria = !showCriteria">
-      {{ showCriteria ? '▲ Hide' : '▼ Resolution criteria' }}
-    </button>
-    <div v-if="showCriteria" class="criteria-text">
-      {{ question.resolution?.criteria }}
-    </div>
-
-    <!-- ── Ticker ─────────────────────────────────────────────────────── -->
-    <div class="ticker-row">
-      <span class="ticker">{{ question.question_id }}</span>
-    </div>
-
-  </div>
+    <footer>
+      <div><span>{{ t('markets.card.ticker') }}</span><code>{{ question.question_id }}</code></div>
+      <button type="button" class="copy-button" :aria-label="t('markets.card.copy', { id: question.question_id })" @click="copyTicker">
+        <Check v-if="copyState === 'success'" :size="16" />
+        <Copy v-else :size="16" />
+        <span>{{ copyState === 'success' ? t('markets.card.copied') : t('markets.card.copyShort') }}</span>
+      </button>
+      <p class="sr-only" aria-live="polite">{{ copyMessage }}</p>
+    </footer>
+  </article>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { CalendarDays, Check, ChevronDown, CircleDollarSign, Copy, Flag, Goal, ShieldCheck, Target, Trophy, TrendingUp, Users } from '@lucide/vue'
 
 const props = defineProps({ question: { type: Object, required: true } })
-
+const { locale, t } = useI18n()
 const showCriteria = ref(false)
-const copied       = ref(false)
+const copyState = ref('idle')
+const criteriaId = `market-criteria-${Math.random().toString(36).slice(2)}`
 
-const yesPct = computed(() =>
-  ((props.question.yes_probability ?? 0) * 100).toFixed(1) + '%'
-)
-const noPct = computed(() =>
-  ((props.question.no_probability ?? 0) * 100).toFixed(1) + '%'
-)
-
-// ── Prop type metadata ────────────────────────────────────────────────────
 const PROP_META = {
-  match_winner:       { label: 'Match Winner',   icon: '🏆', cls: 'winner'      },
-  draw:               { label: 'Draw',            icon: '🤝', cls: 'draw'        },
-  btts:               { label: 'Both Score',      icon: '⚽', cls: 'btts'        },
-  over_under:         { label: 'Over/Under',      icon: '📈', cls: 'over'        },
-  clean_sheet:        { label: 'Clean Sheet',     icon: '🛡️', cls: 'clean'      },
-  penalties:          { label: 'Penalties',       icon: '🥅', cls: 'pens'        },
-  correct_score:      { label: 'Exact Score',     icon: '🎯', cls: 'score'       },
-  tournament_winner:  { label: 'Champion',        icon: '🏆', cls: 'winner'      },
-  reach_stage:        { label: 'Advancement',     icon: '📍', cls: 'advance'     },
-  group_winner:       { label: 'Group Winner',    icon: '🏅', cls: 'group'       },
-  confederation_win:  { label: 'Confederation',   icon: '🌐', cls: 'conf'        },
-  host_nation:        { label: 'Host Nation',     icon: '🏟️', cls: 'host'       },
+  match_winner: { label: 'matchWinner', icon: Trophy }, draw: { label: 'draw', icon: Users },
+  btts: { label: 'btts', icon: Goal }, over_under: { label: 'overUnder', icon: TrendingUp },
+  clean_sheet: { label: 'cleanSheet', icon: ShieldCheck }, penalties: { label: 'penalties', icon: Target },
+  correct_score: { label: 'correctScore', icon: Goal }, tournament_winner: { label: 'tournamentWinner', icon: Trophy },
+  reach_stage: { label: 'reachStage', icon: Flag }, group_winner: { label: 'groupWinner', icon: Trophy },
+  confederation_win: { label: 'confederationWin', icon: CircleDollarSign }, host_nation: { label: 'hostNation', icon: Flag },
 }
+const meta = computed(() => PROP_META[props.question.prop_type] || { label: null, icon: CircleDollarSign })
+const typeLabel = computed(() => meta.value.label ? t(`markets.filters.${meta.value.label}`) : (props.question.prop_type || t('markets.card.unknownType')))
 
-const meta = computed(() => PROP_META[props.question.prop_type] ?? { label: props.question.prop_type, icon: '📊', cls: 'default' })
-const propLabel = computed(() => meta.value.label)
-const propIcon  = computed(() => meta.value.icon)
-const propClass = computed(() => `type-${meta.value.cls}`)
+const formatter = (options) => new Intl.NumberFormat(locale.value, options)
+const percentage = (value) => formatter({ style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(Number(value) || 0)
+const cents = (value) => value == null ? '—' : `${formatter({ minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value)}¢`
+const usdc = (value) => value == null ? '—' : formatter({ style: 'currency', currency: 'USD', minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(value)
+const probabilityRows = computed(() => [
+  { key: 'yes', label: t('markets.card.yes'), raw: Number(props.question.yes_probability) || 0, width: `${(Number(props.question.yes_probability) || 0) * 100}%`, display: percentage(props.question.yes_probability) },
+  { key: 'no', label: t('markets.card.no'), raw: Number(props.question.no_probability) || 0, width: `${(Number(props.question.no_probability) || 0) * 100}%`, display: percentage(props.question.no_probability) },
+])
+const copyMessage = computed(() => copyState.value === 'success' ? t('markets.card.copied') : copyState.value === 'error' ? t('markets.card.copyFailed') : '')
 
 async function copyTicker() {
   try {
     await navigator.clipboard.writeText(props.question.question_id)
-    copied.value = true
-    setTimeout(() => { copied.value = false }, 1800)
-  } catch { /* clipboard not available */ }
+    copyState.value = 'success'
+  } catch {
+    copyState.value = 'error'
+  }
 }
 </script>
 
 <style scoped>
-.market-card {
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: border-color 0.15s, transform 0.15s;
-}
-.market-card:hover { transform: translateY(-2px); border-color: #2a4a7a; }
-
-/* ── Type-based left accent ──────────────────────────────────────────────── */
-.market-card.type-winner  { border-left: 3px solid #e2b714; }
-.market-card.type-draw    { border-left: 3px solid #60a5fa; }
-.market-card.type-btts    { border-left: 3px solid #4ade80; }
-.market-card.type-over    { border-left: 3px solid #fb923c; }
-.market-card.type-clean   { border-left: 3px solid #2dd4bf; }
-.market-card.type-pens    { border-left: 3px solid #f87171; }
-.market-card.type-score   { border-left: 3px solid #c084fc; }
-.market-card.type-advance { border-left: 3px solid #60a5fa; }
-.market-card.type-group   { border-left: 3px solid #4ade80; }
-.market-card.type-conf    { border-left: 3px solid #2dd4bf; }
-.market-card.type-host    { border-left: 3px solid #fb923c; }
-
-/* ── Top row ─────────────────────────────────────────────────────────────── */
-.card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.top-actions { display: flex; align-items: center; gap: 8px; }
-
-.prop-badge {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
-  padding: 3px 10px; border-radius: 10px; white-space: nowrap;
-}
-.type-winner .prop-badge  { background: #2a2200; color: #e2b714; }
-.type-draw   .prop-badge  { background: #0d1f3c; color: #93c5fd; }
-.type-btts   .prop-badge  { background: #0a2210; color: #86efac; }
-.type-over   .prop-badge  { background: #2a1200; color: #fdba74; }
-.type-clean  .prop-badge  { background: #0a2820; color: #5eead4; }
-.type-pens   .prop-badge  { background: #2a0a0a; color: #fca5a5; }
-.type-score  .prop-badge  { background: #1e0a2a; color: #d8b4fe; }
-.type-advance .prop-badge { background: #0d1f3c; color: #93c5fd; }
-.type-group  .prop-badge  { background: #0a2210; color: #86efac; }
-.type-conf   .prop-badge  { background: #0a2820; color: #5eead4; }
-.type-host   .prop-badge  { background: #2a1200; color: #fdba74; }
-
-.resolve-date { font-size: 11px; color: #6a6a8a; white-space: nowrap; }
-.copy-btn {
-  background: #0f3460; border: 1px solid #1e4a80;
-  color: #a0c0ff; border-radius: 6px; padding: 3px 8px;
-  font-size: 13px; cursor: pointer; transition: all 0.15s;
-}
-.copy-btn:hover { background: #1e4a80; }
-.copy-btn.copied { background: #0a2210; color: #4ade80; border-color: #22c55e; }
-
-/* ── Question text ───────────────────────────────────────────────────────── */
-.question-text {
-  font-size: 14px; font-weight: 600; color: #e0e0e0;
-  line-height: 1.45; min-height: 40px;
-}
-
-/* ── Probability bars ────────────────────────────────────────────────────── */
-.prob-section { display: flex; flex-direction: column; gap: 6px; }
-.prob-row { display: flex; align-items: center; gap: 8px; }
-.prob-label { font-size: 11px; font-weight: 700; min-width: 28px; }
-.yes-label { color: #4ade80; }
-.no-label  { color: #f87171; }
-.bar-bg {
-  flex: 1; height: 8px; background: #0a0f1a;
-  border-radius: 4px; overflow: hidden;
-}
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
-.yes-fill { background: linear-gradient(90deg, #15803d, #4ade80); }
-.no-fill  { background: linear-gradient(90deg, #991b1b, #f87171); }
-.prob-value { font-size: 13px; font-weight: 700; min-width: 44px; text-align: right; }
-.yes-value { color: #4ade80; }
-.no-value  { color: #f87171; }
-
-/* ── Platform pricing ────────────────────────────────────────────────────── */
-.pricing-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.platform-price {
-  border-radius: 8px; padding: 8px 10px;
-  display: flex; flex-direction: column; gap: 4px;
-}
-.kalshi-block { background: #061a0f; border: 1px solid #166534; }
-.poly-block   { background: #061220; border: 1px solid #1d4ed8; }
-.platform-logo { font-size: 11px; font-weight: 700; }
-.kalshi-block .platform-logo { color: #4ade80; }
-.poly-block   .platform-logo { color: #60a5fa; }
-.price-pair { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; }
-.yes-price { color: #e0e0e0; }
-.no-price  { color: #8888aa; }
-.sep { color: #4a4a6a; }
-
-/* ── Criteria toggle ─────────────────────────────────────────────────────── */
-.criteria-toggle {
-  background: none; border: none; color: #6a6a8a;
-  font-size: 11px; cursor: pointer; text-align: left; padding: 0;
-  transition: color 0.15s;
-}
-.criteria-toggle:hover { color: #a0aec0; }
-.criteria-text {
-  font-size: 12px; color: #8888aa; line-height: 1.5;
-  background: #0f1a2e; border-radius: 6px; padding: 10px 12px;
-}
-
-/* ── Ticker ──────────────────────────────────────────────────────────────── */
-.ticker-row { border-top: 1px solid #0f1e35; padding-top: 8px; }
-.ticker {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 10px; color: #4a4a6a; letter-spacing: 0.5px;
-}
+.market-card { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-5); min-width: 0; padding: var(--space-5); }
+.market-card-header { align-items: center; display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: space-between; }
+.type-label, .resolve-date { align-items: center; display: inline-flex; gap: var(--space-2); }
+.type-label { background: var(--color-surface-inset); color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); padding: var(--space-2) var(--space-3); text-transform: uppercase; }
+.resolve-date { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+h3 { font-family: var(--font-family-display); font-size: var(--font-size-lg); line-height: var(--line-height-normal); margin: 0; }
+.probabilities { display: flex; flex-direction: column; gap: var(--space-3); }
+.probability-row { align-items: center; display: grid; gap: var(--space-3); grid-template-columns: 2.5rem minmax(4rem, 1fr) 4.5rem; }
+.probability-row > span { color: var(--color-text-muted); font: var(--font-weight-bold) var(--font-size-xs) / 1 var(--font-family-data); }
+.probability-row strong { font-family: var(--font-family-data); font-variant-numeric: tabular-nums; text-align: right; }
+.probability-track { background: var(--color-surface-inset); height: var(--space-2); overflow: hidden; }
+.probability-track span { background: var(--color-accent); display: block; height: 100%; }
+.price-list { border-bottom: var(--border-width-thin) solid var(--color-border); border-top: var(--border-width-thin) solid var(--color-border); margin: 0; }
+.price-list > div { align-items: center; display: flex; gap: var(--space-4); justify-content: space-between; min-height: var(--control-height-lg); }
+.price-list > div + div { border-top: var(--border-width-thin) solid var(--color-border); }
+.price-list dt { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.price-list dd { font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); margin: 0; }
+.price-list dd span { color: var(--color-text-subtle); padding: 0 var(--space-1); }
+.criteria-toggle, .copy-button { align-items: center; background: transparent; border: 0; color: var(--color-text-muted); cursor: pointer; display: inline-flex; gap: var(--space-2); padding: 0; }
+.criteria-toggle:hover, .copy-button:hover { color: var(--color-accent); }
+.criteria-toggle:focus-visible, .copy-button:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 4px; }
+.criteria-toggle svg { transition: transform var(--motion-duration-fast) var(--motion-easing-standard); }
+.criteria-toggle svg.expanded { transform: rotate(180deg); }
+.criteria-text { background: var(--color-surface-inset); margin-top: var(--space-3); padding: var(--space-4); }
+.criteria-text strong { font-size: var(--font-size-xs); }
+.criteria-text p { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; }
+footer { align-items: end; display: flex; gap: var(--space-4); justify-content: space-between; }
+footer > div { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+footer span { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+footer code { color: var(--color-text); font-family: var(--font-family-data); overflow-wrap: anywhere; }
+.copy-button { flex: 0 0 auto; }
+.sr-only { height: 1px; margin: -1px; overflow: hidden; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); }
+@media (max-width: 480px) { .price-list > div, footer { align-items: flex-start; flex-direction: column; padding: var(--space-3) 0; } }
+@media (prefers-reduced-motion: reduce) { .criteria-toggle svg { transition: none; } }
 </style>

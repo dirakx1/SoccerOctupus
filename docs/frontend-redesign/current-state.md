@@ -176,9 +176,11 @@ route. Video Agent detail retains every evidence source while adding semantic
 modal/lightbox roles, native screenshot buttons, localized controls and captions,
 layered Escape handling, focus capture/restoration, and background scroll lock.
 
-The current frontend also shares market cards, authentication controls,
-reverification, password policy, and two-factor settings. Those components
-remain pending Atlas migration. The redesign should adapt or wrap working domain
+`MarketCard.vue` now uses Atlas tokens and localized frontend labels while
+preserving every returned contract value and its public `question` prop. The
+current frontend also shares authentication controls, reverification, password
+policy, and two-factor settings. Those components remain pending Atlas
+migration. The redesign should adapt or wrap working domain
 behavior before replacing it;
 visual similarity alone is not a reason to discard tested workflow components.
 

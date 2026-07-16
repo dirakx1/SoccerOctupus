@@ -207,9 +207,9 @@ and API-adapter path before migrating higher-risk workflows.
 
 ## Phase 4: Prediction Workflows
 
-Status: In progress. Predict Match and the combined live-results / Tournament
-Simulation workflow are migrated. Prediction Markets remain pending, so Phase 4
-is not complete.
+Status: In progress. Predict Match, the combined live-results / Tournament
+Simulation workflow, and Prediction Markets are migrated. Phase 4 remains open
+for generated-text localization and visual QA.
 
 Implemented for Predict Match:
 
@@ -239,18 +239,30 @@ Implemented for live Tournament results and Tournament Simulation:
   champion final-win probability, and contains horizontal bracket overflow on
   narrow viewports.
 
+Implemented for Prediction Markets:
+
+- The exact team GET, three-field Match Markets POST, and bodyless Tournament
+  Markets POST contracts remain unchanged, including all three billing codes.
+- Match and Tournament modes preserve their filters, counts, summary fields,
+  binary questions, categorical winner outcomes, Question IDs, dates,
+  probabilities, platform prices, and Resolution Criteria.
+- `MarketCard` retains its public `question` prop and adds localized type labels,
+  accessible probability meters, keyboard criteria disclosure, and clipboard
+  success/failure feedback without rewriting source-generated fields.
+
 Current limitation:
 
-- The backend does not accept Locale for Match Prediction. Swarm Consensus, Key
-  Factors, and Agent reasoning remain English/source values. The frontend does
-  not add an unsupported payload field; locale-aware generation remains required
-  before this phase can satisfy the generated-narrative exit criterion.
+- The backend does not accept Locale for Match Prediction or Market generation.
+  Swarm Consensus, Key Factors, Agent reasoning, Market Questions, and Resolution
+  Criteria remain English/source values. The frontend does not add unsupported
+  payload fields; locale-aware generation remains required before this phase can
+  satisfy the generated-text exit criterion.
 
 Migration order:
 
 1. Predict Match. Implemented; visual QA remains.
 2. Tournament live results and Simulation. Implemented; visual QA remains.
-3. Prediction Markets. Pending.
+3. Prediction Markets. Implemented; visual QA remains.
 
 Exit criteria for each workflow:
 
