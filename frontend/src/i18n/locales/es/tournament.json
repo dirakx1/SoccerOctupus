@@ -1,0 +1,90 @@
+{
+  "page": {
+    "eyebrow": "Torneo / {competition}",
+    "title": "Sigue el cuadro. Proyecta el desenlace.",
+    "description": "Consulta el registro oficial de la fase de grupos y simula la ruta eliminatoria restante desde el estado actual del torneo."
+  },
+  "tabs": {
+    "label": "Vistas del torneo",
+    "live": "Grupos en directo",
+    "simulation": "Simulación del torneo"
+  },
+  "live": {
+    "status": "Resultados en directo",
+    "source": "Fuente",
+    "summary": "{count} partidos jugados",
+    "standings": "Clasificación de grupos",
+    "group": "Grupo {group}",
+    "groupTable": "Clasificación del Grupo {group}",
+    "results": "Partidos jugados",
+    "matchLabel": "Grupo {group}: {home} contra {away}",
+    "loading": "Cargando resultados del torneo en directo",
+    "loadingDescription": "Obteniendo la clasificación actual y los partidos jugados.",
+    "empty": "Todavía no hay datos del torneo en directo.",
+    "emptyDescription": "La clasificación y los partidos aparecerán cuando el feed tenga datos.",
+    "error": "No pudimos cargar los resultados del torneo en directo.",
+    "errorDescription": "Reintenta el feed para ver la clasificación y los partidos jugados.",
+    "retry": "Reintentar resultados",
+    "noMatches": "Todavía no se ha jugado ningún partido."
+  },
+  "standings": {
+    "position": "Pos",
+    "team": "Equipo",
+    "played": "PJ",
+    "won": "G",
+    "drawn": "E",
+    "lost": "P",
+    "goalsFor": "GF",
+    "goalsAgainst": "GC",
+    "goalDifference": "DG",
+    "points": "Pts"
+  },
+  "simulation": {
+    "option": "Usar el enjambre completo",
+    "optionDescription": "Consulta a los cuatro agentes especializados para cada partido previsto y puede tardar más.",
+    "note": "Los partidos jugados usan resultados oficiales. Solo se predicen las eliminatorias restantes.",
+    "run": "Ejecutar simulación del torneo",
+    "running": "Simulación del torneo en curso",
+    "longRunningTitle": "La ruta del torneo sigue calculándose.",
+    "longRunningDescription": "Una ejecución con el enjambre completo puede tardar más mientras los agentes analizan cada partido restante.",
+    "error": "No pudimos ejecutar la simulación del torneo.",
+    "errorFallback": "El servicio de simulación no devolvió un resultado. Inténtalo de nuevo.",
+    "empty": "No se ha ejecutado ninguna simulación.",
+    "emptyDescription": "Ejecuta la simulación para proyectar el podio y el cuadro eliminatorio restante."
+  },
+  "billing": {
+    "subscriptionRequired": "Se necesita una suscripción activa para ejecutar una simulación del torneo.",
+    "paymentRequired": "Debes resolver el estado de facturación antes de ejecutar otra simulación.",
+    "featureLimitReached": "Se alcanzó el límite de simulaciones del torneo para este ciclo de facturación."
+  },
+  "result": {
+    "label": "Resultado de la simulación",
+    "podium": "Podio proyectado",
+    "champion": "Campeón",
+    "runnerUp": "Subcampeón",
+    "thirdPlace": "Tercer puesto",
+    "championProbability": "Probabilidad de ganar la final",
+    "bracket": "Cuadro eliminatorio"
+  },
+  "rounds": {
+    "roundOf32": "Dieciseisavos de final",
+    "roundOf16": "Octavos de final",
+    "quarterFinal": "Cuartos de final",
+    "semiFinal": "Semifinales",
+    "thirdPlace": "Partido por el tercer puesto",
+    "final": "Final",
+    "matchCount": "{count} partido | {count} partidos"
+  },
+  "match": {
+    "official": "Oficial",
+    "predicted": "Previsto",
+    "final": "Resultado final",
+    "homeShort": "L",
+    "drawShort": "E",
+    "awayShort": "V",
+    "winner": "Ganador",
+    "probabilities": "{homeLabel} {home} / {drawLabel} {draw} / {awayLabel} {away}",
+    "officialLabel": "Final oficial: {home} contra {away}, {score}",
+    "predictedLabel": "Partido previsto: {home} contra {away}, {score}"
+  }
+}

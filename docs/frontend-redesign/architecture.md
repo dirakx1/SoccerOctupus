@@ -129,8 +129,7 @@ protected Groups workflow while preserving their existing route and data seams:
   pages. It owns no domain state or data fetching.
 
 Home and Groups load `home` and `groups` message domains for English and Spanish.
-Tournament, Markets, auth, billing, admin, and other public routes remain pending
-migration.
+Markets, auth, billing, admin, and other public routes remain pending migration.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 
@@ -150,6 +149,25 @@ The backend Match Prediction request does not accept or apply Locale. Generated
 narrative, Key Factors, and Agent reasoning therefore remain English until a
 backend contract explicitly adds locale-aware generation and caching. The
 frontend must not add a speculative `locale` payload field.
+
+The Tournament slice preserves the live-results, simulation, and billing
+contracts while separating feature presentation from workflow state:
+
+- `TournamentView.vue` keeps `GET /api/predictions/live-results` and
+  `POST /api/predictions/tournament` with only `{ use_swarm: boolean }`. It owns
+  the accessible live/simulation tabs, live-feed and run states, API calls, and
+  billing recovery through the canonical localized route.
+- Live standings preserve the backend's ranked team order, present groups in
+  canonical label order, and render all played, won, drawn, lost, goals-for,
+  goals-against, goal-difference, and points values. Positions are ordinal only;
+  the frontend does not infer qualification from a team's row.
+- `TournamentBracket.vue` owns the returned podium and knockout presentation.
+  It orders the known backend stages, exposes the champion final-win probability
+  without inventing runner-up or third-place probabilities, and suppresses
+  prediction probabilities for `is_actual` official results.
+- Frontend-owned Tournament copy and number/percentage formatting use the English
+  / Spanish `tournament` domain. Team names, `ESPN`, backend dates, scores, and
+  other returned values remain source data.
 
 The first shared-overlay slice completes the migrated Home presentation without
 introducing a generic dialog framework:

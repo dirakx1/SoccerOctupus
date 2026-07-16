@@ -98,7 +98,7 @@ phase.
 | `/predict` | Signed in | Redirect | Redirects to the canonical English Match Prediction workspace. |
 | `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Atlas Match Prediction workflow with localized team/stage controls, complete team-feed and run states, exact existing API payload/billing gates, probabilities, predicted score/xG, confidence, four-agent agreement, source narrative, key factors, and Agent detail. |
 | `/tournament` | Signed in | Redirect | Redirects to the canonical English Knockout Bracket workspace. |
-| `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Live group results and standings plus optional-swarm Tournament Simulation and knockout results. |
+| `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Atlas live group standings/results plus optional-swarm Tournament Simulation, with complete feed/run states, localized controls, exact existing API and billing behavior, response-derived podium fields, and an ordered horizontally scrollable knockout bracket. |
 | `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |
 | `/:locale/competitions/:competitionEditionSlug/markets` | Signed in | `MarketsView.vue` | Match markets and tournament futures, filters, fair-value contract prices, and generated Market Questions. |
 | `/profile` | Signed in | `ProfileView.vue` | User profile, subscription, usage, billing health, portal access, payment recovery, and two-factor settings. |
@@ -151,6 +151,8 @@ calls to generic UI components.
 - Post-authentication destination recovery for email, MFA, and social flows.
 - Administrator-only navigation and route access.
 - Official results taking precedence over predicted tournament results.
+- Official Tournament results are labeled final and never display predicted
+  probabilities; live standings do not infer qualification state.
 - Full-swarm opt-in for Tournament Simulation.
 - Match and tournament Market Question modes and filters.
 - Responsive navigation, footer links, cookie consent, and legal disclaimer.

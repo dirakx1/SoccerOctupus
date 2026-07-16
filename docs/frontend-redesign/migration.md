@@ -207,9 +207,9 @@ and API-adapter path before migrating higher-risk workflows.
 
 ## Phase 4: Prediction Workflows
 
-Status: In progress. Predict Match and its visible Probability Meter / billing
-components are migrated. Tournament Simulation and Prediction Markets remain
-pending, so Phase 4 is not complete.
+Status: In progress. Predict Match and the combined live-results / Tournament
+Simulation workflow are migrated. Prediction Markets remain pending, so Phase 4
+is not complete.
 
 Implemented for Predict Match:
 
@@ -222,6 +222,23 @@ Implemented for Predict Match:
 - `ProbMeter`, `BillingStatusNotice`, and `BillingPlansLink` use Atlas tokens and
   localized labels without changing their interfaces for other callers.
 
+Implemented for live Tournament results and Tournament Simulation:
+
+- The exact live-results GET and Tournament Simulation POST contracts, boolean
+  swarm payload, returned podium/knockout fields, billing codes, recovery action,
+  and Pricing route are preserved.
+- The English/Spanish `tournament` domain, locale-aware numeric presentation,
+  accessible keyboard tabs, live loading/empty/error/retry states, stable
+  long-running state, run error, and pre-run state have focused coverage.
+- Live standings expose ordered positions without implying qualification.
+  Official knockout results take precedence, are labeled official/final, and do
+  not show prediction probabilities. Predicted matches retain the returned score,
+  outcome, and home/draw/away probabilities in backend stage order.
+- `TournamentBracket` is a feature-local presentation module. It renders the
+  response-derived champion, runner-up, and third place, with only the returned
+  champion final-win probability, and contains horizontal bracket overflow on
+  narrow viewports.
+
 Current limitation:
 
 - The backend does not accept Locale for Match Prediction. Swarm Consensus, Key
@@ -232,7 +249,7 @@ Current limitation:
 Migration order:
 
 1. Predict Match. Implemented; visual QA remains.
-2. Tournament Simulation. Pending.
+2. Tournament live results and Simulation. Implemented; visual QA remains.
 3. Prediction Markets. Pending.
 
 Exit criteria for each workflow:
