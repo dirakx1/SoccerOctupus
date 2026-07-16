@@ -179,6 +179,10 @@ Implemented:
 - English and Spanish page message domains and focused component tests cover
   canonical Home links, localized copy, modal access, Groups success/sorting,
   loading, empty, error/retry, and localized output.
+- Cookie Banner and Video Agent evidence overlays consume Atlas tokens and the
+  English/Spanish `overlays` domain. Consent storage semantics, blocked-storage
+  fallback, source evidence, dialog/lightbox keyboard behavior, focus lifecycle,
+  and scroll lock have focused component coverage.
 
 Remaining before completion:
 
@@ -187,6 +191,9 @@ Remaining before completion:
   the running application.
 - Keep Predict, Tournament, Markets, auth, billing, admin, and other public
   routes explicitly pending their own migration slices.
+- Keep billing notices, market/probability modules, authentication controls,
+  reverification, password policy, and two-factor settings pending their own
+  shared-component migrations.
 
 Exit criteria:
 

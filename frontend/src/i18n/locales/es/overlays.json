@@ -1,0 +1,35 @@
+{
+  "cookie": {
+    "dialogLabel": "Preferencias de cookies",
+    "description": "Usamos cookies esenciales para mantener tu sesión y cookies analíticas opcionales para mejorar la experiencia.",
+    "policyLead": "Consulta los detalles en nuestra",
+    "policyLink": "Política de cookies",
+    "necessary": "Solo necesarias",
+    "acceptAll": "Aceptar todas"
+  },
+  "video": {
+    "eyebrow": "Fuente de evidencia",
+    "title": "Agente de inteligencia de vídeo",
+    "description": "Analiza resúmenes de YouTube para medir interacción, sentimiento de los títulos y señales de impulso táctico, y después los integra en la predicción del enjambre.",
+    "howItWorks": "Cómo funciona",
+    "watchEvidence": "Ver la evidencia",
+    "close": "Cerrar evidencia de vídeo",
+    "closeLightbox": "Cerrar visor de capturas",
+    "previous": "Captura anterior",
+    "next": "Captura siguiente",
+    "lightboxLabel": "Visor de capturas",
+    "openScreenshot": "Abrir captura {number}: {caption}",
+    "openVideo": "Abrir {title} en YouTube",
+    "imageUnavailable": "Captura no disponible",
+    "categories": {
+      "highlights": "Resúmenes de partidos",
+      "tactical": "Análisis táctico"
+    },
+    "captions": {
+      "highlightsArgentina": "Resultado de búsqueda de resúmenes: “Argentina 2-0 Austria | FIFA WC 2026™”. El agente lee el título para detectar términos positivos como victoria y después obtiene las cifras de visualizaciones y me gusta.",
+      "highlightsGermany": "Resultado de búsqueda de resúmenes: “Ecuador 2-1 Germany | FIFA WC 2026™”. La sorpresa añade señales negativas para Alemania y reduce su puntuación de impulso.",
+      "tacticalArgentina": "Resultado de búsqueda de análisis táctico: “Complete Argentina 2026 WC Breakdown”. Una proporción alta entre me gusta y visualizaciones aporta una señal fuerte de impulso al enjambre.",
+      "tacticalMessi": "Resultado de búsqueda de análisis táctico: “Messi Breaks Records | Argentina vs Austria”. El sentimiento positivo del título y las visualizaciones elevan la probabilidad prevista de victoria de Argentina."
+    }
+  }
+}

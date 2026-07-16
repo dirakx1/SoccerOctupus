@@ -37,14 +37,15 @@ preferences, then English; an explicit Locale has higher priority when a caller
 provides one. Applying a Locale persists it when storage is available and updates
 the document `lang` attribute. Blocked browser storage does not prevent startup.
 
-Namespaced `common`, `navigation`, `competitions`, `home`, and `groups` messages
-exist. Canonical
+Namespaced `common`, `navigation`, `competitions`, `home`, `groups`, and
+`overlays` messages exist. Canonical
 Competition Workspace routes apply their URL Locale over saved and browser
 preferences, including persistence and the document `lang` attribute. The shell
 navigation, account controls, footer, recovery labels, theme preferences, and
-Competition context are translated. Home and Groups copy is translated in the
-new page domains; API-generated narrative, authentication, account, legal, and
-other public routes are not localized yet.
+Competition context are translated. Home, Groups, Cookie Banner, and Video Agent
+overlay copy is translated in the new production domains; API-generated
+narrative, authentication, account, legal, and other public routes are not
+localized yet.
 
 ## Competition Registry
 
@@ -159,11 +160,19 @@ are authoritative for their workflows.
 
 ## Existing Shared Components
 
-The current frontend already shares billing notices and plan links, probability
-meters, market cards, video-agent detail, authentication controls, reverification,
-password policy, and two-factor settings. The redesign should adapt or wrap
-working domain behavior before replacing it. Visual similarity alone is not a
-reason to discard tested workflow components.
+`CookieBanner.vue` and `VideoAgentModal.vue` now consume Atlas tokens and the
+localized `overlays` domain. Cookie consent retains the `so_cookie_consent` key,
+`all`/`necessary` values, in-session dismissal when storage is unavailable, and
+the existing Cookie Policy route. Video Agent detail retains every evidence
+source while adding semantic modal/lightbox roles, native screenshot buttons,
+localized controls and captions, layered Escape handling, focus
+capture/restoration, and background scroll lock.
+
+The current frontend also shares billing notices and plan links, probability
+meters, market cards, authentication controls, reverification, password policy,
+and two-factor settings. Those components remain pending Atlas migration. The
+redesign should adapt or wrap working domain behavior before replacing it;
+visual similarity alone is not a reason to discard tested workflow components.
 
 ## Design-Lab Routes
 

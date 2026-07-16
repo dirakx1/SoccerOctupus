@@ -132,6 +132,21 @@ Both pages load `home` and `groups` message domains for English and Spanish.
 Predict, Tournament, Markets, auth, billing, admin, and other public routes
 remain pending migration.
 
+The first shared-overlay slice completes the migrated Home presentation without
+introducing a generic dialog framework:
+
+- `CookieBanner.vue` preserves `so_cookie_consent` with the `all` and
+  `necessary` values, keeps the `/cookie-policy` route, and treats browser
+  storage as best effort so a blocked store cannot prevent an in-session choice.
+- `VideoAgentModal.vue` preserves the current screenshots, source videos, URLs,
+  titles, durations, and `close` event. It owns its focused dialog/lightbox
+  behavior, layered Escape handling, scroll lock, and focus restoration locally.
+- The `overlays` English/Spanish message domain owns Cookie Banner and Video
+  Agent UI labels plus the explanatory screenshot captions. External video
+  titles remain source content rather than translations.
+
+Other shared and feature components remain pending Atlas migration.
+
 ## Competition Module
 
 The Competition registry core is implemented as a framework-independent module:
@@ -249,11 +264,17 @@ src/i18n/
     en/
       common.json
       competitions.json
+      groups.json
+      home.json
       navigation.json
+      overlays.json
     es/
       common.json
       competitions.json
+      groups.json
+      home.json
       navigation.json
+      overlays.json
 ```
 
 `index.js` is the public interface:
@@ -275,10 +296,11 @@ storage failures do not prevent startup, route navigation, or document-language
 updates. Flat non-workspace routes retain the current Locale until their
 localized route migration is implemented.
 
-The `common`, `navigation`, `competitions`, `home`, and `groups` domains exist
-today. The latter three are consumed by the shell and first migrated production
-pages; remaining feature-view domains are added in the same change as their
-first real consumer. Do not create empty resource files in advance.
+The `common`, `navigation`, `competitions`, `home`, `groups`, and `overlays`
+domains exist today. They are consumed by the shell, first migrated production
+pages, Cookie Banner, and Video Agent evidence overlay. Remaining feature-view
+domains are added in the same change as their first real consumer. Do not create
+empty resource files in advance.
 
 Pending localization rules:
 

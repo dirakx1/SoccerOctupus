@@ -1,131 +1,171 @@
 <template>
-  <Transition name="slide-up">
-    <div v-if="visible" class="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <Transition name="cookie-reveal">
+    <aside
+      v-if="visible"
+      class="cookie-banner"
+      role="dialog"
+      :aria-label="t('overlays.cookie.dialogLabel')"
+    >
       <div class="cookie-content">
-        <div class="cookie-text">
-          <span class="cookie-icon">🍪</span>
+        <div class="cookie-message">
+          <Cookie :size="22" aria-hidden="true" />
           <p>
-            We use essential cookies to keep you signed in and optional analytics cookies
-            to improve the experience. See our
-            <router-link to="/cookie-policy">Cookie Policy</router-link> for details.
+            {{ t('overlays.cookie.description') }}
+            {{ t('overlays.cookie.policyLead') }}
+            <router-link to="/cookie-policy">{{ t('overlays.cookie.policyLink') }}</router-link>.
           </p>
         </div>
         <div class="cookie-actions">
-          <button class="btn-necessary" @click="acceptNecessary">Necessary only</button>
-          <button class="btn-accept" @click="acceptAll">Accept all</button>
+          <button class="cookie-button cookie-button-secondary" type="button" @click="acceptNecessary">
+            {{ t('overlays.cookie.necessary') }}
+          </button>
+          <button class="cookie-button cookie-button-primary" type="button" @click="acceptAll">
+            {{ t('overlays.cookie.acceptAll') }}
+          </button>
         </div>
       </div>
-    </div>
+    </aside>
   </Transition>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { Cookie } from '@lucide/vue'
 
 const STORAGE_KEY = 'so_cookie_consent'
 const visible = ref(false)
+const { t } = useI18n()
 
-onMounted(() => {
-  if (!localStorage.getItem(STORAGE_KEY)) {
-    visible.value = true
+function getStorage() {
+  try {
+    return window.localStorage
+  } catch {
+    return null
   }
-})
+}
+
+function readConsent() {
+  try {
+    return getStorage()?.getItem(STORAGE_KEY) || null
+  } catch {
+    return null
+  }
+}
+
+function saveConsent(value) {
+  try {
+    getStorage()?.setItem(STORAGE_KEY, value)
+  } catch {
+    // Consent still applies for the current page session when storage is blocked.
+  }
+  visible.value = false
+}
 
 function acceptAll() {
-  localStorage.setItem(STORAGE_KEY, 'all')
-  visible.value = false
+  saveConsent('all')
 }
 
 function acceptNecessary() {
-  localStorage.setItem(STORAGE_KEY, 'necessary')
-  visible.value = false
+  saveConsent('necessary')
 }
+
+onMounted(() => {
+  visible.value = !readConsent()
+})
 </script>
 
 <style scoped>
 .cookie-banner {
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-strong);
+  bottom: var(--space-4);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-text);
+  left: var(--space-4);
+  padding: var(--space-4);
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #16213e;
-  border-top: 2px solid #0f3460;
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
-  padding: 16px 32px;
+  right: var(--space-4);
+  z-index: var(--z-overlay);
 }
 
 .cookie-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
   align-items: center;
+  display: flex;
+  gap: var(--space-6);
   justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: var(--content-max-width);
 }
 
-.cookie-text {
+.cookie-message {
+  align-items: flex-start;
   display: flex;
-  align-items: center;
-  gap: 12px;
   flex: 1;
+  gap: var(--space-3);
+  min-width: 0;
 }
 
-.cookie-icon { font-size: 22px; flex-shrink: 0; }
+.cookie-message > svg { color: var(--color-accent); flex: 0 0 auto; margin-top: var(--space-1); }
 
-p {
-  color: #c0c0d8;
-  font-size: 14px;
-  line-height: 1.5;
+.cookie-message p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
   margin: 0;
+  max-width: 72ch;
 }
 
-p a {
-  color: #a0c0ff;
-  text-decoration: none;
-}
-p a:hover { text-decoration: underline; }
+.cookie-message a { color: var(--color-accent); font-weight: var(--font-weight-semibold); }
+.cookie-message a:hover { color: var(--color-accent-hover); }
 
-.cookie-actions {
-  display: flex;
-  gap: 10px;
-  flex-shrink: 0;
-}
+.cookie-actions { display: flex; flex: 0 0 auto; gap: var(--space-2); }
 
-.btn-necessary {
-  padding: 9px 18px;
-  background: transparent;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  color: #8888aa;
-  font-size: 13px;
-  font-weight: 600;
+.cookie-button {
+  border: var(--border-width-thin) solid transparent;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-4);
+  transition: background-color var(--duration-fast) var(--easing-standard), border-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
 }
-.btn-necessary:hover { border-color: #a0aec0; color: #e0e0e0; }
 
-.btn-accept {
-  padding: 9px 20px;
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  border: none;
-  border-radius: 8px;
-  color: #0a0a1a;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-.btn-accept:hover { opacity: 0.88; }
+.cookie-button-secondary { background: transparent; border-color: var(--color-border); color: var(--color-text-muted); }
+.cookie-button-secondary:hover { border-color: var(--color-border-strong); color: var(--color-text); }
+.cookie-button-primary { background: var(--color-accent); color: var(--color-accent-contrast); }
+.cookie-button-primary:hover { background: var(--color-accent-hover); }
 
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+.cookie-button:focus-visible,
+.cookie-message a:focus-visible {
+  outline: var(--border-width-strong) solid var(--color-focus);
+  outline-offset: 3px;
 }
-.slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
+
+.cookie-reveal-enter-active,
+.cookie-reveal-leave-active {
+  transition: opacity var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard);
+}
+.cookie-reveal-enter-from,
+.cookie-reveal-leave-to { opacity: 0; transform: translateY(var(--space-4)); }
+
+@media (max-width: 720px) {
+  .cookie-content { align-items: stretch; flex-direction: column; gap: var(--space-4); }
+  .cookie-actions { width: 100%; }
+  .cookie-button { flex: 1; }
+}
+
+@media (max-width: 440px) {
+  .cookie-banner { bottom: var(--space-2); left: var(--space-2); right: var(--space-2); }
+  .cookie-message > svg { display: none; }
+  .cookie-actions { flex-direction: column-reverse; }
+  .cookie-button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie-reveal-enter-active,
+  .cookie-reveal-leave-active { transition: none; }
 }
 </style>
