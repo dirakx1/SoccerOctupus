@@ -13,7 +13,7 @@ and sign-up components.
 | Sign up UI | `frontend/src/views/SignUpView.vue` | Localized Tournament Atlas account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
 | Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Localized Tournament Atlas email-code password reset flow with password-policy guidance. |
 | OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles social OAuth redirects from Clerk and routes incomplete username sign-ups to the continuation page. |
-| Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Completes Clerk-owned OAuth sign-ups that are missing the required username. |
+| Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Localized Tournament Atlas continuation for Clerk-owned OAuth sign-ups that are missing the required username. |
 | Session hydration | `frontend/src/lib/clerkSession.js` | Activates the Clerk session, fetches a token, calls `/api/me`, and updates local auth state. |
 | Profile security UI | `frontend/src/components/TwoFactorSettings.vue` | Custom authenticator-app and backup-code management backed by Clerk user APIs. |
 | API token injection | `frontend/src/App.vue` | Installs the Axios bearer-token interceptor from inside Vue setup. |
@@ -115,8 +115,7 @@ Frontend-owned fields, provider progress, password-policy context, verification,
 resend, validation fallbacks, and the Sign In link are localized in English and
 Spanish. Credential and OAuth completion preserve the stored local post-auth
 destination, including Locale, query, and hash. Clerk error detail and email
-values remain source data. Password reset, OAuth callback, and username
-continuation retain their existing presentation.
+values remain source data. The OAuth callback retains its existing presentation.
 
 ## Social OAuth Workflow
 
@@ -142,6 +141,16 @@ continuation retain their existing presentation.
    custom UI calls `signUp.update({ username })`. Username remains Clerk-owned.
 7. The existing router guard calls `/api/me`, which verifies the Clerk session
    token, syncs the local `users` row if needed, and updates local auth state.
+
+`/complete-username` remains a flat public route and follows the active persisted
+Locale. Its Tournament Atlas form, loading state, validation fallback, completion
+error, and account links are localized in English and Spanish; Clerk-provided
+error detail and the pending Clerk username remain source values. Completion
+activates and hydrates the exact created session, then consumes the stored local
+post-auth destination without rebuilding its Locale, query, or hash. An
+unverified-email requirement returns the user to `/sign-up`, while a missing or
+incompatible pending Clerk sign-up shows a localized fallback with the same
+Sign Up handoff.
 
 ## Sign-In Workflow
 
@@ -171,8 +180,8 @@ Spanish sign-in copy while the stored canonical workspace destination remains
 unchanged. Frontend-owned labels, validation fallbacks, provider progress,
 password continuation, MFA, Client Trust, and account links are localized in
 English and Spanish. Clerk-provided error detail and verification targets remain
-source values. Sign-up, password reset, OAuth callback, and username continuation
-remain on their existing presentation until their own migration slices.
+source values. The OAuth callback remains on its existing presentation until its
+own migration slice.
 
 ## Profile Security Workflow
 
