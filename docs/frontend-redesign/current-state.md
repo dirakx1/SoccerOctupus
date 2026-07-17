@@ -106,7 +106,7 @@ phase.
 | `/billing` | Signed in | Redirect | Redirects to `/profile`. |
 | `/billing/success` | Signed in | `BillingSuccessView.vue` | Verifies a checkout session before returning the user to their account. |
 | `/admin/settings` | Administrator | `AdminSettingsView.vue` | Provider, model, swarm, tournament, and per-tier feature-limit settings. |
-| `/sign-in` | Public | `SignInView.vue` | Custom Clerk sign-in, social sign-in, and multi-factor continuation. |
+| `/sign-in` | Public | `SignInView.vue` | Localized Tournament Atlas Clerk sign-in, social sign-in, and multi-factor continuation. |
 | `/sign-up` | Public | `SignUpView.vue` | Custom Clerk registration, password policy, social sign-up, and verification. |
 | `/forgot-password` | Public | `ForgotPasswordView.vue` | Password reset and verification flow. |
 | `/sso-callback` | Public | `SSOCallbackView.vue` | Clerk OAuth callback and post-authentication redirect continuation. |

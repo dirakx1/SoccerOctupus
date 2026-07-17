@@ -30,7 +30,7 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Home, Groups, Predict, Tournament, Markets, and migrated shared-component messages implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, and Sign In implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, all Competition workflows, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
@@ -106,7 +106,8 @@ menus. App state remains the owner of auth, billing, and menu state; the pattern
 are presentational and emit intent events.
 
 Authentication, account, billing, admin, public-information, and legal routes
-remain flat and unlocalized until their owning migration phases. The three
+remain flat; Sign In now follows the active Locale while the others remain
+unlocalized until their owning migration phases. The three
 `/design-lab` routes remain unchanged and public. Home and Groups now consume the
 shell's Atlas context, semantic tokens, canonical workspace links, and English /
 Spanish page messages. Other production views keep their page-local copy and
@@ -129,7 +130,15 @@ protected Groups workflow while preserving their existing route and data seams:
   pages. It owns no domain state or data fetching.
 
 Home and Groups load `home` and `groups` message domains for English and Spanish.
-Authentication, account, admin, and other public routes remain pending migration.
+Other authentication, account, admin, and public routes remain pending migration.
+
+The flat `/sign-in` route now consumes the active persisted Locale and the
+English / Spanish `signIn` message domain. Its Tournament Atlas presentation
+preserves the existing Clerk password, OAuth, first-factor, second-factor, and
+Client Trust contracts. Password completion consumes the stored local post-auth
+destination, while OAuth passes the same value as `redirectUrlComplete`; Locale,
+query, and hash are not parsed or rebuilt by the view. Other authentication and
+account routes remain pending migration.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 

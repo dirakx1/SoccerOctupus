@@ -1,55 +1,65 @@
 <template>
-  <div class="auth-page">
-    <section class="auth-panel">
-      <div class="eyebrow">Secure access</div>
-      <h1>Sign in</h1>
-      <p class="subtitle">Access the prediction workspace and admin settings.</p>
+  <div class="atlas-auth-page">
+    <section class="atlas-auth-intro" aria-labelledby="sign-in-title">
+      <p class="atlas-auth-kicker">{{ t('signIn.eyebrow') }}</p>
+      <h1 id="sign-in-title">{{ t('signIn.title') }}</h1>
+      <p>{{ t('signIn.subtitle') }}</p>
+      <div class="atlas-auth-rule" aria-hidden="true" />
+      <p class="atlas-auth-note">{{ t('signIn.redirectNote') }}</p>
+    </section>
+    <section class="atlas-auth-panel">
+      <header class="auth-panel-heading">
+        <p class="atlas-auth-kicker">{{ t('signIn.eyebrow') }}</p>
+        <h2>{{ t('signIn.title') }}</h2>
+      </header>
 
-      <form v-if="step === 'credentials'" class="auth-form" @submit.prevent="submit">
+      <form v-if="step === 'credentials'" class="auth-form" :aria-busy="loading || Boolean(loadingStrategy)" @submit.prevent="submit">
         <template v-if="!resumingPasswordFirstFactor">
           <SocialAuthButtons
             :disabled="loading || !isLoaded"
             :loading-provider="loadingStrategy"
+            appearance="atlas"
+            :labels="providerLabels"
             @select="signInWithProvider"
           />
 
-          <div class="auth-divider"><span>or use password</span></div>
+          <div class="auth-divider"><span>{{ t('signIn.divider') }}</span></div>
 
           <label class="field">
-            <span>Email or username</span>
+            <span>{{ t('signIn.identifier') }}</span>
             <input
               v-model.trim="form.identifier"
               type="text"
               autocomplete="username"
               required
-              placeholder="you@example.com or username"
+              :placeholder="t('signIn.identifierPlaceholder')"
             />
           </label>
         </template>
 
-        <p v-else class="verification-copy">Enter your password to continue signing in.</p>
+        <p v-else class="verification-copy">{{ t('signIn.verification.passwordResume') }}</p>
 
         <label class="field">
-          <span>Password</span>
+          <span>{{ t('signIn.password') }}</span>
           <input
             v-model="form.password"
             type="password"
             autocomplete="current-password"
             required
-            placeholder="Enter your password"
+            :placeholder="t('signIn.passwordPlaceholder')"
           />
         </label>
 
-        <router-link v-if="!resumingPasswordFirstFactor" class="forgot-link" to="/forgot-password">Forgot password?</router-link>
+        <router-link v-if="!resumingPasswordFirstFactor" class="forgot-link" to="/forgot-password">{{ t('signIn.forgot') }}</router-link>
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
         <button class="btn-primary" :disabled="!canSubmit">
-          {{ loading ? 'Signing in...' : (resumingPasswordFirstFactor ? 'Continue' : 'Sign in') }}
+          {{ loading ? t('signIn.submitting') : (resumingPasswordFirstFactor ? t('signIn.continue') : t('signIn.submit')) }}
         </button>
       </form>
 
-      <form v-else class="auth-form" @submit.prevent="verifyCode">
+      <form v-else class="auth-form" :aria-busy="loading" @submit.prevent="verifyCode">
         <p class="verification-copy">{{ verificationCopy }}</p>
 
         <label class="field">
@@ -64,10 +74,10 @@
           />
         </label>
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
         <button class="btn-primary" :disabled="loading || !isLoaded">
-          {{ loading ? 'Verifying...' : 'Verify' }}
+          {{ loading ? t('signIn.verifying') : t('signIn.verify') }}
         </button>
 
         <button
@@ -87,17 +97,17 @@
           :disabled="loading"
           @click="resendCode"
         >
-          Resend code
+          {{ t('signIn.resend') }}
         </button>
 
         <button class="btn-link" type="button" :disabled="loading" @click="backToCredentials">
-          Use a different account
+          {{ t('signIn.differentAccount') }}
         </button>
       </form>
 
       <p class="auth-switch">
-        Need access?
-        <router-link to="/sign-up">Create an account</router-link>
+        {{ t('signIn.createPrompt') }}
+        <router-link to="/sign-up">{{ t('signIn.createAccount') }}</router-link>
       </p>
     </section>
   </div>
@@ -105,6 +115,7 @@
 
 <script setup>
 import { computed, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useClerk, useSignIn } from '@clerk/vue'
 
@@ -115,6 +126,7 @@ import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
 const route = useRoute()
+const { t } = useI18n()
 const clerk = useClerk()
 const { isLoaded, signIn, setActive } = useSignIn()
 
@@ -147,8 +159,12 @@ const canSubmit = computed(() => (
   && (resumingPasswordFirstFactor.value || Boolean(form.identifier))
 ))
 const codeInputMode = computed(() => verificationStrategy.value === 'backup_code' ? 'text' : 'numeric')
-const verificationLabel = computed(() => verificationStrategy.value === 'backup_code' ? 'Backup code' : 'Verification code')
-const verificationPlaceholder = computed(() => verificationStrategy.value === 'backup_code' ? 'abcd-1234' : '123456')
+const verificationLabel = computed(() => t(verificationStrategy.value === 'backup_code' ? 'signIn.verification.backupCode' : 'signIn.verification.code'))
+const verificationPlaceholder = computed(() => t(verificationStrategy.value === 'backup_code' ? 'signIn.verification.backupPlaceholder' : 'signIn.verification.codePlaceholder'))
+const providerLabels = {
+  continueWith: (name) => t('signIn.provider.continueWith', { name }),
+  opening: (name) => t('signIn.provider.opening', { name }),
+}
 const canSwitchSecondFactor = computed(() => (
   verificationStage.value === 'second'
   && availableSecondFactorStrategies.value.includes('totp')
@@ -156,34 +172,34 @@ const canSwitchSecondFactor = computed(() => (
   && ['totp', 'backup_code'].includes(verificationStrategy.value)
 ))
 const secondFactorSwitchLabel = computed(() => verificationStrategy.value === 'totp'
-  ? 'Use a backup code instead'
-  : 'Use authenticator app instead')
+  ? t('signIn.switchBackup')
+  : t('signIn.switchAuthenticator'))
 const verificationCopy = computed(() => {
   if (verificationReason.value === 'client_trust') {
     if (verificationStrategy.value === 'phone_code') {
-      return `This device needs one more verification. Enter the code sent to ${verificationTarget.value || 'your phone'}.`
+      return t('signIn.verification.clientTrustPhone', { target: verificationTarget.value || t('signIn.verification.yourPhone') })
     }
 
-    return `This device needs one more verification. Enter the code sent to ${verificationTarget.value || form.identifier}.`
+    return t('signIn.verification.clientTrustEmail', { target: verificationTarget.value || form.identifier })
   }
 
   if (verificationStrategy.value === 'totp') {
-    return 'Enter the code from your authenticator app.'
+    return t('signIn.verification.authenticator')
   }
 
   if (verificationStrategy.value === 'backup_code') {
-    return 'Enter one of your backup codes.'
+    return t('signIn.verification.backupCopy')
   }
 
   if (verificationStrategy.value === 'phone_code') {
-    return `Enter the verification code sent to ${verificationTarget.value || 'your phone'}.`
+    return t('signIn.verification.phone', { target: verificationTarget.value || t('signIn.verification.yourPhone') })
   }
 
-  return `Enter the verification code sent to ${verificationTarget.value || form.identifier}.`
+  return t('signIn.verification.email', { target: verificationTarget.value || form.identifier })
 })
 
 function authError(err) {
-  return userFacingError(err, 'Unable to sign in. Check your details and try again.')
+  return userFacingError(err, t('signIn.errors.fallback'))
 }
 
 function findFactor(factors = [], strategies = []) {
@@ -205,8 +221,8 @@ function codeFactorParams(factor, stage) {
 function unsupportedFactorMessage(factors = []) {
   const methods = factors.map((factor) => factor.strategy).filter(Boolean).join(', ')
   return methods
-    ? `This sign-in requires ${methods}, which is not supported by this custom sign-in page yet.`
-    : 'This sign-in requires a verification method that is not available for this account.'
+    ? t('signIn.errors.unsupported', { methods })
+    : t('signIn.errors.unsupportedGeneric')
 }
 
 function getCreatedSessionId(result) {
@@ -217,7 +233,7 @@ async function completeSignIn(result) {
   const sessionId = getCreatedSessionId(result)
 
   if (!sessionId) {
-    error.value = 'Unable to activate your session. Please try signing in again.'
+    error.value = t('signIn.errors.activate')
     return
   }
 
@@ -273,7 +289,7 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
   }
 
   if (currentSignIn?.status === 'needs_identifier') {
-    error.value = 'Unable to find this account. Check your email or username and try again.'
+    error.value = t('signIn.errors.identifier')
     return false
   }
 
@@ -337,11 +353,11 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
   }
 
   if (currentSignIn?.status === 'needs_new_password') {
-    error.value = 'This account requires a password reset before signing in.'
+    error.value = t('signIn.errors.newPassword')
     return false
   }
 
-  error.value = 'Unable to complete sign-in. Please try again.'
+  error.value = t('signIn.errors.complete')
   return false
 }
 
@@ -461,7 +477,7 @@ async function resendCode() {
     const factor = findFactor(factors, [verificationStrategy.value])
 
     if (!factor) {
-      error.value = 'Unable to resend this verification code. Please start sign-in again.'
+      error.value = t('signIn.errors.resend')
       return
     }
 
@@ -490,39 +506,16 @@ function backToCredentials() {
 </script>
 
 <style scoped>
-.auth-page {
-  display: flex;
-  justify-content: center;
-  padding: 48px 0;
-}
-
-.auth-panel {
-  width: min(100%, 520px);
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  padding: 32px;
-}
-
-.eyebrow {
-  color: #e2b714;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-}
-
-h1 {
-  color: #e0e0e0;
-  font-size: 30px;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #8888aa;
-  font-size: 14px;
-  margin-bottom: 24px;
-}
+.atlas-auth-page { align-items: start; display: grid; gap: var(--space-12); grid-template-columns: minmax(0, 0.8fr) minmax(20rem, 1fr); margin: 0 auto; max-width: 64rem; padding: var(--space-12) 0; }
+.atlas-auth-intro { align-self: center; padding: var(--space-6) 0; }
+.atlas-auth-kicker { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); margin: 0 0 var(--space-3); text-transform: uppercase; }
+.atlas-auth-intro h1 { font-family: var(--font-family-display); font-size: var(--font-size-5xl); line-height: var(--line-height-tight); margin: 0; max-width: 8ch; }
+.atlas-auth-intro > p:not(.atlas-auth-kicker) { color: var(--color-text-muted); font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); margin: var(--space-5) 0 0; max-width: 30ch; }
+.atlas-auth-rule { background: var(--color-accent); height: var(--border-width-strong); margin-top: var(--space-8); width: 4rem; }
+.atlas-auth-note { font-size: var(--font-size-sm) !important; margin-top: var(--space-5) !important; }
+.atlas-auth-panel { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); padding: var(--space-8); }
+.auth-panel-heading { border-bottom: var(--border-width-thin) solid var(--color-border); margin-bottom: var(--space-6); padding-bottom: var(--space-5); }
+.auth-panel-heading h2 { font-family: var(--font-family-display); font-size: var(--font-size-3xl); margin: 0; }
 
 .auth-form {
   display: flex;
@@ -532,17 +525,17 @@ h1 {
 
 .auth-divider {
   align-items: center;
-  color: #8888aa;
+  color: var(--color-text-muted);
   display: flex;
   font-size: 11px;
   gap: 12px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .auth-divider::before,
 .auth-divider::after {
-  background: #0f3460;
+  background: var(--color-border);
   content: '';
   flex: 1;
   height: 1px;
@@ -555,13 +548,13 @@ h1 {
 }
 
 .field span {
-  color: #8888aa;
+  color: var(--color-text-muted);
   font-size: 13px;
 }
 
 .forgot-link {
   align-self: flex-end;
-  color: #e2b714;
+  color: var(--color-accent);
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
@@ -572,54 +565,57 @@ h1 {
 }
 
 input {
-  background: #0a0a1a;
-  color: #e0e0e0;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 14px;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
+  width: 100%;
 }
 
-input:focus {
-  border-color: #e2b714;
-  outline: none;
-}
+input:focus { border-color: var(--color-accent); outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 1px; }
 
 .verification-copy {
-  background: #0f3460;
-  border-radius: 8px;
-  color: #c0c0d0;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 12px 14px;
+  background: var(--color-surface-inset);
+  border-left: var(--border-width-strong) solid var(--color-accent);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  color: #0a0a1a;
-  font-weight: 700;
-  font-size: 15px;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 24px;
+  align-items: center;
+  background: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-accent-contrast);
   cursor: pointer;
-  transition: opacity 0.2s;
+  display: inline-flex;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-5);
+  width: 100%;
 }
-
-.btn-primary:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
+.btn-primary:hover:not(:disabled) { background: var(--color-accent-hover); }
+.btn-primary:focus-visible, .btn-link:focus-visible, .forgot-link:focus-visible, .auth-switch a:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.btn-primary:disabled { cursor: not-allowed; opacity: 0.55; }
 
 .btn-link {
   align-self: center;
   background: transparent;
   border: none;
-  color: #e2b714;
+  color: var(--color-accent);
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
-  padding: 4px 8px;
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
 }
 
 .btn-link:disabled {
@@ -628,24 +624,37 @@ input:focus {
 }
 
 .error-box {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  border-radius: 8px;
-  color: #fc8181;
-  font-size: 13px;
-  padding: 12px 14px;
+  background: var(--color-danger-surface);
+  border: var(--border-width-thin) solid var(--color-danger);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  padding: var(--space-3) var(--space-4);
 }
 
 .auth-switch {
-  color: #8888aa;
-  font-size: 13px;
-  margin-top: 20px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: var(--space-6) 0 0;
   text-align: center;
 }
 
 .auth-switch a {
-  color: #e2b714;
+  color: var(--color-accent);
   font-weight: 700;
   text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .atlas-auth-page { display: block; padding: var(--space-6) 0; }
+  .atlas-auth-intro { padding: 0 0 var(--space-6); }
+  .atlas-auth-intro h1 { font-size: var(--font-size-4xl); }
+  .atlas-auth-intro > p:not(.atlas-auth-kicker) { font-size: var(--font-size-md); }
+  .atlas-auth-panel { padding: var(--space-5); }
+  .auth-panel-heading { display: none; }
+}
+
+@media (max-width: 420px) {
+  .atlas-auth-panel { padding: var(--space-4); }
 }
 </style>

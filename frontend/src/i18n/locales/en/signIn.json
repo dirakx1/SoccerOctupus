@@ -1,0 +1,19 @@
+{
+  "eyebrow": "Secure access",
+  "title": "Sign in",
+  "subtitle": "Access the prediction workspace and admin settings.",
+  "redirectNote": "After authentication, you will return to the competition page you requested.",
+  "provider": { "continueWith": "Continue with {name}", "opening": "Opening {name}..." },
+  "divider": "or use password",
+  "identifier": "Email or username",
+  "identifierPlaceholder": "Email address or username",
+  "password": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "forgot": "Forgot password?",
+  "submit": "Sign in",
+  "submitting": "Signing in...",
+  "continue": "Continue",
+  "verification": { "passwordResume": "Enter your password to continue signing in.", "code": "Verification code", "backupCode": "Backup code", "codePlaceholder": "123456", "backupPlaceholder": "abcd-1234", "yourPhone": "your phone", "authenticator": "Enter the code from your authenticator app.", "backupCopy": "Enter one of your backup codes.", "phone": "Enter the verification code sent to {target}.", "email": "Enter the verification code sent to {target}.", "clientTrustPhone": "This device needs one more verification. Enter the code sent to {target}.", "clientTrustEmail": "This device needs one more verification. Enter the code sent to {target}." },
+  "verify": "Verify", "verifying": "Verifying...", "resend": "Resend code", "differentAccount": "Use a different account", "switchBackup": "Use a backup code instead", "switchAuthenticator": "Use authenticator app instead", "createPrompt": "Need access?", "createAccount": "Create an account",
+  "errors": { "fallback": "Unable to sign in. Check your details and try again.", "activate": "Unable to activate your session. Please try signing in again.", "identifier": "Unable to find this account. Check your email or username and try again.", "unsupported": "This sign-in requires {methods}, which is not supported by this custom sign-in page yet.", "unsupportedGeneric": "This sign-in requires a verification method that is not available for this account.", "newPassword": "This account requires a password reset before signing in.", "complete": "Unable to complete sign-in. Please try again.", "resend": "Unable to resend this verification code. Please start sign-in again." }
+}

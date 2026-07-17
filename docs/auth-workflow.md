@@ -9,7 +9,7 @@ and sign-up components.
 | Area | File | Purpose |
 |---|---|---|
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
-| Sign in UI | `frontend/src/views/SignInView.vue` | Custom email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
+| Sign in UI | `frontend/src/views/SignInView.vue` | Localized Tournament Atlas email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
 | Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
 | Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow with password-policy guidance. |
 | OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles social OAuth redirects from Clerk and routes incomplete username sign-ups to the continuation page. |
@@ -121,7 +121,8 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 3. Clerk redirects the browser through the provider's OAuth consent flow.
 4. The provider returns to `/sso-callback`.
 5. `SSOCallbackView.vue` renders `AuthenticateWithRedirectCallback`, which lets
-   Clerk finish the OAuth flow, activate the session, and return to `/`.
+   Clerk finish the OAuth flow, activate the session, and return to the stored
+   local post-auth destination or `/`.
    If the OAuth sign-in requires another factor, the callback routes to
    `/sign-in?resume=oauth` through `firstFactorUrl` or `secondFactorUrl` instead
    of opening provider-hosted UI. The query marker limits automatic resource
@@ -153,7 +154,17 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 9. The frontend calls `attemptSecondFactor()` or `attemptFirstFactor()` depending
    on the active stage.
 10. When Clerk returns a created session, the frontend activates the session and
-    redirects to `/`.
+    consumes the stored local post-auth destination, including its Locale, query,
+    and hash. It falls back to `/` when no valid destination is stored.
+
+`/sign-in` is intentionally a flat public route during migration. It uses the
+active persisted Locale, so a redirect from an `es` Competition Workspace renders
+Spanish sign-in copy while the stored canonical workspace destination remains
+unchanged. Frontend-owned labels, validation fallbacks, provider progress,
+password continuation, MFA, Client Trust, and account links are localized in
+English and Spanish. Clerk-provided error detail and verification targets remain
+source values. Sign-up, password reset, OAuth callback, and username continuation
+remain on their existing presentation until their own migration slices.
 
 ## Profile Security Workflow
 
