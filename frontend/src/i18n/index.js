@@ -9,6 +9,7 @@ import enSignIn from './locales/en/signIn.json'
 import enSignUp from './locales/en/signUp.json'
 import enNavigation from './locales/en/navigation.json'
 import enOverlays from './locales/en/overlays.json'
+import enPasswordRecovery from './locales/en/passwordRecovery.json'
 import enPredictions from './locales/en/predictions.json'
 import enTournament from './locales/en/tournament.json'
 import esCommon from './locales/es/common.json'
@@ -20,6 +21,7 @@ import esSignIn from './locales/es/signIn.json'
 import esSignUp from './locales/es/signUp.json'
 import esNavigation from './locales/es/navigation.json'
 import esOverlays from './locales/es/overlays.json'
+import esPasswordRecovery from './locales/es/passwordRecovery.json'
 import esPredictions from './locales/es/predictions.json'
 import esTournament from './locales/es/tournament.json'
 import {
@@ -42,8 +44,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, overlays: enOverlays, predictions: enPredictions, signIn: enSignIn, signUp: enSignUp, tournament: enTournament },
-    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, overlays: esOverlays, predictions: esPredictions, signIn: esSignIn, signUp: esSignUp, tournament: esTournament },
+    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, signIn: enSignIn, signUp: enSignUp, tournament: enTournament },
+    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, signIn: esSignIn, signUp: esSignUp, tournament: esTournament },
   },
 })
 

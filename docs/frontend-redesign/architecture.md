@@ -30,7 +30,7 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, and Sign Up implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, Sign Up, and Password Recovery implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, all Competition workflows, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
@@ -140,6 +140,12 @@ CAPTCHA, and email-code contracts. Credential completion consumes the stored
 local post-auth destination, while OAuth passes the same value as
 `redirectUrlComplete`; Locale, query, and hash are not parsed or rebuilt by
 either view. Other authentication and account routes remain pending migration.
+
+`/forgot-password` uses the same flat-route Locale behavior and Atlas auth
+presentation. It preserves the current Clerk `reset_password_email_code`
+request/reset calls, password-policy seam, resend/back lifecycle, second-factor
+handoff to Sign In, and successful redirect to `/`. It intentionally does not
+consume the stored post-auth destination.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 

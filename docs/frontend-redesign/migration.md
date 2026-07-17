@@ -284,8 +284,10 @@ Status: In progress. `/sign-in` and `/sign-up` are migrated to Tournament Atlas
 with English and Spanish frontend copy. Sign Up preserves Google/X OAuth, ordered
 credential fields, password policy, CAPTCHA, email verification/resend,
 error/loading, Sign In link, and stored return-destination behavior. Password
-reset, OAuth callback, username continuation, account, billing, admin, legal, and
-other public pages retain their existing presentation.
+Password Recovery is also migrated with its request, verification, password
+policy, reset, resend, and alternate-email states. OAuth callback, username
+continuation, account, billing, admin, legal, and other public pages retain their
+existing presentation.
 
 Legal and billing translations require content review; they must not be treated as
 literal UI-string translation tasks.

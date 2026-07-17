@@ -11,7 +11,7 @@ and sign-up components.
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
 | Sign in UI | `frontend/src/views/SignInView.vue` | Localized Tournament Atlas email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
 | Sign up UI | `frontend/src/views/SignUpView.vue` | Localized Tournament Atlas account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
-| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow with password-policy guidance. |
+| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Localized Tournament Atlas email-code password reset flow with password-policy guidance. |
 | OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles social OAuth redirects from Clerk and routes incomplete username sign-ups to the continuation page. |
 | Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Completes Clerk-owned OAuth sign-ups that are missing the required username. |
 | Session hydration | `frontend/src/lib/clerkSession.js` | Activates the Clerk session, fetches a token, calls `/api/me`, and updates local auth state. |
@@ -217,6 +217,13 @@ remain on their existing presentation until their own migration slices.
    `activateSessionAndHydrateAuth()` and redirects to `/`.
 8. If Clerk requires a second factor after reset, the frontend sends the user
    back to `/sign-in` so the existing sign-in MFA flow can complete access.
+
+The flat `/forgot-password` route follows the active persisted Locale. Request,
+verification, password-policy, reset, resend, alternate-email, error, and Sign In
+labels are localized in English and Spanish. Account email and Clerk error detail
+remain source values. A completed reset preserves the existing behavior of
+activating the new session and routing to `/`; this flow does not consume or
+rewrite the stored Competition Workspace return destination.
 
 ## Client Trust Workflow
 
