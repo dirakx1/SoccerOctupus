@@ -280,11 +280,12 @@ Exit criteria for each workflow:
 Migrate pricing, profile, authentication, billing success, contact, about, legal,
 and cookie-policy views after the Competition Workspace is stable.
 
-Status: In progress. `/sign-in` is migrated to Tournament Atlas with English and
-Spanish frontend copy while preserving password, Google/X OAuth, MFA, Client
-Trust, error/loading, account-link, and stored return-destination behavior.
-Sign-up, password reset, OAuth callback, username continuation, account, billing,
-admin, legal, and other public pages retain their existing presentation.
+Status: In progress. `/sign-in` and `/sign-up` are migrated to Tournament Atlas
+with English and Spanish frontend copy. Sign Up preserves Google/X OAuth, ordered
+credential fields, password policy, CAPTCHA, email verification/resend,
+error/loading, Sign In link, and stored return-destination behavior. Password
+reset, OAuth callback, username continuation, account, billing, admin, legal, and
+other public pages retain their existing presentation.
 
 Legal and billing translations require content review; they must not be treated as
 literal UI-string translation tasks.

@@ -10,7 +10,7 @@ and sign-up components.
 |---|---|---|
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
 | Sign in UI | `frontend/src/views/SignInView.vue` | Localized Tournament Atlas email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
-| Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
+| Sign up UI | `frontend/src/views/SignUpView.vue` | Localized Tournament Atlas account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
 | Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow with password-policy guidance. |
 | OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles social OAuth redirects from Clerk and routes incomplete username sign-ups to the continuation page. |
 | Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Completes Clerk-owned OAuth sign-ups that are missing the required username. |
@@ -109,6 +109,14 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
     frontend enters a pending auth state. The application retries normal auth
     hydration without repeating sign-up or verification and shows a dedicated
     retry action if account loading still fails.
+
+`/sign-up` remains a flat public route and follows the active persisted Locale.
+Frontend-owned fields, provider progress, password-policy context, verification,
+resend, validation fallbacks, and the Sign In link are localized in English and
+Spanish. Credential and OAuth completion preserve the stored local post-auth
+destination, including Locale, query, and hash. Clerk error detail and email
+values remain source data. Password reset, OAuth callback, and username
+continuation retain their existing presentation.
 
 ## Social OAuth Workflow
 

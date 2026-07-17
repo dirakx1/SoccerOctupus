@@ -30,7 +30,7 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, and Sign In implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, and Sign Up implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, all Competition workflows, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
@@ -132,13 +132,14 @@ protected Groups workflow while preserving their existing route and data seams:
 Home and Groups load `home` and `groups` message domains for English and Spanish.
 Other authentication, account, admin, and public routes remain pending migration.
 
-The flat `/sign-in` route now consumes the active persisted Locale and the
-English / Spanish `signIn` message domain. Its Tournament Atlas presentation
-preserves the existing Clerk password, OAuth, first-factor, second-factor, and
-Client Trust contracts. Password completion consumes the stored local post-auth
-destination, while OAuth passes the same value as `redirectUrlComplete`; Locale,
-query, and hash are not parsed or rebuilt by the view. Other authentication and
-account routes remain pending migration.
+The flat `/sign-in` and `/sign-up` routes consume the active persisted Locale and
+their English / Spanish message domains. Their Tournament Atlas presentations
+preserve the existing Sign In password, OAuth, factor, and Client Trust
+contracts, and the Sign Up provider, ordered credential, password-policy,
+CAPTCHA, and email-code contracts. Credential completion consumes the stored
+local post-auth destination, while OAuth passes the same value as
+`redirectUrlComplete`; Locale, query, and hash are not parsed or rebuilt by
+either view. Other authentication and account routes remain pending migration.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 
