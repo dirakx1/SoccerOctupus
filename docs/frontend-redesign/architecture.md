@@ -30,7 +30,7 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, Sign Up, Password Recovery, and Username Continuation implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, Sign Up, Password Recovery, OAuth Callback, and Username Continuation implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, all Competition workflows, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
@@ -106,9 +106,9 @@ menus. App state remains the owner of auth, billing, and menu state; the pattern
 are presentational and emit intent events.
 
 Authentication, account, billing, admin, public-information, and legal routes
-remain flat. Sign In, Sign Up, Password Recovery, and Username Continuation now
-follow the active Locale while the others remain unlocalized until their owning
-migration phases. The three
+remain flat. Sign In, Sign Up, Password Recovery, OAuth Callback, and Username
+Continuation now follow the active Locale while the others remain unlocalized
+until their owning migration phases. The three
 `/design-lab` routes remain unchanged and public. Home and Groups now consume the
 shell's Atlas context, semantic tokens, canonical workspace links, and English /
 Spanish page messages. Other production views keep their page-local copy and
@@ -154,6 +154,15 @@ presentation. It preserves the pending Clerk username as source data, calls only
 and consumes the stored post-auth destination without rebuilding its Locale,
 query, or hash. Missing email verification and invalid pending-sign-up states
 retain their existing Sign Up handoffs.
+
+`/sso-callback` uses the same flat-route Locale behavior and an Atlas pending /
+recovery presentation, but it does not reimplement Clerk callback state. The
+Clerk `AuthenticateWithRedirectCallback` remains mounted unconditionally with
+the exact existing Sign In, Sign Up, factor, and username-continuation URLs. All
+four force/fallback redirect props receive the unchanged stored post-auth
+destination or `/`, preserving Locale, query, and hash. Clerk owns provider
+errors, cancellation, pending-resource retries, and session activation; local
+fallback copy ensures message availability cannot block callback execution.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 

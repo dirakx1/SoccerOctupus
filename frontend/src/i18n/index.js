@@ -8,6 +8,7 @@ import enMarkets from './locales/en/markets.json'
 import enSignIn from './locales/en/signIn.json'
 import enSignUp from './locales/en/signUp.json'
 import enNavigation from './locales/en/navigation.json'
+import enOauthCallback from './locales/en/oauthCallback.json'
 import enOverlays from './locales/en/overlays.json'
 import enPasswordRecovery from './locales/en/passwordRecovery.json'
 import enPredictions from './locales/en/predictions.json'
@@ -21,6 +22,7 @@ import esMarkets from './locales/es/markets.json'
 import esSignIn from './locales/es/signIn.json'
 import esSignUp from './locales/es/signUp.json'
 import esNavigation from './locales/es/navigation.json'
+import esOauthCallback from './locales/es/oauthCallback.json'
 import esOverlays from './locales/es/overlays.json'
 import esPasswordRecovery from './locales/es/passwordRecovery.json'
 import esPredictions from './locales/es/predictions.json'
@@ -46,8 +48,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, signIn: enSignIn, signUp: enSignUp, tournament: enTournament, usernameContinuation: enUsernameContinuation },
-    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, signIn: esSignIn, signUp: esSignUp, tournament: esTournament, usernameContinuation: esUsernameContinuation },
+    en: { common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, signIn: enSignIn, signUp: enSignUp, tournament: enTournament, usernameContinuation: enUsernameContinuation },
+    es: { common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, signIn: esSignIn, signUp: esSignUp, tournament: esTournament, usernameContinuation: esUsernameContinuation },
   },
 })
 

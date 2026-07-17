@@ -109,7 +109,7 @@ phase.
 | `/sign-in` | Public | `SignInView.vue` | Localized Tournament Atlas Clerk sign-in, social sign-in, and multi-factor continuation. |
 | `/sign-up` | Public | `SignUpView.vue` | Localized Tournament Atlas Clerk registration, password policy, social sign-up, and email verification. |
 | `/forgot-password` | Public | `ForgotPasswordView.vue` | Localized Tournament Atlas password reset and email-code verification flow. |
-| `/sso-callback` | Public | `SSOCallbackView.vue` | Clerk OAuth callback and post-authentication redirect continuation. |
+| `/sso-callback` | Public | `SSOCallbackView.vue` | Localized Tournament Atlas pending and recovery surface around Clerk's OAuth callback, preserving all provider handoffs and the exact stored post-auth destination. |
 | `/complete-username` | Public | `CompleteUsernameView.vue` | Localized Tournament Atlas continuation that collects a Clerk-owned missing username after external authentication and preserves the stored post-auth destination. |
 | `/legal` | Public | `LegalNoticeView.vue` | Legal notice and prediction disclaimer. |
 | `/cookie-policy` | Public | `CookiePolicyView.vue` | Cookie-policy content. |

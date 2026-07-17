@@ -288,8 +288,10 @@ Recovery is also migrated with its request, verification, password policy,
 reset, resend, and alternate-email states. Username Continuation is migrated
 with its missing-requirement detection, exact Clerk update/session behavior,
 verification handoff, localized fallback, and stored return-destination
-behavior. OAuth callback, account, billing, admin, legal, and other public pages
-retain their existing presentation.
+behavior. OAuth Callback is migrated with localized pending/recovery copy while
+preserving Clerk-owned error, retry, cancellation, session, factor, continuation,
+and exact return-destination behavior. Account, billing, admin, legal, and other
+public pages retain their existing presentation.
 
 Legal and billing translations require content review; they must not be treated as
 literal UI-string translation tasks.
