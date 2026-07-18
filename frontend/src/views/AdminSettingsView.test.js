@@ -2,6 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import AdminSettingsView from './AdminSettingsView.vue'
+import { i18n } from '../i18n/index.js'
 
 vi.mock('../lib/api', () => ({
   api: {
@@ -85,13 +86,20 @@ describe('AdminSettingsView', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     setupApi()
+    i18n.global.locale.value = 'en'
   })
 
+  function mountSettings() {
+    return mount(AdminSettingsView, {
+      global: { plugins: [i18n] },
+    })
+  }
+
   it('loads and saves settings', async () => {
-    const wrapper = mount(AdminSettingsView)
+    const wrapper = mountSettings()
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Admin Settings')
+    expect(wrapper.text()).toContain('Runtime settings')
     await wrapper.find('input').setValue('https://api.openai.com/v1')
     await wrapper.find('form').trigger('submit.prevent')
     await flushPromises()
@@ -100,7 +108,7 @@ describe('AdminSettingsView', () => {
   })
 
   it('renders secret statuses with empty password fields', async () => {
-    const wrapper = mount(AdminSettingsView)
+    const wrapper = mountSettings()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Configured')
@@ -111,7 +119,7 @@ describe('AdminSettingsView', () => {
   })
 
   it('sends a new API key when typed', async () => {
-    const wrapper = mount(AdminSettingsView)
+    const wrapper = mountSettings()
     await flushPromises()
 
     await wrapper.findAll('input[type="password"]')[1].setValue('new-zep-key')
@@ -122,7 +130,7 @@ describe('AdminSettingsView', () => {
   })
 
   it('does not send blank secret placeholders', async () => {
-    const wrapper = mount(AdminSettingsView)
+    const wrapper = mountSettings()
     await flushPromises()
 
     await wrapper.find('form').trigger('submit.prevent')
@@ -134,7 +142,7 @@ describe('AdminSettingsView', () => {
   })
 
   it('sends clear flags for configured keys', async () => {
-    const wrapper = mount(AdminSettingsView)
+    const wrapper = mountSettings()
     await flushPromises()
 
     const clearButtons = wrapper.findAll('button[aria-label="Clear stored API key"]')
@@ -146,12 +154,12 @@ describe('AdminSettingsView', () => {
   })
 
   it('loads and saves feature limits', async () => {
-    const wrapper = mount(AdminSettingsView)
+    const wrapper = mountSettings()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Feature limits')
     expect(wrapper.text()).toContain('Match predictions')
-    expect(wrapper.text()).toContain('Changes apply to new customers and to existing customers when their next billing cycle starts')
+    expect(wrapper.text()).toContain('Changes apply to new customers and existing customers at their next billing cycle')
 
     const matchPredictionInput = wrapper.findAll('.limit-row input')[0]
     await matchPredictionInput.setValue('2')
@@ -168,5 +176,24 @@ describe('AdminSettingsView', () => {
       })
     )
     expect(wrapper.text()).toContain('Limits saved.')
+  })
+
+  it('renders Spanish labels and retains the settings save contract', async () => {
+    i18n.global.locale.value = 'es'
+    const wrapper = mountSettings()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Configuración de ejecución')
+    expect(wrapper.text()).toContain('Límites de funciones')
+    expect(wrapper.find('input[type="password"]').attributes('placeholder')).toBe('Pega una clave nueva para reemplazarla')
+
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(api.put).toHaveBeenCalledWith('/api/admin/settings', expect.objectContaining({
+      llm_model_name: 'gpt-4o',
+      swarm_parallel_agents: 5,
+    }))
+    expect(wrapper.text()).toContain('Configuración guardada.')
   })
 })

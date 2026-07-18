@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n'
 
 import enCommon from './locales/en/common.json'
+import enAdminSettings from './locales/en/adminSettings.json'
 import enBillingSuccess from './locales/en/billingSuccess.json'
 import enCompetitions from './locales/en/competitions.json'
 import enGroups from './locales/en/groups.json'
@@ -18,6 +19,7 @@ import enPredictions from './locales/en/predictions.json'
 import enTournament from './locales/en/tournament.json'
 import enUsernameContinuation from './locales/en/usernameContinuation.json'
 import esCommon from './locales/es/common.json'
+import esAdminSettings from './locales/es/adminSettings.json'
 import esBillingSuccess from './locales/es/billingSuccess.json'
 import esCompetitions from './locales/es/competitions.json'
 import esGroups from './locales/es/groups.json'
@@ -54,8 +56,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { billingSuccess: enBillingSuccess, common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, pricing: enPricing, profile: enProfile, signIn: enSignIn, signUp: enSignUp, tournament: enTournament, usernameContinuation: enUsernameContinuation },
-    es: { billingSuccess: esBillingSuccess, common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, pricing: esPricing, profile: esProfile, signIn: esSignIn, signUp: esSignUp, tournament: esTournament, usernameContinuation: esUsernameContinuation },
+    en: { adminSettings: enAdminSettings, billingSuccess: enBillingSuccess, common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, pricing: enPricing, profile: enProfile, signIn: enSignIn, signUp: enSignUp, tournament: enTournament, usernameContinuation: enUsernameContinuation },
+    es: { adminSettings: esAdminSettings, billingSuccess: esBillingSuccess, common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, pricing: esPricing, profile: esProfile, signIn: esSignIn, signUp: esSignUp, tournament: esTournament, usernameContinuation: esUsernameContinuation },
   },
 })
 

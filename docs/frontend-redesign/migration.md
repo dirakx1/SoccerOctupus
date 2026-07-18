@@ -304,7 +304,11 @@ states while preserving `/billing` compatibility, Stripe-hosted destinations,
 TwoFactorSettings behavior. Billing Success is also migrated with localized
 pending, confirmed, missing-session, error/recheck, and automatic Profile-return
 states while preserving its session reconciliation endpoint and webhook fallback.
-Admin, legal, and other public pages retain their existing presentation.
+Admin settings is migrated with localized Tournament Atlas presentation while
+preserving the administrator-only route guard, provider configuration endpoint,
+model values, encrypted write-only API-key behavior, execution controls, and
+feature-limit lifecycle. Legal and other public pages retain their existing
+presentation.
 
 Legal and billing translations require content review; they must not be treated as
 literal UI-string translation tasks.
