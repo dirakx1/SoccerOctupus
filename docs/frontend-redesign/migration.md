@@ -310,9 +310,11 @@ model values, encrypted write-only API-key behavior, execution controls, and
 feature-limit lifecycle. Legal Notice is migrated with localized Tournament Atlas
 presentation while preserving the June 30, 2026 date, six legal notice sections,
 FIFA/Kalshi/Polymarket non-affiliation wording, responsible-gambling resources,
-and the Home return path. Its Spanish legal copy is implemented but remains
-pending formal counsel approval; that review is a release gate, not evidence of
-legal approval.
+and the Home return path. Cookie Policy is migrated with localized Tournament
+Atlas presentation while preserving its June 2026 date, necessary and analytics
+inventory, browser-help links, and `so_cookie_consent` reset behavior. Spanish
+legal copy is implemented but remains pending formal counsel approval; that
+review is a release gate, not evidence of legal approval.
 
 Legal and billing translations require content review; they must not be treated as
 literal UI-string translation tasks.

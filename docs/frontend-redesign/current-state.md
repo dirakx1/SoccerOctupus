@@ -113,7 +113,7 @@ phase.
 | `/sso-callback` | Public | `SSOCallbackView.vue` | Localized Tournament Atlas pending and recovery surface around Clerk's OAuth callback, preserving all provider handoffs and the exact stored post-auth destination. |
 | `/complete-username` | Public | `CompleteUsernameView.vue` | Localized Tournament Atlas continuation that collects a Clerk-owned missing username after external authentication and preserves the stored post-auth destination. |
 | `/legal` | Public | `LegalNoticeView.vue` | Localized Tournament Atlas legal notice retaining the June 30, 2026 update date, prediction, betting, liability, jurisdiction, non-affiliation, and responsible-gambling notices. The Spanish legal copy remains pending formal counsel review. |
-| `/cookie-policy` | Public | `CookiePolicyView.vue` | Cookie-policy content. |
+| `/cookie-policy` | Public | `CookiePolicyView.vue` | Localized Tournament Atlas cookie policy preserving the June 2026 update date, necessary/analytics cookie inventory, `so_cookie_consent` reset behavior, browser-help links, and Legal Notice/Home paths. Spanish legal copy remains pending formal counsel review. |
 | `/contact` | Public | `ContactView.vue` | Contact information. |
 | `/about` | Public | `AboutView.vue` | Product and methodology information. |
 
@@ -123,9 +123,9 @@ redirects. Signed-out protected workspace navigation stores the full canonical
 destination before redirecting to flat `/sign-in`. The router also redirects
 non-admin users away from Admin and signed-in users away from Sign In and Sign
 Up. Profile/Billing and migrated authentication routes follow the active
-persisted Locale while remaining transitional flat routes. Admin and Legal
-Notice now use localized Atlas presentation; the remaining public-information
-routes remain pending migration.
+persisted Locale while remaining transitional flat routes. Admin, Legal Notice,
+and Cookie Policy now use localized Atlas presentation; the remaining
+public-information routes remain pending migration.
 
 ## Current Data Dependencies
 
