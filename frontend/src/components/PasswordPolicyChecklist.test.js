@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
 import PasswordPolicyChecklist from './PasswordPolicyChecklist.vue'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 function dynamicClerk(settings) {
   return {
@@ -15,8 +16,26 @@ function dynamicClerk(settings) {
 }
 
 describe('PasswordPolicyChecklist', () => {
+  function mountChecklist(options) {
+    return mount(PasswordPolicyChecklist, {
+      global: { plugins: [i18n] },
+      ...options,
+    })
+  }
+
+  it('uses the active locale for policy labels', () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+
+    const wrapper = mountChecklist({ props: { password: 'short' } })
+
+    expect(wrapper.text()).toContain('Requisitos de la contraseña')
+    expect(wrapper.text()).toContain('Al menos 8 caracteres')
+
+    applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
+  })
+
   it('renders fallback rules when Clerk settings are unavailable', () => {
-    const wrapper = mount(PasswordPolicyChecklist, {
+    const wrapper = mountChecklist({
       props: { password: 'short' },
     })
 
@@ -26,7 +45,7 @@ describe('PasswordPolicyChecklist', () => {
   })
 
   it('renders dynamic Clerk min, max, and character-class rules', async () => {
-    const wrapper = mount(PasswordPolicyChecklist, {
+    const wrapper = mountChecklist({
       props: {
         password: 'Abcdef1!',
         clerk: dynamicClerk({
@@ -67,7 +86,7 @@ describe('PasswordPolicyChecklist', () => {
       callbacks.onValidationComplexity(true)
     }
 
-    const wrapper = mount(PasswordPolicyChecklist, {
+    const wrapper = mountChecklist({
       props: {
         password: 'long-strong-password',
         validator,
@@ -102,7 +121,7 @@ describe('PasswordPolicyChecklist', () => {
   })
 
   it('shows compromised-password checks as Clerk/server-checked info', () => {
-    const wrapper = mount(PasswordPolicyChecklist, {
+    const wrapper = mountChecklist({
       props: {
         password: 'Abcdef1!',
         clerk: dynamicClerk({

@@ -1,7 +1,7 @@
 <template>
-  <div v-if="visible" class="password-policy" data-testid="password-policy">
+  <section v-if="visible" class="password-policy" data-testid="password-policy" :aria-label="t('passwordPolicy.heading')">
     <div class="policy-header">
-      <span>Password requirements</span>
+      <h3>{{ t('passwordPolicy.heading') }}</h3>
     </div>
     <div
       v-if="showStrengthMeter"
@@ -9,10 +9,18 @@
       data-testid="password-strength-meter"
     >
       <div class="strength-meter-header">
-        <span>Password strength</span>
+        <span>{{ t('passwordPolicy.strength') }}</span>
         <strong>{{ strengthLabel }}</strong>
       </div>
-      <div class="strength-track" aria-hidden="true">
+      <div
+        class="strength-track"
+        role="progressbar"
+        :aria-label="t('passwordPolicy.strength')"
+        aria-valuemin="0"
+        aria-valuemax="4"
+        :aria-valuenow="normalizedStrength"
+        :aria-valuetext="strengthLabel"
+      >
         <div
           class="strength-fill"
           :class="strengthClass"
@@ -20,23 +28,26 @@
         />
       </div>
     </div>
-    <ul class="policy-list">
+    <ul class="policy-list" aria-live="polite">
       <li
         v-for="rule in visibleRules"
         :key="rule.key"
         :class="['policy-rule', `policy-rule-${rule.status}`]"
       >
-        <span class="policy-icon" aria-hidden="true">{{
-          iconFor(rule.status)
-        }}</span>
-        <span>{{ rule.label }}</span>
+        <component :is="iconFor(rule.status)" class="policy-icon" :size="16" aria-hidden="true" />
+        <span class="policy-rule-copy">
+          <span>{{ labelFor(rule) }}</span>
+          <span class="sr-only">{{ t(`passwordPolicy.status.${rule.status}`) }}</span>
+        </span>
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import { computed } from "vue";
+import { Check, CircleAlert, Info } from '@lucide/vue';
+import { useI18n } from 'vue-i18n';
 
 import { usePasswordPolicy } from "../composables/usePasswordPolicy";
 
@@ -62,6 +73,7 @@ const props = defineProps({
     default: true,
   },
 });
+const { t, te } = useI18n();
 
 const localPolicy = usePasswordPolicy({
   password: computed(() => props.password),
@@ -99,16 +111,31 @@ const strengthClass = computed(() => {
   return "strength-weak";
 });
 const strengthLabel = computed(() => {
-  if (typeof strength.value.score !== "number") return "Low";
-  if (strength.value.score >= 4) return "Strong";
-  if (strength.value.score >= 3) return "Normal";
-  return "Low";
+  if (typeof strength.value.score !== "number") return t('passwordPolicy.strengthLabels.low');
+  if (strength.value.score >= 4) return t('passwordPolicy.strengthLabels.strong');
+  if (strength.value.score >= 3) return t('passwordPolicy.strengthLabels.normal');
+  return t('passwordPolicy.strengthLabels.low');
 });
 
 function iconFor(status) {
-  if (status === "pass") return "OK";
-  if (status === "fail") return "!";
-  return "i";
+  if (status === "pass") return Check;
+  if (status === "fail") return CircleAlert;
+  return Info;
+}
+
+function labelFor(rule) {
+  const key = `passwordPolicy.rules.${rule.key}`;
+  if (!te(key)) return rule.label;
+
+  if (rule.key === 'require_special_char' && rule.params.allowedCharacters) {
+    return t(key, {
+      allowedCharacters: t('passwordPolicy.rules.allowedCharacters', {
+        characters: rule.params.allowedCharacters,
+      }),
+    });
+  }
+
+  return t(key, rule.params);
 }
 
 defineExpose({
@@ -118,64 +145,66 @@ defineExpose({
 
 <style scoped>
 .password-policy {
-  background: #0a0a1a;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  padding: 12px 14px;
+  background: var(--color-surface-inset);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-left: var(--border-width-strong) solid var(--color-accent);
+  padding: var(--space-4);
 }
 
 .policy-header {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-3);
 }
 
-.policy-header span {
-  color: #e0e0e0;
-  font-size: 13px;
-  font-weight: 700;
+.policy-header h3 {
+  color: var(--color-text);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-md);
+  margin: 0;
 }
 
 .policy-header small {
-  color: #8888aa;
-  font-size: 11px;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
 }
 
 .policy-list {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .strength-meter {
-  margin-bottom: 10px;
+  margin-bottom: var(--space-4);
 }
 
 .strength-meter-header {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
 }
 
 .strength-meter-header span {
-  color: #a0aec0;
-  font-size: 12px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
 }
 
 .strength-meter-header strong {
-  color: #e0e0e0;
-  font-size: 12px;
+  color: var(--color-text);
+  font-family: var(--font-family-data);
+  font-size: var(--font-size-xs);
 }
 
 .strength-track {
-  background: #050511;
-  border: 1px solid #0f3460;
-  border-radius: 999px;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
   height: 8px;
   overflow: hidden;
 }
@@ -184,54 +213,53 @@ defineExpose({
   border-radius: inherit;
   height: 100%;
   transition:
-    width 160ms ease,
-    background-color 160ms ease;
+    width var(--duration-normal) var(--easing-standard),
+    background-color var(--duration-normal) var(--easing-standard);
 }
 
 .strength-weak {
-  background: #ef4444;
+  background: var(--color-danger);
 }
 
 .strength-normal {
-  background: #f59e0b;
+  background: var(--color-warning);
 }
 
 .strength-strong {
-  background: #22c55e;
+  background: var(--color-success);
 }
 
 .policy-rule {
   align-items: flex-start;
-  color: #a0aec0;
+  color: var(--color-text-muted);
   display: flex;
-  font-size: 12px;
-  gap: 8px;
-  line-height: 1.4;
+  font-size: var(--font-size-sm);
+  gap: var(--space-2);
+  line-height: var(--line-height-normal);
 }
 
 .policy-icon {
-  border-radius: 999px;
-  display: inline-flex;
+  display: block;
   flex: 0 0 auto;
-  font-size: 10px;
-  font-weight: 800;
-  justify-content: center;
-  min-width: 18px;
-  padding: 1px 4px;
+  margin-top: 0.16rem;
 }
 
 .policy-rule-pass .policy-icon {
-  background: #123322;
-  color: #9ae6b4;
+  color: var(--color-success);
 }
 
 .policy-rule-fail .policy-icon {
-  background: #3d1a1a;
-  color: #fc8181;
+  color: var(--color-danger);
 }
 
 .policy-rule-info .policy-icon {
-  background: #0f3460;
-  color: #c0c0d0;
+  color: var(--color-information);
+}
+
+.policy-rule-copy { min-width: 0; }
+.sr-only { height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .strength-fill { transition: none; }
 }
 </style>

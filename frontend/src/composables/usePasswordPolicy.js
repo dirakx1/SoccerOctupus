@@ -53,10 +53,11 @@ function strengthScore(strength) {
   return null
 }
 
-function rule(key, label, passes) {
+function rule(key, label, passes, params = {}) {
   return {
     key,
     label,
+    params,
     status: passes ? 'pass' : 'fail',
   }
 }
@@ -130,8 +131,8 @@ export function usePasswordPolicy({ password, validator, clerk } = {}) {
     const minLength = Number(policy.min_length || FALLBACK_SETTINGS.min_length)
     const maxLength = Number(policy.max_length || FALLBACK_SETTINGS.max_length)
     const required = [
-      rule('min_length', `At least ${minLength} characters`, value.length >= minLength),
-      rule('max_length', `No more than ${maxLength} characters`, value.length <= maxLength),
+      rule('min_length', `At least ${minLength} characters`, value.length >= minLength, { count: minLength }),
+      rule('max_length', `No more than ${maxLength} characters`, value.length <= maxLength, { count: maxLength }),
     ]
 
     if (policy.require_lowercase) {
@@ -151,6 +152,7 @@ export function usePasswordPolicy({ password, validator, clerk } = {}) {
         'require_special_char',
         `At least 1 special character${suffix}`,
         hasSpecial(value, policy.allowed_special_characters),
+        { allowedCharacters: policy.allowed_special_characters || '' },
       ))
     }
 
