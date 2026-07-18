@@ -6,6 +6,7 @@ import enBillingSuccess from './locales/en/billingSuccess.json'
 import enCompetitions from './locales/en/competitions.json'
 import enGroups from './locales/en/groups.json'
 import enHome from './locales/en/home.json'
+import enLegal from './locales/en/legal.json'
 import enMarkets from './locales/en/markets.json'
 import enSignIn from './locales/en/signIn.json'
 import enSignUp from './locales/en/signUp.json'
@@ -24,6 +25,7 @@ import esBillingSuccess from './locales/es/billingSuccess.json'
 import esCompetitions from './locales/es/competitions.json'
 import esGroups from './locales/es/groups.json'
 import esHome from './locales/es/home.json'
+import esLegal from './locales/es/legal.json'
 import esMarkets from './locales/es/markets.json'
 import esSignIn from './locales/es/signIn.json'
 import esSignUp from './locales/es/signUp.json'
@@ -56,8 +58,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { adminSettings: enAdminSettings, billingSuccess: enBillingSuccess, common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, pricing: enPricing, profile: enProfile, signIn: enSignIn, signUp: enSignUp, tournament: enTournament, usernameContinuation: enUsernameContinuation },
-    es: { adminSettings: esAdminSettings, billingSuccess: esBillingSuccess, common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, pricing: esPricing, profile: esProfile, signIn: esSignIn, signUp: esSignUp, tournament: esTournament, usernameContinuation: esUsernameContinuation },
+    en: { adminSettings: enAdminSettings, billingSuccess: enBillingSuccess, common: enCommon, competitions: enCompetitions, groups: enGroups, home: enHome, legal: enLegal, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordRecovery: enPasswordRecovery, predictions: enPredictions, pricing: enPricing, profile: enProfile, signIn: enSignIn, signUp: enSignUp, tournament: enTournament, usernameContinuation: enUsernameContinuation },
+    es: { adminSettings: esAdminSettings, billingSuccess: esBillingSuccess, common: esCommon, competitions: esCompetitions, groups: esGroups, home: esHome, legal: esLegal, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordRecovery: esPasswordRecovery, predictions: esPredictions, pricing: esPricing, profile: esProfile, signIn: esSignIn, signUp: esSignUp, tournament: esTournament, usernameContinuation: esUsernameContinuation },
   },
 })
 

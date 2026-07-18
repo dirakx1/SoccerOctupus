@@ -106,9 +106,10 @@ menus. App state remains the owner of auth, billing, and menu state; the pattern
 are presentational and emit intent events.
 
 Authentication, account, billing, admin, public-information, and legal routes
-remain flat. Sign In, Sign Up, Password Recovery, OAuth Callback, and Username
-Continuation now follow the active Locale while the others remain unlocalized
-until their owning migration phases. The three
+remain flat. Sign In, Sign Up, Password Recovery, OAuth Callback, Username
+Continuation, and Legal Notice now follow the active persisted Locale; other
+public-information routes remain unlocalized until their owning migration
+phases. The three
 `/design-lab` routes remain unchanged and public. Home and Groups now consume the
 shell's Atlas context, semantic tokens, canonical workspace links, and English /
 Spanish page messages. Other production views keep their page-local copy and
@@ -131,7 +132,11 @@ protected Groups workflow while preserving their existing route and data seams:
   pages. It owns no domain state or data fetching.
 
 Home and Groups load `home` and `groups` message domains for English and Spanish.
-Other authentication, account, admin, and public routes remain pending migration.
+Legal Notice loads the `legal` domain, uses a semantic `main`/`article`/`section`
+document structure, preserves its external responsible-gambling links, and is
+styled only through Atlas semantic tokens. The Spanish legal rendering is an
+implementation translation pending formal counsel approval. Other public routes
+remain pending migration.
 
 The flat `/sign-in` and `/sign-up` routes consume the active persisted Locale and
 their English / Spanish message domains. Their Tournament Atlas presentations

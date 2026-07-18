@@ -1,0 +1,39 @@
+{
+  "eyebrow": "Información y uso",
+  "title": "Aviso legal",
+  "updated": "Última actualización: 30 de junio de 2026",
+  "intro": "Información importante sobre las predicciones, las estimaciones de mercado y el uso responsable de SoccerOctopus.",
+  "back": "Volver al inicio",
+  "sections": {
+    "predictions": {
+      "title": "1. Naturaleza de las predicciones",
+      "body": "SoccerOctopus ofrece predicciones probabilísticas generadas por una red de agentes de IA que utiliza modelos estadísticos, datos históricos, la forma de los equipos y análisis táctico. Todas las predicciones son solo aproximaciones y no garantizan ningún resultado. Los partidos de fútbol son inherentemente impredecibles y los resultados reales pueden diferir de forma significativa de cualquier predicción realizada por esta plataforma."
+    },
+    "advice": {
+      "title": "2. No es asesoramiento financiero ni de apuestas",
+      "body": "Nada de lo publicado en SoccerOctopus constituye asesoramiento financiero, asesoramiento sobre apuestas ni una recomendación para realizar una apuesta. Las predicciones se ofrecen exclusivamente como herramientas informativas para ayudar a cada usuario a formarse su propio juicio independiente. Nunca deberías apostar más de lo que puedas permitirte perder."
+    },
+    "liability": {
+      "title": "3. Limitación de responsabilidad",
+      "body": "SoccerOctopus y sus operadores no aceptan ninguna responsabilidad por pérdidas financieras, daños o perjuicios que surjan directa o indirectamente del uso de las predicciones o estimaciones de mercado publicadas en esta plataforma. El uso de este servicio es enteramente bajo tu propia responsabilidad."
+    },
+    "regulations": {
+      "title": "4. Regulación del juego",
+      "body": "Las apuestas y los juegos de azar pueden estar regulados o prohibidos en tu jurisdicción. Es tu exclusiva responsabilidad asegurarte de que cualquier actividad de apuestas que realices cumpla las leyes aplicables en tu país o región. SoccerOctopus no opera como casa de apuestas, mercado de intercambio ni operador de juego con licencia."
+    },
+    "affiliation": {
+      "title": "5. Sin afiliación con FIFA, Kalshi ni Polymarket",
+      "body": "SoccerOctopus es una plataforma independiente y no está afiliada, respaldada ni conectada de ninguna forma con FIFA (Fédération Internationale de Football Association), Kalshi ni Polymarket. El nombre, el logotipo y las marcas relacionadas con la Copa Mundial de la FIFA 2026 son propiedad exclusiva de FIFA. Cualquier referencia a estas organizaciones en la plataforma es exclusivamente informativa y descriptiva. SoccerOctopus no opera en nombre de estas entidades, en asociación con ellas ni bajo licencia de ninguna de ellas."
+    },
+    "responsible": {
+      "title": "6. Juego responsable",
+      "prefix": "Si tú o alguien que conoces podría tener un problema con el juego, busca ayuda. Entre los recursos se encuentran",
+      "between": "y",
+      "suffix": "."
+    }
+  },
+  "resources": {
+    "begambleaware": "BeGambleAware",
+    "ncpg": "National Council on Problem Gambling"
+  }
+}
