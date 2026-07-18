@@ -66,6 +66,7 @@ import { getCompetitionNavigation } from './competition/navigation.js'
 import { useBillingStatus } from './composables/useBillingStatus'
 import { useCurrentUserProfile } from './composables/useCurrentUserProfile'
 import {
+  applyLocale,
   i18n,
   normalizeLocale,
 } from './i18n/index.js'
@@ -183,7 +184,15 @@ function closeMenus() {
 
 async function changeLocale(value) {
   const nextLocation = workspaceLocaleLocation(route, value)
-  if (nextLocation) await router.push(nextLocation)
+  if (nextLocation) {
+    await router.push(nextLocation)
+    return
+  }
+
+  applyLocale(value, {
+    storage: browserStorage,
+    documentElement: document.documentElement,
+  })
 }
 
 async function changeEdition(edition) {

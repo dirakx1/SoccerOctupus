@@ -396,11 +396,14 @@ src/i18n/
 The application entry point initializes the Locale from saved and browser
 preferences and installs the plugin. Each matched Competition Workspace route
 then applies its URL Locale, so route context wins over startup preference before
-auth handling. `AppShell` switches Locale by preserving the current named route,
-Competition Edition, query, and hash through `workspaceLocaleLocation`. Browser-
-storage failures do not prevent startup, route navigation, or document-language
-updates. Flat non-workspace routes retain the current Locale until their
-localized route migration is implemented.
+auth handling. `AppShell` exposes the Locale control on every Atlas shell route.
+For Competition Workspace routes, it switches through `workspaceLocaleLocation`,
+preserving the current named route, Competition Edition, query, and hash while
+updating the canonical `/en/...` or `/es/...` URL. For flat public, auth,
+account, admin, and legal routes, it applies and persists the selected Locale in
+place: route name, path, params, query, and hash do not change. This deliberately
+avoids locale aliases on Clerk and Stripe contract routes. Browser-storage
+failures do not prevent startup, route navigation, or document-language updates.
 
 The `common`, `navigation`, `competitions`, `home`, `groups`, `overlays`, and
 `predictions` domains exist today. They are consumed by the shell, migrated

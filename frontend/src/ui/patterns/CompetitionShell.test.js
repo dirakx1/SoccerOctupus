@@ -70,11 +70,20 @@ describe('CompetitionShell', () => {
     expect(wrapper.text()).toContain('Iniciar sesión')
     expect(wrapper.find('[data-testid="mobile-menu-toggle"]').attributes('aria-expanded')).toBe('false')
     expect(wrapper.find('[data-testid="account-menu-toggle"]').exists()).toBe(false)
-    expect(wrapper.find('[data-testid="locale-control"]').exists()).toBe(false)
-    expect(wrapper.find('[data-testid="theme-control"]').exists()).toBe(false)
     expect(wrapper.find('[data-testid="locale-toggle"]').text()).toContain('ES')
     expect(wrapper.find('[data-testid="locale-toggle"]').attributes('aria-haspopup')).toBe('menu')
     expect(wrapper.find('[data-testid="theme-toggle"]').attributes('title')).toContain('Cambiar tema')
+  })
+
+  it('exposes the locale menu on flat public and auth routes', async () => {
+    const wrapper = mountShell({ workspaceRoute: false, signedIn: false })
+
+    expect(wrapper.find('[data-testid="locale-toggle"]').exists()).toBe(true)
+    await wrapper.find('[data-testid="locale-toggle"]').trigger('click')
+
+    expect(wrapper.find('[data-testid="locale-menu"]').exists()).toBe(true)
+    await wrapper.find('[data-testid="locale-option-es"]').trigger('click')
+    expect(wrapper.emitted('locale-change')).toEqual([['es']])
   })
 
   it('emits mobile and account menu actions with expanded state', async () => {

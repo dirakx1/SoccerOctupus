@@ -133,9 +133,11 @@ Implemented shell foundation:
 - English and Spanish shell navigation, account, footer, auth-recovery, theme,
   and mobile-control messages.
 - Keyboard-accessible icon-only Locale and light/dark/system theme controls with
-  labeled menus. Locale changes preserve the current named workspace route,
-  Competition Edition, query, and hash; theme changes persist through the
-  existing runtime without OS listeners.
+  labeled menus on every Atlas shell route. Workspace Locale changes preserve
+  the current named route, Competition Edition, query, and hash through a
+  canonical localized URL; flat public, auth, account, admin, and legal routes
+  apply and persist the selected Locale without changing their URL. Theme changes
+  persist through the existing runtime without OS listeners.
 
 Implemented public billing surface:
 

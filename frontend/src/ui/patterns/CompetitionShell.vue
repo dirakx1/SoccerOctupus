@@ -81,7 +81,7 @@
       </nav>
 
       <div class="shell-controls">
-        <div v-if="workspaceRoute" class="header-menu-control">
+        <div class="header-menu-control">
           <button
             data-testid="locale-toggle"
             class="icon-menu-toggle"

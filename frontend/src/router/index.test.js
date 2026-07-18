@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import router from './index.js'
 import { WORKSPACE_ROUTE_NAMES } from './workspace.js'
 import { clearAuthState, setAuthState } from '../lib/auth'
-import { i18n, LOCALE_STORAGE_KEY } from '../i18n/index.js'
+import { applyLocale, i18n, LOCALE_STORAGE_KEY } from '../i18n/index.js'
 import { consumePostAuthRedirect } from '../lib/postAuthRedirect.js'
 
 describe('router', () => {
@@ -93,6 +93,20 @@ describe('router', () => {
 
     await router.push('/es/competitions/world-cup-2026')
 
+    expect(i18n.global.locale.value).toBe('es')
+    expect(document.documentElement.lang).toBe('es')
+    expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe('es')
+  })
+
+  it('keeps flat routes, query, and hash stable when their locale preference changes', async () => {
+    await router.push('/pricing?plan=pro#compare')
+
+    applyLocale('es', {
+      storage: window.localStorage,
+      documentElement: document.documentElement,
+    })
+
+    expect(router.currentRoute.value.fullPath).toBe('/pricing?plan=pro#compare')
     expect(i18n.global.locale.value).toBe('es')
     expect(document.documentElement.lang).toBe('es')
     expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe('es')
