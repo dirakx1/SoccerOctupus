@@ -1,5 +1,5 @@
 <template>
-  <div class="atlas-auth-page"><section class="atlas-auth-intro" aria-labelledby="username-title"><p class="atlas-auth-kicker">{{ t('usernameContinuation.eyebrow') }}</p><h1 id="username-title">{{ t('usernameContinuation.title') }}</h1><p>{{ t('usernameContinuation.subtitle') }}</p><div class="atlas-auth-rule" aria-hidden="true"/><p class="atlas-auth-note">{{ t('usernameContinuation.note') }}</p></section><section class="atlas-auth-panel"><header class="auth-panel-heading"><p class="atlas-auth-kicker">{{ t('usernameContinuation.eyebrow') }}</p><h2>{{ t('usernameContinuation.title') }}</h2></header>
+  <div class="atlas-auth-page"><section class="atlas-auth-intro" aria-labelledby="username-title"><h1 id="username-title">{{ t('usernameContinuation.title') }}</h1><p>{{ t('usernameContinuation.subtitle') }}</p></section><section class="atlas-auth-panel">
 
       <form v-if="canCompleteUsername" class="auth-form" :aria-busy="loading" @submit.prevent="completeUsername">
         <label class="field">

@@ -1,6 +1,6 @@
 {
-  "eyebrow": "Create account", "title": "Sign up", "subtitle": "Join the workspace to run predictions and receive role-based access.", "redirectNote": "After registration, you will return to the competition page you requested.",
-  "provider": { "continueWith": "Continue with {name}", "opening": "Opening {name}..." }, "divider": "or use email and username",
+  "title": "Create your account", "subtitle": "Save your predictions and pick up where you left off.",
+  "provider": { "continueWith": "Continue with {name}", "opening": "Opening {name}..." }, "divider": "or sign up with email",
   "firstName": "First name", "lastName": "Last name", "email": "Email address", "username": "Username", "password": "Password", "emailPlaceholder": "Email address", "usernamePlaceholder": "alexmorgan", "passwordPlaceholder": "Create a password",
   "submit": "Create account", "submitting": "Creating account...", "verificationCopy": "Enter the verification code sent to {email}.", "verificationCode": "Verification code", "codePlaceholder": "123456", "verify": "Verify email", "verifying": "Verifying...", "resend": "Resend code", "signInPrompt": "Already have an account?", "signIn": "Sign in",
   "errors": { "fallback": "Unable to create your account. Check your details and try again.", "activate": "Unable to activate your session. Please try signing in.", "unsupported": "This sign-up requires {methods}, which is not supported by this custom sign-up page yet.", "complete": "Unable to complete sign-up. Please check your details and try again." }

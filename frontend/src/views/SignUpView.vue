@@ -1,11 +1,9 @@
 <template>
   <div class="atlas-auth-page">
     <section class="atlas-auth-intro" aria-labelledby="sign-up-title">
-      <p class="atlas-auth-kicker">{{ t('signUp.eyebrow') }}</p><h1 id="sign-up-title">{{ t('signUp.title') }}</h1><p>{{ t('signUp.subtitle') }}</p><div class="atlas-auth-rule" aria-hidden="true" /><p class="atlas-auth-note">{{ t('signUp.redirectNote') }}</p>
+      <h1 id="sign-up-title">{{ t('signUp.title') }}</h1><p>{{ t('signUp.subtitle') }}</p>
     </section>
     <section class="atlas-auth-panel">
-      <header class="auth-panel-heading"><p class="atlas-auth-kicker">{{ t('signUp.eyebrow') }}</p><h2>{{ t('signUp.title') }}</h2></header>
-
       <form v-if="step === 'details'" class="auth-form" :aria-busy="loading || Boolean(loadingStrategy)" @submit.prevent="createAccount">
         <SocialAuthButtons
           :disabled="loading || !isLoaded"

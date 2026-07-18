@@ -65,7 +65,7 @@ describe('SSOCallbackView', () => {
   it('renders the English pending and recovery states', () => {
     const wrapper = mount(SSOCallbackView, { global: { stubs: { RouterLink: routerLinkStub } } })
 
-    expect(wrapper.get('[role="status"]').text()).toContain('Completing authentication')
+    expect(wrapper.get('[role="status"]').text()).toContain('Completing sign-in')
     expect(wrapper.text()).toContain('Taking longer than expected?')
     expect(wrapper.findAllComponents({ name: 'RouterLink' }).map((link) => link.props('to'))).toEqual(['/sign-in', '/sign-up'])
   })
@@ -74,7 +74,7 @@ describe('SSOCallbackView', () => {
     applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
     const wrapper = mount(SSOCallbackView, { global: { stubs: { RouterLink: routerLinkStub } } })
 
-    expect(wrapper.get('[role="status"]').text()).toContain('Completando la autenticación')
+    expect(wrapper.get('[role="status"]').text()).toContain('Completando el inicio de sesión')
     expect(wrapper.text()).toContain('¿Está tardando más de lo esperado?')
     expect(wrapper.findComponent(callbackComponent).props('firstFactorUrl')).toBe('/sign-in?resume=oauth')
   })

@@ -97,7 +97,7 @@ describe('ForgotPasswordView', () => {
   it('renders the complete recovery flow in Spanish with the sign-in link', async () => {
     applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
     const wrapper = mount(ForgotPasswordView, { global: { stubs: { RouterLink: RouterLinkStub } } })
-    expect(wrapper.text()).toContain('Restablecer contraseña')
+    expect(wrapper.text()).toContain('Restablece tu contraseña')
     expect(wrapper.text()).toContain('Correo electrónico')
     expect(wrapper.find('[data-to]').attributes('data-to')).toBe('/sign-in')
     await wrapper.find('input[autocomplete="email"]').setValue('alex@example.com')

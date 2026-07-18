@@ -1,7 +1,7 @@
 <template>
   <div class="atlas-auth-page">
-    <section class="atlas-auth-intro" aria-labelledby="recovery-title"><p class="atlas-auth-kicker">{{ t('passwordRecovery.eyebrow') }}</p><h1 id="recovery-title">{{ t('passwordRecovery.title') }}</h1><p>{{ t('passwordRecovery.subtitle') }}</p><div class="atlas-auth-rule" aria-hidden="true" /><p class="atlas-auth-note">{{ t('passwordRecovery.note') }}</p></section>
-    <section class="atlas-auth-panel"><header class="auth-panel-heading"><p class="atlas-auth-kicker">{{ t('passwordRecovery.eyebrow') }}</p><h2>{{ t('passwordRecovery.title') }}</h2></header>
+    <section class="atlas-auth-intro" aria-labelledby="recovery-title"><h1 id="recovery-title">{{ t('passwordRecovery.title') }}</h1><p>{{ t('passwordRecovery.subtitle') }}</p></section>
+    <section class="atlas-auth-panel">
 
       <form v-if="step === 'request'" class="auth-form" :aria-busy="loading" @submit.prevent="sendResetCode">
         <label class="field">

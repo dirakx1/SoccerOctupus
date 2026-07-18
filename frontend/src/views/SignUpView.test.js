@@ -182,7 +182,7 @@ describe('SignUpView', () => {
   it('renders Spanish Atlas copy, fields, providers, and sign-in link', () => {
     applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
     const wrapper = mount(SignUpView, { global: { stubs: { RouterLink: RouterLinkStub } } })
-    expect(wrapper.text()).toContain('Registrarse')
+    expect(wrapper.text()).toContain('Crea tu cuenta')
     expect(wrapper.text()).toContain('Continuar con Google')
     expect(wrapper.text()).toContain('Nombre de usuario')
     expect(wrapper.text()).toContain('¿Ya tienes una cuenta?')

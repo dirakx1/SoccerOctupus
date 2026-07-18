@@ -1,11 +1,8 @@
 <template>
   <div class="atlas-auth-page">
     <section class="atlas-auth-intro" aria-labelledby="callback-title">
-      <p class="atlas-auth-kicker">{{ copy('eyebrow') }}</p>
       <h1 id="callback-title">{{ copy('title') }}</h1>
       <p>{{ copy('subtitle') }}</p>
-      <div class="atlas-auth-rule" aria-hidden="true" />
-      <p class="atlas-auth-note">{{ copy('note') }}</p>
     </section>
 
     <section class="atlas-auth-panel" aria-labelledby="callback-status">
@@ -49,12 +46,10 @@ const { t } = useI18n()
 const redirectTarget = peekPostAuthRedirect() || '/'
 
 const fallbackCopy = {
-  eyebrow: 'Secure handoff',
   title: 'Completing authentication',
-  subtitle: 'Securely finishing your authentication with your provider.',
-  note: 'Keep this page open while we restore your session and return you to your destination.',
+  subtitle: 'We are finishing your sign-in.',
   status: 'Authentication in progress',
-  waiting: 'Waiting for your provider to finish the secure handoff.',
+  waiting: 'Waiting for your provider.',
   takingLonger: 'Taking longer than expected?',
   signIn: 'Return to sign in',
   signUp: 'Return to sign up',

@@ -307,7 +307,7 @@ describe('SignInView', () => {
     applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
     const wrapper = mount(SignInView, { global: { stubs: { RouterLink: RouterLinkStub } } })
 
-    expect(wrapper.text()).toContain('Acceso seguro')
+    expect(wrapper.text()).toContain('Usa tu cuenta de SoccerOctopus para continuar.')
     expect(wrapper.text()).toContain('Iniciar sesión')
     expect(wrapper.text()).toContain('Continuar con Google')
     expect(wrapper.text()).toContain('Continuar con X')

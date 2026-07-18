@@ -100,7 +100,7 @@ describe('CompleteUsernameView', () => {
       global: { stubs: ['RouterLink'] },
     })
 
-    expect(wrapper.text()).toContain('No pending username step is available.')
+    expect(wrapper.text()).toContain('There is no username step to finish.')
   })
 
   it('localizes the form and fallback in Spanish', () => {
@@ -110,7 +110,7 @@ describe('CompleteUsernameView', () => {
     expect(wrapper.text()).toContain('Nombre de usuario')
     wrapper.unmount()
     clerkState.signUp.value.status='complete';clerkState.signUp.value.missingFields=[]
-    expect(mount(CompleteUsernameView,{global:{stubs:['RouterLink']}}).text()).toContain('No hay un paso de nombre de usuario pendiente.')
+    expect(mount(CompleteUsernameView,{global:{stubs:['RouterLink']}}).text()).toContain('No hay un paso de nombre de usuario que completar.')
   })
 
   it('preserves loading, errors, and the exact stored return destination', async () => {

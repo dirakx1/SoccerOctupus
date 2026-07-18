@@ -1,18 +1,10 @@
 <template>
   <div class="atlas-auth-page">
     <section class="atlas-auth-intro" aria-labelledby="sign-in-title">
-      <p class="atlas-auth-kicker">{{ t('signIn.eyebrow') }}</p>
       <h1 id="sign-in-title">{{ t('signIn.title') }}</h1>
       <p>{{ t('signIn.subtitle') }}</p>
-      <div class="atlas-auth-rule" aria-hidden="true" />
-      <p class="atlas-auth-note">{{ t('signIn.redirectNote') }}</p>
     </section>
     <section class="atlas-auth-panel">
-      <header class="auth-panel-heading">
-        <p class="atlas-auth-kicker">{{ t('signIn.eyebrow') }}</p>
-        <h2>{{ t('signIn.title') }}</h2>
-      </header>
-
       <form v-if="step === 'credentials'" class="auth-form" :aria-busy="loading || Boolean(loadingStrategy)" @submit.prevent="submit">
         <template v-if="!resumingPasswordFirstFactor">
           <SocialAuthButtons
