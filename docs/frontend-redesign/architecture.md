@@ -149,10 +149,11 @@ either view. Other authentication and account routes remain pending migration.
 
 `AtlasAuthLayout.vue` is the shared auth presentation pattern for Sign In, Sign
 Up, Password Recovery, Username Continuation, and OAuth Callback. At desktop
-width it pairs each Clerk-owned form with a SoccerOctopus pitch-analysis panel;
-the pitch and logo are decorative and hidden at 760px or below. The pattern owns
-only layout and visual treatment, leaving form semantics, routes, messages, and
-all Clerk contracts in their route views.
+width it pairs each Clerk-owned form with a dark SoccerOctopus match-intelligence
+panel. The panel uses decorative field geometry and a compact World Cup 2026
+data composition (48 teams and 104 matches); it is reduced to a brand strip at
+760px or below. The pattern owns only layout and visual treatment, leaving form
+semantics, routes, messages, and all Clerk contracts in their route views.
 
 `/forgot-password` uses the same flat-route Locale behavior and Atlas auth
 presentation. It preserves the current Clerk `reset_password_email_code`
