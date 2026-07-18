@@ -1,0 +1,27 @@
+{
+  "eyebrow": "Acceso por suscripción",
+  "title": "Elige tu acceso a predicciones",
+  "subtitle": "Gratis incluye acceso limitado por ciclo. Los planes de pago eliminan los límites de uso; Pro añade análisis de vídeo.",
+  "profile": "Facturación",
+  "loading": "Cargando planes",
+  "loadingCopy": "Comprobando las opciones de suscripción disponibles para tu cuenta.",
+  "loadError": "No se pudieron cargar los planes.",
+  "retry": "Intentar de nuevo",
+  "perInterval": "/{interval}",
+  "featured": "Recomendado",
+  "notes": {
+    "free": "Cuota inicial",
+    "basic": "Acceso básico ilimitado",
+    "pro": "Cobertura completa de señales"
+  },
+  "actions": {
+    "updating": "Actualizando",
+    "start": "Empezar",
+    "signUp": "Registrarse",
+    "choose": "Elegir",
+    "current": "Plan actual"
+  },
+  "errors": {
+    "update": "No se pudo actualizar la facturación."
+  }
+}

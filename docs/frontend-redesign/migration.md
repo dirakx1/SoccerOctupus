@@ -137,9 +137,16 @@ Implemented shell foundation:
   Competition Edition, query, and hash; theme changes persist through the
   existing runtime without OS listeners.
 
+Implemented public billing surface:
+
+- Pricing now uses localized Tournament Atlas presentation while retaining the
+  backend-owned plan labels, prices, intervals, feature strings, existing
+  checkout/plan-change requests, Stripe URL navigation, and exact post-auth
+  checkout destination.
+
 Remaining Phase 2 work:
 
-- Localized authentication, account, billing, admin, legal, and public routes.
+- Localized admin, legal, and remaining public routes.
 - Page translations, localized metadata, and localized route aliases if later
   requirements justify aliases.
 - Migrating remaining page-local styles and copy into the shell and shared

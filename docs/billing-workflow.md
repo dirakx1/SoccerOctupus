@@ -72,6 +72,23 @@ setup if they were exposed outside the local machine.
 11. Use the portal cancel flow and confirm local subscription becomes free after
     webhook sync.
 
+## Pricing Surface
+
+`/pricing` is a public Tournament Atlas page. It uses the active persisted
+Locale (English or Spanish) for its frontend-owned page, plan-note, action,
+loading, and error copy. Server-provided plan labels, prices, intervals, and
+feature strings remain verbatim so that billing configuration stays the single
+source of truth.
+
+For a signed-out paid-plan choice, the page stores the exact local return path
+`/pricing?plan={basic|pro}&checkout=1` before sending the user to sign-up. Once
+signed in, it removes only `checkout=1`, then calls the existing plan-change
+endpoint. A signed-in selection uses the existing `POST /api/billing/change-plan`
+request and follows a returned Stripe URL unchanged. Choosing Free while paid
+continues to use that same plan-change path, including a returned cancellation
+portal URL. No Locale, return-path, or extra frontend field is sent to the
+billing endpoint.
+
 ## Checkout Return
 
 `/billing/success` is a signed-in route. Stripe supplies `session_id` through

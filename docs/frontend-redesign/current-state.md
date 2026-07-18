@@ -102,7 +102,7 @@ phase.
 | `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |
 | `/:locale/competitions/:competitionEditionSlug/markets` | Signed in | `MarketsView.vue` | Match markets and tournament futures, filters, fair-value contract prices, and generated Market Questions. |
 | `/profile` | Signed in | `ProfileView.vue` | Localized Tournament Atlas profile/password and billing surface preserving subscription, usage, billing health, Stripe portal/payment recovery, and the existing embedded two-factor workflow. |
-| `/pricing` | Public | `PricingView.vue` | Plan comparison, checkout or plan change, cancellation, and signed-in subscription context. |
+| `/pricing` | Public | `PricingView.vue` | Localized Tournament Atlas plan comparison with server-owned plan data, loading/retry and update-error states, checkout or plan change, cancellation, and signed-in subscription context. Paid signed-out choices preserve the exact localized post-auth Pricing checkout destination. |
 | `/billing` | Signed in | Redirect | Redirects to `/profile`. |
 | `/billing/success` | Signed in | `BillingSuccessView.vue` | Localized Atlas checkout reconciliation with pending, confirmed, missing-session, error/recheck, and automatic Profile return states. |
 | `/admin/settings` | Administrator | `AdminSettingsView.vue` | Provider, model, swarm, tournament, and per-tier feature-limit settings. |
