@@ -104,7 +104,7 @@ phase.
 | `/profile` | Signed in | `ProfileView.vue` | Localized Tournament Atlas profile/password and billing surface preserving subscription, usage, billing health, Stripe portal/payment recovery, and the existing embedded two-factor workflow. |
 | `/pricing` | Public | `PricingView.vue` | Plan comparison, checkout or plan change, cancellation, and signed-in subscription context. |
 | `/billing` | Signed in | Redirect | Redirects to `/profile`. |
-| `/billing/success` | Signed in | `BillingSuccessView.vue` | Verifies a checkout session before returning the user to their account. |
+| `/billing/success` | Signed in | `BillingSuccessView.vue` | Localized Atlas checkout reconciliation with pending, confirmed, missing-session, error/recheck, and automatic Profile return states. |
 | `/admin/settings` | Administrator | `AdminSettingsView.vue` | Provider, model, swarm, tournament, and per-tier feature-limit settings. |
 | `/sign-in` | Public | `SignInView.vue` | Localized Tournament Atlas Clerk sign-in, social sign-in, and multi-factor continuation. |
 | `/sign-up` | Public | `SignUpView.vue` | Localized Tournament Atlas Clerk registration, password policy, social sign-up, and email verification. |

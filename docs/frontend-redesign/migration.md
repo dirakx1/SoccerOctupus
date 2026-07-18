@@ -294,8 +294,10 @@ and exact return-destination behavior. Profile/Billing is migrated with localize
 Atlas account, password, subscription, usage, health, portal, and payment-recovery
 states while preserving `/billing` compatibility, Stripe-hosted destinations,
 `return_path: '/profile'`, backend source detail, and the existing embedded
-TwoFactorSettings behavior. Billing Success, admin, legal, and other public pages
-retain their existing presentation.
+TwoFactorSettings behavior. Billing Success is also migrated with localized
+pending, confirmed, missing-session, error/recheck, and automatic Profile-return
+states while preserving its session reconciliation endpoint and webhook fallback.
+Admin, legal, and other public pages retain their existing presentation.
 
 Legal and billing translations require content review; they must not be treated as
 literal UI-string translation tasks.
