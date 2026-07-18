@@ -101,7 +101,7 @@ phase.
 | `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Atlas live group standings/results plus optional-swarm Tournament Simulation, with complete feed/run states, localized controls, exact existing API and billing behavior, response-derived podium fields, and an ordered horizontally scrollable knockout bracket. |
 | `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |
 | `/:locale/competitions/:competitionEditionSlug/markets` | Signed in | `MarketsView.vue` | Match markets and tournament futures, filters, fair-value contract prices, and generated Market Questions. |
-| `/profile` | Signed in | `ProfileView.vue` | User profile, subscription, usage, billing health, portal access, payment recovery, and two-factor settings. |
+| `/profile` | Signed in | `ProfileView.vue` | Localized Tournament Atlas profile/password and billing surface preserving subscription, usage, billing health, Stripe portal/payment recovery, and the existing embedded two-factor workflow. |
 | `/pricing` | Public | `PricingView.vue` | Plan comparison, checkout or plan change, cancellation, and signed-in subscription context. |
 | `/billing` | Signed in | Redirect | Redirects to `/profile`. |
 | `/billing/success` | Signed in | `BillingSuccessView.vue` | Verifies a checkout session before returning the user to their account. |
@@ -121,8 +121,9 @@ through the registry, and preserve query/hash across legacy and fallback
 redirects. Signed-out protected workspace navigation stores the full canonical
 destination before redirecting to flat `/sign-in`. The router also redirects
 non-admin users away from Admin and signed-in users away from Sign In and Sign
-Up. Account, billing, admin, authentication, legal, and public-information routes
-remain transitional flat routes.
+Up. Profile/Billing and migrated authentication routes follow the active
+persisted Locale while remaining transitional flat routes. Admin, legal, and
+public-information routes remain pending migration.
 
 ## Current Data Dependencies
 

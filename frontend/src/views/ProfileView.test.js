@@ -278,4 +278,34 @@ describe('ProfileView', () => {
       signOutOfOtherSessions: true,
     })
   })
+
+  it('localizes Profile-owned account and billing copy in Spanish without changing portal return handling', async () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    const wrapper = mountProfile()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Configuración del perfil')
+    expect(wrapper.text()).toContain('Datos personales')
+    expect(wrapper.text()).toContain('Cambiar contraseña')
+    expect(wrapper.text()).toContain('Facturación')
+    expect(wrapper.text()).toContain('Sin límite')
+
+    await wrapper.find('.billing-action').trigger('click')
+    await flushPromises()
+    expect(createPortalSession).toHaveBeenCalledWith({ return_path: '/profile' })
+    expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/session')
+  })
+
+  it('localizes Profile-owned billing failures while preserving backend error detail', async () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    getSubscription.mockRejectedValueOnce(new Error('offline'))
+    const localized = mountProfile()
+    await flushPromises()
+    expect(localized.text()).toContain('No se pudieron cargar los datos de facturación.')
+
+    getSubscription.mockRejectedValueOnce({ response: { data: { error: 'Stripe account unavailable' } } })
+    const sourceError = mountProfile()
+    await flushPromises()
+    expect(sourceError.text()).toContain('Stripe account unavailable')
+  })
 })

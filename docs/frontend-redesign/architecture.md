@@ -30,7 +30,7 @@ The client-approved visual direction is recorded in
 | Concern | Direction | Status |
 |---|---|---|
 | Visual language | Tournament Atlas | Accepted |
-| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, Sign Up, Password Recovery, OAuth Callback, and Username Continuation implemented; remaining routes pending |
+| Localization | Vue I18n Composition API with English fallback | Core, shell, Competition workflows, migrated shared components, Sign In, Sign Up, Password Recovery, OAuth Callback, Username Continuation, and Profile/Billing implemented; remaining routes pending |
 | Competition registry | Internal plain-JavaScript registry with a World Cup 2026 configuration adapter | Implemented for route validation, shell navigation, Home links, and Groups context; endpoint adapters remain pending |
 | Theme foundation | Semantic Atlas tokens with light/dark runtime preference | Implemented and consumed by the shell, all Competition workflows, and migrated shared components |
 | Canonical routes | Locale-prefixed Competition Workspace routes | Implemented for current World Cup workflows; shell and non-workspace routes pending |
@@ -163,6 +163,16 @@ four force/fallback redirect props receive the unchanged stored post-auth
 destination or `/`, preserving Locale, query, and hash. Clerk owns provider
 errors, cancellation, pending-resource retries, and session activation; local
 fallback copy ensures message availability cannot block callback execution.
+
+`/profile` remains a flat authenticated route and applies the active persisted
+Locale to its Tournament Atlas account and billing presentation. It preserves
+the existing Clerk profile/password payloads, local `/api/me` refresh, billing
+subscription/usage requests, billing-health actions, Stripe-hosted URLs, and
+`return_path: '/profile'` portal/payment-method payloads. `/billing` remains a
+compatibility redirect to `/profile`; `/billing/success` retains separate
+checkout reconciliation ownership and presentation. `TwoFactorSettings` remains
+the existing embedded security workflow with unchanged Clerk and reverification
+semantics.
 
 The Match Prediction slice preserves the current backend and billing contracts:
 
