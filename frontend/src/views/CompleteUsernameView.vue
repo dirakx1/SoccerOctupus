@@ -1,5 +1,5 @@
 <template>
-  <div class="atlas-auth-page"><section class="atlas-auth-intro" aria-labelledby="username-title"><h1 id="username-title">{{ t('usernameContinuation.title') }}</h1><p>{{ t('usernameContinuation.subtitle') }}</p></section><section class="atlas-auth-panel">
+  <AtlasAuthLayout><template #intro><h1 id="username-title">{{ t('usernameContinuation.title') }}</h1><p>{{ t('usernameContinuation.subtitle') }}</p></template>
 
       <form v-if="canCompleteUsername" class="auth-form" :aria-busy="loading" @submit.prevent="completeUsername">
         <label class="field">
@@ -25,8 +25,7 @@
         <p v-if="error" class="error-box" role="alert">{{ error }}</p>
         <router-link class="btn-primary link-button" to="/sign-up">{{ t('usernameContinuation.return') }}</router-link>
       </div>
-    </section>
-  </div>
+  </AtlasAuthLayout>
 </template>
 
 <script setup>
@@ -38,6 +37,7 @@ import { useClerk, useSignUp } from '@clerk/vue'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect } from '../lib/postAuthRedirect'
 import { userFacingError } from '../lib/userFacingError'
+import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -122,7 +122,7 @@ async function completeUsername() {
 </script>
 
 <style scoped>
-.atlas-auth-page{align-items:start;display:grid;gap:var(--space-12);grid-template-columns:minmax(0,.8fr) minmax(20rem,1fr);margin:0 auto;max-width:64rem;padding:var(--space-12) 0}.atlas-auth-intro{align-self:center;padding:var(--space-6) 0}.atlas-auth-kicker{color:var(--color-accent);font:var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data);margin:0 0 var(--space-3);text-transform:uppercase}.atlas-auth-intro h1{font-family:var(--font-family-display);font-size:var(--font-size-5xl);line-height:var(--line-height-tight);margin:0;max-width:8ch}.atlas-auth-intro>p:not(.atlas-auth-kicker){color:var(--color-text-muted);font-size:var(--font-size-lg);line-height:var(--line-height-relaxed);margin:var(--space-5) 0 0;max-width:30ch}.atlas-auth-rule{background:var(--color-accent);height:var(--border-width-strong);margin-top:var(--space-8);width:4rem}.atlas-auth-note{font-size:var(--font-size-sm)!important}.atlas-auth-panel{background:var(--color-surface);border:var(--border-width-thin) solid var(--color-border);padding:var(--space-8)}.auth-panel-heading{border-bottom:var(--border-width-thin) solid var(--color-border);margin-bottom:var(--space-6);padding-bottom:var(--space-5)}.auth-panel-heading h2{font-family:var(--font-family-display);font-size:var(--font-size-3xl);margin:0}.verification-copy{background:var(--color-surface-inset);border-left:var(--border-width-strong) solid var(--color-accent);color:var(--color-text-muted);font-size:var(--font-size-sm);line-height:var(--line-height-relaxed);padding:var(--space-4)}
+.verification-copy{background:var(--color-surface-inset);border-left:var(--border-width-strong) solid var(--color-accent);color:var(--color-text-muted);font-size:var(--font-size-sm);line-height:var(--line-height-relaxed);padding:var(--space-4)}
 
 .auth-form,
 .field {
@@ -175,5 +175,5 @@ input {
   font-size: 14px;
   padding: 12px;
 }
-.btn-primary:focus-visible,input:focus-visible{outline:var(--border-width-strong) solid var(--color-focus);outline-offset:3px}@media(max-width:640px){.atlas-auth-page{display:block;padding:var(--space-6) 0}.atlas-auth-intro{padding:0 0 var(--space-6)}.atlas-auth-intro h1{font-size:var(--font-size-4xl)}.atlas-auth-panel{padding:var(--space-5)}.auth-panel-heading{display:none}}
+.btn-primary:focus-visible,input:focus-visible{outline:var(--border-width-strong) solid var(--color-focus);outline-offset:3px}
 </style>

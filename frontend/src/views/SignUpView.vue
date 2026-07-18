@@ -1,9 +1,8 @@
 <template>
-  <div class="atlas-auth-page">
-    <section class="atlas-auth-intro" aria-labelledby="sign-up-title">
+  <AtlasAuthLayout>
+    <template #intro>
       <h1 id="sign-up-title">{{ t('signUp.title') }}</h1><p>{{ t('signUp.subtitle') }}</p>
-    </section>
-    <section class="atlas-auth-panel">
+    </template>
       <form v-if="step === 'details'" class="auth-form" :aria-busy="loading || Boolean(loadingStrategy)" @submit.prevent="createAccount">
         <SocialAuthButtons
           :disabled="loading || !isLoaded"
@@ -102,8 +101,7 @@
         {{ t('signUp.signInPrompt') }}
         <router-link to="/sign-in">{{ t('signUp.signIn') }}</router-link>
       </p>
-    </section>
-  </div>
+  </AtlasAuthLayout>
 </template>
 
 <script setup>
@@ -114,6 +112,7 @@ import { useClerk, useSignUp } from '@clerk/vue'
 
 import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
 import SocialAuthButtons from '../components/SocialAuthButtons.vue'
+import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
 import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
@@ -273,17 +272,6 @@ async function resendEmailCode() {
 </script>
 
 <style scoped>
-.atlas-auth-page { align-items: start; display: grid; gap: var(--space-12); grid-template-columns: minmax(0, .8fr) minmax(22rem, 1fr); margin: 0 auto; max-width: 68rem; padding: var(--space-12) 0; }
-.atlas-auth-intro { align-self: center; padding: var(--space-6) 0; }
-.atlas-auth-kicker { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data); margin: 0 0 var(--space-3); text-transform: uppercase; }
-.atlas-auth-intro h1 { font-family: var(--font-family-display); font-size: var(--font-size-5xl); line-height: var(--line-height-tight); margin: 0; max-width: 8ch; }
-.atlas-auth-intro>p:not(.atlas-auth-kicker) { color: var(--color-text-muted); font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); margin: var(--space-5) 0 0; max-width: 30ch; }
-.atlas-auth-rule { background: var(--color-accent); height: var(--border-width-strong); margin-top: var(--space-8); width: 4rem; }
-.atlas-auth-note { font-size: var(--font-size-sm) !important; }
-.atlas-auth-panel { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); padding: var(--space-8); }
-.auth-panel-heading { border-bottom: var(--border-width-thin) solid var(--color-border); margin-bottom: var(--space-6); padding-bottom: var(--space-5); }
-.auth-panel-heading h2 { font-family: var(--font-family-display); font-size: var(--font-size-3xl); margin: 0; }
-
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -399,11 +387,6 @@ input:focus {
 }
 
 @media (max-width: 640px) {
-  .atlas-auth-page { display: block; padding: var(--space-6) 0; }
-  .atlas-auth-intro { padding: 0 0 var(--space-6); }
-  .atlas-auth-intro h1 { font-size: var(--font-size-4xl); }
-  .atlas-auth-panel { padding: var(--space-5); }
-  .auth-panel-heading { display: none; }
   .name-grid {
     grid-template-columns: 1fr;
   }
