@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -26,6 +29,15 @@ describe('localization core', () => {
     applyLocale('es')
     expect(i18n.global.t('navigation.workspace.overview')).toBe('Resumen')
     expect(i18n.global.t('competitions.editions.worldCup2026.name')).toBe('Copa Mundial de la FIFA 2026')
+  })
+
+  it('keeps cookie policy messages namespaced without importing blocker-prone asset paths', () => {
+    const source = readFileSync(resolve(process.cwd(), 'src/i18n/index.js'), 'utf8')
+
+    expect(source).not.toContain('/cookiePolicy.json')
+    expect(source).toContain('/privacyPreferences.json')
+    expect(i18n.global.getLocaleMessage('en').cookiePolicy.title).toBe('Cookie policy')
+    expect(i18n.global.getLocaleMessage('es').cookiePolicy.title).toBe('Política de cookies')
   })
 
   it('initializes from a saved preference before browser preferences', () => {
