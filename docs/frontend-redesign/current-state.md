@@ -47,8 +47,9 @@ Banner, Video Agent overlay, Probability Meter, and billing-notice controls are
 translated in production domains. Predict's backend-generated Swarm Consensus,
 Key Factors, and Agent reasoning remain English because the endpoint does not
 accept Locale. Legal Notice now uses the active persisted Locale and an
-English/Spanish legal-content domain; remaining public-information routes are
-not localized yet.
+English/Spanish legal-content domain. Contact and About also use dedicated
+English/Spanish content domains; the Spanish legal translations remain pending
+formal counsel review.
 
 ## Competition Registry
 
@@ -115,7 +116,7 @@ phase.
 | `/legal` | Public | `LegalNoticeView.vue` | Localized Tournament Atlas legal notice retaining the June 30, 2026 update date, prediction, betting, liability, jurisdiction, non-affiliation, and responsible-gambling notices. The Spanish legal copy remains pending formal counsel review. |
 | `/cookie-policy` | Public | `CookiePolicyView.vue` | Localized Tournament Atlas cookie policy preserving the June 2026 update date, necessary/analytics cookie inventory, `so_cookie_consent` reset behavior, browser-help links, and Legal Notice/Home paths. Spanish legal copy remains pending formal counsel review. |
 | `/contact` | Public | `ContactView.vue` | Localized Tournament Atlas contact surface retaining the existing support mail link and Home return path. |
-| `/about` | Public | `AboutView.vue` | Product and methodology information. |
+| `/about` | Public | `AboutView.vue` | Localized Tournament Atlas product and methodology document retaining the World Cup 2026 scope, existing technology, agent, and data-source inventory, AGPL-3.0/GitHub/LICENSE references, copyright, and Home return path. |
 
 Workspace routes accept only `en` and `es`, validate Competition Edition slugs
 through the registry, and preserve query/hash across legacy and fallback
@@ -124,8 +125,9 @@ destination before redirecting to flat `/sign-in`. The router also redirects
 non-admin users away from Admin and signed-in users away from Sign In and Sign
 Up. Profile/Billing and migrated authentication routes follow the active
 persisted Locale while remaining transitional flat routes. Admin, Legal Notice,
-and Cookie Policy now use localized Atlas presentation. Contact is also migrated
-with its existing support email and Home return path; About remains pending.
+and Cookie Policy now use localized Atlas presentation. Contact and About are
+also migrated; About retains its existing factual methodology, source and license
+references, and Home return path.
 
 ## Current Data Dependencies
 
