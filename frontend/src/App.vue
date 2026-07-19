@@ -77,6 +77,10 @@ import {
   peekPostAuthRedirect,
   setPostAuthRedirect,
 } from './lib/postAuthRedirect'
+import {
+  clearPostAuthCompletion,
+  hasPostAuthCompletion,
+} from './lib/postAuthCompletion'
 import { useThemePreference } from './ui/themePreference.js'
 import { workspaceLocaleLocation, workspaceLocation } from './router/workspace.js'
 
@@ -113,6 +117,7 @@ const userMenuOpen = ref(false)
 const mobileMenuOpen = ref(false)
 const authRecoveryError = ref('')
 const authRefreshing = ref(false)
+const authCompletionPending = ref(hasPostAuthCompletion())
 const {
   effectiveTheme,
   preference: themePreference,
@@ -166,7 +171,7 @@ const canRenderRoute = computed(() => {
   return auth.state.loaded && auth.state.signedIn && (!current.meta.admin || auth.state.isAdmin)
 })
 const showAuthRecovery = computed(() => (
-  clerkLoaded.value && clerkSignedIn.value && !auth.state.loaded
+  authCompletionPending.value && clerkLoaded.value && clerkSignedIn.value && !auth.state.loaded
 ))
 
 function toggleMobileMenu() {
@@ -253,6 +258,8 @@ async function recoverAuthState() {
   authRecoveryError.value = ''
   try {
     await refreshAuthState({ force: true })
+    clearPostAuthCompletion()
+    authCompletionPending.value = false
     redirectAfterAuthRefresh()
   } catch {
     authRecoveryError.value = t('navigation.authRecovery.error')
@@ -269,6 +276,8 @@ async function signOut() {
     await clerk.value?.signOut()
     clearBillingStatus()
     clearAuthState()
+    clearPostAuthCompletion()
+    authCompletionPending.value = false
     await router.push('/sign-in')
   } finally {
     signingOut = false
@@ -304,8 +313,23 @@ watch(
     }
 
     if (!authLoaded) {
-      if (!authRecoveryError.value) await recoverAuthState()
+      authCompletionPending.value = hasPostAuthCompletion()
+      if (authCompletionPending.value) {
+        if (!authRecoveryError.value) await recoverAuthState()
+      } else {
+        try {
+          await refreshAuthState({ force: true })
+          redirectAfterAuthRefresh()
+        } catch {
+          // Existing-session hydration is intentionally silent. Route guards own protected-route fallback.
+        }
+      }
       return
+    }
+
+    if (authCompletionPending.value) {
+      clearPostAuthCompletion()
+      authCompletionPending.value = false
     }
 
     redirectAfterAuthRefresh()

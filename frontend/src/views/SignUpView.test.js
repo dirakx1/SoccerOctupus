@@ -147,6 +147,7 @@ describe('SignUpView', () => {
 
       await wrapper.find(`button[data-strategy="${strategy}"]`).trigger('click')
       await flushPromises()
+      expect(window.localStorage.getItem('socceroctopus.postAuthCompletion')).not.toBeNull()
       expect(clerkState.signUp.value.authenticateWithRedirect).toHaveBeenLastCalledWith({
         strategy,
         redirectUrl: '/sso-callback',

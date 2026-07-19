@@ -112,6 +112,7 @@ import { useClerk, useSignIn } from '@clerk/vue'
 import SocialAuthButtons from '../components/SocialAuthButtons.vue'
 import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
+import { clearPostAuthCompletion, startPostAuthCompletion } from '../lib/postAuthCompletion'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
 import { userFacingError } from '../lib/userFacingError'
 
@@ -423,6 +424,7 @@ async function signInWithProvider(strategy) {
 
   loadingStrategy.value = strategy
   error.value = ''
+  startPostAuthCompletion()
 
   try {
     await signIn.value.authenticateWithRedirect({
@@ -431,6 +433,7 @@ async function signInWithProvider(strategy) {
       redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
+    clearPostAuthCompletion()
     loadingStrategy.value = ''
     error.value = authError(err)
   }

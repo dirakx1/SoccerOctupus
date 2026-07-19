@@ -115,6 +115,7 @@ import SocialAuthButtons from '../components/SocialAuthButtons.vue'
 import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
 import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
+import { clearPostAuthCompletion, startPostAuthCompletion } from '../lib/postAuthCompletion'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
 import { userFacingError } from '../lib/userFacingError'
 
@@ -226,6 +227,7 @@ async function signUpWithProvider(strategy) {
 
   loadingStrategy.value = strategy
   error.value = ''
+  startPostAuthCompletion()
 
   try {
     await signUp.value.authenticateWithRedirect({
@@ -234,6 +236,7 @@ async function signUpWithProvider(strategy) {
       redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
+    clearPostAuthCompletion()
     loadingStrategy.value = ''
     error.value = authError(err)
   }

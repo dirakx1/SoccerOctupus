@@ -103,6 +103,15 @@ describe('SignInView', () => {
     })
   })
 
+  it('marks an OAuth handoff for completion recovery before leaving the app', async () => {
+    const wrapper = mount(SignInView, { global: { stubs: ['RouterLink'] } })
+
+    await wrapper.find('button[data-strategy="oauth_google"]').trigger('click')
+    await flushPromises()
+
+    expect(window.localStorage.getItem('socceroctopus.postAuthCompletion')).not.toBeNull()
+  })
+
   it('keeps TOTP second-factor rendering', async () => {
     clerkState.signIn.value.create.mockResolvedValue({
       status: 'needs_second_factor',

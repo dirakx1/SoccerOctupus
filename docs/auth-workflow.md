@@ -308,6 +308,21 @@ The helper:
 This avoids redirecting into protected app routes before the backend can verify
 the new Clerk session.
 
+### Completion Recovery Scope
+
+The global **Finishing sign-in** recovery panel is reserved for an explicit
+post-authentication handoff: a password sign-in, sign-up verification, password
+reset, username continuation, or OAuth provider return that has activated a
+Clerk session but has not yet hydrated `/api/me`.
+
+`frontend/src/lib/postAuthCompletion.js` records this handoff in local storage
+before session activation or an OAuth redirect. The marker survives the provider
+redirect, expires after ten minutes, and is cleared after successful hydration,
+activation failure, or explicit sign-out. This makes retry available for a real
+handoff failure without presenting completion copy during ordinary existing
+session hydration. Normal refreshes and navigation hydrate silently; protected
+route guards continue to own access fallback.
+
 ## Frontend Route and Token Flow
 
 The router guard in `frontend/src/main.js` calls `/api/me` before protected
