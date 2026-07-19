@@ -46,7 +46,12 @@
 
       <template v-if="matchData && !matchLoading">
         <section class="match-summary" aria-labelledby="match-summary-title"><div><span>{{ t('markets.summary.home') }}</span><strong>{{ percentage(matchData.prediction_summary?.home_win_prob) }}</strong></div><div><span>{{ t('markets.summary.draw') }}</span><strong>{{ percentage(matchData.prediction_summary?.draw_prob) }}</strong></div><div><span>{{ t('markets.summary.away') }}</span><strong>{{ percentage(matchData.prediction_summary?.away_win_prob) }}</strong></div><div class="summary-meta"><h2 id="match-summary-title">{{ homeTeam }} / {{ awayTeam }}</h2><p>{{ t('markets.summary.likelyScore') }} <strong>{{ matchData.prediction_summary?.most_likely_score }}</strong> · {{ t('markets.summary.questions', { count: integer(matchData.total_questions) }) }}</p></div></section>
-        <FilterBar :items="matchPropTypes" :selected="matchFilter" :count="matchCountByType" @select="matchFilter = $event" />
+        <div class="filter-bar" role="group" :aria-label="t('markets.filters.label')">
+          <button v-for="item in matchPropTypes" :key="item.key" type="button" :aria-pressed="matchFilter === item.key" @click="matchFilter = item.key">
+            <span class="filter-label">{{ t(item.label) }}</span>
+            <span class="filter-count">{{ matchCountByType(item.key) }}</span>
+          </button>
+        </div>
         <section v-if="filteredMatchQuestions.length" class="question-list"><MarketCard v-for="question in filteredMatchQuestions" :key="question.question_id" :question="question" /></section>
         <EmptyResults v-else />
       </template>
@@ -58,7 +63,12 @@
       <section v-if="tourneyError" class="run-error" role="alert"><AlertTriangle /><div><h2>{{ t('markets.run.errorTitle') }}</h2><p>{{ tourneyError }}</p><BillingStatusNotice v-if="tourneyBillingHealth?.requires_attention" compact :health="tourneyBillingHealth" :loading="billingActionLoading" @action="openBillingRecovery('/markets', tourneyBillingHealth)" /><BillingPlansLink v-else-if="tourneySubscriptionRequired" /></div></section>
       <template v-if="tourneyData && !tourneyLoading">
         <section class="champion-summary"><Trophy /><div><span>{{ t('markets.summary.champion') }}</span><h2>{{ tourneyData.simulation?.champion }}</h2><p>{{ t('markets.summary.championProbability', { probability: percentage(tourneyData.simulation?.champion_probability) }) }} · {{ t('markets.summary.futures', { count: integer(tourneyData.total_questions) }) }}</p></div></section>
-        <FilterBar :items="tourneyPropTypes" :selected="tourneyFilter" :count="tourneyCountByType" @select="tourneyFilter = $event" />
+        <div class="filter-bar" role="group" :aria-label="t('markets.filters.label')">
+          <button v-for="item in tourneyPropTypes" :key="item.key" type="button" :aria-pressed="tourneyFilter === item.key" @click="tourneyFilter = item.key">
+            <span class="filter-label">{{ t(item.label) }}</span>
+            <span class="filter-count">{{ tourneyCountByType(item.key) }}</span>
+          </button>
+        </div>
         <section v-if="showCategorical && categoricalOutcomes.length" class="winner-section"><h2>{{ t('markets.results.winnerTitle') }}</h2><div class="table-wrap"><table><thead><tr><th>{{ t('markets.results.team') }}</th><th>{{ t('markets.results.probability') }}</th><th>{{ t('markets.results.kalshiYes') }}</th><th>{{ t('markets.results.polymarketYes') }}</th><th>{{ t('markets.results.kalshiNo') }}</th></tr></thead><tbody><tr v-for="outcome in categoricalOutcomes" :key="outcome.outcome"><th scope="row">{{ outcome.outcome }}</th><td>{{ percentage(outcome.probability) }}</td><td>{{ cents(outcome.probability * 100) }}</td><td>{{ usdc(outcome.probability) }}</td><td>{{ cents(100 - outcome.probability * 100) }}</td></tr></tbody></table></div></section>
         <section v-if="filteredTourneyQuestions.length" class="question-list"><MarketCard v-for="question in filteredTourneyQuestions" :key="question.question_id" :question="question" /></section>
         <EmptyResults v-if="!filteredTourneyQuestions.length && (!showCategorical || !categoricalOutcomes.length)" />
@@ -99,7 +109,6 @@ const matchCountByType = key => key === 'all' ? allMatchQuestions.value.length :
 const tourneyCountByType = key => key === 'all' ? allTourneyQuestions.value.length : allTourneyQuestions.value.filter(q => q.prop_type === key).length
 const number = options => new Intl.NumberFormat(locale.value, options), integer = value => number({ maximumFractionDigits:0 }).format(value ?? 0), percentage = value => value == null ? '—' : number({ style:'percent',minimumFractionDigits:1,maximumFractionDigits:1 }).format(value), cents = value => value == null ? '—' : `${number({minimumFractionDigits:1,maximumFractionDigits:1}).format(value)}¢`, usdc = value => value == null ? '—' : number({style:'currency',currency:'USD',minimumFractionDigits:4,maximumFractionDigits:4}).format(value)
 
-const FilterBar = defineComponent({ props:{items:Array,selected:String,count:Function}, emits:['select'], setup(props,{emit}) { return () => h('div',{class:'filter-bar',role:'group','aria-label':t('markets.filters.label')},props.items.map(item=>h('button',{type:'button','aria-pressed':props.selected===item.key,onClick:()=>emit('select',item.key)},[t(item.label),h('span',props.count(item.key))]))) } })
 const RunState = defineComponent({ props:{title:String,body:String}, setup(props){return()=>h('section',{class:'state-panel','aria-busy':'true'},[h(LoaderCircle,{class:'spin'}),h('div',[h('h2',props.title),h('p',props.body)])])} })
 const EmptyResults = defineComponent({ setup(){return()=>h('section',{class:'state-panel'},[h(Inbox),h('div',[h('h2',t('markets.results.emptyTitle')),h('p',t('markets.results.emptyBody'))])])} })
 
@@ -279,26 +288,41 @@ margin:0}
 .summary-meta p{
 margin:0}
 .filter-bar{
+align-items:center;
+background:var(--color-surface-inset);
+border:var(--border-width-thin) solid var(--color-border);
 display:flex;
 flex-wrap:wrap;
-gap:var(--space-2)}
+gap:var(--space-1);
+padding:var(--space-1)}
 .filter-bar button{
 align-items:center;
-background:var(--color-surface);
-border:var(--border-width-thin) solid var(--color-border);
+background:transparent;
+border:var(--border-width-thin) solid transparent;
+border-radius:var(--radius-md);
 color:var(--color-text-muted);
 cursor:pointer;
 display:flex;
 gap:var(--space-2);
-min-height:var(--control-height-lg);
+min-height:var(--control-height-md);
 padding:0 var(--space-3)}
+.filter-bar button:hover{
+background:var(--color-surface);
+color:var(--color-text)}
 .filter-bar button[aria-pressed="true"]{
+background:var(--color-surface-raised);
 border-color:var(--color-accent);
-color:var(--color-accent)}
-.filter-bar span{
-background:var(--color-surface-inset);
+box-shadow:var(--shadow-sm);
+color:var(--color-text)}
+.filter-label{white-space:nowrap}
+.filter-count{
+background:var(--color-surface);
+border-left:var(--border-width-thin) solid var(--color-border);
+color:var(--color-text-subtle);
 font-family:var(--font-family-data);
-padding:var(--space-1) var(--space-2)}
+font-size:var(--font-size-xs);
+padding-left:var(--space-2)}
+.filter-bar button[aria-pressed="true"] .filter-count{color:var(--color-accent)}
 .question-list{
 display:grid;
 gap:var(--space-4);
