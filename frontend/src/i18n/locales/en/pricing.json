@@ -1,0 +1,27 @@
+{
+  "eyebrow": "Subscription access",
+  "title": "Choose prediction access",
+  "subtitle": "Free includes cycle-limited access. Paid tiers remove usage caps; Pro adds video analysis.",
+  "profile": "Billing",
+  "loading": "Loading plans",
+  "loadingCopy": "Checking the subscription options available to your account.",
+  "loadError": "Could not load plans.",
+  "retry": "Try again",
+  "perInterval": "/{interval}",
+  "featured": "Recommended",
+  "notes": {
+    "free": "Starter quota",
+    "basic": "Unlimited core access",
+    "pro": "Full signal coverage"
+  },
+  "actions": {
+    "updating": "Updating",
+    "start": "Start",
+    "signUp": "Sign up",
+    "choose": "Choose",
+    "current": "Current plan"
+  },
+  "errors": {
+    "update": "Unable to update billing."
+  }
+}

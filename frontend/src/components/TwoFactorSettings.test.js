@@ -1,6 +1,7 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { config, flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { applyLocale, i18n } from '../i18n/index.js'
 import TwoFactorSettings from './TwoFactorSettings.vue'
 
 function userFixture(overrides = {}) {
@@ -32,6 +33,8 @@ function findButton(wrapper, text) {
 
 describe('TwoFactorSettings', () => {
   beforeEach(() => {
+    applyLocale('en')
+    config.global.plugins = [i18n]
     vi.stubGlobal('URL', {
       createObjectURL: vi.fn(() => 'blob:backup-codes'),
       revokeObjectURL: vi.fn(),
@@ -98,6 +101,23 @@ describe('TwoFactorSettings', () => {
     expect(row.find('button').text()).toContain('Enable authenticator app')
     expect(row.text()).not.toContain('Not enabled')
     expect(row.text()).not.toContain('Two-factor authentication')
+  })
+
+  it('localizes the authenticator setup workflow in Spanish', async () => {
+    applyLocale('es')
+    const user = userFixture()
+    const wrapper = mount(TwoFactorSettings, {
+      props: { user, isLoaded: true },
+    })
+
+    expect(wrapper.text()).toContain('Aplicación de autenticación')
+    expect(wrapper.text()).toContain('Activar aplicación de autenticación')
+
+    await findButton(wrapper, 'Activar aplicación de autenticación').trigger('click')
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Conecta una aplicación de autenticación')
+    expect(wrapper.text()).toContain('Usar clave de configuración')
   })
 
   it('regenerates backup codes for an enabled authenticator', async () => {

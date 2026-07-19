@@ -1,0 +1,89 @@
+{
+  "page": {
+    "eyebrow": "Match prediction / {competition}",
+    "title": "Read the match before it starts.",
+    "description": "Select two teams and a tournament stage. The specialized agents combine statistics, form, video intelligence, and tactical evidence into one prediction."
+  },
+  "form": {
+    "homeTeam": "Home team",
+    "awayTeam": "Away team",
+    "selectTeam": "Select a team",
+    "stage": "Stage",
+    "versus": "versus",
+    "stages": {
+      "group": "Group stage",
+      "roundOf32": "Round of 32",
+      "roundOf16": "Round of 16",
+      "quarterFinal": "Quarter-final",
+      "semiFinal": "Semi-final",
+      "final": "Final"
+    }
+  },
+  "actions": {
+    "run": "Run swarm prediction",
+    "running": "Swarm analysis running",
+    "retryTeams": "Retry team list"
+  },
+  "validation": {
+    "selectBoth": "Select both teams to run a prediction.",
+    "differentTeams": "Home and away teams must be different."
+  },
+  "teams": {
+    "loading": "Loading teams",
+    "loadingDescription": "Retrieving the current World Cup team list.",
+    "empty": "No teams are available.",
+    "emptyDescription": "The team feed returned no selectable teams.",
+    "error": "We couldn't load the team list.",
+    "errorDescription": "Retry the team feed before running a prediction."
+  },
+  "run": {
+    "longRunningTitle": "The swarm is still analysing this match.",
+    "longRunningDescription": "Specialized agents may take a little longer while they gather evidence.",
+    "errorTitle": "We couldn't run this prediction.",
+    "errorFallback": "The prediction service did not return a result. Try again."
+  },
+  "result": {
+    "label": "Prediction result",
+    "mostLikelyScore": "Most likely score",
+    "afterExtraTime": "After extra time or penalties",
+    "swarmConfidence": "Swarm confidence",
+    "scoreProbabilities": "Score probabilities",
+    "expectedGoals": "Expected goals",
+    "mostLikely": "Most likely",
+    "consensus": "Swarm consensus",
+    "keyFactors": "Key factors",
+    "agents": "Agent breakdown",
+    "agreement": "Agent agreement",
+    "agreementValue": "{count} of {total} agents favor {outcome}",
+    "predictedScore": "Predicted score",
+    "confidence": "Confidence",
+    "homeShort": "H",
+    "drawShort": "D",
+    "awayShort": "A"
+  },
+  "outcomes": {
+    "home": "home win",
+    "draw": "draw",
+    "away": "away win"
+  },
+  "probabilityMeter": {
+    "draw": "Draw",
+    "convergence": "Swarm convergence · {count} agents",
+    "summary": "{homeTeam} {home}; draw {draw}; {awayTeam} {away}"
+  },
+  "billing": {
+    "pricing": "View pricing",
+    "opening": "Opening billing",
+    "actions": {
+      "manage_billing": "Manage billing",
+      "update_payment_method": "Pay invoice",
+      "choose_plan": "Choose plan"
+    },
+    "states": {
+      "payment_failed": "Payment failed. Pay the invoice to keep access.",
+      "payment_required": "Payment is overdue. Pay the invoice to restore access.",
+      "canceled": "Your subscription is inactive. Choose a plan to continue.",
+      "plan_ending": "Your plan ends at the current period end."
+    }
+  }
+}

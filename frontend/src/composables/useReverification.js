@@ -1,8 +1,13 @@
 import { computed, getCurrentScope, onScopeDispose, ref, shallowRef, unref } from 'vue'
+import { i18n } from '../i18n'
 import { userFacingError } from '../lib/userFacingError'
 
 function valueOf(source) {
   return typeof source === 'function' ? source() : unref(source)
+}
+
+function t(key, values) {
+  return i18n.global.t(`common.reverification.${key}`, values)
 }
 
 export function clerkError(err, fallback) {
@@ -20,8 +25,8 @@ export function useReverification({ session } = {}) {
   const isOpen = ref(false)
   const loading = ref(false)
   const error = ref('')
-  const title = ref('Verify it is you')
-  const message = ref('Verify your identity to continue.')
+  const title = ref(t('title'))
+  const message = ref(t('defaultMessage'))
   const strategy = ref('')
   const verificationStage = ref('first_factor')
   const password = ref('')
@@ -33,11 +38,11 @@ export function useReverification({ session } = {}) {
 
   const usesVerificationCode = computed(() => ['email_code', 'phone_code', 'totp', 'backup_code'].includes(strategy.value))
   const verificationCodeLabel = computed(() => {
-    if (strategy.value === 'totp') return 'Authenticator code'
-    if (strategy.value === 'backup_code') return 'Backup code'
-    return 'Verification code'
+    if (strategy.value === 'totp') return t('authenticatorCode')
+    if (strategy.value === 'backup_code') return t('backupCode')
+    return t('verificationCode')
   })
-  const codePlaceholder = computed(() => strategy.value === 'backup_code' ? 'Enter backup code' : '123456')
+  const codePlaceholder = computed(() => strategy.value === 'backup_code' ? t('backupPlaceholder') : '123456')
   const codeInputMode = computed(() => strategy.value === 'backup_code' ? 'text' : 'numeric')
   const alternativeSecondFactor = computed(() => {
     if (verificationStage.value !== 'second_factor') return null
@@ -51,25 +56,25 @@ export function useReverification({ session } = {}) {
   })
   const canSwitchSecondFactor = computed(() => Boolean(alternativeSecondFactor.value))
   const alternativeSecondFactorLabel = computed(() => {
-    if (alternativeSecondFactor.value?.strategy === 'backup_code') return 'Use a backup code instead'
-    if (alternativeSecondFactor.value?.strategy === 'totp') return 'Use authenticator app instead'
+    if (alternativeSecondFactor.value?.strategy === 'backup_code') return t('useBackupCode')
+    if (alternativeSecondFactor.value?.strategy === 'totp') return t('useAuthenticator')
     return ''
   })
   const copy = computed(() => {
     if (strategy.value === 'email_code') {
-      return `Enter the code sent to ${target.value || 'your email address'} to continue.`
+      return t('emailCopy', { target: target.value || t('yourEmail') })
     }
     if (strategy.value === 'phone_code') {
-      return `Enter the code sent to ${target.value || 'your phone'} to continue.`
+      return t('phoneCopy', { target: target.value || t('yourPhone') })
     }
     if (strategy.value === 'passkey') {
-      return 'Use your passkey to continue.'
+      return t('passkeyCopy')
     }
     if (strategy.value === 'totp') {
-      return 'Enter the 6-digit code from your authenticator app to continue.'
+      return t('authenticatorCopy')
     }
     if (strategy.value === 'backup_code') {
-      return 'Enter one of your backup codes to continue.'
+      return t('backupCopy')
     }
     return message.value
   })
@@ -142,7 +147,7 @@ export function useReverification({ session } = {}) {
       const factor = totpFactor || phoneFactor || backupCodeFactor
 
       if (!factor) {
-        throw new Error('Please sign in again before changing account security settings.')
+        throw new Error(t('signInAgain'))
       }
 
       strategy.value = factor.strategy
@@ -189,18 +194,18 @@ export function useReverification({ session } = {}) {
       return
     }
 
-    throw new Error('Please sign in again before changing account security settings.')
+    throw new Error(t('signInAgain'))
   }
 
   async function start(options = {}) {
     const activeSession = currentSession()
     if (!activeSession?.startVerification) {
-      throw new Error('Please sign in again before changing account security settings.')
+      throw new Error(t('signInAgain'))
     }
 
-    rejectActiveRequest('Verification was superseded by a newer request.')
-    title.value = options.title || 'Verify it is you'
-    message.value = options.message || 'Enter your password to continue.'
+    rejectActiveRequest(t('superseded'))
+    title.value = options.title || t('title')
+    message.value = options.message || t('defaultMessage')
     resetInputs()
     isOpen.value = true
     loading.value = true
@@ -252,7 +257,7 @@ export function useReverification({ session } = {}) {
         verification = await activeSession.attemptFirstFactorVerification(attempt)
       }
     } catch (err) {
-      if (isCurrent(request)) error.value = clerkError(err, 'Unable to verify. Please try again.')
+      if (isCurrent(request)) error.value = clerkError(err, t('verificationFailed'))
       if (isCurrent(request)) loading.value = false
       return
     }
@@ -282,7 +287,7 @@ export function useReverification({ session } = {}) {
     const request = activeRequest.value
     if (request) {
       request.cancelled = true
-      settle(request, new Error('Verification was cancelled.'))
+      settle(request, new Error(t('cancelled')))
     }
     close()
   }
@@ -326,7 +331,7 @@ export function useReverification({ session } = {}) {
 
   if (getCurrentScope()) {
     onScopeDispose(() => {
-      rejectActiveRequest('Verification was cancelled because the security screen was closed.')
+      rejectActiveRequest(t('screenClosed'))
       close()
     })
   }

@@ -3,14 +3,14 @@
     <button
       v-for="provider in providers"
       :key="provider.strategy"
-      class="btn-social"
+      :class="['btn-social', { 'btn-social-atlas': appearance === 'atlas' }]"
       type="button"
       :data-strategy="provider.strategy"
       :disabled="disabled || Boolean(loadingProvider)"
       @click="$emit('select', provider.strategy)"
     >
       <span class="provider-mark" aria-hidden="true">{{ provider.mark }}</span>
-      {{ loadingProvider === provider.strategy ? `Opening ${provider.name}...` : `Continue with ${provider.name}` }}
+      {{ loadingProvider === provider.strategy ? labels.opening(provider.name) : labels.continueWith(provider.name) }}
     </button>
   </div>
 </template>
@@ -24,6 +24,14 @@ defineProps({
   loadingProvider: {
     type: String,
     default: '',
+  },
+  appearance: { type: String, default: 'legacy' },
+  labels: {
+    type: Object,
+    default: () => ({
+      continueWith: (name) => `Continue with ${name}`,
+      opening: (name) => `Opening ${name}...`,
+    }),
   },
 })
 
@@ -76,4 +84,27 @@ const providers = [
   justify-content: center;
   width: 20px;
 }
+
+.btn-social-atlas {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-4);
+  transition: background-color var(--duration-fast) var(--easing-standard), border-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
+}
+
+.btn-social-atlas:hover:not(:disabled) {
+  background: var(--color-surface-inset);
+  border-color: var(--color-accent);
+  transform: none;
+}
+
+.btn-social-atlas:focus-visible {
+  outline: var(--border-width-strong) solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.btn-social-atlas .provider-mark { color: var(--color-accent); }
 </style>

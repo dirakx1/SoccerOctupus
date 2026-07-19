@@ -1,347 +1,531 @@
 <template>
-  <div class="predict-view">
-    <h1>⚡ Predict a Match</h1>
-    <p class="subtitle">Select two teams and run the full swarm prediction pipeline.</p>
+  <main class="prediction-page">
+    <AtlasPageHeader
+      :eyebrow="t('predictions.page.eyebrow', { competition: t(edition.displayNameKey) })"
+      :title="t('predictions.page.title')"
+      :description="t('predictions.page.description')"
+    />
 
-    <div class="form-panel">
-      <div class="selectors">
-        <div class="select-group">
-          <label>Home Team</label>
-          <select v-model="homeTeam">
-            <option value="">— select —</option>
-            <option v-for="t in teams" :key="t.name" :value="t.name">
-              {{ t.name }} (ELO {{ t.elo }})
-            </option>
-          </select>
-        </div>
-        <div class="vs-label">VS</div>
-        <div class="select-group">
-          <label>Away Team</label>
-          <select v-model="awayTeam">
-            <option value="">— select —</option>
-            <option v-for="t in teams" :key="t.name" :value="t.name">
-              {{ t.name }} (ELO {{ t.elo }})
-            </option>
-          </select>
-        </div>
+    <section v-if="teamLoading" data-testid="team-loading" class="prediction-form prediction-form-skeleton" aria-busy="true">
+      <p class="sr-only" aria-live="polite">{{ t('predictions.teams.loading') }} {{ t('predictions.teams.loadingDescription') }}</p>
+      <div class="match-selectors selector-skeletons" aria-hidden="true">
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+        <span class="skeleton-line skeleton-versus"></span>
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+      </div>
+      <div class="form-footer" aria-hidden="true"><span class="skeleton-line skeleton-footer-copy"></span><span class="skeleton-line skeleton-action"></span></div>
+    </section>
+
+    <section v-else-if="teamError" class="team-state state-error" role="alert">
+      <AlertTriangle :size="22" aria-hidden="true" />
+      <div>
+        <h2>{{ t('predictions.teams.error') }}</h2>
+        <p>{{ t('predictions.teams.errorDescription') }}</p>
+        <button data-testid="retry-teams" type="button" @click="loadTeams">
+          <RotateCcw :size="16" aria-hidden="true" />
+          {{ t('predictions.actions.retryTeams') }}
+        </button>
+      </div>
+    </section>
+
+    <section v-else-if="teams.length === 0" class="team-state" aria-live="polite">
+      <Inbox :size="22" aria-hidden="true" />
+      <div>
+        <h2>{{ t('predictions.teams.empty') }}</h2>
+        <p>{{ t('predictions.teams.emptyDescription') }}</p>
+      </div>
+    </section>
+
+    <form v-else class="prediction-form" @submit.prevent="runPrediction">
+      <div class="match-selectors">
+        <label for="home-team">
+          <span>{{ t('predictions.form.homeTeam') }}</span>
+          <span class="select-field">
+            <select
+              id="home-team"
+              v-model="homeTeam"
+              data-testid="home-team"
+              :aria-invalid="sameTeam"
+              aria-describedby="selection-validation"
+            >
+              <option value="">{{ t('predictions.form.selectTeam') }}</option>
+              <option v-for="team in teams" :key="team.name" :value="team.name">
+                {{ team.name }} (ELO {{ integer(team.elo) }})
+              </option>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
+        </label>
+
+        <span class="versus" aria-hidden="true">{{ t('predictions.form.versus') }}</span>
+
+        <label for="away-team">
+          <span>{{ t('predictions.form.awayTeam') }}</span>
+          <span class="select-field">
+            <select
+              id="away-team"
+              v-model="awayTeam"
+              data-testid="away-team"
+              :aria-invalid="sameTeam"
+              aria-describedby="selection-validation"
+            >
+              <option value="">{{ t('predictions.form.selectTeam') }}</option>
+              <option v-for="team in teams" :key="team.name" :value="team.name">
+                {{ team.name }} (ELO {{ integer(team.elo) }})
+              </option>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
+        </label>
+
+        <label for="match-stage" class="stage-select">
+          <span>{{ t('predictions.form.stage') }}</span>
+          <span class="select-field">
+            <select id="match-stage" v-model="stage" data-testid="match-stage">
+              <option v-for="option in stages" :key="option.value" :value="option.value">
+                {{ t(option.labelKey) }}
+              </option>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
+        </label>
       </div>
 
-      <div class="stage-row">
-        <label>Stage</label>
-        <select v-model="stage">
-          <option value="group">Group Stage</option>
-          <option value="round_of_32">Round of 32</option>
-          <option value="round_of_16">Round of 16</option>
-          <option value="quarter_final">Quarter Final</option>
-          <option value="semi_final">Semi Final</option>
-          <option value="final">Final</option>
-        </select>
+      <div class="form-footer">
+        <p id="selection-validation" :class="{ 'is-error': sameTeam }" aria-live="polite">
+          {{ validationMessage }}
+        </p>
+        <button
+          data-testid="run-prediction"
+          class="run-button"
+          type="submit"
+          :disabled="!canRun || loading"
+        >
+          <LoaderCircle v-if="loading" :size="18" class="spin" aria-hidden="true" />
+          <Sparkles v-else :size="18" aria-hidden="true" />
+          {{ loading ? t('predictions.actions.running') : t('predictions.actions.run') }}
+        </button>
       </div>
+    </form>
 
-      <button class="btn-predict" :disabled="!homeTeam || !awayTeam || loading" @click="runPrediction">
-        {{ loading ? '🐙 Swarm running…' : '🚀 Run Swarm Prediction' }}
-      </button>
-    </div>
+    <section v-if="loading" data-testid="prediction-loading" class="prediction-loading" aria-busy="true">
+      <div>
+        <h2>{{ t('predictions.run.longRunningTitle') }}</h2>
+        <p>{{ t('predictions.run.longRunningDescription') }}</p>
+      </div>
+      <div class="result-skeleton" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </section>
 
-    <!-- Error -->
-    <div v-if="error" class="error-box">
-      {{ error }}
-      <BillingStatusNotice
-        v-if="billingHealth?.requires_attention"
-        compact
-        :health="billingHealth"
-        :loading="billingActionLoading"
-        @action="openBillingRecovery('/predict', billingHealth)"
-      />
-      <BillingPlansLink v-else-if="subscriptionRequired" />
-    </div>
+    <section v-if="runError" class="run-error" role="alert">
+      <AlertTriangle :size="22" aria-hidden="true" />
+      <div>
+        <h2>{{ t('predictions.run.errorTitle') }}</h2>
+        <p>{{ runError }}</p>
+        <BillingStatusNotice
+          v-if="billingHealth?.requires_attention"
+          compact
+          :health="billingHealth"
+          :loading="billingActionLoading"
+          @action="openBillingRecovery(route.fullPath, billingHealth)"
+        />
+        <BillingPlansLink v-else-if="subscriptionRequired" />
+      </div>
+    </section>
 
-    <!-- Result -->
-    <div v-if="result" class="result-panel">
-      <div class="match-header">
-        <div class="team home-team" :class="{ winner: result.outcome === 'home_win' }">{{ result.home_team }}</div>
+    <article v-if="result" class="prediction-result" :aria-label="t('predictions.result.label')">
+      <header class="result-scoreboard">
+        <div class="result-team" :class="{ winner: result.outcome === 'home_win' }">{{ result.home_team }}</div>
         <div class="score-block">
-          <div class="score">{{ result.most_likely_score }}</div>
-          <div class="score-label">Most Likely Score</div>
-          <div v-if="result.went_to_penalties" class="aet-badge">After Extra Time / Penalties</div>
+          <strong>{{ result.most_likely_score }}</strong>
+          <span>{{ t('predictions.result.mostLikelyScore') }}</span>
+          <small v-if="result.went_to_penalties">{{ t('predictions.result.afterExtraTime') }}</small>
         </div>
-        <div class="team away-team" :class="{ winner: result.outcome === 'away_win' }">{{ result.away_team }}</div>
+        <div class="result-team result-team-away" :class="{ winner: result.outcome === 'away_win' }">{{ result.away_team }}</div>
+      </header>
+
+      <section class="result-section probability-section">
+        <ProbMeter
+          :home-team="result.home_team"
+          :away-team="result.away_team"
+          :home-pct="result.home_win_prob"
+          :draw-pct="result.draw_prob"
+          :away-pct="result.away_win_prob"
+          :outcome="result.outcome"
+          :agent-count="result.agent_predictions?.length ?? 0"
+          :agent-series="agentSeries"
+        />
+      </section>
+
+      <section class="evidence-strip" :aria-label="t('predictions.result.label')">
+        <div>
+          <span>{{ t('predictions.result.swarmConfidence') }}</span>
+          <strong>{{ percentage(result.overall_confidence) }}</strong>
+          <i aria-hidden="true"><b :style="{ width: percentage(result.overall_confidence) }"></b></i>
+        </div>
+        <div>
+          <span>{{ t('predictions.result.expectedGoals') }}</span>
+          <strong>{{ decimal(result.predicted_home_goals) }} / {{ decimal(result.predicted_away_goals) }}</strong>
+          <small>{{ result.home_team }} / {{ result.away_team }}</small>
+        </div>
+        <div v-if="topScoreProbability">
+          <span>{{ t('predictions.result.mostLikelyScore') }}</span>
+          <strong>{{ topScoreProbability.score }} / {{ percentage(topScoreProbability.probability) }}</strong>
+          <small>{{ t('predictions.result.scoreProbabilities') }}</small>
+        </div>
+        <div>
+          <span>{{ t('predictions.result.agreement') }}</span>
+          <strong>{{ agreementText }}</strong>
+        </div>
+      </section>
+
+      <section v-if="result.score_probabilities?.length" class="result-section score-probabilities">
+        <header><Target :size="19" aria-hidden="true" /><h2>{{ t('predictions.result.scoreProbabilities') }}</h2></header>
+        <div class="score-probability-list">
+          <div v-for="(score, index) in result.score_probabilities" :key="score.score" :class="{ top: index === 0 }">
+            <strong>{{ score.score }}</strong>
+            <i aria-hidden="true"><b :style="{ width: scoreBarWidth(score.probability) }"></b></i>
+            <span>{{ percentage(score.probability) }}</span>
+            <small v-if="index === 0">{{ t('predictions.result.mostLikely') }}</small>
+          </div>
+        </div>
+      </section>
+
+      <div class="analysis-layout">
+        <section v-if="result.swarm_consensus" class="result-section narrative-section">
+          <header><BrainCircuit :size="19" aria-hidden="true" /><h2>{{ t('predictions.result.consensus') }}</h2></header>
+          <p>{{ result.swarm_consensus }}</p>
+        </section>
+        <section v-if="result.key_factors?.length" class="result-section factors-section">
+          <header><ListChecks :size="19" aria-hidden="true" /><h2>{{ t('predictions.result.keyFactors') }}</h2></header>
+          <ul><li v-for="factor in result.key_factors" :key="factor">{{ factor }}</li></ul>
+        </section>
       </div>
 
-      <!-- Probability meter -->
-      <ProbMeter
-        :homeTeam="result.home_team"
-        :awayTeam="result.away_team"
-        :homePct="result.home_win_prob"
-        :drawPct="result.draw_prob"
-        :awayPct="result.away_win_prob"
-        :outcome="result.outcome"
-        :agentCount="result.agent_predictions?.length ?? 7"
-        :agentSeries="agentSeries"
-      />
-
-      <!-- Confidence bar -->
-      <div class="confidence-row">
-        <span>Swarm Confidence</span>
-        <div class="bar-bg">
-          <div class="bar-fill" :style="{ width: pct(result.overall_confidence) }"></div>
-        </div>
-        <span>{{ pct(result.overall_confidence) }}</span>
-      </div>
-
-      <!-- Score probabilities -->
-      <div v-if="result.score_probabilities?.length" class="score-probs">
-        <h3>🎯 Score Probabilities</h3>
-        <div class="xg-row">
-          <span>Expected goals</span>
-          <span class="xg-values">{{ result.home_team }} <strong>{{ result.predicted_home_goals }}</strong> &nbsp;–&nbsp; <strong>{{ result.predicted_away_goals }}</strong> {{ result.away_team }}</span>
-        </div>
-        <div class="sp-grid">
-          <div
-            v-for="(sp, i) in result.score_probabilities"
-            :key="sp.score"
-            class="sp-row"
-            :class="{ 'sp-top': i === 0 }"
-          >
-            <span class="sp-score">{{ sp.score }}</span>
-            <div class="sp-bar-bg">
-              <div
-                class="sp-bar-fill"
-                :style="{ width: barWidth(sp.probability, result.score_probabilities[0].probability) }"
-              ></div>
+      <section class="result-section agents-section">
+        <header><Users :size="19" aria-hidden="true" /><h2>{{ t('predictions.result.agents') }}</h2></header>
+        <div class="agent-list">
+          <article v-for="agent in result.agent_predictions" :key="agent.agent" class="agent-row">
+            <div class="agent-heading">
+              <h3>{{ agent.agent }}</h3>
+              <span>{{ t('predictions.result.confidence') }} {{ percentage(agent.confidence) }}</span>
             </div>
-            <span class="sp-pct">{{ (sp.probability * 100).toFixed(1) }}%</span>
-            <span v-if="i === 0" class="sp-badge">most likely</span>
-          </div>
+            <div class="agent-probabilities">
+              <span>{{ t('predictions.result.homeShort') }} <strong>{{ percentage(agent.home_win_prob) }}</strong></span>
+              <span>{{ t('predictions.result.drawShort') }} <strong>{{ percentage(agent.draw_prob) }}</strong></span>
+              <span>{{ t('predictions.result.awayShort') }} <strong>{{ percentage(agent.away_win_prob) }}</strong></span>
+              <span>{{ t('predictions.result.predictedScore') }} <strong>{{ agent.predicted_score }}</strong></span>
+            </div>
+            <p>{{ agent.reasoning }}</p>
+          </article>
         </div>
-      </div>
-
-      <!-- Narrative -->
-      <div v-if="result.swarm_consensus" class="narrative">
-        <h3>🐙 Swarm Consensus</h3>
-        <p>{{ result.swarm_consensus }}</p>
-      </div>
-
-      <!-- Key factors -->
-      <div v-if="result.key_factors?.length" class="key-factors">
-        <h3>🔑 Key Factors</h3>
-        <ul>
-          <li v-for="f in result.key_factors" :key="f">{{ f }}</li>
-        </ul>
-      </div>
-
-      <!-- Agent breakdown -->
-      <div class="agents-breakdown">
-        <h3>🤖 Agent Breakdown</h3>
-        <div class="agent-row" v-for="a in result.agent_predictions" :key="a.agent">
-          <div class="agent-name">{{ a.agent }}</div>
-          <div class="agent-probs">
-            <span class="hw">H {{ pct(a.home_win_prob) }}</span>
-            <span class="dr">D {{ pct(a.draw_prob) }}</span>
-            <span class="aw">A {{ pct(a.away_win_prob) }}</span>
-            <span class="sc">{{ a.predicted_score }}</span>
-            <span class="conf">conf {{ pct(a.confidence) }}</span>
-          </div>
-          <div class="agent-reasoning">{{ a.reasoning }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
+      </section>
+    </article>
+  </main>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { api } from '../lib/api'
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import {
+  AlertTriangle,
+  BrainCircuit,
+  ChevronDown,
+  Inbox,
+  ListChecks,
+  LoaderCircle,
+  RotateCcw,
+  Sparkles,
+  Target,
+  Users,
+} from '@lucide/vue'
+
+import AtlasPageHeader from '../ui/patterns/AtlasPageHeader.vue'
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
 import BillingPlansLink from '../components/BillingPlansLink.vue'
 import ProbMeter from '../components/ProbMeter.vue'
+import { getCompetitionEdition, listCompetitionEditions } from '../competition/index.js'
 import { useBillingStatus } from '../composables/useBillingStatus'
+import { api } from '../lib/api'
 
+const { locale, t } = useI18n()
+const route = useRoute()
+const defaultEdition = listCompetitionEditions()[0]
 const teams = ref([])
+const teamLoading = ref(true)
+const teamError = ref(false)
 const homeTeam = ref('')
 const awayTeam = ref('')
 const stage = ref('group')
 const loading = ref(false)
 const result = ref(null)
-const error = ref('')
+const runError = ref('')
 const subscriptionRequired = ref(false)
 const billingHealth = ref(null)
-const {
-  actionLoading: billingActionLoading,
-  openBillingRecovery,
-} = useBillingStatus()
+const { actionLoading: billingActionLoading, openBillingRecovery } = useBillingStatus()
 
-onMounted(async () => {
-  try {
-    const res = await api.get('/api/predictions/teams')
-    teams.value = res.data.teams
-  } catch (e) {
-    error.value = 'Could not load team list — is the backend running?'
-  }
+const stages = [
+  { value: 'group', labelKey: 'predictions.form.stages.group' },
+  { value: 'round_of_32', labelKey: 'predictions.form.stages.roundOf32' },
+  { value: 'round_of_16', labelKey: 'predictions.form.stages.roundOf16' },
+  { value: 'quarter_final', labelKey: 'predictions.form.stages.quarterFinal' },
+  { value: 'semi_final', labelKey: 'predictions.form.stages.semiFinal' },
+  { value: 'final', labelKey: 'predictions.form.stages.final' },
+]
+const specializedAgentNames = [
+  'Statistical Analysis Agent',
+  'Video Intelligence Agent',
+  'Recent Form Agent',
+  'Tactical Analysis Agent',
+]
+const billingCodes = ['subscription_required', 'billing_payment_required', 'feature_limit_reached']
+
+const edition = computed(() => getCompetitionEdition(route.params.competitionEditionSlug) || defaultEdition)
+const sameTeam = computed(() => Boolean(homeTeam.value && awayTeam.value && homeTeam.value === awayTeam.value))
+const canRun = computed(() => Boolean(homeTeam.value && awayTeam.value && !sameTeam.value))
+const validationMessage = computed(() => {
+  if (sameTeam.value) return t('predictions.validation.differentTeams')
+  if (!canRun.value) return t('predictions.validation.selectBoth')
+  return ''
 })
+const topScoreProbability = computed(() => result.value?.score_probabilities?.[0] || null)
+
+function numberFormatter(options) {
+  return new Intl.NumberFormat(locale.value, options)
+}
+const integer = (value) => numberFormatter({ maximumFractionDigits: 0, useGrouping: 'always' }).format(value)
+const decimal = (value) => numberFormatter({ minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
+const percentage = (value) => numberFormatter({ style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value)
+
+async function loadTeams() {
+  teamLoading.value = true
+  teamError.value = false
+  try {
+    const response = await api.get('/api/predictions/teams')
+    teams.value = Array.isArray(response.data?.teams)
+      ? [...response.data.teams].sort((left, right) => Number(right.elo) - Number(left.elo))
+      : []
+  } catch {
+    teams.value = []
+    teamError.value = true
+  } finally {
+    teamLoading.value = false
+  }
+}
 
 async function runPrediction() {
-  if (!homeTeam.value || !awayTeam.value) return
+  if (!canRun.value || loading.value) return
   loading.value = true
-  error.value = ''
+  runError.value = ''
   subscriptionRequired.value = false
   billingHealth.value = null
   result.value = null
   try {
-    const res = await api.post('/api/predictions/match', {
+    const response = await api.post('/api/predictions/match', {
       home_team: homeTeam.value,
       away_team: awayTeam.value,
       stage: stage.value,
     })
-    result.value = res.data
-  } catch (e) {
-    error.value = e.response?.data?.error || e.message
-    billingHealth.value = e.response?.data?.billing_health || null
-    subscriptionRequired.value = ['subscription_required', 'billing_payment_required', 'feature_limit_reached'].includes(e.response?.data?.code)
+    result.value = response.data
+  } catch (error) {
+    runError.value = error.response?.data?.error || error.message || t('predictions.run.errorFallback')
+    billingHealth.value = error.response?.data?.billing_health || null
+    subscriptionRequired.value = billingCodes.includes(error.response?.data?.code)
   } finally {
     loading.value = false
   }
 }
 
-const pct = v => (v * 100).toFixed(1) + '%'
-const barWidth = (prob, max) => (prob / max * 100).toFixed(1) + '%'
+function favoredOutcome(agent) {
+  if (agent.home_win_prob > agent.draw_prob && agent.home_win_prob > agent.away_win_prob) return 'home_win'
+  if (agent.draw_prob >= agent.home_win_prob && agent.draw_prob >= agent.away_win_prob) return 'draw'
+  return 'away_win'
+}
 
-// Build per-agent running-average series for the sparkline
+const specializedAgents = computed(() => {
+  const agents = result.value?.agent_predictions ?? []
+  const known = agents.filter((agent) => specializedAgentNames.includes(agent.agent))
+  return (known.length ? known : agents).slice(0, 4)
+})
+const agreementCount = computed(() => specializedAgents.value.filter((agent) => favoredOutcome(agent) === result.value?.outcome).length)
+const agreementOutcome = computed(() => {
+  if (result.value?.outcome === 'home_win') return t('predictions.outcomes.home')
+  if (result.value?.outcome === 'draw') return t('predictions.outcomes.draw')
+  return t('predictions.outcomes.away')
+})
+const agreementText = computed(() => t('predictions.result.agreementValue', {
+  count: agreementCount.value,
+  total: specializedAgents.value.length,
+  outcome: agreementOutcome.value,
+}))
+
 const agentSeries = computed(() => {
   const agents = result.value?.agent_predictions ?? []
-  if (!agents.length) return []
-  const series = []
-  let sumH = 0, sumD = 0, sumA = 0
-  for (let i = 0; i < agents.length; i++) {
-    sumH += agents[i].home_win_prob
-    sumD += agents[i].draw_prob
-    sumA += agents[i].away_win_prob
-    series.push({ home: sumH / (i + 1), draw: sumD / (i + 1), away: sumA / (i + 1) })
-  }
-  return series
+  let home = 0
+  let draw = 0
+  let away = 0
+  return agents.map((agent, index) => {
+    home += agent.home_win_prob
+    draw += agent.draw_prob
+    away += agent.away_win_prob
+    return { home: home / (index + 1), draw: draw / (index + 1), away: away / (index + 1) }
+  })
 })
+
+function scoreBarWidth(probability) {
+  const maximum = topScoreProbability.value?.probability || 0
+  return maximum > 0 ? `${(probability / maximum) * 100}%` : '0%'
+}
+
+onMounted(loadTeams)
 </script>
 
 <style scoped>
-.predict-view { display: flex; flex-direction: column; gap: 28px; }
-h1 { color: #e2b714; font-size: 28px; }
-.subtitle { color: #8888aa; font-size: 14px; }
+.prediction-page { display: flex; flex-direction: column; gap: var(--space-8); }
+.prediction-form { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); padding: var(--space-6); }
+.prediction-form-skeleton { pointer-events: none; }
+.match-selectors { align-items: end; display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(11rem, 0.55fr); }
+.match-selectors label { color: var(--color-text-muted); display: flex; flex-direction: column; font-size: var(--font-size-sm); gap: var(--space-2); }
+.match-selectors label > span { font-weight: var(--font-weight-semibold); }
+.select-field { display: block; position: relative; width: 100%; }
+.select-field svg { color: var(--color-text-muted); pointer-events: none; position: absolute; right: var(--space-4); top: 50%; transform: translateY(-50%); }
+.match-selectors select { appearance: none; background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body); min-height: var(--control-height-lg); padding: 0 calc(var(--space-4) + 1.5rem) 0 var(--space-3); width: 100%; }
+.match-selectors select:hover { border-color: var(--color-border-strong); }
+.match-selectors select:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 2px; }
+.match-selectors select[aria-invalid="true"] { border-color: var(--color-danger); }
+.versus { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--control-height-lg) var(--font-family-data); text-transform: uppercase; }
+.form-footer { align-items: center; border-top: var(--border-width-thin) solid var(--color-border); display: flex; gap: var(--space-4); justify-content: space-between; margin-top: var(--space-5); padding-top: var(--space-5); }
+.form-footer p { color: var(--color-text-muted); font-size: var(--font-size-sm); margin: 0; }
+.form-footer p.is-error { color: var(--color-danger); }
+.run-button,
+.team-state button { align-items: center; background: var(--color-accent); border: 0; border-radius: var(--radius-md); color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); gap: var(--space-2); justify-content: center; min-height: var(--control-height-lg); padding: 0 var(--space-5); }
+.run-button:hover:not(:disabled),
+.team-state button:hover { background: var(--color-accent-hover); }
+.run-button:focus-visible,
+.team-state button:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.run-button:disabled { cursor: not-allowed; opacity: 0.55; }
 
-.form-panel {
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.team-state,
+.prediction-loading,
+.run-error { align-items: flex-start; background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: flex; gap: var(--space-4); padding: var(--space-6); }
+.team-state > svg,
+.run-error > svg { color: var(--color-accent); flex: 0 0 auto; }
+.team-state h2,
+.prediction-loading h2,
+.run-error h2 { font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
+.team-state p,
+.prediction-loading p,
+.run-error p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; }
+.team-state button { margin-top: var(--space-4); }
+.state-error,
+.run-error { background: var(--color-danger-surface); border-color: var(--color-danger); }
+.state-error > svg,
+.run-error > svg { color: var(--color-danger); }
+.team-loading,
+.prediction-loading { display: grid; grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr); }
+.team-loading > div:first-child,
+.prediction-loading > div:first-child { display: grid; gap: var(--space-2); }
+.selector-skeletons,
+.result-skeleton { display: grid; gap: var(--space-3); }
+.selector-skeletons { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(11rem, 0.55fr); }
+.skeleton-line,
+.result-skeleton span { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.selector-skeletons .skeleton-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeleton-label { height: 1rem; width: 38%; }
+.skeleton-select { height: var(--control-height-lg); width: 100%; }
+.skeleton-versus { align-self: end; height: 1rem; margin-bottom: calc((var(--control-height-lg) - 1rem) / 2); width: 2.75rem; }
+.skeleton-footer-copy { height: 1rem; width: 16rem; }
+.skeleton-action { height: var(--control-height-lg); width: 12rem; }
+.result-skeleton span { min-height: var(--control-height-lg); }
+.result-skeleton span:first-child { height: 4rem; }
+
+.prediction-result { border-top: var(--border-width-strong) solid var(--color-accent); display: flex; flex-direction: column; }
+.result-scoreboard { align-items: center; border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-5); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); min-height: 10rem; padding: var(--space-8) var(--space-4); }
+.result-team { font-family: var(--font-family-display); font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); text-align: right; }
+.result-team-away { text-align: left; }
+.result-team.winner { color: var(--color-accent); }
+.score-block { align-items: center; display: flex; flex-direction: column; min-width: 10rem; text-align: center; }
+.score-block strong { color: var(--color-accent); font: var(--font-weight-heavy) var(--font-size-4xl) / var(--line-height-tight) var(--font-family-data); }
+.score-block span,
+.score-block small { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.score-block small { background: var(--color-warning-surface); color: var(--color-warning); margin-top: var(--space-2); padding: var(--space-1) var(--space-2); }
+.result-section { border-bottom: var(--border-width-thin) solid var(--color-border); padding: var(--space-6) 0; }
+.probability-section { padding-left: var(--space-4); padding-right: var(--space-4); }
+.result-section > header { align-items: center; color: var(--color-accent); display: flex; gap: var(--space-2); margin-bottom: var(--space-4); }
+.result-section h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
+.evidence-strip { border-bottom: var(--border-width-thin) solid var(--color-border); border-top: var(--border-width-thin) solid var(--color-border); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.evidence-strip > div { border-right: var(--border-width-thin) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-2); min-height: 8rem; padding: var(--space-5); }
+.evidence-strip > div:last-child { border-right: 0; }
+.evidence-strip span,
+.evidence-strip small { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.evidence-strip strong { color: var(--color-accent); font: var(--font-weight-heavy) var(--font-size-lg) / var(--line-height-tight) var(--font-family-data); }
+.evidence-strip i,
+.score-probability-list i { background: var(--color-surface-inset); display: block; height: var(--space-1); margin-top: auto; overflow: hidden; }
+.evidence-strip i b,
+.score-probability-list i b { background: var(--color-accent); display: block; height: 100%; }
+.score-probability-list { display: flex; flex-direction: column; }
+.score-probability-list > div { align-items: center; border-top: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); grid-template-columns: 4rem minmax(4rem, 1fr) 5rem 6rem; min-height: var(--control-height-lg); }
+.score-probability-list strong,
+.score-probability-list span { font-family: var(--font-family-data); font-variant-numeric: tabular-nums; }
+.score-probability-list span { color: var(--color-text-muted); text-align: right; }
+.score-probability-list small { color: var(--color-accent); font-size: var(--font-size-xs); text-align: right; text-transform: uppercase; }
+.score-probability-list .top strong,
+.score-probability-list .top span { color: var(--color-accent); }
+.analysis-layout { border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-8); grid-template-columns: 1.15fr 0.85fr; }
+.analysis-layout .result-section { border-bottom: 0; }
+.narrative-section p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: 0; }
+.factors-section ul { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; margin: 0; padding: 0; }
+.factors-section li { border-top: var(--border-width-thin) solid var(--color-border); color: var(--color-text-muted); padding-top: var(--space-3); }
+.agent-list { border-top: var(--border-width-thin) solid var(--color-border); }
+.agent-row { border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); padding: var(--space-5) 0; }
+.agent-heading { align-items: baseline; display: flex; gap: var(--space-4); justify-content: space-between; }
+.agent-heading h3 { font-family: var(--font-family-display); font-size: var(--font-size-md); margin: 0; }
+.agent-heading span { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); }
+.agent-probabilities { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.agent-probabilities span { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.agent-probabilities strong { color: var(--color-text); font-family: var(--font-family-data); }
+.agent-row p { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: 0; }
+.spin { animation: prediction-spin 0.85s linear infinite; }
+.sr-only { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
+@keyframes prediction-spin { to { transform: rotate(360deg); } }
+@keyframes skeleton-pulse { 50% { opacity: 0.45; } }
+
+@media (max-width: 900px) {
+  .match-selectors { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .stage-select { grid-column: 1 / -1; }
+  .evidence-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .evidence-strip > div:nth-child(2) { border-right: 0; }
+  .evidence-strip > div:nth-child(-n + 2) { border-bottom: var(--border-width-thin) solid var(--color-border); }
 }
-
-.selectors { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 16px; }
-.select-group { display: flex; flex-direction: column; gap: 6px; }
-.select-group label { color: #8888aa; font-size: 13px; }
-select {
-  background: #0a0a1a;
-  color: #e0e0e0;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 14px;
-}
-.vs-label { color: #e2b714; font-size: 20px; font-weight: 700; padding-bottom: 10px; }
-
-.stage-row { display: flex; align-items: center; gap: 16px; }
-.stage-row label { color: #8888aa; font-size: 13px; min-width: 48px; }
-.stage-row select { flex: 0 0 220px; }
-
-.btn-predict {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  color: #0a0a1a;
-  font-weight: 700;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  padding: 14px 32px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.btn-predict:disabled { opacity: 0.5; cursor: default; }
-
-.error-box { background: #3d1a1a; border: 1px solid #c53030; border-radius: 8px; padding: 14px; color: #fc8181; }
-
-.result-panel { background: #16213e; border: 1px solid #0f3460; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
-
-.match-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; gap: 16px; }
-.team { font-size: 22px; font-weight: 700; color: #e0e0e0; }
-.home-team { text-align: right; }
-.away-team { text-align: left; }
-.score-block { text-align: center; }
-.score { font-size: 40px; font-weight: 800; color: #e2b714; }
-.score-label { font-size: 11px; color: #8888aa; }
-.aet-badge {
-  font-size: 11px;
-  color: #e2b714;
-  background: rgba(226,183,20,0.12);
-  border: 1px solid rgba(226,183,20,0.3);
-  border-radius: 4px;
-  padding: 2px 8px;
-  margin-top: 6px;
-  display: inline-block;
-}
-.team.winner { color: #e2b714; }
-
-
-.confidence-row { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #a0aec0; }
-.bar-bg { flex: 1; height: 8px; background: #0a0a1a; border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; background: linear-gradient(90deg, #e2b714, #f6d860); border-radius: 4px; transition: width 0.6s; }
-
-.narrative, .key-factors { background: #0f1a2e; border-radius: 8px; padding: 16px 20px; }
-.narrative h3, .key-factors h3 { color: #e2b714; font-size: 15px; margin-bottom: 10px; }
-.narrative p { color: #c0c0d0; font-size: 14px; line-height: 1.6; }
-.key-factors ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.key-factors li { color: #c0c0d0; font-size: 14px; padding-left: 16px; position: relative; }
-.key-factors li::before { content: '→'; position: absolute; left: 0; color: #e2b714; }
-
-/* ── Score probabilities ─────────────────────────────────────────────────── */
-.score-probs { background: #0f1a2e; border-radius: 8px; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
-.score-probs h3 { color: #e2b714; font-size: 15px; }
-
-.xg-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #8888aa; }
-.xg-values { color: #c0c0d0; }
-.xg-values strong { color: #e2b714; font-size: 15px; }
-
-.sp-grid { display: flex; flex-direction: column; gap: 8px; }
-.sp-row { display: grid; grid-template-columns: 44px 1fr 52px auto; align-items: center; gap: 10px; }
-.sp-score { font-size: 15px; font-weight: 700; color: #c0c0d0; font-variant-numeric: tabular-nums; }
-.sp-top .sp-score { color: #e2b714; }
-.sp-bar-bg { height: 10px; background: #1a2a4a; border-radius: 5px; overflow: hidden; }
-.sp-bar-fill { height: 100%; border-radius: 5px; background: #1e3a5f; transition: width 0.5s; }
-.sp-top .sp-bar-fill { background: linear-gradient(90deg, #e2b714, #f6d860); }
-.sp-pct { font-size: 13px; color: #a0aec0; text-align: right; font-variant-numeric: tabular-nums; }
-.sp-top .sp-pct { color: #e2b714; font-weight: 700; }
-.sp-badge { font-size: 10px; background: #2a3a10; color: #e2b714; border: 1px solid #e2b714; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
-
-.agents-breakdown h3 { color: #e2b714; font-size: 15px; margin-bottom: 12px; }
-.agent-row { background: #0f1a2e; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
-.agent-name { font-size: 13px; font-weight: 600; color: #a0c0e0; margin-bottom: 6px; }
-.agent-probs { display: flex; gap: 12px; font-size: 13px; margin-bottom: 6px; flex-wrap: wrap; }
-.hw { color: #68d391; } .dr { color: #fbd38d; } .aw { color: #fc8181; }
-.sc { color: #e2b714; font-weight: 700; }
-.conf { color: #8888aa; }
-.agent-reasoning { font-size: 12px; color: #6a6a8a; line-height: 1.5; }
-
 @media (max-width: 640px) {
-  .selectors { grid-template-columns: 1fr; gap: 12px; }
-  .vs-label { text-align: center; padding: 0; font-size: 16px; }
-  .stage-row { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .stage-row select { flex: none; width: 100%; }
-  .match-header { grid-template-columns: 1fr; text-align: center; gap: 8px; }
-  .home-team, .away-team { text-align: center; }
-  .score { font-size: 28px; }
-  .sp-row { grid-template-columns: 44px 1fr 48px; }
-  .sp-badge { display: none; }
-  .form-panel { padding: 16px; }
-  .result-panel { padding: 16px; }
-  h1 { font-size: 22px; }
+  .prediction-form { padding: var(--space-4); }
+  .match-selectors { grid-template-columns: 1fr; }
+  .versus { line-height: var(--line-height-normal); text-align: center; }
+  .stage-select { grid-column: auto; }
+  .form-footer { align-items: stretch; flex-direction: column; }
+  .run-button { width: 100%; }
+  .team-loading,
+  .prediction-loading { grid-template-columns: 1fr; }
+  .selector-skeletons { grid-template-columns: 1fr; }
+  .skeleton-versus { align-self: center; margin: 0; }
+  .skeleton-footer-copy,
+  .skeleton-action { width: 100%; }
+  .result-scoreboard { grid-template-columns: 1fr; }
+  .result-team,
+  .result-team-away { text-align: center; }
+  .evidence-strip,
+  .analysis-layout { grid-template-columns: 1fr; }
+  .evidence-strip > div { border-bottom: var(--border-width-thin) solid var(--color-border); border-right: 0; }
+  .score-probability-list > div { grid-template-columns: 3rem minmax(3rem, 1fr) 4.5rem; }
+  .score-probability-list small { display: none; }
+  .agent-heading { align-items: flex-start; flex-direction: column; gap: var(--space-2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin,
+  .skeleton-line,
+  .result-skeleton span { animation: none; }
 }
 </style>

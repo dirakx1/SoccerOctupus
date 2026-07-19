@@ -1,0 +1,26 @@
+{
+  "eyebrow": "Actualización de facturación",
+  "title": "Estamos confirmando tu suscripción",
+  "subtitle": "Estamos conciliando tu compra de Stripe con tu cuenta de SoccerOctopus.",
+  "note": "Puedes volver a tu cuenta ahora. También te llevaremos allí automáticamente.",
+  "profile": "Ir al perfil",
+  "retry": "Comprobar de nuevo",
+  "missingSession": "Este enlace de retorno no incluye una sesión de compra.",
+  "states": {
+    "pending": {
+      "eyebrow": "Comprobando la compra",
+      "title": "Confirmando tu suscripción",
+      "copy": "Puede tardar un momento mientras verificamos tu compra y actualizamos tu cuenta."
+    },
+    "complete": {
+      "eyebrow": "Compra confirmada",
+      "title": "Tu cuenta está actualizada",
+      "copy": "Tu suscripción se ha conciliado. Puedes revisar la facturación y el acceso en tu perfil."
+    },
+    "retryable-error": {
+      "eyebrow": "Aún actualizando",
+      "title": "Estamos esperando la actualización de facturación",
+      "copy": "Stripe podría estar terminando la actualización. Puedes comprobar de nuevo o continuar a tu perfil."
+    }
+  }
+}

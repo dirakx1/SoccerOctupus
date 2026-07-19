@@ -1,0 +1,7 @@
+{
+  "title": "Crea tu cuenta", "subtitle": "Guarda tus predicciones y retoma donde lo dejaste.",
+  "provider": { "continueWith": "Continuar con {name}", "opening": "Abriendo {name}..." }, "divider": "o regístrate con correo",
+  "firstName": "Nombre", "lastName": "Apellido", "email": "Correo electrónico", "username": "Nombre de usuario", "password": "Contraseña", "emailPlaceholder": "Correo electrónico", "usernamePlaceholder": "alexmorgan", "passwordPlaceholder": "Crea una contraseña",
+  "submit": "Crear cuenta", "submitting": "Creando cuenta...", "verificationCopy": "Introduce el código de verificación enviado a {email}.", "verificationCode": "Código de verificación", "codePlaceholder": "123456", "verify": "Verificar correo", "verifying": "Verificando...", "resend": "Reenviar código", "signInPrompt": "¿Ya tienes una cuenta?", "signIn": "Iniciar sesión",
+  "errors": { "fallback": "No se pudo crear tu cuenta. Comprueba tus datos e inténtalo de nuevo.", "activate": "No se pudo activar tu sesión. Intenta iniciar sesión.", "unsupported": "Este registro requiere {methods}, que esta página personalizada aún no admite.", "complete": "No se pudo completar el registro. Comprueba tus datos e inténtalo de nuevo." }
+}

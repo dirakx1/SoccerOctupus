@@ -1,33 +1,33 @@
 <template>
   <router-link class="billing-plans-link" to="/pricing">
-    <span>Pricing</span>
+    <span>{{ t('predictions.billing.pricing') }}</span>
     <BadgeDollarSign :size="18" aria-hidden="true" />
   </router-link>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { BadgeDollarSign } from '@lucide/vue'
+
+const { t } = useI18n()
 </script>
 
 <style scoped>
 .billing-plans-link {
   align-items: center;
-  border: 1px solid rgb(246 216 96 / 45%);
-  border-radius: 8px;
-  color: #f6d860;
+  border: var(--border-width-thin) solid var(--color-warning);
+  border-radius: var(--radius-md);
+  color: var(--color-warning);
   display: inline-flex;
-  font-weight: 800;
-  gap: 7px;
-  min-height: 34px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  gap: var(--space-2);
   justify-content: center;
-  margin-left: 10px;
-  padding: 0 10px;
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
   text-decoration: none;
   vertical-align: middle;
 }
-
-.billing-plans-link:hover {
-  background: rgb(246 216 96 / 12%);
-  border-color: #f6d860;
-}
+.billing-plans-link:hover { background: var(--color-warning-surface); }
+.billing-plans-link:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
 </style>

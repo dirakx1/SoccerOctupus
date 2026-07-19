@@ -1,48 +1,46 @@
 <template>
-  <div class="auth-page">
-    <section class="auth-panel">
-      <div class="eyebrow">Finish setup</div>
-      <h1>Choose username</h1>
-      <p class="subtitle">Add the username required for this account.</p>
+  <AtlasAuthLayout><template #intro><h1 id="username-title">{{ t('usernameContinuation.title') }}</h1><p>{{ t('usernameContinuation.subtitle') }}</p></template>
 
-      <form v-if="canCompleteUsername" class="auth-form" @submit.prevent="completeUsername">
+      <form v-if="canCompleteUsername" class="auth-form" :aria-busy="loading" @submit.prevent="completeUsername">
         <label class="field">
-          <span>Username</span>
+          <span>{{ t('usernameContinuation.username') }}</span>
           <input
             v-model.trim="form.username"
             type="text"
             autocomplete="username"
             required
-            placeholder="alexmorgan"
+            :placeholder="t('usernameContinuation.placeholder')"
           />
         </label>
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
         <button class="btn-primary" :disabled="loading || !form.username">
-          {{ loading ? 'Saving...' : 'Continue' }}
+          {{ loading ? t('usernameContinuation.saving') : t('usernameContinuation.continue') }}
         </button>
       </form>
 
       <div v-else class="auth-form">
         <p class="verification-copy">{{ fallbackCopy }}</p>
-        <p v-if="error" class="error-box">{{ error }}</p>
-        <router-link class="btn-primary link-button" to="/sign-up">Return to sign up</router-link>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
+        <router-link class="btn-primary link-button" to="/sign-up">{{ t('usernameContinuation.return') }}</router-link>
       </div>
-    </section>
-  </div>
+  </AtlasAuthLayout>
 </template>
 
 <script setup>
 import { computed, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useClerk, useSignUp } from '@clerk/vue'
 
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
 import { consumePostAuthRedirect } from '../lib/postAuthRedirect'
 import { userFacingError } from '../lib/userFacingError'
+import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const clerk = useClerk()
 const { isLoaded, signUp, setActive } = useSignUp()
 
@@ -57,8 +55,8 @@ const canCompleteUsername = computed(() => {
   return isLoaded.value && signUp.value?.status === 'missing_requirements' && missingFields.value.includes('username')
 })
 const fallbackCopy = computed(() => {
-  if (!isLoaded.value) return 'Loading your sign-up.'
-  return 'No pending username step is available. Start sign-up again to continue.'
+  if (!isLoaded.value) return t('usernameContinuation.loading')
+  return t('usernameContinuation.fallback')
 })
 
 watch(
@@ -70,12 +68,12 @@ watch(
 )
 
 function authError(err) {
-  return userFacingError(err, 'Unable to save username. Please try again.')
+  return userFacingError(err, t('usernameContinuation.errors.fallback'))
 }
 
 async function completeSession(result) {
   if (!setActive.value || !result.createdSessionId) {
-    error.value = 'Username saved, but your session could not be started. Please sign in.'
+    error.value = t('usernameContinuation.errors.session')
     return
   }
 
@@ -94,7 +92,7 @@ async function handleSignUpResult(result) {
   }
 
   if (result.missingFields?.includes('username')) {
-    error.value = 'Choose a username to continue.'
+    error.value = t('usernameContinuation.errors.required')
     return
   }
 
@@ -103,7 +101,7 @@ async function handleSignUpResult(result) {
     return
   }
 
-  error.value = 'Unable to complete sign-up. Please try again.'
+  error.value = t('usernameContinuation.errors.complete')
 }
 
 async function completeUsername() {
@@ -124,43 +122,7 @@ async function completeUsername() {
 </script>
 
 <style scoped>
-.auth-page {
-  display: flex;
-  justify-content: center;
-  padding: 48px 0;
-}
-
-.auth-panel {
-  width: min(100%, 520px);
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  padding: 32px;
-}
-
-.eyebrow {
-  color: #e2b714;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-h1 {
-  color: #e0e0e0;
-  font-size: 30px;
-  margin-bottom: 8px;
-}
-
-.subtitle,
-.verification-copy {
-  color: #8888aa;
-  font-size: 14px;
-}
-
-.subtitle {
-  margin-bottom: 24px;
-}
+.verification-copy{background:var(--color-surface-inset);border-left:var(--border-width-strong) solid var(--color-accent);color:var(--color-text-muted);font-size:var(--font-size-sm);line-height:var(--line-height-relaxed);padding:var(--space-4)}
 
 .auth-form,
 .field {
@@ -177,27 +139,23 @@ h1 {
 }
 
 .field span {
-  color: #8888aa;
+  color: var(--color-text-muted);
   font-size: 13px;
 }
 
 input {
-  background: #0f3460;
-  border: 1px solid #1f4c7a;
-  border-radius: 8px;
-  color: #e0e0e0;
+  background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text);
   font-size: 15px;
-  padding: 12px;
+  min-height:var(--control-height-lg);padding:0 var(--space-3);
 }
 
 .btn-primary {
-  background: #e2b714;
+  background: var(--color-accent);
   border: none;
-  border-radius: 8px;
-  color: #16213e;
+  border-radius: var(--radius-md); color: var(--color-accent-contrast);
   cursor: pointer;
   font-weight: 700;
-  padding: 12px 18px;
+  min-height:var(--control-height-lg);padding:0 var(--space-4);
   text-align: center;
   text-decoration: none;
 }
@@ -213,10 +171,9 @@ input {
 }
 
 .error-box {
-  background: rgba(220, 38, 38, 0.16);
-  border-radius: 8px;
-  color: #fecaca;
+  background: var(--color-danger-surface);border:var(--border-width-thin) solid var(--color-danger);color:var(--color-danger);
   font-size: 14px;
   padding: 12px;
 }
+.btn-primary:focus-visible,input:focus-visible{outline:var(--border-width-strong) solid var(--color-focus);outline-offset:3px}
 </style>

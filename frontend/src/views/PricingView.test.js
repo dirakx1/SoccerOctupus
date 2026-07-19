@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import PricingView from './PricingView.vue'
 import { clearAuthState, setAuthState } from '../lib/auth'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
 const routerReplace = vi.fn()
@@ -56,6 +57,7 @@ describe('PricingView', () => {
     window.localStorage.clear()
     routeQuery = {}
     clearAuthState()
+    applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
     getPlans.mockResolvedValue({ data: { plans } })
     getSubscription.mockResolvedValue({ data: { tier: 'free' } })
     changePlan.mockResolvedValue({ data: { action: 'checkout', url: 'https://checkout.stripe.com/session' } })
@@ -65,8 +67,21 @@ describe('PricingView', () => {
     })
   })
 
+  function mountPricing() {
+    return mount(PricingView, { global: { plugins: [i18n], stubs: ['router-link'] } })
+  }
+
+  it('renders plan-card skeletons while plan data is loading', () => {
+    getPlans.mockImplementation(() => new Promise(() => {}))
+    const wrapper = mountPricing()
+
+    expect(wrapper.find('[data-testid="plans-skeleton"]').exists()).toBe(true)
+    expect(wrapper.findAll('.plan-card-skeleton')).toHaveLength(3)
+    expect(wrapper.find('.pricing-state').exists()).toBe(false)
+  })
+
   it('stores a post-auth redirect and routes to sign-up when Basic is clicked signed out', async () => {
-    const wrapper = mount(PricingView, { global: { stubs: ['router-link'] } })
+    const wrapper = mountPricing()
     await flushPromises()
 
     expect(wrapper.text()).toContain('1 match prediction')
@@ -80,7 +95,7 @@ describe('PricingView', () => {
 
   it('starts Pro checkout when signed in', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
-    const wrapper = mount(PricingView, { global: { stubs: ['router-link'] } })
+    const wrapper = mountPricing()
     await flushPromises()
 
     await wrapper.findAll('button')[2].trigger('click')
@@ -99,7 +114,7 @@ describe('PricingView', () => {
         url: 'https://billing.stripe.com/cancel',
       },
     })
-    const wrapper = mount(PricingView, { global: { stubs: ['router-link'] } })
+    const wrapper = mountPricing()
     await flushPromises()
 
     await wrapper.findAll('button')[0].trigger('click')
@@ -113,14 +128,57 @@ describe('PricingView', () => {
   it('disables the current signed-in tier', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
     getSubscription.mockResolvedValue({ data: { tier: 'pro' } })
-    const wrapper = mount(PricingView, { global: { stubs: ['router-link'] } })
+    const wrapper = mountPricing()
     await flushPromises()
 
     const proButton = wrapper.findAll('button')[2]
     expect(proButton.attributes('disabled')).toBeDefined()
-    expect(proButton.text()).toContain('Choose')
+    expect(proButton.text()).toContain('Current plan')
 
     await proButton.trigger('click')
     expect(changePlan).not.toHaveBeenCalled()
+  })
+
+  it('uses Spanish frontend copy while preserving plan data from billing', async () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    const wrapper = mountPricing()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Elige tu acceso a predicciones')
+    expect(wrapper.text()).toContain('Cobertura completa de señales')
+    expect(wrapper.text()).toContain('Unlimited prediction runs')
+    expect(wrapper.text()).toContain('/month')
+  })
+
+  it('renders a retryable plan-load error while preserving the existing post-auth checkout handoff', async () => {
+    getPlans.mockRejectedValue({ response: { data: { error: 'Billing service unavailable' } } })
+    routeQuery = { plan: 'pro', checkout: '1' }
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    const wrapper = mountPricing()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Could not load plans.')
+    expect(wrapper.text()).toContain('Billing service unavailable')
+    expect(changePlan).toHaveBeenCalledWith('pro')
+
+    getPlans.mockResolvedValue({ data: { plans } })
+    await wrapper.find('.btn-secondary').trigger('click')
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Pro')
+    expect(changePlan).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows a plan-change error and keeps the plan actions available', async () => {
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    changePlan.mockRejectedValue({ response: { data: { error: 'Card update needed' } } })
+    const wrapper = mountPricing()
+    await flushPromises()
+
+    await wrapper.findAll('button')[1].trigger('click')
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Card update needed')
+    expect(wrapper.findAll('button')[1].attributes('disabled')).toBeUndefined()
   })
 })

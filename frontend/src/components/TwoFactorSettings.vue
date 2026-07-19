@@ -2,8 +2,8 @@
   <div class="two-factor-settings">
     <div v-if="!setupResource" class="security-control-row">
       <div class="security-control-copy">
-        <strong>Authenticator app</strong>
-        <span>Use a verification code when you sign in.</span>
+        <strong>{{ t("profile.twoFactor.authenticator") }}</strong>
+        <span>{{ t("profile.twoFactor.description") }}</span>
       </div>
       <div class="security-control-actions">
         <button
@@ -15,8 +15,8 @@
         >
           {{
             loadingAction === "setup"
-              ? "Starting setup..."
-              : "Enable authenticator app"
+              ? t("profile.twoFactor.starting")
+              : t("profile.twoFactor.enable")
           }}
         </button>
         <template v-else>
@@ -28,8 +28,8 @@
           >
             {{
               loadingAction === "backup"
-                ? "Generating..."
-                : "Regenerate backup codes"
+                ? t("profile.twoFactor.generating")
+                : t("profile.twoFactor.regenerate")
             }}
           </button>
           <button
@@ -40,8 +40,8 @@
           >
             {{
               loadingAction === "disable"
-                ? "Disabling..."
-                : "Disable authenticator app"
+                ? t("profile.twoFactor.disabling")
+                : t("profile.twoFactor.disable")
             }}
           </button>
         </template>
@@ -58,11 +58,8 @@
       data-testid="backup-regeneration-confirmation"
     >
       <div>
-        <strong>Replace existing backup codes?</strong>
-        <p>
-          Generating new codes immediately invalidates every current backup
-          code. This cannot be undone.
-        </p>
+        <strong>{{ t("profile.twoFactor.replaceTitle") }}</strong>
+        <p>{{ t("profile.twoFactor.replaceDescription") }}</p>
       </div>
       <div class="action-row">
         <button
@@ -73,8 +70,8 @@
         >
           {{
             loadingAction === "backup"
-              ? "Generating..."
-              : "Generate new codes"
+              ? t("profile.twoFactor.generating")
+              : t("profile.twoFactor.generate")
           }}
         </button>
         <button
@@ -83,7 +80,7 @@
           :disabled="loading"
           @click="cancelBackupRegeneration"
         >
-          Cancel
+          {{ t("profile.twoFactor.cancel") }}
         </button>
       </div>
     </div>
@@ -94,29 +91,25 @@
       data-testid="backup-codes-panel"
     >
       <div class="backup-heading">
-        <h3>Save these backup codes</h3>
-        <p>
-          Each code can be used once if you lose access to your authenticator
-          app. They are shown only now and are never stored by this app. Any
-          copy or download you create is yours to keep secure.
-        </p>
+        <h3>{{ t("profile.twoFactor.backupTitle") }}</h3>
+        <p>{{ t("profile.twoFactor.backupDescription") }}</p>
       </div>
       <pre>{{ backupCodesText }}</pre>
       <div class="action-row">
         <button class="btn-secondary" type="button" @click="copyBackupCodes">
-          Copy codes
+          {{ t("profile.twoFactor.copyCodes") }}
         </button>
         <button
           class="btn-secondary"
           type="button"
           @click="downloadBackupCodes"
         >
-          Download codes
+          {{ t("profile.twoFactor.downloadCodes") }}
         </button>
       </div>
       <label class="checkbox-field">
         <input v-model="backupSaved" type="checkbox" />
-        <span>I saved these backup codes</span>
+        <span>{{ t("profile.twoFactor.savedCodes") }}</span>
       </label>
       <button
         class="btn-primary"
@@ -124,17 +117,14 @@
         :disabled="!backupSaved"
         @click="closeBackupCodes"
       >
-        Done
+        {{ t("profile.twoFactor.done") }}
       </button>
     </div>
 
     <div v-if="setupResource" class="setup-panel">
       <div class="setup-heading">
-        <h3>Connect authenticator app</h3>
-        <p>
-          Scan this QR code with your authenticator app, then enter the 6-digit
-          code it shows.
-        </p>
+        <h3>{{ t("profile.twoFactor.connectTitle") }}</h3>
+        <p>{{ t("profile.twoFactor.connectDescription") }}</p>
       </div>
       <div class="setup-content">
         <div class="setup-qr-column">
@@ -147,7 +137,11 @@
             type="button"
             @click="showManualSetup = !showManualSetup"
           >
-            {{ showManualSetup ? "Hide setup key" : "Use setup key instead" }}
+            {{
+              showManualSetup
+                ? t("profile.twoFactor.hideSetupKey")
+                : t("profile.twoFactor.useSetupKey")
+            }}
           </button>
         </div>
         <div class="setup-confirmation">
@@ -155,18 +149,18 @@
             v-if="showManualSetup && setupResource.secret"
             class="readonly-field"
           >
-            <span>Setup key</span>
+            <span>{{ t("profile.twoFactor.setupKey") }}</span>
             <code>{{ setupResource.secret }}</code>
             <button
               class="btn-link"
               type="button"
               @click="copyText(setupResource.secret)"
             >
-              Copy setup key
+              {{ t("profile.twoFactor.copySetupKey") }}
             </button>
           </label>
           <label class="field">
-            <span>Authenticator code</span>
+            <span>{{ t("profile.twoFactor.authenticatorCode") }}</span>
             <input
               v-model.trim="setupCode"
               type="text"
@@ -184,8 +178,8 @@
             >
               {{
                 loadingAction === "verify"
-                  ? "Verifying..."
-                  : "Verify and continue"
+                  ? t("profile.twoFactor.verifying")
+                  : t("profile.twoFactor.verify")
               }}
             </button>
             <button
@@ -194,11 +188,11 @@
               :disabled="loading"
               @click="cancelSetup"
             >
-              Cancel
+              {{ t("profile.twoFactor.cancel") }}
             </button>
           </div>
           <p class="setup-note">
-            Backup codes are generated after verification.
+            {{ t("profile.twoFactor.backupAfterVerification") }}
           </p>
         </div>
       </div>
@@ -208,6 +202,7 @@
 
 <script setup>
 import { computed, onBeforeUnmount, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { userFacingError } from "../lib/userFacingError";
 import AuthenticatorQrCode from "./AuthenticatorQrCode.vue";
@@ -226,6 +221,8 @@ const props = defineProps({
     default: null,
   },
 });
+
+const { t } = useI18n();
 
 const setupResource = ref(null);
 const setupCode = ref("");
@@ -288,7 +285,7 @@ async function runProtected(operation, message, options = {}) {
   return props.reverification.runWithReverification(operation, {
     message,
     retryPolicy: "verify_first",
-    title: "Verify it is you",
+    title: t("profile.twoFactor.verifyIdentityTitle"),
     ...options,
   });
 }
@@ -304,7 +301,7 @@ async function startSetup() {
   try {
     setupResource.value = await runProtected(
       () => props.user.createTOTP(),
-      "Enter your password to continue with authenticator setup.",
+      t("profile.twoFactor.reverifySetup"),
     );
     setupCode.value = "";
   } catch (err) {
@@ -314,19 +311,18 @@ async function startSetup() {
         if (props.user?.totpEnabled) {
           committedTotpEnabled.value = true;
           setupResource.value = null;
-          error.value =
-            "Authenticator app is already enabled. You can regenerate backup codes below.";
+          error.value = t("profile.twoFactor.alreadyEnabled");
           return;
         }
       } catch (reloadErr) {
         error.value = clerkError(
           reloadErr,
-          "Authenticator setup may already be enabled, but your account state could not be refreshed.",
+          t("profile.twoFactor.setupRefreshError"),
         );
         return;
       }
     }
-    error.value = clerkError(err, "Unable to start authenticator setup.");
+    error.value = clerkError(err, t("profile.twoFactor.startError"));
   } finally {
     loadingAction.value = "";
   }
@@ -341,7 +337,7 @@ async function verifySetup() {
   try {
     const verified = await runProtected(
       () => props.user.verifyTOTP({ code: setupCode.value }),
-      "Enter your password to continue with authenticator setup.",
+      t("profile.twoFactor.reverifySetup"),
     );
     committedTotpEnabled.value = true;
     setupResource.value = null;
@@ -352,33 +348,31 @@ async function verifySetup() {
     try {
       await showBackupCodes(verified);
     } catch (err) {
-      backupError = clerkError(
-        err,
-        "Backup codes could not be generated. You can regenerate them below.",
-      );
+      backupError = clerkError(err, t("profile.twoFactor.backupError"));
     }
 
     let refreshError = null;
     try {
       await reloadUser();
     } catch (err) {
-      refreshError = `Authenticator app enabled, but your account state could not be refreshed. ${clerkError(
-        err,
-        "Reload the page to confirm the current state.",
-      )}`;
+      refreshError = t("profile.twoFactor.enabledRefreshError", {
+        error: clerkError(err, t("profile.twoFactor.refreshStateError")),
+      });
     }
 
     if (backupError && refreshError) {
       error.value = `${backupError} ${refreshError}`;
     } else if (backupError) {
-      error.value = `Authenticator app enabled, but ${backupError.toLowerCase()}`;
+      error.value = t("profile.twoFactor.enabledBackupError", {
+        error: backupError.toLowerCase(),
+      });
     } else if (refreshError) {
       error.value = refreshError;
     } else {
-      success.value = "Authenticator app enabled.";
+      success.value = t("profile.twoFactor.enabled");
     }
   } catch (err) {
-    error.value = clerkError(err, "Unable to verify this authenticator code.");
+    error.value = clerkError(err, t("profile.twoFactor.verifyError"));
   } finally {
     loadingAction.value = "";
   }
@@ -394,14 +388,12 @@ async function showBackupCodes(source = null, options = {}) {
   const generated = props.user?.createBackupCode
     ? await runProtected(
         () => props.user.createBackupCode(),
-        "Enter your password to generate new backup codes.",
+        t("profile.twoFactor.reverifyBackup"),
         options,
       )
     : null;
   if (!generated?.codes?.length) {
-    throw new Error(
-      "New backup codes were not returned. Existing codes may have been replaced; generate another set before leaving this page.",
-    );
+    throw new Error(t("profile.twoFactor.missingBackupCodes"));
   }
   backupCodes.value = generated.codes;
   backupSaved.value = false;
@@ -420,15 +412,14 @@ async function regenerateBackupCodes() {
     committedTotpEnabled.value = true;
     try {
       await reloadUser();
-      success.value = "New backup codes generated.";
+      success.value = t("profile.twoFactor.backupGenerated");
     } catch (err) {
-      error.value = `New backup codes were generated, but your account state could not be refreshed. ${clerkError(
-        err,
-        "Reload the page to confirm the current state.",
-      )}`;
+      error.value = t("profile.twoFactor.backupRefreshError", {
+        error: clerkError(err, t("profile.twoFactor.refreshStateError")),
+      });
     }
   } catch (err) {
-    error.value = clerkError(err, "Unable to generate backup codes.");
+    error.value = clerkError(err, t("profile.twoFactor.generateError"));
   } finally {
     loadingAction.value = "";
   }
@@ -443,7 +434,7 @@ async function disableAuthenticator() {
   try {
     await runProtected(
       () => props.user.disableTOTP(),
-      "Enter your password to disable authenticator app sign-in.",
+      t("profile.twoFactor.reverifyDisable"),
       { level: "multi_factor" },
     );
     committedTotpEnabled.value = false;
@@ -453,15 +444,14 @@ async function disableAuthenticator() {
     clearBackupCodes();
     try {
       await reloadUser();
-      success.value = "Authenticator app disabled.";
+      success.value = t("profile.twoFactor.disabled");
     } catch (err) {
-      error.value = `Authenticator app disabled, but your account state could not be refreshed. ${clerkError(
-        err,
-        "Reload the page to confirm the current state.",
-      )}`;
+      error.value = t("profile.twoFactor.disabledRefreshError", {
+        error: clerkError(err, t("profile.twoFactor.refreshStateError")),
+      });
     }
   } catch (err) {
-    error.value = clerkError(err, "Unable to disable authenticator app.");
+    error.value = clerkError(err, t("profile.twoFactor.disableError"));
   } finally {
     loadingAction.value = "";
   }
@@ -522,45 +512,50 @@ defineExpose({
 .two-factor-settings {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-5);
 }
 
 .security-control-row {
   align-items: center;
-  display: flex;
-  gap: 24px;
-  justify-content: space-between;
+  border-top: var(--border-width-thin) solid var(--color-border);
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(15rem, 32rem) auto;
+  padding-top: var(--space-5);
 }
 
 .security-control-copy {
+  border-left: var(--border-width-strong) solid var(--color-accent);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
+  padding-left: var(--space-3);
 }
 
 .security-control-copy strong {
-  color: #e0e0e0;
-  font-size: 15px;
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
 }
 
 .security-control-copy span {
-  color: #a0aec0;
-  font-size: 13px;
-  line-height: 1.45;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
 }
 
 .security-control-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-2);
   justify-content: flex-end;
 }
 
 @media (max-width: 640px) {
   .security-control-row {
     align-items: stretch;
-    flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
   }
 
   .security-control-actions,
@@ -573,35 +568,34 @@ defineExpose({
 
 .setup-panel,
 .backup-panel {
-  border-top: 1px solid #0f3460;
+  border-top: var(--border-width-thin) solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-top: 20px;
+  gap: var(--space-5);
+  padding-top: var(--space-5);
 }
 
 .regeneration-confirmation {
   align-items: flex-start;
-  background: #2f2510;
-  border: 1px solid #8a6d1d;
-  border-radius: 8px;
+  background: var(--color-warning-surface);
+  border-left: var(--border-width-strong) solid var(--color-warning);
   display: flex;
-  gap: 20px;
+  gap: var(--space-5);
   justify-content: space-between;
-  padding: 16px;
+  padding: var(--space-4);
 }
 
 .regeneration-confirmation strong {
-  color: #f6d860;
+  color: var(--color-warning);
   display: block;
-  font-size: 14px;
-  margin-bottom: 5px;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-1);
 }
 
 .regeneration-confirmation p {
-  color: #d7cba4;
-  font-size: 13px;
-  line-height: 1.5;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
   max-width: 620px;
 }
 
@@ -613,29 +607,30 @@ defineExpose({
 
 .backup-heading h3,
 .setup-heading h3 {
-  color: #e0e0e0;
-  font-size: 16px;
-  margin-bottom: 4px;
+  color: var(--color-text);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-1);
 }
 
 .backup-heading p,
 .setup-heading p {
-  color: #a0aec0;
-  font-size: 13px;
-  line-height: 1.5;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
 }
 
 .qr-setup {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 4px 0;
+  padding: var(--space-1) 0;
 }
 
 .setup-content {
   align-items: center;
   display: grid;
-  gap: 36px;
+  gap: var(--space-8);
   grid-template-columns: minmax(260px, 0.8fr) minmax(300px, 1.2fr);
 }
 
@@ -643,7 +638,7 @@ defineExpose({
 .setup-confirmation {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .setup-qr-column {
@@ -655,29 +650,29 @@ defineExpose({
 }
 
 .setup-note {
-  color: #8888aa;
-  font-size: 12px;
-  line-height: 1.45;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-relaxed);
 }
 
 @media (max-width: 760px) {
   .setup-content {
     align-items: stretch;
-    gap: 24px;
+    gap: var(--space-6);
     grid-template-columns: 1fr;
   }
 }
 
 pre,
 code {
-  background: #050511;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  color: #e0e0e0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 13px;
+  background: var(--color-surface-inset);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-family-data);
+  font-size: var(--font-size-sm);
   overflow-x: auto;
-  padding: 10px 12px;
+  padding: var(--space-3);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -687,14 +682,14 @@ code {
 .checkbox-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .readonly-field span,
 .field span,
 .checkbox-field span {
-  color: #8888aa;
-  font-size: 13px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 
 .checkbox-field {
@@ -703,60 +698,62 @@ code {
 }
 
 input {
-  background: #0a0a1a;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  color: #e0e0e0;
-  font-size: 14px;
-  padding: 12px 14px;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
 }
 
-input:focus {
-  border-color: #e2b714;
-  outline: none;
+input:focus-visible,
+button:focus-visible {
+  outline: var(--border-width-strong) solid var(--color-focus);
+  outline-offset: 3px;
 }
 
 .action-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .btn-primary,
 .btn-secondary,
 .btn-danger,
 .btn-link {
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  min-height: 40px;
-  padding: 10px 14px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-4);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  border: none;
-  color: #0a0a1a;
+  background: var(--color-accent);
+  border: 0;
+  color: var(--color-accent-contrast);
 }
 
 .btn-secondary {
-  background: #0f3460;
-  border: 1px solid #1f4c7a;
-  color: #e0e0e0;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-strong);
+  color: var(--color-text);
 }
 
 .btn-danger {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  color: #fc8181;
+  background: var(--color-danger-surface);
+  border: var(--border-width-thin) solid var(--color-danger);
+  color: var(--color-danger);
 }
 
 .btn-link {
   align-items: center;
   background: transparent;
   border: none;
-  color: #e2b714;
+  color: var(--color-accent);
   display: inline-flex;
   min-height: auto;
   padding: 0;
@@ -770,20 +767,19 @@ button:disabled {
 
 .error-box,
 .success-box {
-  border-radius: 8px;
-  font-size: 13px;
-  padding: 12px 14px;
+  font-size: var(--font-size-sm);
+  padding: var(--space-3);
 }
 
 .error-box {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  color: #fc8181;
+  background: var(--color-danger-surface);
+  border: var(--border-width-thin) solid var(--color-danger);
+  color: var(--color-danger);
 }
 
 .success-box {
-  background: #123322;
-  border: 1px solid #38a169;
-  color: #9ae6b4;
+  background: var(--color-success-surface);
+  border: var(--border-width-thin) solid var(--color-success);
+  color: var(--color-success);
 }
 </style>

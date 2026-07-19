@@ -1,9 +1,11 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { config, flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import CompleteUsernameView from './CompleteUsernameView.vue'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
+const postAuthState = vi.hoisted(() => ({ consume: '' }))
 const clerkState = vi.hoisted(() => ({
   activateSessionAndHydrateAuth: vi.fn(),
   clerk: {},
@@ -39,12 +41,15 @@ vi.mock('../lib/clerkSession', () => ({
 }))
 
 vi.mock('../lib/postAuthRedirect', () => ({
-  consumePostAuthRedirect: vi.fn(() => ''),
+  consumePostAuthRedirect: vi.fn(() => postAuthState.consume),
 }))
 
 describe('CompleteUsernameView', () => {
   beforeEach(() => {
+    config.global.plugins = [i18n]
+    applyLocale('en',{storage:window.localStorage,documentElement:document.documentElement})
     vi.clearAllMocks()
+    postAuthState.consume = ''
     clerkState.signUp.value.status = 'missing_requirements'
     clerkState.signUp.value.missingFields = ['username']
     clerkState.signUp.value.username = null
@@ -95,6 +100,30 @@ describe('CompleteUsernameView', () => {
       global: { stubs: ['RouterLink'] },
     })
 
-    expect(wrapper.text()).toContain('No pending username step is available.')
+    expect(wrapper.text()).toContain('There is no username step to finish.')
+  })
+
+  it('localizes the form and fallback in Spanish', () => {
+    applyLocale('es',{storage:window.localStorage,documentElement:document.documentElement})
+    const wrapper=mount(CompleteUsernameView,{global:{stubs:['RouterLink']}})
+    expect(wrapper.text()).toContain('Elige un nombre de usuario')
+    expect(wrapper.text()).toContain('Nombre de usuario')
+    wrapper.unmount()
+    clerkState.signUp.value.status='complete';clerkState.signUp.value.missingFields=[]
+    expect(mount(CompleteUsernameView,{global:{stubs:['RouterLink']}}).text()).toContain('No hay un paso de nombre de usuario que completar.')
+  })
+
+  it('preserves loading, errors, and the exact stored return destination', async () => {
+    postAuthState.consume='/es/competitions/world-cup-2026/markets?from=oauth#questions'
+    let rejectUpdate
+    clerkState.signUp.value.update.mockImplementationOnce(()=>new Promise((resolve,reject)=>{rejectUpdate=reject}))
+    const wrapper=mount(CompleteUsernameView,{global:{stubs:['RouterLink']}})
+    await wrapper.find('input').setValue('alexmorgan');await wrapper.find('form').trigger('submit.prevent')
+    expect(wrapper.text()).toContain('Saving...')
+    rejectUpdate(new Error('Username taken'));await flushPromises()
+    expect(wrapper.find('[role="alert"]').text()).toContain('Username taken')
+    clerkState.signUp.value.update.mockResolvedValue({status:'complete',createdSessionId:'sess_complete'})
+    await wrapper.find('form').trigger('submit.prevent');await flushPromises()
+    expect(routerPush).toHaveBeenLastCalledWith(postAuthState.consume)
   })
 })

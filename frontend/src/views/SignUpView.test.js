@@ -1,9 +1,12 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { config, flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import SignUpView from './SignUpView.vue'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
+const postAuthState = vi.hoisted(() => ({ consume: '', peek: '' }))
+const RouterLinkStub = { props: ['to'], template: '<a :data-to="to"><slot /></a>' }
 const clerkState = vi.hoisted(() => ({
   activateSessionAndHydrateAuth: vi.fn(),
   clerk: {
@@ -58,13 +61,17 @@ vi.mock('../lib/clerkSession', () => ({
 }))
 
 vi.mock('../lib/postAuthRedirect', () => ({
-  consumePostAuthRedirect: vi.fn(() => ''),
-  peekPostAuthRedirect: vi.fn(() => ''),
+  consumePostAuthRedirect: vi.fn(() => postAuthState.consume),
+  peekPostAuthRedirect: vi.fn(() => postAuthState.peek),
 }))
 
 describe('SignUpView', () => {
   beforeEach(() => {
+    config.global.plugins = [i18n]
+    applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
     vi.clearAllMocks()
+    postAuthState.consume = ''
+    postAuthState.peek = ''
     clerkState.signUp.value.create.mockResolvedValue({
       status: 'complete',
       createdSessionId: 'sess_123',
@@ -140,6 +147,7 @@ describe('SignUpView', () => {
 
       await wrapper.find(`button[data-strategy="${strategy}"]`).trigger('click')
       await flushPromises()
+      expect(window.localStorage.getItem('socceroctopus.postAuthCompletion')).not.toBeNull()
       expect(clerkState.signUp.value.authenticateWithRedirect).toHaveBeenLastCalledWith({
         strategy,
         redirectUrl: '/sso-callback',
@@ -170,5 +178,44 @@ describe('SignUpView', () => {
     await flushPromises()
 
     expect(clerkState.signUp.value.prepareEmailAddressVerification).toHaveBeenCalledWith({ strategy: 'email_code' })
+  })
+
+  it('renders Spanish Atlas copy, fields, providers, and sign-in link', () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    const wrapper = mount(SignUpView, { global: { stubs: { RouterLink: RouterLinkStub } } })
+    expect(wrapper.text()).toContain('Crea tu cuenta')
+    expect(wrapper.text()).toContain('Continuar con Google')
+    expect(wrapper.text()).toContain('Nombre de usuario')
+    expect(wrapper.text()).toContain('¿Ya tienes una cuenta?')
+    expect(wrapper.find('[data-to]').attributes('data-to')).toBe('/sign-in')
+  })
+
+  it('preserves loading/error feedback and the exact stored return destination', async () => {
+    const destination = '/es/competitions/world-cup-2026/groups?source=signup#table'
+    postAuthState.consume = destination
+    let rejectCreate
+    clerkState.signUp.value.create.mockImplementationOnce(() => new Promise((resolve, reject) => { rejectCreate = reject }))
+    const wrapper = mount(SignUpView, { global: { stubs: ['RouterLink'] } })
+    await wrapper.find('input[autocomplete="email"]').setValue('alex@example.com')
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('input[autocomplete="new-password"]').setValue('longenough')
+    await wrapper.find('form').trigger('submit.prevent')
+    expect(wrapper.text()).toContain('Creating account...')
+    rejectCreate(new Error('Account exists'))
+    await flushPromises()
+    expect(wrapper.find('[role="alert"]').text()).toContain('Account exists')
+
+    clerkState.signUp.value.create.mockResolvedValue({ status: 'complete', createdSessionId: 'sess_123' })
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+    expect(routerPush).toHaveBeenLastCalledWith(destination)
+  })
+
+  it('passes the exact stored destination through OAuth', async () => {
+    postAuthState.peek = '/es/competitions/world-cup-2026/predict?from=signup#form'
+    const wrapper = mount(SignUpView, { global: { stubs: ['RouterLink'] } })
+    await wrapper.find('button[data-strategy="oauth_google"]').trigger('click')
+    await flushPromises()
+    expect(clerkState.signUp.value.authenticateWithRedirect).toHaveBeenLastCalledWith({ strategy: 'oauth_google', redirectUrl: '/sso-callback', redirectUrlComplete: postAuthState.peek })
   })
 })

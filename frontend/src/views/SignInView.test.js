@@ -1,10 +1,13 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { config, flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import SignInView from './SignInView.vue'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
 const routeQuery = vi.hoisted(() => ({}))
+const postAuthState = vi.hoisted(() => ({ consume: '', peek: '' }))
+const RouterLinkStub = { props: ['to'], template: '<a :data-to="to"><slot /></a>' }
 const clerkState = vi.hoisted(() => ({
   activateSessionAndHydrateAuth: vi.fn(),
   clerk: {},
@@ -42,14 +45,18 @@ vi.mock('../lib/clerkSession', () => ({
 }))
 
 vi.mock('../lib/postAuthRedirect', () => ({
-  consumePostAuthRedirect: vi.fn(() => ''),
-  peekPostAuthRedirect: vi.fn(() => ''),
+  consumePostAuthRedirect: vi.fn(() => postAuthState.consume),
+  peekPostAuthRedirect: vi.fn(() => postAuthState.peek),
 }))
 
 describe('SignInView', () => {
   beforeEach(() => {
+    config.global.plugins = [i18n]
+    applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
     vi.clearAllMocks()
     Object.keys(routeQuery).forEach((key) => delete routeQuery[key])
+    postAuthState.consume = ''
+    postAuthState.peek = ''
     delete clerkState.signIn.value.status
     delete clerkState.signIn.value.supportedFirstFactors
     delete clerkState.signIn.value.supportedSecondFactors
@@ -94,6 +101,15 @@ describe('SignInView', () => {
       identifier: 'alexmorgan',
       password: 'secret-pass',
     })
+  })
+
+  it('marks an OAuth handoff for completion recovery before leaving the app', async () => {
+    const wrapper = mount(SignInView, { global: { stubs: ['RouterLink'] } })
+
+    await wrapper.find('button[data-strategy="oauth_google"]').trigger('click')
+    await flushPromises()
+
+    expect(window.localStorage.getItem('socceroctopus.postAuthCompletion')).not.toBeNull()
   })
 
   it('keeps TOTP second-factor rendering', async () => {
@@ -294,5 +310,58 @@ describe('SignInView', () => {
       global: { stubs: ['RouterLink'] },
     })
     expect(wrapper.find('button[data-strategy="oauth_facebook"]').exists()).toBe(false)
+  })
+
+  it('renders localized Atlas copy, providers, fields, and account links in Spanish', () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    const wrapper = mount(SignInView, { global: { stubs: { RouterLink: RouterLinkStub } } })
+
+    expect(wrapper.text()).toContain('Usa tu cuenta de SoccerOctopus para continuar.')
+    expect(wrapper.text()).toContain('Iniciar sesión')
+    expect(wrapper.text()).toContain('Continuar con Google')
+    expect(wrapper.text()).toContain('Continuar con X')
+    expect(wrapper.text()).toContain('Correo o nombre de usuario')
+    expect(wrapper.text()).toContain('¿Has olvidado tu contraseña?')
+    expect(wrapper.text()).toContain('Crear una cuenta')
+    expect(wrapper.find('input[autocomplete="username"]').attributes('placeholder')).toBe('Correo electrónico o usuario')
+    expect(wrapper.findAll('[data-to]').map((link) => link.attributes('data-to'))).toEqual(['/forgot-password', '/sign-up'])
+  })
+
+  it('keeps stable loading and error feedback for credential sign-in', async () => {
+    let rejectSignIn
+    clerkState.signIn.value.create.mockImplementation(() => new Promise((resolve, reject) => { rejectSignIn = reject }))
+    const wrapper = mount(SignInView, { global: { stubs: ['RouterLink'] } })
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('input[autocomplete="current-password"]').setValue('secret-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+
+    expect(wrapper.text()).toContain('Signing in...')
+    expect(wrapper.find('form').attributes('aria-busy')).toBe('true')
+    expect(wrapper.find('.btn-primary').attributes('disabled')).toBeDefined()
+    rejectSignIn(new Error('Incorrect password'))
+    await flushPromises()
+    expect(wrapper.find('.error-box').text()).toContain('Incorrect password')
+    expect(wrapper.find('.error-box').attributes('role')).toBe('alert')
+    expect(wrapper.find('.btn-primary').attributes('disabled')).toBeUndefined()
+  })
+
+  it('preserves the canonical localized return path for password and OAuth sign-in', async () => {
+    const destination = '/es/competitions/world-cup-2026/markets?source=nav#questions'
+    postAuthState.consume = destination
+    postAuthState.peek = destination
+    const wrapper = mount(SignInView, { global: { stubs: ['RouterLink'] } })
+    await wrapper.find('input[autocomplete="username"]').setValue('alexmorgan')
+    await wrapper.find('input[autocomplete="current-password"]').setValue('secret-pass')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+    expect(routerPush).toHaveBeenLastCalledWith(destination)
+
+    await wrapper.find('button[data-strategy="oauth_google"]').trigger('click')
+    await flushPromises()
+    expect(clerkState.signIn.value.authenticateWithRedirect).toHaveBeenLastCalledWith({
+      strategy: 'oauth_google',
+      redirectUrl: '/sso-callback',
+      redirectUrlComplete: destination,
+    })
   })
 })

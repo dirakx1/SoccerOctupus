@@ -1,0 +1,42 @@
+{
+  "eyebrow": "Privacidad y preferencias",
+  "title": "Política de cookies",
+  "updated": "Última actualización: junio de 2026",
+  "intro": "Cómo usa SoccerOctopus las cookies para ofrecer un servicio funcional y recordar tus preferencias.",
+  "back": "Volver al inicio",
+  "sections": {
+    "what": {
+      "title": "1. Qué son las cookies",
+      "body": "Las cookies son pequeños archivos de texto que se guardan en tu navegador cuando visitas un sitio web. Ayudan al sitio a recordar tus preferencias, a mantener tu sesión iniciada y a comprender cómo se utiliza la plataforma. SoccerOctopus utiliza un conjunto mínimo de cookies para ofrecer un servicio funcional."
+    },
+    "cookies": { "title": "2. Cookies que usamos" },
+    "choices": {
+      "title": "3. Tus opciones",
+      "body": "Cuando visitas SoccerOctopus por primera vez, se te muestra un aviso de cookies. Puedes aceptar todas las cookies, incluidas las analíticas, o elegir solo las necesarias, que cubren únicamente la autenticación y el almacenamiento del consentimiento.",
+      "resetHelp": "Puedes retirar o cambiar tu consentimiento en cualquier momento borrando el almacenamiento local de tu navegador para este sitio o seleccionando el botón que aparece a continuación.",
+      "reset": "Restablecer preferencias de cookies"
+    },
+    "thirdParty": {
+      "title": "4. Cookies de terceros",
+      "body": "La autenticación la proporciona un servicio de autenticación externo, que puede establecer cookies como parte del proceso de inicio de sesión. Estas cookies son estrictamente necesarias para operar el servicio. Ponte en contacto con nosotros si necesitas más información sobre las prácticas de privacidad del servicio de autenticación."
+    },
+    "browser": {
+      "title": "5. Controles del navegador",
+      "body": "Todos los principales navegadores te permiten bloquear o eliminar cookies desde su configuración. Ten en cuenta que bloquear las cookies necesarias impedirá que el inicio de sesión funcione. Enlaces a la ayuda de los navegadores:"
+    },
+    "contact": {
+      "title": "6. Contacto",
+      "prefix": "Las preguntas sobre esta política pueden dirigirse al equipo de SoccerOctopus a través de la página de ",
+      "link": "Aviso legal",
+      "suffix": "."
+    }
+  },
+  "table": { "name": "Nombre / prefijo", "type": "Tipo", "purpose": "Finalidad", "duration": "Duración" },
+  "types": { "necessary": "Necesarias", "analytics": "Analíticas" },
+  "cookies": {
+    "session": { "purpose": "Autenticación: mantiene tu sesión iniciada e identifica tu sesión de forma segura.", "duration": "Sesión / hasta 1 año" },
+    "consent": { "purpose": "Guarda tu elección de consentimiento de cookies para que no volvamos a mostrar el aviso.", "duration": "1 año" },
+    "analytics": { "purpose": "Google Analytics: nos ayuda a entender qué páginas se visitan y cómo se usa el motor de enjambre. Solo se establece si aceptas las cookies analíticas.", "duration": "Hasta 2 años" }
+  },
+  "browsers": { "chrome": "Google Chrome", "firefox": "Mozilla Firefox", "safari": "Apple Safari", "edge": "Microsoft Edge" }
+}

@@ -1,0 +1,90 @@
+{
+  "page": {
+    "eyebrow": "Tournament / {competition}",
+    "title": "Follow the field. Project the finish.",
+    "description": "Read the official group-stage record, then simulate the remaining knockout path from the current tournament state."
+  },
+  "tabs": {
+    "label": "Tournament views",
+    "live": "Live groups",
+    "simulation": "Tournament simulation"
+  },
+  "live": {
+    "status": "Live results",
+    "source": "Source",
+    "summary": "{count} matches played",
+    "standings": "Group standings",
+    "group": "Group {group}",
+    "groupTable": "Standings for Group {group}",
+    "results": "Played matches",
+    "matchLabel": "Group {group}: {home} against {away}",
+    "loading": "Loading live tournament results",
+    "loadingDescription": "Retrieving current group standings and played matches.",
+    "empty": "No live tournament data is available yet.",
+    "emptyDescription": "Standings and played matches will appear when the live feed has data.",
+    "error": "We couldn't load live tournament results.",
+    "errorDescription": "Retry the live feed to see current standings and played matches.",
+    "retry": "Retry live results",
+    "noMatches": "No matches have been played yet."
+  },
+  "standings": {
+    "position": "Pos",
+    "team": "Team",
+    "played": "P",
+    "won": "W",
+    "drawn": "D",
+    "lost": "L",
+    "goalsFor": "GF",
+    "goalsAgainst": "GA",
+    "goalDifference": "GD",
+    "points": "Pts"
+  },
+  "simulation": {
+    "option": "Use full swarm",
+    "optionDescription": "Calls all four specialized agents for each predicted match and may take longer.",
+    "note": "Played fixtures use official results. Only the remaining knockout matches are predicted.",
+    "run": "Run tournament simulation",
+    "running": "Tournament simulation running",
+    "longRunningTitle": "The tournament path is still being calculated.",
+    "longRunningDescription": "A full-swarm run can take longer while specialized agents analyse every remaining match.",
+    "error": "We couldn't run the tournament simulation.",
+    "errorFallback": "The simulation service did not return a result. Try again.",
+    "empty": "No simulation has been run.",
+    "emptyDescription": "Run the tournament simulation to project the podium and remaining knockout bracket."
+  },
+  "billing": {
+    "subscriptionRequired": "An active subscription is required to run a tournament simulation.",
+    "paymentRequired": "Billing attention is required before another tournament simulation can run.",
+    "featureLimitReached": "The tournament simulation limit has been reached for this billing cycle."
+  },
+  "result": {
+    "label": "Simulation result",
+    "podium": "Projected podium",
+    "champion": "Champion",
+    "runnerUp": "Runner-up",
+    "thirdPlace": "Third place",
+    "championProbability": "Final-win probability",
+    "bracket": "Knockout bracket"
+  },
+  "rounds": {
+    "roundOf32": "Round of 32",
+    "roundOf16": "Round of 16",
+    "quarterFinal": "Quarter-finals",
+    "semiFinal": "Semi-finals",
+    "thirdPlace": "Third-place play-off",
+    "final": "Final",
+    "matchCount": "{count} match | {count} matches"
+  },
+  "match": {
+    "official": "Official",
+    "predicted": "Predicted",
+    "final": "Final result",
+    "homeShort": "H",
+    "drawShort": "D",
+    "awayShort": "A",
+    "winner": "Winner",
+    "probabilities": "{homeLabel} {home} / {drawLabel} {draw} / {awayLabel} {away}",
+    "officialLabel": "Official final: {home} against {away}, {score}",
+    "predictedLabel": "Predicted match: {home} against {away}, {score}"
+  }
+}

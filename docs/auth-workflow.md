@@ -9,11 +9,11 @@ and sign-up components.
 | Area | File | Purpose |
 |---|---|---|
 | Frontend auth provider | `frontend/src/main.js` | Installs Clerk Vue with `VITE_CLERK_PUBLISHABLE_KEY` and protects routes. |
-| Sign in UI | `frontend/src/views/SignInView.vue` | Custom email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
-| Sign up UI | `frontend/src/views/SignUpView.vue` | Custom account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
-| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Custom email-code password reset flow with password-policy guidance. |
-| OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Handles social OAuth redirects from Clerk and routes incomplete username sign-ups to the continuation page. |
-| Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Completes Clerk-owned OAuth sign-ups that are missing the required username. |
+| Sign in UI | `frontend/src/views/SignInView.vue` | Localized Tournament Atlas email-or-username/password sign-in, MFA, Client Trust verification, and social auth flow. |
+| Sign up UI | `frontend/src/views/SignUpView.vue` | Localized Tournament Atlas account creation with email, username, password policy, CAPTCHA mount, and email-code verification flow. |
+| Password reset UI | `frontend/src/views/ForgotPasswordView.vue` | Localized Tournament Atlas email-code password reset flow with password-policy guidance. |
+| OAuth callback | `frontend/src/views/SSOCallbackView.vue` | Localized Tournament Atlas pending and recovery surface around Clerk's social OAuth redirect callback. |
+| Username continuation | `frontend/src/views/CompleteUsernameView.vue` | Localized Tournament Atlas continuation for Clerk-owned OAuth sign-ups that are missing the required username. |
 | Session hydration | `frontend/src/lib/clerkSession.js` | Activates the Clerk session, fetches a token, calls `/api/me`, and updates local auth state. |
 | Profile security UI | `frontend/src/components/TwoFactorSettings.vue` | Custom authenticator-app and backup-code management backed by Clerk user APIs. |
 | API token injection | `frontend/src/App.vue` | Installs the Axios bearer-token interceptor from inside Vue setup. |
@@ -110,6 +110,14 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
     hydration without repeating sign-up or verification and shows a dedicated
     retry action if account loading still fails.
 
+`/sign-up` remains a flat public route and follows the active persisted Locale.
+Frontend-owned fields, provider progress, password-policy context, verification,
+resend, validation fallbacks, and the Sign In link are localized in English and
+Spanish. Credential and OAuth completion preserve the stored local post-auth
+destination, including Locale, query, and hash. Clerk error detail and email
+values remain source data. The OAuth callback uses the same localized Atlas auth
+presentation and redirect contract described below.
+
 ## Social OAuth Workflow
 
 1. User selects `Continue with Google` or `Continue with X` on `/sign-in` or
@@ -121,7 +129,8 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 3. Clerk redirects the browser through the provider's OAuth consent flow.
 4. The provider returns to `/sso-callback`.
 5. `SSOCallbackView.vue` renders `AuthenticateWithRedirectCallback`, which lets
-   Clerk finish the OAuth flow, activate the session, and return to `/`.
+   Clerk finish the OAuth flow, activate the session, and return to the stored
+   local post-auth destination or `/`.
    If the OAuth sign-in requires another factor, the callback routes to
    `/sign-in?resume=oauth` through `firstFactorUrl` or `secondFactorUrl` instead
    of opening provider-hosted UI. The query marker limits automatic resource
@@ -133,6 +142,30 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
    custom UI calls `signUp.update({ username })`. Username remains Clerk-owned.
 7. The existing router guard calls `/api/me`, which verifies the Clerk session
    token, syncs the local `users` row if needed, and updates local auth state.
+
+`/sso-callback` remains a flat public route and follows the active persisted
+Locale. Its Tournament Atlas pending status and Sign In / Sign Up recovery links
+are localized in English and Spanish. The Clerk callback mounts unconditionally;
+local English fallbacks keep the status readable if locale messages are not yet
+available without delaying `handleRedirectCallback()`.
+
+The app passes the stored local post-auth destination unchanged to all four Clerk
+force/fallback redirect parameters, preserving its Locale, query, and hash; `/`
+is used only when no valid destination exists. Clerk remains responsible for
+provider cancellation and callback errors, retrying or reloading its pending
+resource, activating the session, and applying the configured Sign In, Sign Up,
+factor, and username-continuation handoffs. The recovery links restart the
+existing custom auth flows without consuming the stored destination.
+
+`/complete-username` remains a flat public route and follows the active persisted
+Locale. Its Tournament Atlas form, loading state, validation fallback, completion
+error, and account links are localized in English and Spanish; Clerk-provided
+error detail and the pending Clerk username remain source values. Completion
+activates and hydrates the exact created session, then consumes the stored local
+post-auth destination without rebuilding its Locale, query, or hash. An
+unverified-email requirement returns the user to `/sign-up`, while a missing or
+incompatible pending Clerk sign-up shows a localized fallback with the same
+Sign Up handoff.
 
 ## Sign-In Workflow
 
@@ -153,30 +186,52 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 9. The frontend calls `attemptSecondFactor()` or `attemptFirstFactor()` depending
    on the active stage.
 10. When Clerk returns a created session, the frontend activates the session and
-    redirects to `/`.
+    consumes the stored local post-auth destination, including its Locale, query,
+    and hash. It falls back to `/` when no valid destination is stored.
+
+`/sign-in` is intentionally a flat public route during migration. It uses the
+active persisted Locale, so a redirect from an `es` Competition Workspace renders
+Spanish sign-in copy while the stored canonical workspace destination remains
+unchanged. Frontend-owned labels, validation fallbacks, provider progress,
+password continuation, MFA, Client Trust, and account links are localized in
+English and Spanish. Clerk-provided error detail and verification targets remain
+source values. OAuth callback and username continuation use their localized Atlas
+presentations while preserving their separate Clerk contracts.
 
 ## Profile Security Workflow
 
 1. User opens `/profile`.
-2. `ProfileView.vue` renders `TwoFactorSettings.vue` in the Security section.
-3. The component reads Clerk user flags:
+2. `ProfileView.vue` renders the localized Tournament Atlas account, password,
+   billing, and Security sections using the active persisted Locale. Its
+   frontend-owned labels, validation fallbacks, loading labels, billing actions,
+   and two-factor setup, backup-code, and recovery copy are available in English
+   and Spanish; Clerk detail, backend billing errors, and usage feature labels
+   remain source values.
+3. `ProfileView.vue` renders `TwoFactorSettings.vue` as an Atlas-tokenized
+   Security workflow without changing its Clerk mutation or reverification
+   ownership.
+4. `ReverificationDialog.vue` is the shared Atlas-tokenized verification
+   surface for protected actions. Its password, passkey, email/SMS code,
+   authenticator-code, and backup-code states use the active English or Spanish
+   locale; action-specific prompts are supplied by the initiating workflow.
+5. The component reads Clerk user flags:
    - `totpEnabled`
    - `backupCodeEnabled`
    - `twoFactorEnabled`
-4. To enable authenticator-app 2FA, the component calls `user.createTOTP()`,
+6. To enable authenticator-app 2FA, the component calls `user.createTOTP()`,
    renders a QR code, offers the secret as an optional setup key, and asks for an
    authenticator code. The raw provisioning URI is never displayed.
-5. On verification, it calls `user.verifyTOTP({ code })` and then
+7. On verification, it calls `user.verifyTOTP({ code })` and then
    `user.createBackupCode()` when backup codes are not returned by TOTP verify.
-6. Backup codes are shown once with copy/download actions and cleared from
+8. Backup codes are shown once with copy/download actions and cleared from
    component state after the user confirms they saved them.
-7. Regeneration calls `user.createBackupCode()` and again shows codes once.
+9. Regeneration calls `user.createBackupCode()` and again shows codes once.
    The user is warned that this replaces all existing codes, and multi-factor
    reverification is required before generation.
-8. Empty or malformed backup-code responses are never reported as successful.
-9. Disabling authenticator-app 2FA calls `user.disableTOTP()` through the shared
+10. Empty or malformed backup-code responses are never reported as successful.
+11. Disabling authenticator-app 2FA calls `user.disableTOTP()` through the shared
    multi-factor reverification workflow.
-10. These Clerk mutations use verify-first mode: reverification completes before
+12. These Clerk mutations use verify-first mode: reverification completes before
     the mutation is invoked, so a committed operation is never replayed.
     Cancellation, overlapping requests, expired windows, and late SDK responses
     settle the active workflow instead of leaving it pending.
@@ -198,6 +253,13 @@ CLERK_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
    `activateSessionAndHydrateAuth()` and redirects to `/`.
 8. If Clerk requires a second factor after reset, the frontend sends the user
    back to `/sign-in` so the existing sign-in MFA flow can complete access.
+
+The flat `/forgot-password` route follows the active persisted Locale. Request,
+verification, password-policy, reset, resend, alternate-email, error, and Sign In
+labels are localized in English and Spanish. Account email and Clerk error detail
+remain source values. A completed reset preserves the existing behavior of
+activating the new session and routing to `/`; this flow does not consume or
+rewrite the stored Competition Workspace return destination.
 
 ## Client Trust Workflow
 
@@ -250,6 +312,21 @@ The helper:
 
 This avoids redirecting into protected app routes before the backend can verify
 the new Clerk session.
+
+### Completion Recovery Scope
+
+The global **Finishing sign-in** recovery panel is reserved for an explicit
+post-authentication handoff: a password sign-in, sign-up verification, password
+reset, username continuation, or OAuth provider return that has activated a
+Clerk session but has not yet hydrated `/api/me`.
+
+`frontend/src/lib/postAuthCompletion.js` records this handoff in local storage
+before session activation or an OAuth redirect. The marker survives the provider
+redirect, expires after ten minutes, and is cleared after successful hydration,
+activation failure, or explicit sign-out. This makes retry available for a real
+handoff failure without presenting completion copy during ordinary existing
+session hydration. Normal refreshes and navigation hydrate silently; protected
+route guards continue to own access fallback.
 
 ## Frontend Route and Token Flow
 

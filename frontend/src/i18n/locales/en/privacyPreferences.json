@@ -1,0 +1,42 @@
+{
+  "eyebrow": "Privacy and preferences",
+  "title": "Cookie policy",
+  "updated": "Last updated: June 2026",
+  "intro": "How SoccerOctopus uses cookies to provide a functioning service and remember your preferences.",
+  "back": "Back to home",
+  "sections": {
+    "what": {
+      "title": "1. What are cookies",
+      "body": "Cookies are small text files stored in your browser when you visit a website. They help the site remember your preferences, keep you signed in, and understand how people use the platform. SoccerOctopus uses a minimal set of cookies to provide a functioning service."
+    },
+    "cookies": { "title": "2. Cookies we use" },
+    "choices": {
+      "title": "3. Your choices",
+      "body": "When you first visit SoccerOctopus you are shown a cookie banner. You can choose to accept all cookies, including analytics, or necessary only, covering authentication and consent storage only.",
+      "resetHelp": "You can withdraw or change your consent at any time by clearing your browser's local storage for this site, or by selecting the button below.",
+      "reset": "Reset cookie preferences"
+    },
+    "thirdParty": {
+      "title": "4. Third-party cookies",
+      "body": "Authentication is provided by an external authentication service, which may set cookies as part of the sign-in flow. These cookies are strictly necessary to operate the service. Contact us if you need more information about the authentication service's privacy practices."
+    },
+    "browser": {
+      "title": "5. Browser controls",
+      "body": "All major browsers let you block or delete cookies in their settings. Note that blocking necessary cookies will prevent sign-in from working. Links to browser guidance:"
+    },
+    "contact": {
+      "title": "6. Contact",
+      "prefix": "Questions about this policy can be directed to the SoccerOctopus team via the ",
+      "link": "Legal Notice",
+      "suffix": " page."
+    }
+  },
+  "table": { "name": "Name / prefix", "type": "Type", "purpose": "Purpose", "duration": "Duration" },
+  "types": { "necessary": "Necessary", "analytics": "Analytics" },
+  "cookies": {
+    "session": { "purpose": "Authentication: keeps you signed in and identifies your session securely.", "duration": "Session / up to 1 year" },
+    "consent": { "purpose": "Stores your cookie consent choice so we do not show the banner again.", "duration": "1 year" },
+    "analytics": { "purpose": "Google Analytics: helps us understand which pages are visited and how the swarm engine is used. Only set if you consent to analytics cookies.", "duration": "Up to 2 years" }
+  },
+  "browsers": { "chrome": "Google Chrome", "firefox": "Mozilla Firefox", "safari": "Apple Safari", "edge": "Microsoft Edge" }
+}

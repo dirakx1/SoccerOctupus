@@ -1,0 +1,62 @@
+{
+  "eyebrow": "FIFA World Cup 2026 / tournament workspace",
+  "title": "Every match, one atlas.",
+  "intro": "SoccerOctopus brings the current World Cup field into one evidence-led workspace. Follow groups, run predictions, simulate the bracket, and inspect prediction markets.",
+  "scopeLabel": "Competition scope",
+  "host": "United States · Canada · Mexico",
+  "actionsLabel": "Tournament workflows",
+  "actions": {
+    "groups": {
+      "eyebrow": "Browse",
+      "title": "Groups",
+      "description": "Team ELO ratings and group rosters"
+    },
+    "predict": {
+      "eyebrow": "Analyse",
+      "title": "Predict a match",
+      "description": "Run the swarm on a fixture"
+    },
+    "bracket": {
+      "eyebrow": "Simulate",
+      "title": "Tournament simulation",
+      "description": "Follow the bracket from groups to the final"
+    },
+    "markets": {
+      "eyebrow": "Generate",
+      "title": "Prediction markets",
+      "description": "Match props and tournament futures"
+    }
+  },
+  "swarm": {
+    "eyebrow": "Model architecture",
+    "title": "Five agents, one calibrated signal.",
+    "description": "Each role contributes a distinct evidence stream before the ensemble writes its prediction.",
+    "videoAction": "View video intelligence evidence"
+  },
+  "agents": {
+    "statistical": {
+      "name": "Statistical agent",
+      "description": "ELO ratings, Poisson model, SofaScore attack and defence stats, and head-to-head records",
+      "weight": "1.8×"
+    },
+    "video": {
+      "name": "Video intelligence agent",
+      "description": "YouTube highlights engagement ratios, title sentiment, and tactical momentum scores",
+      "weight": "1.0×"
+    },
+    "form": {
+      "name": "Recent form agent",
+      "description": "Points earned in the last 10 official matches and goal rates adjusted by form trajectory",
+      "weight": "1.3×"
+    },
+    "tactical": {
+      "name": "Tactical agent",
+      "description": "Style-matchup matrix across high press, counter attack, possession, and defensive block",
+      "weight": "1.2×"
+    },
+    "aggregator": {
+      "name": "Aggregator agent",
+      "description": "Confidence-weighted ensemble with an LLM-synthesised narrative and key-factor extraction"
+    }
+  }
+}
