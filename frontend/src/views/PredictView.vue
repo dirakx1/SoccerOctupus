@@ -489,6 +489,7 @@ onMounted(loadTeams)
 .agent-probabilities strong { color: var(--color-text); font-family: var(--font-family-data); }
 .agent-row p { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: 0; }
 .spin { animation: prediction-spin 0.85s linear infinite; }
+.sr-only { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
 @keyframes prediction-spin { to { transform: rotate(360deg); } }
 @keyframes skeleton-pulse { 50% { opacity: 0.45; } }
 
