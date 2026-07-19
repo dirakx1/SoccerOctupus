@@ -40,45 +40,54 @@
       <div class="match-selectors">
         <label for="home-team">
           <span>{{ t('predictions.form.homeTeam') }}</span>
-          <select
-            id="home-team"
-            v-model="homeTeam"
-            data-testid="home-team"
-            :aria-invalid="sameTeam"
-            aria-describedby="selection-validation"
-          >
-            <option value="">{{ t('predictions.form.selectTeam') }}</option>
-            <option v-for="team in teams" :key="team.name" :value="team.name">
-              {{ team.name }} (ELO {{ integer(team.elo) }})
-            </option>
-          </select>
+          <span class="select-field">
+            <select
+              id="home-team"
+              v-model="homeTeam"
+              data-testid="home-team"
+              :aria-invalid="sameTeam"
+              aria-describedby="selection-validation"
+            >
+              <option value="">{{ t('predictions.form.selectTeam') }}</option>
+              <option v-for="team in teams" :key="team.name" :value="team.name">
+                {{ team.name }} (ELO {{ integer(team.elo) }})
+              </option>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
         </label>
 
         <span class="versus" aria-hidden="true">{{ t('predictions.form.versus') }}</span>
 
         <label for="away-team">
           <span>{{ t('predictions.form.awayTeam') }}</span>
-          <select
-            id="away-team"
-            v-model="awayTeam"
-            data-testid="away-team"
-            :aria-invalid="sameTeam"
-            aria-describedby="selection-validation"
-          >
-            <option value="">{{ t('predictions.form.selectTeam') }}</option>
-            <option v-for="team in teams" :key="team.name" :value="team.name">
-              {{ team.name }} (ELO {{ integer(team.elo) }})
-            </option>
-          </select>
+          <span class="select-field">
+            <select
+              id="away-team"
+              v-model="awayTeam"
+              data-testid="away-team"
+              :aria-invalid="sameTeam"
+              aria-describedby="selection-validation"
+            >
+              <option value="">{{ t('predictions.form.selectTeam') }}</option>
+              <option v-for="team in teams" :key="team.name" :value="team.name">
+                {{ team.name }} (ELO {{ integer(team.elo) }})
+              </option>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
         </label>
 
         <label for="match-stage" class="stage-select">
           <span>{{ t('predictions.form.stage') }}</span>
-          <select id="match-stage" v-model="stage" data-testid="match-stage">
-            <option v-for="option in stages" :key="option.value" :value="option.value">
-              {{ t(option.labelKey) }}
-            </option>
-          </select>
+          <span class="select-field">
+            <select id="match-stage" v-model="stage" data-testid="match-stage">
+              <option v-for="option in stages" :key="option.value" :value="option.value">
+                {{ t(option.labelKey) }}
+              </option>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
         </label>
       </div>
 
@@ -223,6 +232,7 @@ import { useRoute } from 'vue-router'
 import {
   AlertTriangle,
   BrainCircuit,
+  ChevronDown,
   Inbox,
   ListChecks,
   LoaderCircle,
@@ -378,7 +388,9 @@ onMounted(loadTeams)
 .match-selectors { align-items: end; display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(11rem, 0.55fr); }
 .match-selectors label { color: var(--color-text-muted); display: flex; flex-direction: column; font-size: var(--font-size-sm); gap: var(--space-2); }
 .match-selectors label > span { font-weight: var(--font-weight-semibold); }
-.match-selectors select { background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body); min-height: var(--control-height-lg); padding: 0 calc(var(--space-3) + 1.25rem) 0 var(--space-3); width: 100%; }
+.select-field { display: block; position: relative; width: 100%; }
+.select-field svg { color: var(--color-text-muted); pointer-events: none; position: absolute; right: var(--space-4); top: 50%; transform: translateY(-50%); }
+.match-selectors select { appearance: none; background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body); min-height: var(--control-height-lg); padding: 0 calc(var(--space-4) + 1.5rem) 0 var(--space-3); width: 100%; }
 .match-selectors select:hover { border-color: var(--color-border-strong); }
 .match-selectors select:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 2px; }
 .match-selectors select[aria-invalid="true"] { border-color: var(--color-danger); }

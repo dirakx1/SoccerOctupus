@@ -24,10 +24,10 @@
       <section v-else-if="!teams.length" class="state-panel"><Inbox /><div><h2>{{ t('markets.teams.emptyTitle') }}</h2><p>{{ t('markets.teams.emptyBody') }}</p></div></section>
       <form v-else class="market-form" @submit.prevent="runMatchMarkets">
         <div class="selectors">
-          <label><span>{{ t('markets.form.home') }}</span><select v-model="homeTeam" data-testid="home-team" :aria-invalid="sameTeam"><option value="">{{ t('markets.form.select') }}</option><option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }} (ELO {{ integer(team.elo) }})</option></select></label>
+          <label><span>{{ t('markets.form.home') }}</span><span class="select-field"><select v-model="homeTeam" data-testid="home-team" :aria-invalid="sameTeam"><option value="">{{ t('markets.form.select') }}</option><option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }} (ELO {{ integer(team.elo) }})</option></select><ChevronDown :size="18" aria-hidden="true" /></span></label>
           <span class="versus">{{ t('markets.form.versus') }}</span>
-          <label><span>{{ t('markets.form.away') }}</span><select v-model="awayTeam" data-testid="away-team" :aria-invalid="sameTeam"><option value="">{{ t('markets.form.select') }}</option><option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }} (ELO {{ integer(team.elo) }})</option></select></label>
-          <label><span>{{ t('markets.form.stage') }}</span><select v-model="stage" data-testid="match-stage"><option v-for="item in stages" :key="item.value" :value="item.value">{{ t(item.label) }}</option></select></label>
+          <label><span>{{ t('markets.form.away') }}</span><span class="select-field"><select v-model="awayTeam" data-testid="away-team" :aria-invalid="sameTeam"><option value="">{{ t('markets.form.select') }}</option><option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }} (ELO {{ integer(team.elo) }})</option></select><ChevronDown :size="18" aria-hidden="true" /></span></label>
+          <label><span>{{ t('markets.form.stage') }}</span><span class="select-field"><select v-model="stage" data-testid="match-stage"><option v-for="item in stages" :key="item.value" :value="item.value">{{ t(item.label) }}</option></select><ChevronDown :size="18" aria-hidden="true" /></span></label>
         </div>
         <div class="form-footer"><p :class="{ 'is-error': sameTeam }">{{ validationMessage }}</p><button type="submit" data-testid="run-match" :disabled="!canRun || matchLoading"><LoaderCircle v-if="matchLoading" class="spin" :size="17" /><Sparkles v-else :size="17" />{{ matchLoading ? t('markets.form.matchLoading') : t('markets.form.matchAction') }}</button></div>
       </form>
@@ -61,7 +61,7 @@
 <script setup>
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AlertTriangle, ExternalLink, Globe2, Inbox, Info, LoaderCircle, RotateCcw, Sparkles, Trophy } from '@lucide/vue'
+import { AlertTriangle, ChevronDown, ExternalLink, Globe2, Inbox, Info, LoaderCircle, RotateCcw, Sparkles, Trophy } from '@lucide/vue'
 import AtlasPageHeader from '../ui/patterns/AtlasPageHeader.vue'
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
 import BillingPlansLink from '../components/BillingPlansLink.vue'
@@ -164,13 +164,25 @@ font-size:var(--font-size-sm);
 gap:var(--space-2)}
 .selectors label>span{
 font-weight:var(--font-weight-semibold)}
-select{
+.select-field{
+display:block;
+position:relative;
+width:100%}
+.select-field svg{
+color:var(--color-text-muted);
+pointer-events:none;
+position:absolute;
+right:var(--space-4);
+top:50%;
+transform:translateY(-50%)}
+.select-field select{
+appearance:none;
 background:var(--color-surface-raised);
 border:var(--border-width-thin) solid var(--color-border);
 border-radius:var(--radius-md);
 color:var(--color-text);
 min-height:var(--control-height-lg);
-padding:0 calc(var(--space-3) + 1.25rem) 0 var(--space-3);
+padding:0 calc(var(--space-4) + 1.5rem) 0 var(--space-3);
 width:100%}
 .versus{
 color:var(--color-accent);
