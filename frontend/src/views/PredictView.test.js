@@ -115,6 +115,8 @@ describe('PredictView', () => {
     const loadingWrapper = mountPredict()
     await loadingWrapper.vm.$nextTick()
     expect(loadingWrapper.find('[data-testid="team-loading"]').attributes('aria-busy')).toBe('true')
+    expect(loadingWrapper.find('[data-testid="team-loading"] svg').exists()).toBe(false)
+    expect(loadingWrapper.findAll('[data-testid="team-loading"] .selector-skeletons span')).toHaveLength(3)
     loadingWrapper.unmount()
 
     api.get.mockResolvedValue({ data: { teams: [] } })
@@ -166,6 +168,8 @@ describe('PredictView', () => {
     await selectMatch(wrapper)
     await wrapper.find('form').trigger('submit.prevent')
     expect(wrapper.find('[data-testid="prediction-loading"]').attributes('aria-busy')).toBe('true')
+    expect(wrapper.find('[data-testid="prediction-loading"] svg').exists()).toBe(false)
+    expect(wrapper.findAll('[data-testid="prediction-loading"] .result-skeleton span')).toHaveLength(3)
 
     rejectPrediction(new Error('prediction timeout'))
     await flushPromises()

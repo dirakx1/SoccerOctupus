@@ -176,7 +176,6 @@
 
       <div v-if="loading" class="simulation-loading" data-testid="simulation-loading" aria-busy="true">
         <div>
-          <LoaderCircle :size="22" aria-hidden="true" />
           <h2>{{ t('tournament.simulation.longRunningTitle') }}</h2>
           <p>{{ t('tournament.simulation.longRunningDescription') }}</p>
         </div>
@@ -212,7 +211,7 @@
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { AlertTriangle, GitBranch, Inbox, LoaderCircle, Play, Radio, RotateCcw } from '@lucide/vue'
+import { AlertTriangle, GitBranch, Inbox, Play, Radio, RotateCcw } from '@lucide/vue'
 
 import BillingPlansLink from '../components/BillingPlansLink.vue'
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
@@ -398,8 +397,7 @@ tbody th { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibo
 .simulation-controls button:disabled { cursor: wait; opacity: 0.62; }
 .simulation-note { margin: var(--space-3) 0 var(--space-6); }
 .simulation-loading { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-6); grid-template-columns: minmax(14rem, 0.8fr) minmax(20rem, 1.2fr); padding: var(--space-8); }
-.simulation-loading > div:first-child { align-items: flex-start; color: var(--color-accent); display: flex; flex-direction: column; gap: var(--space-3); }
-.simulation-loading svg { animation: simulation-spin 1s linear infinite; }
+.simulation-loading > div:first-child { display: flex; flex-direction: column; gap: var(--space-3); }
 .simulation-loading h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
 .simulation-loading p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: 0; }
 .simulation-skeleton { display: grid; gap: var(--space-2); grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -407,7 +405,6 @@ tbody th { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibo
 .state-panel :deep(.billing-status), .state-panel :deep(.billing-plans-link) { margin-top: var(--space-4); }
 .sr-only { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
 @keyframes skeleton-pulse { 50% { opacity: 0.45; } }
-@keyframes simulation-spin { to { transform: rotate(360deg); } }
 @media (max-width: 980px) { .standings-grid, .live-loading { grid-template-columns: 1fr; } }
 @media (max-width: 720px) {
   .tournament-tabs button { flex: 1 1 50%; justify-content: center; padding: 0 var(--space-3); }
@@ -424,5 +421,5 @@ tbody th { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibo
   .live-match time { grid-column: 1 / -1; }
   .state-panel { padding: var(--space-5); }
 }
-@media (prefers-reduced-motion: reduce) { .skeleton-line, .simulation-skeleton span, .simulation-loading svg { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .skeleton-line, .simulation-skeleton span { animation: none; } }
 </style>

@@ -230,6 +230,10 @@ Implemented for Predict Match:
 - English/Spanish frontend copy, locale-aware numeric presentation, distinct-team
   validation, team-feed states, long-running state, run error, complete result
   rendering, and four-specialized-agent agreement have focused tests.
+- Structured skeletons are the sole page-level loading indicator for the Predict
+  team feed, Match Prediction run state, and Tournament Simulation run state.
+  Button spinners remain only as local action feedback; standalone page states
+  without a skeleton retain their spinner.
 - `ProbMeter`, `BillingStatusNotice`, and `BillingPlansLink` use Atlas tokens and
   localized labels without changing their interfaces for other callers.
 

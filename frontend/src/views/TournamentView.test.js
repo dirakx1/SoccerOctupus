@@ -226,6 +226,8 @@ describe('TournamentView', () => {
 
     expect(api.post).toHaveBeenCalledWith('/api/predictions/tournament', { use_swarm: false })
     expect(wrapper.find('[data-testid="simulation-loading"]').attributes('aria-busy')).toBe('true')
+    expect(wrapper.find('[data-testid="simulation-loading"] svg').exists()).toBe(false)
+    expect(wrapper.findAll('[data-testid="simulation-loading"] .simulation-skeleton span')).toHaveLength(6)
     expect(wrapper.text()).toContain('The tournament path is still being calculated.')
     expect(wrapper.find('[data-testid="run-simulation"]').attributes('disabled')).toBeDefined()
 

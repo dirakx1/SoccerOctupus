@@ -8,7 +8,6 @@
 
     <section v-if="teamLoading" data-testid="team-loading" class="team-state team-loading" aria-busy="true">
       <div>
-        <LoaderCircle :size="22" class="spin" aria-hidden="true" />
         <h2>{{ t('predictions.teams.loading') }}</h2>
         <p>{{ t('predictions.teams.loadingDescription') }}</p>
       </div>
@@ -102,7 +101,6 @@
 
     <section v-if="loading" data-testid="prediction-loading" class="prediction-loading" aria-busy="true">
       <div>
-        <LoaderCircle :size="22" class="spin" aria-hidden="true" />
         <h2>{{ t('predictions.run.longRunningTitle') }}</h2>
         <p>{{ t('predictions.run.longRunningDescription') }}</p>
       </div>
@@ -415,13 +413,7 @@ onMounted(loadTeams)
 .team-loading,
 .prediction-loading { display: grid; grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr); }
 .team-loading > div:first-child,
-.prediction-loading > div:first-child { align-items: flex-start; display: grid; gap: var(--space-2); grid-template-columns: auto 1fr; }
-.team-loading h2,
-.prediction-loading h2 { grid-column: 2; }
-.team-loading p,
-.prediction-loading p { grid-column: 2; }
-.team-loading svg,
-.prediction-loading svg { color: var(--color-accent); grid-row: 1 / span 2; }
+.prediction-loading > div:first-child { display: grid; gap: var(--space-2); }
 .selector-skeletons,
 .result-skeleton { display: grid; gap: var(--space-3); }
 .selector-skeletons { grid-template-columns: repeat(3, 1fr); }
