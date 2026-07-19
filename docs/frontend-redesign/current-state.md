@@ -98,7 +98,7 @@ phase.
 | `/groups` | Signed in | Redirect | Redirects to the canonical English Groups workspace. |
 | `/:locale/competitions/:competitionEditionSlug/groups` | Signed in | `GroupsView.vue` | Atlas standings tables from `GET /api/predictions/groups`, with Team name, ELO, and rank sorted by descending ELO, response-derived counts, loading, empty, and retryable error states. |
 | `/predict` | Signed in | Redirect | Redirects to the canonical English Match Prediction workspace. |
-| `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Atlas Match Prediction workflow with localized team/stage controls, complete team-feed and run states, exact existing API payload/billing gates, probabilities, predicted score/xG, confidence, four-agent agreement, source narrative, key factors, and Agent detail. |
+| `/:locale/competitions/:competitionEditionSlug/predict` | Signed in | `PredictView.vue` | Atlas Match Prediction workflow with localized team/stage controls, a form-shaped team-feed skeleton, complete run states, exact existing API payload/billing gates, probabilities, predicted score/xG, confidence, four-agent agreement, source narrative, key factors, and Agent detail. |
 | `/tournament` | Signed in | Redirect | Redirects to the canonical English Knockout Bracket workspace. |
 | `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Atlas live group standings/results plus optional-swarm Tournament Simulation, with complete feed/run states, localized controls, exact existing API and billing behavior, response-derived podium fields, and an ordered horizontally scrollable knockout bracket. |
 | `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |

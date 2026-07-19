@@ -116,7 +116,8 @@ describe('PredictView', () => {
     await loadingWrapper.vm.$nextTick()
     expect(loadingWrapper.find('[data-testid="team-loading"]').attributes('aria-busy')).toBe('true')
     expect(loadingWrapper.find('[data-testid="team-loading"] svg').exists()).toBe(false)
-    expect(loadingWrapper.findAll('[data-testid="team-loading"] .selector-skeletons span')).toHaveLength(3)
+    expect(loadingWrapper.findAll('[data-testid="team-loading"] .skeleton-field')).toHaveLength(3)
+    expect(loadingWrapper.find('[data-testid="team-loading"] .skeleton-action').exists()).toBe(true)
     loadingWrapper.unmount()
 
     api.get.mockResolvedValue({ data: { teams: [] } })

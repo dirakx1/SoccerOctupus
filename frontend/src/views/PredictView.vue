@@ -6,14 +6,15 @@
       :description="t('predictions.page.description')"
     />
 
-    <section v-if="teamLoading" data-testid="team-loading" class="team-state team-loading" aria-busy="true">
-      <div>
-        <h2>{{ t('predictions.teams.loading') }}</h2>
-        <p>{{ t('predictions.teams.loadingDescription') }}</p>
+    <section v-if="teamLoading" data-testid="team-loading" class="prediction-form prediction-form-skeleton" aria-busy="true">
+      <p class="sr-only" aria-live="polite">{{ t('predictions.teams.loading') }} {{ t('predictions.teams.loadingDescription') }}</p>
+      <div class="match-selectors selector-skeletons" aria-hidden="true">
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+        <span class="skeleton-line skeleton-versus"></span>
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
       </div>
-      <div class="selector-skeletons" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </div>
+      <div class="form-footer" aria-hidden="true"><span class="skeleton-line skeleton-footer-copy"></span><span class="skeleton-line skeleton-action"></span></div>
     </section>
 
     <section v-else-if="teamError" class="team-state state-error" role="alert">
@@ -385,6 +386,7 @@ onMounted(loadTeams)
 <style scoped>
 .prediction-page { display: flex; flex-direction: column; gap: var(--space-8); }
 .prediction-form { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); padding: var(--space-6); }
+.prediction-form-skeleton { pointer-events: none; }
 .match-selectors { align-items: end; display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(11rem, 0.55fr); }
 .match-selectors label { color: var(--color-text-muted); display: flex; flex-direction: column; font-size: var(--font-size-sm); gap: var(--space-2); }
 .match-selectors label > span { font-weight: var(--font-weight-semibold); }
@@ -428,9 +430,16 @@ onMounted(loadTeams)
 .prediction-loading > div:first-child { display: grid; gap: var(--space-2); }
 .selector-skeletons,
 .result-skeleton { display: grid; gap: var(--space-3); }
-.selector-skeletons { grid-template-columns: repeat(3, 1fr); }
-.selector-skeletons span,
-.result-skeleton span { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; min-height: var(--control-height-lg); }
+.selector-skeletons { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(11rem, 0.55fr); }
+.skeleton-line,
+.result-skeleton span { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.selector-skeletons .skeleton-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeleton-label { height: 1rem; width: 38%; }
+.skeleton-select { height: var(--control-height-lg); width: 100%; }
+.skeleton-versus { align-self: end; height: 1rem; margin-bottom: calc((var(--control-height-lg) - 1rem) / 2); width: 2.75rem; }
+.skeleton-footer-copy { height: 1rem; width: 16rem; }
+.skeleton-action { height: var(--control-height-lg); width: 12rem; }
+.result-skeleton span { min-height: var(--control-height-lg); }
 .result-skeleton span:first-child { height: 4rem; }
 
 .prediction-result { border-top: var(--border-width-strong) solid var(--color-accent); display: flex; flex-direction: column; }
@@ -500,6 +509,9 @@ onMounted(loadTeams)
   .team-loading,
   .prediction-loading { grid-template-columns: 1fr; }
   .selector-skeletons { grid-template-columns: 1fr; }
+  .skeleton-versus { align-self: center; margin: 0; }
+  .skeleton-footer-copy,
+  .skeleton-action { width: 100%; }
   .result-scoreboard { grid-template-columns: 1fr; }
   .result-team,
   .result-team-away { text-align: center; }
@@ -512,7 +524,7 @@ onMounted(loadTeams)
 }
 @media (prefers-reduced-motion: reduce) {
   .spin,
-  .selector-skeletons span,
+  .skeleton-line,
   .result-skeleton span { animation: none; }
 }
 </style>
