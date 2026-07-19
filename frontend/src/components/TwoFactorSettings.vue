@@ -2,8 +2,8 @@
   <div class="two-factor-settings">
     <div v-if="!setupResource" class="security-control-row">
       <div class="security-control-copy">
-        <strong>{{ t('profile.twoFactor.authenticator') }}</strong>
-        <span>{{ t('profile.twoFactor.description') }}</span>
+        <strong>{{ t("profile.twoFactor.authenticator") }}</strong>
+        <span>{{ t("profile.twoFactor.description") }}</span>
       </div>
       <div class="security-control-actions">
         <button
@@ -15,8 +15,8 @@
         >
           {{
             loadingAction === "setup"
-              ? t('profile.twoFactor.starting')
-              : t('profile.twoFactor.enable')
+              ? t("profile.twoFactor.starting")
+              : t("profile.twoFactor.enable")
           }}
         </button>
         <template v-else>
@@ -28,8 +28,8 @@
           >
             {{
               loadingAction === "backup"
-                ? t('profile.twoFactor.generating')
-                : t('profile.twoFactor.regenerate')
+                ? t("profile.twoFactor.generating")
+                : t("profile.twoFactor.regenerate")
             }}
           </button>
           <button
@@ -40,8 +40,8 @@
           >
             {{
               loadingAction === "disable"
-                ? t('profile.twoFactor.disabling')
-                : t('profile.twoFactor.disable')
+                ? t("profile.twoFactor.disabling")
+                : t("profile.twoFactor.disable")
             }}
           </button>
         </template>
@@ -58,8 +58,8 @@
       data-testid="backup-regeneration-confirmation"
     >
       <div>
-        <strong>{{ t('profile.twoFactor.replaceTitle') }}</strong>
-        <p>{{ t('profile.twoFactor.replaceDescription') }}</p>
+        <strong>{{ t("profile.twoFactor.replaceTitle") }}</strong>
+        <p>{{ t("profile.twoFactor.replaceDescription") }}</p>
       </div>
       <div class="action-row">
         <button
@@ -70,8 +70,8 @@
         >
           {{
             loadingAction === "backup"
-                ? t('profile.twoFactor.generating')
-                : t('profile.twoFactor.generate')
+              ? t("profile.twoFactor.generating")
+              : t("profile.twoFactor.generate")
           }}
         </button>
         <button
@@ -80,7 +80,7 @@
           :disabled="loading"
           @click="cancelBackupRegeneration"
         >
-          {{ t('profile.twoFactor.cancel') }}
+          {{ t("profile.twoFactor.cancel") }}
         </button>
       </div>
     </div>
@@ -91,25 +91,25 @@
       data-testid="backup-codes-panel"
     >
       <div class="backup-heading">
-        <h3>{{ t('profile.twoFactor.backupTitle') }}</h3>
-        <p>{{ t('profile.twoFactor.backupDescription') }}</p>
+        <h3>{{ t("profile.twoFactor.backupTitle") }}</h3>
+        <p>{{ t("profile.twoFactor.backupDescription") }}</p>
       </div>
       <pre>{{ backupCodesText }}</pre>
       <div class="action-row">
         <button class="btn-secondary" type="button" @click="copyBackupCodes">
-          {{ t('profile.twoFactor.copyCodes') }}
+          {{ t("profile.twoFactor.copyCodes") }}
         </button>
         <button
           class="btn-secondary"
           type="button"
           @click="downloadBackupCodes"
         >
-          {{ t('profile.twoFactor.downloadCodes') }}
+          {{ t("profile.twoFactor.downloadCodes") }}
         </button>
       </div>
       <label class="checkbox-field">
         <input v-model="backupSaved" type="checkbox" />
-        <span>{{ t('profile.twoFactor.savedCodes') }}</span>
+        <span>{{ t("profile.twoFactor.savedCodes") }}</span>
       </label>
       <button
         class="btn-primary"
@@ -117,14 +117,14 @@
         :disabled="!backupSaved"
         @click="closeBackupCodes"
       >
-        {{ t('profile.twoFactor.done') }}
+        {{ t("profile.twoFactor.done") }}
       </button>
     </div>
 
     <div v-if="setupResource" class="setup-panel">
       <div class="setup-heading">
-        <h3>{{ t('profile.twoFactor.connectTitle') }}</h3>
-        <p>{{ t('profile.twoFactor.connectDescription') }}</p>
+        <h3>{{ t("profile.twoFactor.connectTitle") }}</h3>
+        <p>{{ t("profile.twoFactor.connectDescription") }}</p>
       </div>
       <div class="setup-content">
         <div class="setup-qr-column">
@@ -137,7 +137,11 @@
             type="button"
             @click="showManualSetup = !showManualSetup"
           >
-            {{ showManualSetup ? t('profile.twoFactor.hideSetupKey') : t('profile.twoFactor.useSetupKey') }}
+            {{
+              showManualSetup
+                ? t("profile.twoFactor.hideSetupKey")
+                : t("profile.twoFactor.useSetupKey")
+            }}
           </button>
         </div>
         <div class="setup-confirmation">
@@ -145,18 +149,18 @@
             v-if="showManualSetup && setupResource.secret"
             class="readonly-field"
           >
-            <span>{{ t('profile.twoFactor.setupKey') }}</span>
+            <span>{{ t("profile.twoFactor.setupKey") }}</span>
             <code>{{ setupResource.secret }}</code>
             <button
               class="btn-link"
               type="button"
               @click="copyText(setupResource.secret)"
             >
-              {{ t('profile.twoFactor.copySetupKey') }}
+              {{ t("profile.twoFactor.copySetupKey") }}
             </button>
           </label>
           <label class="field">
-            <span>{{ t('profile.twoFactor.authenticatorCode') }}</span>
+            <span>{{ t("profile.twoFactor.authenticatorCode") }}</span>
             <input
               v-model.trim="setupCode"
               type="text"
@@ -174,8 +178,8 @@
             >
               {{
                 loadingAction === "verify"
-                  ? t('profile.twoFactor.verifying')
-                  : t('profile.twoFactor.verify')
+                  ? t("profile.twoFactor.verifying")
+                  : t("profile.twoFactor.verify")
               }}
             </button>
             <button
@@ -184,11 +188,11 @@
               :disabled="loading"
               @click="cancelSetup"
             >
-              {{ t('profile.twoFactor.cancel') }}
+              {{ t("profile.twoFactor.cancel") }}
             </button>
           </div>
           <p class="setup-note">
-            {{ t('profile.twoFactor.backupAfterVerification') }}
+            {{ t("profile.twoFactor.backupAfterVerification") }}
           </p>
         </div>
       </div>
@@ -307,8 +311,7 @@ async function startSetup() {
         if (props.user?.totpEnabled) {
           committedTotpEnabled.value = true;
           setupResource.value = null;
-          error.value =
-            t("profile.twoFactor.alreadyEnabled");
+          error.value = t("profile.twoFactor.alreadyEnabled");
           return;
         }
       } catch (reloadErr) {
@@ -345,10 +348,7 @@ async function verifySetup() {
     try {
       await showBackupCodes(verified);
     } catch (err) {
-      backupError = clerkError(
-        err,
-        t("profile.twoFactor.backupError"),
-      );
+      backupError = clerkError(err, t("profile.twoFactor.backupError"));
     }
 
     let refreshError = null;
@@ -363,7 +363,9 @@ async function verifySetup() {
     if (backupError && refreshError) {
       error.value = `${backupError} ${refreshError}`;
     } else if (backupError) {
-      error.value = t("profile.twoFactor.enabledBackupError", { error: backupError.toLowerCase() });
+      error.value = t("profile.twoFactor.enabledBackupError", {
+        error: backupError.toLowerCase(),
+      });
     } else if (refreshError) {
       error.value = refreshError;
     } else {
@@ -391,9 +393,7 @@ async function showBackupCodes(source = null, options = {}) {
       )
     : null;
   if (!generated?.codes?.length) {
-    throw new Error(
-      t("profile.twoFactor.missingBackupCodes"),
-    );
+    throw new Error(t("profile.twoFactor.missingBackupCodes"));
   }
   backupCodes.value = generated.codes;
   backupSaved.value = false;
@@ -548,7 +548,7 @@ defineExpose({
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 @media (max-width: 640px) {
@@ -656,7 +656,7 @@ defineExpose({
 }
 
 @media (max-width: 760px) {
-.setup-content {
+  .setup-content {
     align-items: stretch;
     gap: var(--space-6);
     grid-template-columns: 1fr;
