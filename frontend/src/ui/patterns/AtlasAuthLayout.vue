@@ -25,20 +25,20 @@
         </div>
 
         <div class="analysis-card analysis-card-score">
-          <span class="analysis-label">World Cup 2026</span>
+          <span class="analysis-label">SoccerOctopus</span>
           <strong>Match intelligence</strong>
           <span class="analysis-card-rule" />
-          <span class="analysis-card-detail">Team form, fixtures and tournament odds</span>
+          <span class="analysis-card-detail">Form, tactics and market signals</span>
         </div>
 
         <div class="analysis-card analysis-card-stat">
-          <span class="analysis-label">Tournament format</span>
-          <strong class="analysis-stat-value">48 <small>teams</small></strong>
-          <span class="analysis-card-detail">104 matches</span>
+          <span class="analysis-label">Five-agent model</span>
+          <strong class="analysis-stat-value">One <small>signal</small></strong>
+          <span class="analysis-card-detail">Every competition. Every match.</span>
         </div>
       </div>
 
-      <p class="atlas-auth-footnote">FIFA World Cup 2026</p>
+      <p class="atlas-auth-footnote">Football intelligence</p>
     </aside>
 
     <section class="atlas-auth-panel">
