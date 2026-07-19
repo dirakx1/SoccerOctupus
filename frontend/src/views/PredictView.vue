@@ -378,7 +378,7 @@ onMounted(loadTeams)
 .match-selectors { align-items: end; display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(11rem, 0.55fr); }
 .match-selectors label { color: var(--color-text-muted); display: flex; flex-direction: column; font-size: var(--font-size-sm); gap: var(--space-2); }
 .match-selectors label > span { font-weight: var(--font-weight-semibold); }
-.match-selectors select { background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body); min-height: var(--control-height-lg); padding: 0 var(--space-3); width: 100%; }
+.match-selectors select { background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body); min-height: var(--control-height-lg); padding: 0 calc(var(--space-3) + 1.25rem) 0 var(--space-3); width: 100%; }
 .match-selectors select:hover { border-color: var(--color-border-strong); }
 .match-selectors select:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 2px; }
 .match-selectors select[aria-invalid="true"] { border-color: var(--color-danger); }

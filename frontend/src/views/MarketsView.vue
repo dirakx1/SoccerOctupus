@@ -170,7 +170,7 @@ border:var(--border-width-thin) solid var(--color-border);
 border-radius:var(--radius-md);
 color:var(--color-text);
 min-height:var(--control-height-lg);
-padding:0 var(--space-3);
+padding:0 calc(var(--space-3) + 1.25rem) 0 var(--space-3);
 width:100%}
 .versus{
 color:var(--color-accent);
