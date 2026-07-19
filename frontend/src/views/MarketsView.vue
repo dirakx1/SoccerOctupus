@@ -19,7 +19,16 @@
     </div>
 
     <section v-if="mode === 'match'" id="match-panel" role="tabpanel" aria-labelledby="match-tab" class="mode-panel">
-      <section v-if="teamLoading" class="state-panel" data-testid="team-loading" aria-busy="true"><LoaderCircle class="spin" /><div><h2>{{ t('markets.teams.loadingTitle') }}</h2><p>{{ t('markets.teams.loadingBody') }}</p></div></section>
+      <section v-if="teamLoading" class="market-form market-form-skeleton" data-testid="team-loading" aria-busy="true">
+        <p class="sr-only" aria-live="polite">{{ t('markets.teams.loadingTitle') }} {{ t('markets.teams.loadingBody') }}</p>
+        <div class="selectors selector-skeletons" aria-hidden="true">
+          <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+          <span class="skeleton-line skeleton-versus"></span>
+          <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+          <div class="skeleton-field"><span class="skeleton-line skeleton-label"></span><span class="skeleton-line skeleton-select"></span></div>
+        </div>
+        <div class="form-footer" aria-hidden="true"><span class="skeleton-line skeleton-footer-copy"></span><span class="skeleton-line skeleton-action"></span></div>
+      </section>
       <section v-else-if="teamError" class="state-panel error-panel"><AlertTriangle /><div><h2>{{ t('markets.teams.errorTitle') }}</h2><p>{{ t('markets.teams.errorBody') }}</p><button type="button" data-testid="retry-teams" @click="loadTeams"><RotateCcw :size="16" />{{ t('markets.teams.retry') }}</button></div></section>
       <section v-else-if="!teams.length" class="state-panel"><Inbox /><div><h2>{{ t('markets.teams.emptyTitle') }}</h2><p>{{ t('markets.teams.emptyBody') }}</p></div></section>
       <form v-else class="market-form" @submit.prevent="runMatchMarkets">
@@ -151,6 +160,14 @@ outline-offset:2px}
 background:var(--color-surface);
 border:var(--border-width-thin) solid var(--color-border);
 padding:var(--space-6)}
+.market-form-skeleton { pointer-events: none; }
+.skeleton-line { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.selector-skeletons .skeleton-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeleton-label { height: 1rem; width: 38%; }
+.skeleton-select { height: var(--control-height-lg); width: 100%; }
+.skeleton-versus { align-self: end; height: 1rem; margin-bottom: calc((var(--control-height-lg) - 1rem) / 2); width: 2.75rem; }
+.skeleton-footer-copy { height: 1rem; width: 16rem; }
+.skeleton-action { height: var(--control-height-lg); width: 12rem; }
 .selectors{
 align-items:end;
 display:grid;
@@ -345,6 +362,11 @@ animation:market-spin .85s linear infinite}
 to{
 transform:rotate(360deg)}
 }
+@keyframes skeleton-pulse{
+50%{
+opacity:.45}
+}
+.sr-only{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap;width:1px}
 
 @media(max-width:860px){
 .selectors{
@@ -377,6 +399,8 @@ align-items:stretch;
 flex-direction:column}
 .form-footer button,.tournament-run button{
 width:100%}
+.skeleton-footer-copy,.skeleton-action{
+width:100%}
 .match-summary{
 grid-template-columns:1fr}
 .match-summary>div{
@@ -388,7 +412,7 @@ border-top:0}
 }
 
 @media(prefers-reduced-motion:reduce){
-.spin{
+.spin,.skeleton-line{
 animation:none}
 }
 

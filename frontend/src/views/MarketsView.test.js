@@ -27,7 +27,7 @@ describe('MarketsView', () => {
   })
 
   it('shows loading, empty, error and retry states for teams', async () => {
-    api.get.mockImplementation(()=>new Promise(()=>{})); const loading=mountMarkets(); expect(loading.find('[data-testid="team-loading"]').exists()).toBe(true); loading.unmount()
+    api.get.mockImplementation(()=>new Promise(()=>{})); const loading=mountMarkets(); expect(loading.find('[data-testid="team-loading"]').exists()).toBe(true); expect(loading.findAll('.skeleton-field')).toHaveLength(3); expect(loading.find('.spin').exists()).toBe(false); loading.unmount()
     api.get.mockResolvedValueOnce({data:{teams:[]}}); const empty=mountMarkets(); await flushPromises(); expect(empty.text()).toContain('No teams are available.'); empty.unmount()
     api.get.mockClear(); api.get.mockRejectedValueOnce(new Error('offline')).mockResolvedValueOnce({data:{teams}}); const error=mountMarkets(); await flushPromises(); expect(error.text()).toContain("We couldn't load the team list."); await error.find('[data-testid="retry-teams"]').trigger('click'); await flushPromises(); expect(api.get).toHaveBeenCalledTimes(2)
   })
