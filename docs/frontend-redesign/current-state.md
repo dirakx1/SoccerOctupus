@@ -103,7 +103,7 @@ phase.
 | `/:locale/competitions/:competitionEditionSlug/bracket` | Signed in | `TournamentView.vue` | Atlas live group standings/results plus optional-swarm Tournament Simulation, with complete feed/run states, localized controls, exact existing API and billing behavior, response-derived podium fields, and an ordered horizontally scrollable knockout bracket. |
 | `/markets` | Signed in | Redirect | Redirects to the canonical English Markets workspace. |
 | `/:locale/competitions/:competitionEditionSlug/markets` | Signed in | `MarketsView.vue` | Match markets and tournament futures, filters, fair-value contract prices, and generated Market Questions. |
-| `/profile` | Signed in | `ProfileView.vue` | Localized Tournament Atlas profile/password and billing surface preserving subscription, usage, billing health, Stripe portal/payment recovery, and the existing embedded two-factor workflow. |
+| `/profile` | Signed in | `ProfileView.vue` | Localized Tournament Atlas profile/password, billing, and two-factor security surface preserving subscription, usage, billing health, Stripe portal/payment recovery, and Clerk-backed authenticator and backup-code workflows. |
 | `/pricing` | Public | `PricingView.vue` | Localized Tournament Atlas plan comparison with server-owned plan data, loading/retry and update-error states, checkout or plan change, cancellation, and signed-in subscription context. Paid signed-out choices preserve the exact localized post-auth Pricing checkout destination. |
 | `/billing` | Signed in | Redirect | Redirects to `/profile`. |
 | `/billing/success` | Signed in | `BillingSuccessView.vue` | Localized Atlas checkout reconciliation with pending, confirmed, missing-session, error/recheck, and automatic Profile return states. |
@@ -184,9 +184,9 @@ layered Escape handling, focus capture/restoration, and background scroll lock.
 `MarketCard.vue` now uses Atlas tokens and localized frontend labels while
 preserving every returned contract value and its public `question` prop. The
 current frontend also shares authentication controls, reverification, password
-policy, and two-factor settings. Those components remain pending Atlas
-migration. The redesign should adapt or wrap working domain
-behavior before replacing it;
+policy, and two-factor settings, all migrated to Atlas presentation where they
+are user-facing. The redesign should adapt or wrap working domain behavior
+before replacing it;
 visual similarity alone is not a reason to discard tested workflow components.
 
 ## Design-Lab Routes

@@ -203,11 +203,12 @@ presentations while preserving their separate Clerk contracts.
 1. User opens `/profile`.
 2. `ProfileView.vue` renders the localized Tournament Atlas account, password,
    billing, and Security sections using the active persisted Locale. Its
-   frontend-owned labels, validation fallbacks, loading labels, and billing
-   actions are available in English and Spanish; Clerk detail, backend billing
-   errors, and usage feature labels remain source values.
-3. `ProfileView.vue` renders the existing `TwoFactorSettings.vue` behavior in
-   the Security section without changing its Clerk mutation or reverification
+   frontend-owned labels, validation fallbacks, loading labels, billing actions,
+   and two-factor setup, backup-code, and recovery copy are available in English
+   and Spanish; Clerk detail, backend billing errors, and usage feature labels
+   remain source values.
+3. `ProfileView.vue` renders `TwoFactorSettings.vue` as an Atlas-tokenized
+   Security workflow without changing its Clerk mutation or reverification
    ownership.
 4. The component reads Clerk user flags:
    - `totpEnabled`

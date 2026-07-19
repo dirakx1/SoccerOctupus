@@ -2,8 +2,8 @@
   <div class="two-factor-settings">
     <div v-if="!setupResource" class="security-control-row">
       <div class="security-control-copy">
-        <strong>Authenticator app</strong>
-        <span>Use a verification code when you sign in.</span>
+        <strong>{{ t('profile.twoFactor.authenticator') }}</strong>
+        <span>{{ t('profile.twoFactor.description') }}</span>
       </div>
       <div class="security-control-actions">
         <button
@@ -15,8 +15,8 @@
         >
           {{
             loadingAction === "setup"
-              ? "Starting setup..."
-              : "Enable authenticator app"
+              ? t('profile.twoFactor.starting')
+              : t('profile.twoFactor.enable')
           }}
         </button>
         <template v-else>
@@ -28,8 +28,8 @@
           >
             {{
               loadingAction === "backup"
-                ? "Generating..."
-                : "Regenerate backup codes"
+                ? t('profile.twoFactor.generating')
+                : t('profile.twoFactor.regenerate')
             }}
           </button>
           <button
@@ -40,8 +40,8 @@
           >
             {{
               loadingAction === "disable"
-                ? "Disabling..."
-                : "Disable authenticator app"
+                ? t('profile.twoFactor.disabling')
+                : t('profile.twoFactor.disable')
             }}
           </button>
         </template>
@@ -58,11 +58,8 @@
       data-testid="backup-regeneration-confirmation"
     >
       <div>
-        <strong>Replace existing backup codes?</strong>
-        <p>
-          Generating new codes immediately invalidates every current backup
-          code. This cannot be undone.
-        </p>
+        <strong>{{ t('profile.twoFactor.replaceTitle') }}</strong>
+        <p>{{ t('profile.twoFactor.replaceDescription') }}</p>
       </div>
       <div class="action-row">
         <button
@@ -73,8 +70,8 @@
         >
           {{
             loadingAction === "backup"
-              ? "Generating..."
-              : "Generate new codes"
+                ? t('profile.twoFactor.generating')
+                : t('profile.twoFactor.generate')
           }}
         </button>
         <button
@@ -83,7 +80,7 @@
           :disabled="loading"
           @click="cancelBackupRegeneration"
         >
-          Cancel
+          {{ t('profile.twoFactor.cancel') }}
         </button>
       </div>
     </div>
@@ -94,29 +91,25 @@
       data-testid="backup-codes-panel"
     >
       <div class="backup-heading">
-        <h3>Save these backup codes</h3>
-        <p>
-          Each code can be used once if you lose access to your authenticator
-          app. They are shown only now and are never stored by this app. Any
-          copy or download you create is yours to keep secure.
-        </p>
+        <h3>{{ t('profile.twoFactor.backupTitle') }}</h3>
+        <p>{{ t('profile.twoFactor.backupDescription') }}</p>
       </div>
       <pre>{{ backupCodesText }}</pre>
       <div class="action-row">
         <button class="btn-secondary" type="button" @click="copyBackupCodes">
-          Copy codes
+          {{ t('profile.twoFactor.copyCodes') }}
         </button>
         <button
           class="btn-secondary"
           type="button"
           @click="downloadBackupCodes"
         >
-          Download codes
+          {{ t('profile.twoFactor.downloadCodes') }}
         </button>
       </div>
       <label class="checkbox-field">
         <input v-model="backupSaved" type="checkbox" />
-        <span>I saved these backup codes</span>
+        <span>{{ t('profile.twoFactor.savedCodes') }}</span>
       </label>
       <button
         class="btn-primary"
@@ -124,17 +117,14 @@
         :disabled="!backupSaved"
         @click="closeBackupCodes"
       >
-        Done
+        {{ t('profile.twoFactor.done') }}
       </button>
     </div>
 
     <div v-if="setupResource" class="setup-panel">
       <div class="setup-heading">
-        <h3>Connect authenticator app</h3>
-        <p>
-          Scan this QR code with your authenticator app, then enter the 6-digit
-          code it shows.
-        </p>
+        <h3>{{ t('profile.twoFactor.connectTitle') }}</h3>
+        <p>{{ t('profile.twoFactor.connectDescription') }}</p>
       </div>
       <div class="setup-content">
         <div class="setup-qr-column">
@@ -147,7 +137,7 @@
             type="button"
             @click="showManualSetup = !showManualSetup"
           >
-            {{ showManualSetup ? "Hide setup key" : "Use setup key instead" }}
+            {{ showManualSetup ? t('profile.twoFactor.hideSetupKey') : t('profile.twoFactor.useSetupKey') }}
           </button>
         </div>
         <div class="setup-confirmation">
@@ -155,18 +145,18 @@
             v-if="showManualSetup && setupResource.secret"
             class="readonly-field"
           >
-            <span>Setup key</span>
+            <span>{{ t('profile.twoFactor.setupKey') }}</span>
             <code>{{ setupResource.secret }}</code>
             <button
               class="btn-link"
               type="button"
               @click="copyText(setupResource.secret)"
             >
-              Copy setup key
+              {{ t('profile.twoFactor.copySetupKey') }}
             </button>
           </label>
           <label class="field">
-            <span>Authenticator code</span>
+            <span>{{ t('profile.twoFactor.authenticatorCode') }}</span>
             <input
               v-model.trim="setupCode"
               type="text"
@@ -184,8 +174,8 @@
             >
               {{
                 loadingAction === "verify"
-                  ? "Verifying..."
-                  : "Verify and continue"
+                  ? t('profile.twoFactor.verifying')
+                  : t('profile.twoFactor.verify')
               }}
             </button>
             <button
@@ -194,11 +184,11 @@
               :disabled="loading"
               @click="cancelSetup"
             >
-              Cancel
+              {{ t('profile.twoFactor.cancel') }}
             </button>
           </div>
           <p class="setup-note">
-            Backup codes are generated after verification.
+            {{ t('profile.twoFactor.backupAfterVerification') }}
           </p>
         </div>
       </div>
@@ -208,6 +198,7 @@
 
 <script setup>
 import { computed, onBeforeUnmount, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { userFacingError } from "../lib/userFacingError";
 import AuthenticatorQrCode from "./AuthenticatorQrCode.vue";
@@ -226,6 +217,8 @@ const props = defineProps({
     default: null,
   },
 });
+
+const { t } = useI18n();
 
 const setupResource = ref(null);
 const setupCode = ref("");
@@ -288,7 +281,7 @@ async function runProtected(operation, message, options = {}) {
   return props.reverification.runWithReverification(operation, {
     message,
     retryPolicy: "verify_first",
-    title: "Verify it is you",
+    title: t("profile.twoFactor.verifyIdentityTitle"),
     ...options,
   });
 }
@@ -304,7 +297,7 @@ async function startSetup() {
   try {
     setupResource.value = await runProtected(
       () => props.user.createTOTP(),
-      "Enter your password to continue with authenticator setup.",
+      t("profile.twoFactor.reverifySetup"),
     );
     setupCode.value = "";
   } catch (err) {
@@ -315,18 +308,18 @@ async function startSetup() {
           committedTotpEnabled.value = true;
           setupResource.value = null;
           error.value =
-            "Authenticator app is already enabled. You can regenerate backup codes below.";
+            t("profile.twoFactor.alreadyEnabled");
           return;
         }
       } catch (reloadErr) {
         error.value = clerkError(
           reloadErr,
-          "Authenticator setup may already be enabled, but your account state could not be refreshed.",
+          t("profile.twoFactor.setupRefreshError"),
         );
         return;
       }
     }
-    error.value = clerkError(err, "Unable to start authenticator setup.");
+    error.value = clerkError(err, t("profile.twoFactor.startError"));
   } finally {
     loadingAction.value = "";
   }
@@ -341,7 +334,7 @@ async function verifySetup() {
   try {
     const verified = await runProtected(
       () => props.user.verifyTOTP({ code: setupCode.value }),
-      "Enter your password to continue with authenticator setup.",
+      t("profile.twoFactor.reverifySetup"),
     );
     committedTotpEnabled.value = true;
     setupResource.value = null;
@@ -354,7 +347,7 @@ async function verifySetup() {
     } catch (err) {
       backupError = clerkError(
         err,
-        "Backup codes could not be generated. You can regenerate them below.",
+        t("profile.twoFactor.backupError"),
       );
     }
 
@@ -362,23 +355,22 @@ async function verifySetup() {
     try {
       await reloadUser();
     } catch (err) {
-      refreshError = `Authenticator app enabled, but your account state could not be refreshed. ${clerkError(
-        err,
-        "Reload the page to confirm the current state.",
-      )}`;
+      refreshError = t("profile.twoFactor.enabledRefreshError", {
+        error: clerkError(err, t("profile.twoFactor.refreshStateError")),
+      });
     }
 
     if (backupError && refreshError) {
       error.value = `${backupError} ${refreshError}`;
     } else if (backupError) {
-      error.value = `Authenticator app enabled, but ${backupError.toLowerCase()}`;
+      error.value = t("profile.twoFactor.enabledBackupError", { error: backupError.toLowerCase() });
     } else if (refreshError) {
       error.value = refreshError;
     } else {
-      success.value = "Authenticator app enabled.";
+      success.value = t("profile.twoFactor.enabled");
     }
   } catch (err) {
-    error.value = clerkError(err, "Unable to verify this authenticator code.");
+    error.value = clerkError(err, t("profile.twoFactor.verifyError"));
   } finally {
     loadingAction.value = "";
   }
@@ -394,13 +386,13 @@ async function showBackupCodes(source = null, options = {}) {
   const generated = props.user?.createBackupCode
     ? await runProtected(
         () => props.user.createBackupCode(),
-        "Enter your password to generate new backup codes.",
+        t("profile.twoFactor.reverifyBackup"),
         options,
       )
     : null;
   if (!generated?.codes?.length) {
     throw new Error(
-      "New backup codes were not returned. Existing codes may have been replaced; generate another set before leaving this page.",
+      t("profile.twoFactor.missingBackupCodes"),
     );
   }
   backupCodes.value = generated.codes;
@@ -420,15 +412,14 @@ async function regenerateBackupCodes() {
     committedTotpEnabled.value = true;
     try {
       await reloadUser();
-      success.value = "New backup codes generated.";
+      success.value = t("profile.twoFactor.backupGenerated");
     } catch (err) {
-      error.value = `New backup codes were generated, but your account state could not be refreshed. ${clerkError(
-        err,
-        "Reload the page to confirm the current state.",
-      )}`;
+      error.value = t("profile.twoFactor.backupRefreshError", {
+        error: clerkError(err, t("profile.twoFactor.refreshStateError")),
+      });
     }
   } catch (err) {
-    error.value = clerkError(err, "Unable to generate backup codes.");
+    error.value = clerkError(err, t("profile.twoFactor.generateError"));
   } finally {
     loadingAction.value = "";
   }
@@ -443,7 +434,7 @@ async function disableAuthenticator() {
   try {
     await runProtected(
       () => props.user.disableTOTP(),
-      "Enter your password to disable authenticator app sign-in.",
+      t("profile.twoFactor.reverifyDisable"),
       { level: "multi_factor" },
     );
     committedTotpEnabled.value = false;
@@ -453,15 +444,14 @@ async function disableAuthenticator() {
     clearBackupCodes();
     try {
       await reloadUser();
-      success.value = "Authenticator app disabled.";
+      success.value = t("profile.twoFactor.disabled");
     } catch (err) {
-      error.value = `Authenticator app disabled, but your account state could not be refreshed. ${clerkError(
-        err,
-        "Reload the page to confirm the current state.",
-      )}`;
+      error.value = t("profile.twoFactor.disabledRefreshError", {
+        error: clerkError(err, t("profile.twoFactor.refreshStateError")),
+      });
     }
   } catch (err) {
-    error.value = clerkError(err, "Unable to disable authenticator app.");
+    error.value = clerkError(err, t("profile.twoFactor.disableError"));
   } finally {
     loadingAction.value = "";
   }
