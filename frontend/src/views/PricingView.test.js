@@ -71,6 +71,15 @@ describe('PricingView', () => {
     return mount(PricingView, { global: { plugins: [i18n], stubs: ['router-link'] } })
   }
 
+  it('renders plan-card skeletons while plan data is loading', () => {
+    getPlans.mockImplementation(() => new Promise(() => {}))
+    const wrapper = mountPricing()
+
+    expect(wrapper.find('[data-testid="plans-skeleton"]').exists()).toBe(true)
+    expect(wrapper.findAll('.plan-card-skeleton')).toHaveLength(3)
+    expect(wrapper.find('.pricing-state').exists()).toBe(false)
+  })
+
   it('stores a post-auth redirect and routes to sign-up when Basic is clicked signed out', async () => {
     const wrapper = mountPricing()
     await flushPromises()

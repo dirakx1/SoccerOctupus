@@ -12,12 +12,19 @@
       </router-link>
     </header>
 
-    <section v-if="plansLoading" class="pricing-state" aria-busy="true" aria-live="polite">
-      <LoaderCircle :size="24" class="spin" aria-hidden="true" />
-      <div>
-        <h2>{{ t('pricing.loading') }}</h2>
-        <p>{{ t('pricing.loadingCopy') }}</p>
-      </div>
+    <section v-if="plansLoading" class="plans-grid" aria-busy="true" data-testid="plans-skeleton">
+      <p class="sr-only" aria-live="polite">{{ t('pricing.loading') }}</p>
+      <article v-for="card in 3" :key="card" class="plan-card plan-card-skeleton" aria-hidden="true">
+        <div class="plan-top">
+          <span class="skeleton-line skeleton-plan-name"></span>
+          <span class="skeleton-line skeleton-plan-note"></span>
+          <span class="skeleton-line skeleton-plan-price"></span>
+        </div>
+        <div class="skeleton-features">
+          <span v-for="feature in 4" :key="feature" class="skeleton-line"></span>
+        </div>
+        <span class="skeleton-line skeleton-plan-action"></span>
+      </article>
     </section>
 
     <section v-else-if="loadError" class="pricing-state pricing-state-error" role="alert">
@@ -210,6 +217,17 @@ onMounted(async () => {
 .profile-link:focus-visible,.btn-primary:focus-visible,.btn-secondary:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
 .plans-grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .plan-card { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-6); min-height: 25rem; padding: var(--space-6); position: relative; }
+.plan-card-skeleton { pointer-events: none; }
+.skeleton-line { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.skeleton-plan-name { height: 1.75rem; width: 42%; }
+.skeleton-plan-note { height: 1rem; width: 76%; }
+.skeleton-plan-price { height: 2.75rem; margin-top: var(--space-3); width: 52%; }
+.skeleton-features { border-top: var(--border-width-thin) solid var(--color-border); display: flex; flex: 1; flex-direction: column; gap: var(--space-3); padding-top: var(--space-5); }
+.skeleton-features .skeleton-line { height: 1rem; width: 88%; }
+.skeleton-features .skeleton-line:nth-child(2) { width: 72%; }
+.skeleton-features .skeleton-line:nth-child(3) { width: 82%; }
+.skeleton-features .skeleton-line:nth-child(4) { width: 64%; }
+.skeleton-plan-action { height: var(--control-height-lg); width: 100%; }
 .plan-card.featured { border-color: var(--color-accent); border-top-width: var(--border-width-strong); }
 .plan-card.current { background: var(--color-surface-raised); }
 .featured-label { margin: 0; position: absolute; right: var(--space-5); top: var(--space-4); }
@@ -231,7 +249,9 @@ li svg { color: var(--color-success); flex: 0 0 auto; margin-top: 2px; }
 .error-box { background: var(--color-danger-surface); border: var(--border-width-thin) solid var(--color-danger); color: var(--color-danger); font-size: var(--font-size-sm); margin: 0; padding: var(--space-3); }
 .spin { animation: spin .9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media(prefers-reduced-motion:reduce) { .spin { animation: none; }.btn-primary { transition: none; } }
+.sr-only { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
+@keyframes skeleton-pulse { 50% { opacity: .45; } }
+@media(prefers-reduced-motion:reduce) { .spin,.skeleton-line { animation: none; }.btn-primary { transition: none; } }
 @media(max-width:820px) { .plans-grid { grid-template-columns: 1fr; }.plan-card { min-height: auto; }.pricing-intro { align-items: flex-start; flex-direction: column; }.pricing-state-error { align-items: flex-start; flex-direction: column; } }
 @media(max-width:640px) { .pricing-page { padding-top: var(--space-5); }.pricing-intro h1 { font-size: var(--font-size-3xl); }.profile-link,.btn-primary,.btn-secondary { width: 100%; }.featured-label { position: static; }.plan-card { padding: var(--space-5); } }
 </style>
