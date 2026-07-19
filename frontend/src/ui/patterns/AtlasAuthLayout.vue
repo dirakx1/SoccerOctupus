@@ -1,11 +1,6 @@
 <template>
   <div class="atlas-auth-layout">
     <aside class="atlas-auth-visual">
-      <div class="atlas-auth-brand">
-        <img src="/favicon.svg" alt="" aria-hidden="true" />
-        <span>SoccerOctopus</span>
-      </div>
-
       <div class="atlas-auth-copy">
         <slot name="intro" />
       </div>
@@ -87,20 +82,6 @@
   pointer-events: none;
   position: absolute;
 }
-
-.atlas-auth-brand {
-  align-items: center;
-  color: inherit;
-  display: inline-flex;
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-heavy);
-  gap: var(--space-3);
-  position: relative;
-  z-index: 1;
-}
-
-.atlas-auth-brand img { height: 2rem; width: 2rem; }
 
 .atlas-auth-copy {
   margin-top: clamp(5rem, 12vh, 8rem);

@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import AtlasAuthLayout from './AtlasAuthLayout.vue'
 
 describe('AtlasAuthLayout', () => {
-  it('keeps the branded match intelligence composition decorative and exposes both content slots', () => {
+  it('keeps the competition-neutral match intelligence composition decorative and exposes both content slots', () => {
     const wrapper = mount(AtlasAuthLayout, {
       slots: {
         intro: '<h1>Welcome back</h1><p>Continue to the tournament.</p>',
@@ -25,7 +25,8 @@ describe('AtlasAuthLayout', () => {
     expect(wrapper.text()).not.toContain('World Cup 2026')
     expect(wrapper.text()).not.toContain('48 teams')
     expect(wrapper.text()).not.toContain('104 matches')
-    expect(wrapper.find('.atlas-auth-brand img').attributes('aria-hidden')).toBe('true')
+    expect(wrapper.find('.atlas-auth-brand').exists()).toBe(false)
+    expect(wrapper.find('.atlas-auth-visual img').exists()).toBe(false)
     expect(wrapper.find('h1').text()).toBe('Welcome back')
     expect(wrapper.find('form').exists()).toBe(true)
   })
