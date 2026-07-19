@@ -210,24 +210,28 @@ presentations while preserving their separate Clerk contracts.
 3. `ProfileView.vue` renders `TwoFactorSettings.vue` as an Atlas-tokenized
    Security workflow without changing its Clerk mutation or reverification
    ownership.
-4. The component reads Clerk user flags:
+4. `ReverificationDialog.vue` is the shared Atlas-tokenized verification
+   surface for protected actions. Its password, passkey, email/SMS code,
+   authenticator-code, and backup-code states use the active English or Spanish
+   locale; action-specific prompts are supplied by the initiating workflow.
+5. The component reads Clerk user flags:
    - `totpEnabled`
    - `backupCodeEnabled`
    - `twoFactorEnabled`
-5. To enable authenticator-app 2FA, the component calls `user.createTOTP()`,
+6. To enable authenticator-app 2FA, the component calls `user.createTOTP()`,
    renders a QR code, offers the secret as an optional setup key, and asks for an
    authenticator code. The raw provisioning URI is never displayed.
-6. On verification, it calls `user.verifyTOTP({ code })` and then
+7. On verification, it calls `user.verifyTOTP({ code })` and then
    `user.createBackupCode()` when backup codes are not returned by TOTP verify.
-7. Backup codes are shown once with copy/download actions and cleared from
+8. Backup codes are shown once with copy/download actions and cleared from
    component state after the user confirms they saved them.
-8. Regeneration calls `user.createBackupCode()` and again shows codes once.
+9. Regeneration calls `user.createBackupCode()` and again shows codes once.
    The user is warned that this replaces all existing codes, and multi-factor
    reverification is required before generation.
-9. Empty or malformed backup-code responses are never reported as successful.
-10. Disabling authenticator-app 2FA calls `user.disableTOTP()` through the shared
+10. Empty or malformed backup-code responses are never reported as successful.
+11. Disabling authenticator-app 2FA calls `user.disableTOTP()` through the shared
    multi-factor reverification workflow.
-11. These Clerk mutations use verify-first mode: reverification completes before
+12. These Clerk mutations use verify-first mode: reverification completes before
     the mutation is invoked, so a committed operation is never replayed.
     Cancellation, overlapping requests, expired windows, and late SDK responses
     settle the active workflow instead of leaving it pending.

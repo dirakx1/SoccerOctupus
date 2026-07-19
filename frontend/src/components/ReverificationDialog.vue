@@ -10,13 +10,13 @@
         <p v-if="workflow.error.value" class="error-box">{{ workflow.error.value }}</p>
 
         <label v-if="workflow.strategy.value === 'password'" class="field">
-          <span>Password</span>
+          <span>{{ t('common.reverification.password') }}</span>
           <input
             v-model="workflow.password.value"
             type="password"
             autocomplete="current-password"
             autofocus
-            placeholder="Enter your password"
+            :placeholder="t('common.reverification.passwordPlaceholder')"
           />
         </label>
 
@@ -44,10 +44,10 @@
 
         <div class="action-row">
           <button class="btn-primary" type="submit" :disabled="workflow.loading.value || !workflow.canSubmit.value">
-            {{ workflow.loading.value ? 'Verifying...' : 'Continue' }}
+            {{ workflow.loading.value ? t('common.reverification.verifying') : t('common.reverification.continue') }}
           </button>
           <button class="btn-secondary" type="button" :disabled="workflow.loading.value" @click="workflow.cancel">
-            Cancel
+            {{ t('common.reverification.cancel') }}
           </button>
         </div>
       </form>
@@ -56,6 +56,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 defineProps({
   workflow: {
     type: Object,
@@ -67,101 +71,105 @@ defineProps({
 <style scoped>
 .reverification-backdrop {
   align-items: center;
-  background: rgba(2, 6, 23, 0.72);
+  background: rgb(17 21 20 / 68%);
   display: flex;
   inset: 0;
   justify-content: center;
-  padding: 20px;
+  padding: var(--space-5);
   position: fixed;
-  z-index: 1000;
+  z-index: var(--z-modal);
 }
 
 .reverification-dialog {
-  background: #0a0a1a;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border-strong);
+  border-top: var(--border-width-strong) solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   max-width: 420px;
-  padding: 20px;
+  padding: var(--space-6);
   width: min(100%, 420px);
 }
 
 .dialog-heading h2 {
-  color: #e0e0e0;
-  font-size: 18px;
-  margin-bottom: 6px;
+  color: var(--color-text);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-2xl);
+  margin: 0 0 var(--space-2);
 }
 
 .dialog-heading p {
-  color: #a0aec0;
-  font-size: 13px;
-  line-height: 1.5;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .field span {
-  color: #8888aa;
-  font-size: 13px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 
 input {
-  background: #050511;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  color: #e0e0e0;
-  font-size: 14px;
-  padding: 12px 14px;
+  background: var(--color-surface);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
 }
 
-input:focus {
-  border-color: #e2b714;
-  outline: none;
+input:focus-visible,
+button:focus-visible {
+  outline: var(--border-width-strong) solid var(--color-focus);
+  outline-offset: 3px;
 }
 
 .action-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .btn-primary,
 .btn-secondary,
 .btn-link {
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  min-height: 40px;
-  padding: 10px 14px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-4);
 }
 
 .btn-link {
   align-self: flex-start;
   background: transparent;
   border: none;
-  color: #e2b714;
+  color: var(--color-accent);
   min-height: auto;
   padding: 0;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  border: none;
-  color: #0a0a1a;
+  background: var(--color-accent);
+  border: 0;
+  color: var(--color-accent-contrast);
 }
 
 .btn-secondary {
-  background: #0f3460;
-  border: 1px solid #1f4c7a;
-  color: #e0e0e0;
+  background: var(--color-surface);
+  border: var(--border-width-thin) solid var(--color-border-strong);
+  color: var(--color-text);
 }
 
 button:disabled {
@@ -170,11 +178,10 @@ button:disabled {
 }
 
 .error-box {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  border-radius: 8px;
-  color: #fc8181;
-  font-size: 13px;
-  padding: 12px 14px;
+  background: var(--color-danger-surface);
+  border: var(--border-width-thin) solid var(--color-danger);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  padding: var(--space-3);
 }
 </style>

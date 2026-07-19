@@ -1,7 +1,8 @@
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { config, mount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
 
+import { applyLocale, i18n } from '../i18n/index.js'
 import ReverificationDialog from './ReverificationDialog.vue'
 
 function workflowFixture(overrides = {}) {
@@ -33,6 +34,11 @@ function workflowFixture(overrides = {}) {
 }
 
 describe('ReverificationDialog', () => {
+  beforeEach(() => {
+    applyLocale('en')
+    config.global.plugins = [i18n]
+  })
+
   it('collects password input and submits the shared workflow', async () => {
     const workflow = workflowFixture()
     const wrapper = mount(ReverificationDialog, {
@@ -106,6 +112,20 @@ describe('ReverificationDialog', () => {
 
     await wrapper.get('button.btn-link').trigger('click')
     expect(switchSecondFactor).toHaveBeenCalled()
+    wrapper.unmount()
+  })
+
+  it('localizes shared controls in Spanish', () => {
+    applyLocale('es')
+    const wrapper = mount(ReverificationDialog, {
+      props: { workflow: workflowFixture() },
+      global: { stubs: { Teleport: true } },
+    })
+
+    expect(wrapper.text()).toContain('Contraseña')
+    expect(wrapper.text()).toContain('Continuar')
+    expect(wrapper.text()).toContain('Cancelar')
+    expect(wrapper.find('input').attributes('placeholder')).toBe('Escribe tu contraseña')
     wrapper.unmount()
   })
 })
