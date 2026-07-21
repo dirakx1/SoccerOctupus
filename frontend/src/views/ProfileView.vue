@@ -1,113 +1,119 @@
 <template>
   <div class="profile-page">
+    <ReverificationDialog :workflow="reverification" />
+
     <header class="profile-header">
       <div>
-        <div class="eyebrow">Account</div>
-        <h1>Profile settings</h1>
-        <p>Update your Clerk profile and password for SoccerOctopus.</p>
+        <div class="eyebrow">{{ t('profile.eyebrow') }}</div>
+        <h1>{{ t('profile.title') }}</h1>
+        <p>{{ t('profile.subtitle') }}</p>
       </div>
       <img v-if="avatarUrl" class="avatar" :src="avatarUrl" alt="Profile avatar" />
     </header>
 
     <div class="profile-grid">
       <section class="profile-card">
-        <h2>Personal details</h2>
-        <p class="card-copy">These fields are stored in Clerk and synced into the local account table.</p>
+        <h2>{{ t('profile.personal') }}</h2>
+        <p class="card-copy">{{ t('profile.personalCopy') }}</p>
 
         <form class="profile-form" @submit.prevent="updateProfile">
           <div class="name-grid">
             <label class="field">
-              <span>First name</span>
-              <input v-model.trim="profileForm.firstName" type="text" autocomplete="given-name" placeholder="Alex" />
+              <span>{{ t('profile.firstName') }}</span>
+              <input v-model.trim="profileForm.firstName" type="text" autocomplete="given-name" :placeholder="t('profile.firstPlaceholder')" />
             </label>
 
             <label class="field">
-              <span>Last name</span>
-              <input v-model.trim="profileForm.lastName" type="text" autocomplete="family-name" placeholder="Morgan" />
+              <span>{{ t('profile.lastName') }}</span>
+              <input v-model.trim="profileForm.lastName" type="text" autocomplete="family-name" :placeholder="t('profile.lastPlaceholder')" />
             </label>
           </div>
 
           <label class="field">
-            <span>Email address</span>
+            <span>{{ t('profile.email') }}</span>
             <input :value="emailAddress" type="email" disabled />
           </label>
 
           <p v-if="profileError" class="error-box">{{ profileError }}</p>
           <p v-if="profileSuccess" class="success-box">{{ profileSuccess }}</p>
 
-          <button class="btn-primary" :disabled="profileLoading || !isLoaded || !user" :aria-label="profileLoading ? 'Saving profile' : 'Save profile'">
+          <button class="btn-primary" :disabled="profileLoading || !isLoaded || !user" :aria-label="profileLoading ? t('profile.saving') : t('profile.save')">
             <LoaderCircle v-if="profileLoading" :size="18" class="spin" aria-hidden="true" />
-            <template v-else>Save profile</template>
+            <template v-else>{{ t('profile.save') }}</template>
           </button>
         </form>
       </section>
 
       <section class="profile-card">
-        <h2>Change password</h2>
-        <p class="card-copy">Enter your current password, then confirm your new password twice.</p>
+        <h2>{{ t('profile.password') }}</h2>
+        <p class="card-copy">{{ t('profile.passwordCopy') }}</p>
 
         <form class="profile-form" @submit.prevent="updatePassword">
           <label class="field">
-            <span>Current password</span>
+            <span>{{ t('profile.currentPassword') }}</span>
             <input
               v-model="passwordForm.currentPassword"
               type="password"
               autocomplete="current-password"
               required
-              placeholder="Enter current password"
+              :placeholder="t('profile.currentPlaceholder')"
             />
           </label>
 
           <label class="field">
-            <span>New password</span>
+            <span>{{ t('profile.newPassword') }}</span>
             <input
               v-model="passwordForm.newPassword"
               type="password"
               autocomplete="new-password"
               required
-              minlength="8"
-              placeholder="Enter new password"
+              :placeholder="t('profile.newPlaceholder')"
             />
           </label>
+          <PasswordPolicyChecklist :policy="passwordPolicy" />
 
           <label class="field">
-            <span>Confirm new password</span>
+            <span>{{ t('profile.confirmPassword') }}</span>
             <input
               v-model="passwordForm.confirmPassword"
               type="password"
               autocomplete="new-password"
               required
-              minlength="8"
-              placeholder="Repeat new password"
+              :placeholder="t('profile.confirmPlaceholder')"
             />
           </label>
 
           <p v-if="passwordError" class="error-box">{{ passwordError }}</p>
           <p v-if="passwordSuccess" class="success-box">{{ passwordSuccess }}</p>
 
-          <button class="btn-primary" :disabled="passwordLoading || !isLoaded || !user" :aria-label="passwordLoading ? 'Updating password' : 'Update password'">
+          <button class="btn-primary" :disabled="passwordLoading || !isLoaded || !user" :aria-label="passwordLoading ? t('profile.updatingPassword') : t('profile.updatePassword')">
             <LoaderCircle v-if="passwordLoading" :size="18" class="spin" aria-hidden="true" />
-            <template v-else>Update password</template>
+            <template v-else>{{ t('profile.updatePassword') }}</template>
           </button>
         </form>
       </section>
     </div>
 
+    <section class="profile-card security-card">
+      <h2>{{ t('profile.security') }}</h2>
+      <TwoFactorSettings :is-loaded="isLoaded" :reverification="reverification" :user="user" />
+    </section>
+
     <section class="profile-card billing-card">
       <div class="billing-row">
         <div>
-          <h2>Billing</h2>
+          <h2>{{ t('profile.billing') }}</h2>
           <p class="billing-tier">
-            <span>Current tier</span>
-            <LoaderCircle v-if="billingLoading" :size="18" class="spin billing-loader" aria-label="Loading billing tier" />
+            <span>{{ t('profile.currentTier') }}</span>
+            <LoaderCircle v-if="billingLoading" :size="18" class="spin billing-loader" :aria-label="t('profile.loadingTier')" />
             <strong v-else>{{ tierLabel }}</strong>
           </p>
         </div>
         <button
           class="btn-primary billing-action"
           :disabled="billingLoading || portalLoading"
-          :aria-label="portalLoading ? 'Opening billing' : billingActionLabel"
-          :title="portalLoading ? 'Opening billing' : billingActionLabel"
+          :aria-label="portalLoading ? t('profile.openingBilling') : billingActionLabel"
+          :title="portalLoading ? t('profile.openingBilling') : billingActionLabel"
           @click="openBillingPortal"
         >
           <LoaderCircle v-if="portalLoading" :size="18" class="spin" aria-hidden="true" />
@@ -137,12 +143,20 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { CreditCard, LoaderCircle } from '@lucide/vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useClerk, useSession, useSignIn } from '@clerk/vue'
 
 import BillingStatusNotice from '../components/BillingStatusNotice.vue'
+import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import ReverificationDialog from '../components/ReverificationDialog.vue'
+import TwoFactorSettings from '../components/TwoFactorSettings.vue'
 import { useCurrentUserProfile } from '../composables/useCurrentUserProfile'
+import { usePasswordPolicy } from '../composables/usePasswordPolicy'
+import { useReverification } from '../composables/useReverification'
 import { api } from '../lib/api'
 import { setAuthState } from '../lib/auth'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
+import { userFacingError } from '../lib/userFacingError'
 
 const {
   avatarUrl,
@@ -154,6 +168,11 @@ const {
 } = useCurrentUserProfile()
 
 const router = useRouter()
+const { t } = useI18n()
+const clerk = useClerk()
+const { session } = useSession()
+const { signIn } = useSignIn()
+const reverification = useReverification({ session })
 const profileLoading = ref(false)
 const passwordLoading = ref(false)
 const profileError = ref('')
@@ -177,6 +196,11 @@ const passwordForm = reactive({
   newPassword: '',
   confirmPassword: '',
 })
+const passwordPolicy = usePasswordPolicy({
+  password: computed(() => passwordForm.newPassword),
+  validator: computed(() => signIn.value?.validatePassword),
+  clerk,
+})
 
 const tierLabel = computed(() => {
   const labels = {
@@ -184,12 +208,12 @@ const tierLabel = computed(() => {
     basic: 'Basic',
     pro: 'Pro',
   }
-  return labels[subscription.value.tier] || 'Free'
+  return labels[subscription.value.tier] || labels.free
 })
 const isFreeTier = computed(() => (subscription.value.tier || 'free') === 'free')
 const billingHealth = computed(() => subscription.value.billing_health || {})
-const billingActionText = computed(() => (isFreeTier.value ? 'Plans' : 'Manage'))
-const billingActionLabel = computed(() => (isFreeTier.value ? 'View plans' : 'Manage billing'))
+const billingActionText = computed(() => (isFreeTier.value ? t('profile.plans') : t('profile.manage')))
+const billingActionLabel = computed(() => (isFreeTier.value ? t('profile.viewPlans') : t('profile.manageBilling')))
 
 watch(
   [firstName, lastName],
@@ -201,7 +225,7 @@ watch(
 )
 
 function clerkError(err, fallback) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || fallback
+  return userFacingError(err, fallback)
 }
 
 async function refreshLocalUser() {
@@ -217,14 +241,14 @@ async function loadBilling() {
     subscription.value = subscriptionRes.data
     usage.value = usageRes.data
   } catch (err) {
-    billingError.value = err.response?.data?.error || 'Could not load billing details.'
+    billingError.value = err.response?.data?.error || t('profile.errors.billing')
   } finally {
     billingLoading.value = false
   }
 }
 
 function usageText(feature) {
-  if (feature.unlimited) return 'Unlimited'
+  if (feature.unlimited) return t('profile.unlimited')
   return `${feature.used_count} / ${feature.limit_count}`
 }
 
@@ -240,7 +264,7 @@ async function openBillingPortal() {
     const res = await createPortalSession({ return_path: '/profile' })
     window.location.assign(res.data.url)
   } catch (err) {
-    billingError.value = err.response?.data?.error || 'Could not open Stripe billing portal.'
+    billingError.value = err.response?.data?.error || t('profile.errors.portal')
   } finally {
     portalLoading.value = false
   }
@@ -263,7 +287,7 @@ async function openPaymentRecovery() {
     const res = await createPaymentMethodSession({ return_path: '/profile' })
     window.location.assign(res.data.url)
   } catch (err) {
-    billingError.value = err.response?.data?.error || 'Could not open payment update.'
+    billingError.value = err.response?.data?.error || t('profile.errors.payment')
   } finally {
     paymentLoading.value = false
   }
@@ -281,11 +305,19 @@ async function updateProfile() {
       firstName: profileForm.firstName,
       lastName: profileForm.lastName,
     })
-    await user.value.reload()
-    await refreshLocalUser()
-    profileSuccess.value = 'Profile updated.'
+    profileSuccess.value = t('profile.profileUpdated')
+
+    try {
+      await user.value.reload()
+      await refreshLocalUser()
+    } catch (err) {
+      profileError.value = clerkError(
+        err,
+        t('profile.errors.refreshProfile'),
+      )
+    }
   } catch (err) {
-    profileError.value = clerkError(err, 'Unable to update your profile. Please try again.')
+    profileError.value = clerkError(err, t('profile.errors.profile'))
   } finally {
     profileLoading.value = false
   }
@@ -293,19 +325,19 @@ async function updateProfile() {
 
 function validatePasswordForm() {
   if (!passwordForm.currentPassword) {
-    return 'Enter your current password.'
+    return t('profile.errors.currentPassword')
   }
 
-  if (passwordForm.newPassword.length < 8) {
-    return 'New password must be at least 8 characters.'
+  if (!passwordPolicy.passesRequiredRules.value) {
+    return t('profile.errors.requirements')
   }
 
   if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-    return 'New passwords do not match.'
+    return t('profile.errors.mismatch')
   }
 
   if (passwordForm.currentPassword === passwordForm.newPassword) {
-    return 'New password must be different from your current password.'
+    return t('profile.errors.same')
   }
 
   return ''
@@ -329,9 +361,9 @@ async function updatePassword() {
     passwordForm.currentPassword = ''
     passwordForm.newPassword = ''
     passwordForm.confirmPassword = ''
-    passwordSuccess.value = 'Password updated. Other sessions were signed out.'
+    passwordSuccess.value = t('profile.passwordUpdated')
   } catch (err) {
-    passwordError.value = clerkError(err, 'Unable to update your password. Check your current password and try again.')
+    passwordError.value = clerkError(err, t('profile.errors.password'))
   } finally {
     passwordLoading.value = false
   }
@@ -341,255 +373,41 @@ onMounted(loadBilling)
 </script>
 
 <style scoped>
-.profile-page {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.profile-header {
-  align-items: center;
-  background: linear-gradient(135deg, #16213e, #0f3460);
-  border: 1px solid #1f4c7a;
-  border-radius: 16px;
-  display: flex;
-  justify-content: space-between;
-  padding: 28px;
-}
-
-.eyebrow {
-  color: #e2b714;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-h1,
-h2 {
-  color: #e0e0e0;
-}
-
-h1 {
-  font-size: 34px;
-  margin-bottom: 8px;
-}
-
-h2 {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-
-.profile-header p,
-.card-copy {
-  color: #a0aec0;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.avatar {
-  border: 2px solid #e2b714;
-  border-radius: 999px;
-  height: 72px;
-  object-fit: cover;
-  width: 72px;
-}
-
-.profile-grid {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.profile-card {
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  padding: 28px;
-}
-
-.billing-card {
-  gap: 16px;
-}
-
-.billing-row {
-  align-items: center;
-  display: flex;
-  gap: 20px;
-  justify-content: space-between;
-}
-
-.billing-tier {
-  align-items: baseline;
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.billing-tier span {
-  color: #8888aa;
-  font-size: 13px;
-}
-
-.billing-tier strong {
-  color: #e2b714;
-  font-size: 20px;
-}
-
-.billing-loader {
-  color: #e2b714;
-}
-
-.billing-action {
-  flex: 0 0 auto;
-}
-
-.usage-grid {
-  border-top: 1px solid #0f3460;
-  display: grid;
-  gap: 10px;
-  padding-top: 16px;
-}
-
-.usage-row {
-  align-items: center;
-  display: flex;
-  gap: 16px;
-  justify-content: space-between;
-}
-
-.usage-row span {
-  color: #a0aec0;
-  font-size: 13px;
-}
-
-.usage-row strong {
-  color: #e0e0e0;
-  font-size: 13px;
-}
-
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 16px;
-  margin-top: 22px;
-}
-
-.name-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field span {
-  color: #8888aa;
-  font-size: 13px;
-}
-
-input {
-  background: #0a0a1a;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  color: #e0e0e0;
-  font-size: 14px;
-  padding: 12px 14px;
-}
-
-input:disabled {
-  color: #8888aa;
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-input:focus {
-  border-color: #e2b714;
-  outline: none;
-}
-
-.btn-primary {
-  align-items: center;
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  border: none;
-  border-radius: 10px;
-  color: #0a0a1a;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 15px;
-  font-weight: 700;
-  gap: 8px;
-  justify-content: center;
-  min-height: 46px;
-  padding: 13px 24px;
-  transition: opacity 0.2s;
-}
-
-.profile-form .btn-primary {
-  margin-top: auto;
-}
-
-.btn-primary:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.spin {
-  animation: spin 0.9s linear infinite;
-}
-
-.error-box,
-.success-box {
-  border-radius: 8px;
-  font-size: 13px;
-  padding: 12px 14px;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.error-box {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  color: #fc8181;
-}
-
-.success-box {
-  background: #123322;
-  border: 1px solid #38a169;
-  color: #9ae6b4;
-}
-
-@media (max-width: 860px) {
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .profile-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .billing-row {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .name-grid {
-    grid-template-columns: 1fr;
-  }
-}
+.profile-page { display: flex; flex-direction: column; gap: var(--space-6); margin: 0 auto; max-width: 72rem; padding: var(--space-8) 0 var(--space-12); }
+.profile-header { align-items: center; border-bottom: var(--border-width-strong) solid var(--color-border-strong); display: flex; justify-content: space-between; padding: var(--space-4) 0 var(--space-6); }
+.eyebrow { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data); margin-bottom: var(--space-2); text-transform: uppercase; }
+h1,h2 { color: var(--color-text); font-family: var(--font-family-display); margin: 0; }
+h1 { font-size: var(--font-size-4xl); line-height: var(--line-height-tight); }
+h2 { font-size: var(--font-size-2xl); }
+.profile-header p,.card-copy { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; }
+.avatar { border: var(--border-width-strong) solid var(--color-accent); border-radius: 999px; height: 72px; object-fit: cover; width: 72px; }
+.profile-grid { display: grid; gap: var(--space-6); grid-template-columns: repeat(2,minmax(0,1fr)); }
+.profile-card { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: flex; flex-direction: column; padding: var(--space-6); }
+.security-card,.billing-card { gap: var(--space-5); overflow: hidden; }
+.billing-row { align-items: center; display: flex; gap: var(--space-5); justify-content: space-between; }
+.billing-tier { align-items: baseline; display: flex; gap: var(--space-3); margin: var(--space-3) 0 0; }
+.billing-tier span,.usage-row span,.field span { color: var(--color-text-muted); font-size: var(--font-size-sm); }
+.billing-tier strong,.billing-loader { color: var(--color-accent); }
+.billing-tier strong { font: var(--font-weight-bold) var(--font-size-xl)/1 var(--font-family-display); }
+.billing-action { flex: 0 0 auto; }
+.usage-grid { border-top: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); padding-top: var(--space-4); }
+.usage-row { align-items: center; display: flex; gap: var(--space-4); justify-content: space-between; }
+.usage-row strong { color: var(--color-text); font-size: var(--font-size-sm); }
+.profile-form { display: flex; flex: 1; flex-direction: column; gap: var(--space-4); margin-top: var(--space-5); }
+.name-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(2,minmax(0,1fr)); }
+.field { display: flex; flex-direction: column; gap: var(--space-2); }
+input { background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font-size: var(--font-size-sm); min-height: var(--control-height-lg); padding: 0 var(--space-3); }
+input:disabled { color: var(--color-text-muted); cursor: not-allowed; opacity: .8; }
+input:focus-visible,.btn-primary:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.btn-primary { align-items: center; background: var(--color-accent); border: 0; border-radius: var(--radius-md); color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); gap: var(--space-2); justify-content: center; min-height: var(--control-height-lg); padding: 0 var(--space-4); }
+.profile-form .btn-primary { margin-top: auto; }
+.btn-primary:disabled { cursor: default; opacity: .55; }
+.spin { animation: spin .9s linear infinite; }
+.error-box,.success-box { font-size: var(--font-size-sm); padding: var(--space-3); }
+.error-box { background: var(--color-danger-surface); border: var(--border-width-thin) solid var(--color-danger); color: var(--color-danger); }
+.success-box { background: var(--color-success-surface); border: var(--border-width-thin) solid var(--color-success); color: var(--color-success); }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media(prefers-reduced-motion:reduce) { .spin { animation: none; } }
+@media(max-width:760px) { .profile-grid { grid-template-columns: 1fr; } }
+@media(max-width:640px) { .profile-page { padding-top: var(--space-5); }.profile-header { align-items: flex-start; flex-direction: column; gap: var(--space-5); }.billing-row { align-items: stretch; flex-direction: column; }.name-grid { grid-template-columns: 1fr; }.profile-card { padding: var(--space-5); } }
 </style>

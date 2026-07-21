@@ -39,6 +39,14 @@ export function clearAuthState() {
   state.refreshedAt = Date.now()
 }
 
+export function setAuthPendingState() {
+  state.loaded = false
+  state.signedIn = false
+  state.isAdmin = false
+  state.user = null
+  state.refreshedAt = 0
+}
+
 export function authStateIsFresh(now = Date.now()) {
   return state.loaded && state.signedIn && now - state.refreshedAt < AUTH_REFRESH_TTL_MS
 }

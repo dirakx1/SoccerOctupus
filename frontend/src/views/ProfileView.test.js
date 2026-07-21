@@ -2,25 +2,75 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import ProfileView from './ProfileView.vue'
+import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
 const clerkState = vi.hoisted(() => ({
+  clerk: {
+    __unstable__environment: {
+      userSettings: {
+        passwordSettings: {
+          min_length: 8,
+          max_length: 72,
+          require_lowercase: false,
+          require_uppercase: false,
+          require_numbers: false,
+          require_special_char: false,
+          disable_hibp: true,
+          show_zxcvbn: false,
+          min_zxcvbn_strength: 0,
+        },
+      },
+    },
+  },
   isLoaded: { value: true, __v_isRef: true },
+  signIn: {
+    value: {
+      validatePassword: vi.fn(),
+    },
+    __v_isRef: true,
+  },
+  session: {
+    value: {
+      startVerification: vi.fn(),
+      attemptFirstFactorVerification: vi.fn(),
+      prepareFirstFactorVerification: vi.fn(),
+      verifyWithPasskey: vi.fn(),
+    },
+    __v_isRef: true,
+  },
   user: {
     value: {
       firstName: 'Alex',
       lastName: 'Morgan',
+      username: 'alex',
       imageUrl: '',
       primaryEmailAddress: { emailAddress: 'alex@example.com' },
+      totpEnabled: false,
+      backupCodeEnabled: false,
+      twoFactorEnabled: false,
       update: vi.fn(),
       reload: vi.fn(),
       updatePassword: vi.fn(),
+      createTOTP: vi.fn(),
+      verifyTOTP: vi.fn(),
+      disableTOTP: vi.fn(),
+      createBackupCode: vi.fn(),
     },
     __v_isRef: true,
   },
 }))
 
 vi.mock('@clerk/vue', () => ({
+  useClerk: () => clerkState.clerk,
+  useSession: () => ({
+    session: clerkState.session,
+  }),
+  useSignIn: () => ({
+    isLoaded: clerkState.isLoaded,
+    signIn: clerkState.signIn,
+    setActive: { value: vi.fn(), __v_isRef: true },
+  }),
   useUser: () => ({
     isLoaded: clerkState.isLoaded,
     user: clerkState.user,
@@ -47,10 +97,15 @@ vi.mock('../lib/billing', () => ({
 import { api } from '../lib/api'
 import { createPaymentMethodSession, createPortalSession, getSubscription, getUsage } from '../lib/billing'
 
+function mountProfile() {
+  return mount(ProfileView, { global: { plugins: [i18n] } })
+}
+
 describe('ProfileView', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     routerPush.mockClear()
+    applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
     api.get.mockResolvedValue({ data: { is_admin: false } })
     getSubscription.mockResolvedValue({
       data: {
@@ -86,9 +141,12 @@ describe('ProfileView', () => {
   })
 
   it('shows the current billing tier on the profile page', async () => {
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
+    expect(wrapper.text()).toContain('Security')
+    expect(wrapper.text()).toContain('Authenticator app')
+    expect(wrapper.text()).not.toContain('Not enabled')
     expect(wrapper.text()).toContain('Billing')
     expect(wrapper.text()).toContain('Current tier')
     expect(wrapper.text()).toContain('Pro')
@@ -97,7 +155,7 @@ describe('ProfileView', () => {
   })
 
   it('opens the Stripe customer portal from profile', async () => {
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     await wrapper.find('.billing-action').trigger('click')
@@ -115,7 +173,7 @@ describe('ProfileView', () => {
         is_paid_entitled: false,
       },
     })
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Plans')
@@ -143,7 +201,7 @@ describe('ProfileView', () => {
         },
       },
     })
-    const wrapper = mount(ProfileView)
+    const wrapper = mountProfile()
     await flushPromises()
 
     expect(wrapper.text()).toContain('Payment failed. Pay the invoice to keep access.')
@@ -155,5 +213,99 @@ describe('ProfileView', () => {
 
     expect(createPaymentMethodSession).toHaveBeenCalledWith({ return_path: '/profile' })
     expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/payment-method')
+  })
+
+  it('renders the account security action without redundant status copy', async () => {
+    const wrapper = mountProfile()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Security')
+    expect(wrapper.text()).toContain('Authenticator app')
+    expect(wrapper.text()).not.toContain('Not enabled')
+    expect(wrapper.text()).toContain('Enable authenticator app')
+  })
+
+  it('keeps profile-update success truthful when the following reload fails', async () => {
+    clerkState.user.value.update.mockResolvedValue({})
+    clerkState.user.value.reload.mockRejectedValue(new Error('Network unavailable'))
+    const wrapper = mountProfile()
+    await flushPromises()
+
+    const profileForm = wrapper.findAll('form')[0]
+    await profileForm.find('input[autocomplete="given-name"]').setValue('Alexandra')
+    await profileForm.trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.user.value.update).toHaveBeenCalledWith({
+      firstName: 'Alexandra',
+      lastName: 'Morgan',
+    })
+    expect(wrapper.text()).toContain('Profile updated.')
+    expect(wrapper.text()).toContain('Network unavailable')
+    expect(api.get).not.toHaveBeenCalledWith('/api/me')
+  })
+
+  it('blocks profile password updates that fail policy', async () => {
+    const wrapper = mountProfile()
+    await flushPromises()
+
+    const passwordForm = wrapper.findAll('form')[1]
+    await passwordForm.find('input[autocomplete="current-password"]').setValue('current-pass')
+    await passwordForm.find('input[autocomplete="new-password"]').setValue('short')
+    await passwordForm.findAll('input[autocomplete="new-password"]')[1].setValue('short')
+    await passwordForm.trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.user.value.updatePassword).not.toHaveBeenCalled()
+    expect(wrapper.text()).toContain('New password does not meet the password requirements.')
+  })
+
+  it('updates password through Clerk when policy and confirmation pass', async () => {
+    clerkState.user.value.updatePassword.mockResolvedValue({})
+    const wrapper = mountProfile()
+    await flushPromises()
+
+    const passwordForm = wrapper.findAll('form')[1]
+    await passwordForm.find('input[autocomplete="current-password"]').setValue('current-pass')
+    await passwordForm.find('input[autocomplete="new-password"]').setValue('longenough')
+    await passwordForm.findAll('input[autocomplete="new-password"]')[1].setValue('longenough')
+    await passwordForm.trigger('submit.prevent')
+    await flushPromises()
+
+    expect(clerkState.user.value.updatePassword).toHaveBeenCalledWith({
+      currentPassword: 'current-pass',
+      newPassword: 'longenough',
+      signOutOfOtherSessions: true,
+    })
+  })
+
+  it('localizes Profile-owned account and billing copy in Spanish without changing portal return handling', async () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    const wrapper = mountProfile()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Configuración del perfil')
+    expect(wrapper.text()).toContain('Datos personales')
+    expect(wrapper.text()).toContain('Cambiar contraseña')
+    expect(wrapper.text()).toContain('Facturación')
+    expect(wrapper.text()).toContain('Sin límite')
+
+    await wrapper.find('.billing-action').trigger('click')
+    await flushPromises()
+    expect(createPortalSession).toHaveBeenCalledWith({ return_path: '/profile' })
+    expect(window.location.assign).toHaveBeenCalledWith('https://billing.stripe.com/session')
+  })
+
+  it('localizes Profile-owned billing failures while preserving backend error detail', async () => {
+    applyLocale('es', { storage: window.localStorage, documentElement: document.documentElement })
+    getSubscription.mockRejectedValueOnce(new Error('offline'))
+    const localized = mountProfile()
+    await flushPromises()
+    expect(localized.text()).toContain('No se pudieron cargar los datos de facturación.')
+
+    getSubscription.mockRejectedValueOnce({ response: { data: { error: 'Stripe account unavailable' } } })
+    const sourceError = mountProfile()
+    await flushPromises()
+    expect(sourceError.text()).toContain('Stripe account unavailable')
   })
 })

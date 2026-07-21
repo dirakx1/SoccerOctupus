@@ -1,0 +1,30 @@
+{
+  "localeName": "English",
+  "reverification": {
+    "title": "Verify it is you",
+    "defaultMessage": "Enter your password to continue.",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "verifying": "Verifying...",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "authenticatorCode": "Authenticator code",
+    "backupCode": "Backup code",
+    "verificationCode": "Verification code",
+    "backupPlaceholder": "Enter backup code",
+    "useBackupCode": "Use a backup code instead",
+    "useAuthenticator": "Use authenticator app instead",
+    "emailCopy": "Enter the code sent to {target} to continue.",
+    "phoneCopy": "Enter the code sent to {target} to continue.",
+    "passkeyCopy": "Use your passkey to continue.",
+    "authenticatorCopy": "Enter the 6-digit code from your authenticator app to continue.",
+    "backupCopy": "Enter one of your backup codes to continue.",
+    "yourEmail": "your email address",
+    "yourPhone": "your phone",
+    "signInAgain": "Please sign in again before changing account security settings.",
+    "verificationFailed": "Unable to verify. Please try again.",
+    "cancelled": "Verification was cancelled.",
+    "superseded": "Verification was superseded by a newer request.",
+    "screenClosed": "Verification was cancelled because the security screen was closed."
+  }
+}

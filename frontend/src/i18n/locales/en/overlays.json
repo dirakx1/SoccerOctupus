@@ -1,0 +1,35 @@
+{
+  "cookie": {
+    "dialogLabel": "Cookie preferences",
+    "description": "We use essential cookies to keep you signed in and optional analytics cookies to improve the experience.",
+    "policyLead": "Details are available in our",
+    "policyLink": "Cookie Policy",
+    "necessary": "Necessary only",
+    "acceptAll": "Accept all"
+  },
+  "video": {
+    "eyebrow": "Evidence stream",
+    "title": "Video Intelligence Agent",
+    "description": "Analyses YouTube highlights for engagement ratios, title sentiment, and tactical momentum signals, then blends them into the swarm prediction.",
+    "howItWorks": "How it works",
+    "watchEvidence": "Watch the evidence",
+    "close": "Close video evidence",
+    "closeLightbox": "Close screenshot viewer",
+    "previous": "Previous screenshot",
+    "next": "Next screenshot",
+    "lightboxLabel": "Screenshot viewer",
+    "openScreenshot": "Open screenshot {number}: {caption}",
+    "openVideo": "Open {title} on YouTube",
+    "imageUnavailable": "Screenshot unavailable",
+    "categories": {
+      "highlights": "Match highlights",
+      "tactical": "Tactical analysis"
+    },
+    "captions": {
+      "highlightsArgentina": "Highlights query result: “Argentina 2-0 Austria | FIFA WC 2026™”. The agent reads the title for positive keywords such as win and victory, then retrieves view and like counts.",
+      "highlightsGermany": "Highlights query result: “Ecuador 2-1 Germany | FIFA WC 2026™”. The upset result adds negative title signals for Germany and lowers its momentum score.",
+      "tacticalArgentina": "Tactical analysis query result: “Complete Argentina 2026 WC Breakdown”. A high engagement ratio between likes and views provides a strong momentum signal for the swarm.",
+      "tacticalMessi": "Tactical analysis query result: “Messi Breaks Records | Argentina vs Austria”. Positive title sentiment and high view counts increase Argentina's predicted win probability."
+    }
+  }
+}

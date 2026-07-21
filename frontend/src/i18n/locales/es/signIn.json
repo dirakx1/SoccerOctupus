@@ -1,0 +1,17 @@
+{
+  "title": "Iniciar sesión",
+  "subtitle": "Usa tu cuenta de SoccerOctopus para continuar.",
+  "provider": { "continueWith": "Continuar con {name}", "opening": "Abriendo {name}..." },
+  "divider": "o usa tu contraseña",
+  "identifier": "Correo o nombre de usuario",
+  "identifierPlaceholder": "Correo electrónico o usuario",
+  "password": "Contraseña",
+  "passwordPlaceholder": "Introduce tu contraseña",
+  "forgot": "¿Has olvidado tu contraseña?",
+  "submit": "Iniciar sesión",
+  "submitting": "Iniciando sesión...",
+  "continue": "Continuar",
+  "verification": { "passwordResume": "Introduce tu contraseña para continuar.", "code": "Código de verificación", "backupCode": "Código de respaldo", "codePlaceholder": "123456", "backupPlaceholder": "abcd-1234", "yourPhone": "tu teléfono", "authenticator": "Introduce el código de tu aplicación de autenticación.", "backupCopy": "Introduce uno de tus códigos de respaldo.", "phone": "Introduce el código de verificación enviado a {target}.", "email": "Introduce el código de verificación enviado a {target}.", "clientTrustPhone": "Este dispositivo necesita otra verificación. Introduce el código enviado a {target}.", "clientTrustEmail": "Este dispositivo necesita otra verificación. Introduce el código enviado a {target}." },
+  "verify": "Verificar", "verifying": "Verificando...", "resend": "Reenviar código", "differentAccount": "Usar otra cuenta", "switchBackup": "Usar un código de respaldo", "switchAuthenticator": "Usar la aplicación de autenticación", "createPrompt": "¿Eres nuevo en SoccerOctopus?", "createAccount": "Crear una cuenta",
+  "errors": { "fallback": "No se pudo iniciar sesión. Comprueba tus datos e inténtalo de nuevo.", "activate": "No se pudo activar tu sesión. Intenta iniciar sesión de nuevo.", "identifier": "No encontramos esta cuenta. Comprueba tu correo o usuario e inténtalo de nuevo.", "unsupported": "Este inicio de sesión requiere {methods}, que esta página personalizada aún no admite.", "unsupportedGeneric": "Este inicio de sesión requiere un método de verificación no disponible para esta cuenta.", "newPassword": "Esta cuenta requiere restablecer la contraseña antes de iniciar sesión.", "complete": "No se pudo completar el inicio de sesión. Inténtalo de nuevo.", "resend": "No se pudo reenviar el código. Inicia sesión de nuevo." }
+}

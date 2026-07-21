@@ -1,107 +1,101 @@
 <template>
-  <div class="legal">
-    <h1>Cookie Policy</h1>
-    <p class="updated">Last updated: June 2026</p>
+  <main class="cookie-policy-page" aria-labelledby="cookie-policy-title">
+    <header class="cookie-policy-intro">
+      <p class="atlas-kicker">{{ t('cookiePolicy.eyebrow') }}</p>
+      <h1 id="cookie-policy-title">{{ t('cookiePolicy.title') }}</h1>
+      <p class="cookie-policy-updated">{{ t('cookiePolicy.updated') }}</p>
+      <p class="cookie-policy-summary">{{ t('cookiePolicy.intro') }}</p>
+    </header>
 
-    <section>
-      <h2>1. What Are Cookies</h2>
-      <p>
-        Cookies are small text files stored in your browser when you visit a website.
-        They help the site remember your preferences, keep you signed in, and understand
-        how people use the platform. SoccerOctopus uses a minimal set of cookies to
-        provide a functioning service.
-      </p>
-    </section>
+    <article class="cookie-policy-document">
+      <section class="cookie-policy-section" aria-labelledby="cookie-policy-what">
+        <h2 id="cookie-policy-what">{{ t('cookiePolicy.sections.what.title') }}</h2>
+        <p>{{ t('cookiePolicy.sections.what.body') }}</p>
+      </section>
 
-    <section>
-      <h2>2. Cookies We Use</h2>
-
-      <div class="cookie-table">
-        <div class="table-header">
-          <span>Name / Prefix</span>
-          <span>Type</span>
-          <span>Purpose</span>
-          <span>Duration</span>
+      <section class="cookie-policy-section" aria-labelledby="cookie-policy-inventory">
+        <h2 id="cookie-policy-inventory">{{ t('cookiePolicy.sections.cookies.title') }}</h2>
+        <div class="cookie-table-wrap" tabindex="0">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">{{ t('cookiePolicy.table.name') }}</th>
+                <th scope="col">{{ t('cookiePolicy.table.type') }}</th>
+                <th scope="col">{{ t('cookiePolicy.table.purpose') }}</th>
+                <th scope="col">{{ t('cookiePolicy.table.duration') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="cookie in cookies" :key="cookie.key">
+                <td class="cookie-name">{{ cookie.name }}</td>
+                <td><span class="cookie-type" :class="`cookie-type-${cookie.type}`">{{ t(`cookiePolicy.types.${cookie.type}`) }}</span></td>
+                <td>{{ t(`cookiePolicy.cookies.${cookie.key}.purpose`) }}</td>
+                <td>{{ t(`cookiePolicy.cookies.${cookie.key}.duration`) }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </section>
 
-        <div class="table-row">
-          <span class="mono">__session, __client*</span>
-          <span class="badge necessary">Necessary</span>
-          <span>Clerk authentication — keeps you signed in and identifies your session securely.</span>
-          <span>Session / up to 1 year</span>
-        </div>
+      <section class="cookie-policy-section" aria-labelledby="cookie-policy-choices">
+        <h2 id="cookie-policy-choices">{{ t('cookiePolicy.sections.choices.title') }}</h2>
+        <p>{{ t('cookiePolicy.sections.choices.body') }}</p>
+        <p>{{ t('cookiePolicy.sections.choices.resetHelp') }}</p>
+        <button class="reset-button" type="button" @click="resetConsent">{{ t('cookiePolicy.sections.choices.reset') }}</button>
+      </section>
 
-        <div class="table-row">
-          <span class="mono">so_cookie_consent</span>
-          <span class="badge necessary">Necessary</span>
-          <span>Stores your cookie consent choice so we don't show the banner again.</span>
-          <span>1 year</span>
-        </div>
+      <section class="cookie-policy-section" aria-labelledby="cookie-policy-third-party">
+        <h2 id="cookie-policy-third-party">{{ t('cookiePolicy.sections.thirdParty.title') }}</h2>
+        <p>{{ t('cookiePolicy.sections.thirdParty.body') }}</p>
+      </section>
 
-        <div class="table-row">
-          <span class="mono">_ga, _gid</span>
-          <span class="badge analytics">Analytics</span>
-          <span>Google Analytics — helps us understand which pages are visited and how the swarm engine is used. Only set if you consent to analytics cookies.</span>
-          <span>Up to 2 years</span>
-        </div>
-      </div>
-    </section>
+      <section class="cookie-policy-section" aria-labelledby="cookie-policy-browser">
+        <h2 id="cookie-policy-browser">{{ t('cookiePolicy.sections.browser.title') }}</h2>
+        <p>{{ t('cookiePolicy.sections.browser.body') }}</p>
+        <ul class="browser-list">
+          <li v-for="browser in browsers" :key="browser.key">
+            <a :href="browser.href" target="_blank" rel="noopener noreferrer">{{ t(`cookiePolicy.browsers.${browser.key}`) }}</a>
+          </li>
+        </ul>
+      </section>
 
-    <section>
-      <h2>3. Your Choices</h2>
-      <p>
-        When you first visit SoccerOctopus you are shown a cookie banner. You can choose
-        to accept <strong>all cookies</strong> (including analytics) or
-        <strong>necessary only</strong> (authentication + consent storage only).
-      </p>
-      <p>
-        You can withdraw or change your consent at any time by clearing your browser's
-        local storage for this site, or by clicking the button below:
-      </p>
-      <button class="btn-reset" @click="resetConsent">Reset cookie preferences</button>
-    </section>
+      <section class="cookie-policy-section" aria-labelledby="cookie-policy-contact">
+        <h2 id="cookie-policy-contact">{{ t('cookiePolicy.sections.contact.title') }}</h2>
+        <p>
+          {{ t('cookiePolicy.sections.contact.prefix') }}
+          <router-link to="/legal">{{ t('cookiePolicy.sections.contact.link') }}</router-link>{{ t('cookiePolicy.sections.contact.suffix') }}
+        </p>
+      </section>
+    </article>
 
-    <section>
-      <h2>4. Third-Party Cookies</h2>
-      <p>
-        Authentication is provided by <strong>Clerk</strong> (clerk.com), which may set
-        its own cookies as part of the sign-in flow. These cookies are strictly necessary
-        to operate the service. Clerk's own cookie and privacy policy is available at
-        <a href="https://clerk.com/privacy" target="_blank" rel="noopener">clerk.com/privacy</a>.
-      </p>
-    </section>
-
-    <section>
-      <h2>5. Browser Controls</h2>
-      <p>
-        All major browsers let you block or delete cookies in their settings.
-        Note that blocking necessary cookies will prevent sign-in from working.
-        Links to browser guidance:
-      </p>
-      <ul>
-        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
-        <li><a href="https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences" target="_blank" rel="noopener">Mozilla Firefox</a></li>
-        <li><a href="https://support.apple.com/guide/safari/manage-cookies-sfri11471" target="_blank" rel="noopener">Apple Safari</a></li>
-        <li><a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge" target="_blank" rel="noopener">Microsoft Edge</a></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>6. Contact</h2>
-      <p>
-        Questions about this policy can be directed to the SoccerOctopus team via
-        the <router-link to="/legal">Legal Notice</router-link> page.
-      </p>
-    </section>
-
-    <div class="back">
-      <router-link to="/">← Back to Home</router-link>
-    </div>
-  </div>
+    <footer class="cookie-policy-footer">
+      <router-link class="back-link" to="/">
+        <ArrowLeft :size="18" aria-hidden="true" />
+        <span>{{ t('cookiePolicy.back') }}</span>
+      </router-link>
+    </footer>
+  </main>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+import { ArrowLeft } from '@lucide/vue'
+
 const STORAGE_KEY = 'so_cookie_consent'
+const { t } = useI18n()
+
+const cookies = [
+  { key: 'session', name: '__session, __client*', type: 'necessary' },
+  { key: 'consent', name: 'so_cookie_consent', type: 'necessary' },
+  { key: 'analytics', name: '_ga, _gid', type: 'analytics' },
+]
+
+const browsers = [
+  { key: 'chrome', href: 'https://support.google.com/chrome/answer/95647' },
+  { key: 'firefox', href: 'https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences' },
+  { key: 'safari', href: 'https://support.apple.com/guide/safari/manage-cookies-sfri11471' },
+  { key: 'edge', href: 'https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge' },
+]
 
 function resetConsent() {
   localStorage.removeItem(STORAGE_KEY)
@@ -110,100 +104,40 @@ function resetConsent() {
 </script>
 
 <style scoped>
-.legal {
-  max-width: 760px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-h1 { color: #e2b714; font-size: 28px; }
-
-.updated { color: #8888aa; font-size: 13px; margin-top: -20px; }
-
-section {
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 10px;
-  padding: 22px 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-h2 { color: #a0c0ff; font-size: 16px; font-weight: 700; }
-
-p { color: #c0c0d8; font-size: 14px; line-height: 1.7; margin: 0; }
-p strong { color: #e0e0e0; }
-
-a { color: #a0c0ff; text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
-ul li { color: #c0c0d8; font-size: 14px; line-height: 1.6; }
-
-/* Cookie table */
-.cookie-table {
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  overflow: hidden;
-  font-size: 13px;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 3fr 1.5fr;
-  gap: 12px;
-  padding: 10px 16px;
-  background: #0f3460;
-  color: #6a6a8a;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 3fr 1.5fr;
-  gap: 12px;
-  padding: 12px 16px;
-  border-top: 1px solid #0f1e35;
-  align-items: start;
-  color: #c0c0d8;
-}
-
-.mono {
-  font-family: monospace;
-  color: #e0e0e0;
-  word-break: break-all;
-  font-size: 12px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 2px 9px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 700;
-  width: fit-content;
-}
-.badge.necessary  { background: #1a3a1a; color: #4ade80; }
-.badge.analytics  { background: #0f2d5e; color: #60a5fa; }
-
-.btn-reset {
-  align-self: flex-start;
-  padding: 9px 18px;
-  background: transparent;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  color: #8888aa;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-}
-.btn-reset:hover { border-color: #e2b714; color: #e2b714; }
-
-.back { font-size: 14px; }
-.back a { color: #e2b714; }
+.cookie-policy-page { display: flex; flex-direction: column; gap: var(--space-8); margin: 0 auto; max-width: 60rem; padding: var(--space-10) 0 var(--space-16); }
+.atlas-kicker { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); margin: 0 0 var(--space-3); text-transform: uppercase; }
+.cookie-policy-intro { border-bottom: var(--border-width-strong) solid var(--color-border-strong); padding-bottom: var(--space-6); }
+.cookie-policy-intro h1 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-4xl); font-weight: var(--font-weight-heavy); line-height: var(--line-height-tight); margin: 0; }
+.cookie-policy-updated { color: var(--color-text-subtle); font: var(--font-weight-medium) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); margin: var(--space-4) 0 0; }
+.cookie-policy-summary { color: var(--color-text-muted); font-size: var(--font-size-md); line-height: var(--line-height-relaxed); margin: var(--space-4) 0 0; max-width: 62ch; }
+.cookie-policy-document { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); }
+.cookie-policy-section { border-bottom: var(--border-width-thin) solid var(--color-border); padding: var(--space-6); }
+.cookie-policy-section:last-child { border-bottom: 0; }
+.cookie-policy-section h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); line-height: var(--line-height-tight); margin: 0; }
+.cookie-policy-section p { color: var(--color-text-muted); font-size: var(--font-size-md); line-height: var(--line-height-relaxed); margin: var(--space-3) 0 0; max-width: 66ch; }
+.cookie-policy-section a { color: var(--color-accent); font-weight: var(--font-weight-semibold); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+.cookie-policy-section a:hover { color: var(--color-accent-hover); }
+.cookie-table-wrap { border: var(--border-width-thin) solid var(--color-border); margin-top: var(--space-4); overflow-x: auto; }
+.cookie-table-wrap:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+table { border-collapse: collapse; color: var(--color-text-muted); font-size: var(--font-size-sm); min-width: 46rem; text-align: left; width: 100%; }
+th { background: var(--color-surface-raised); color: var(--color-text-subtle); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); letter-spacing: 0; text-transform: uppercase; }
+th, td { border-bottom: var(--border-width-thin) solid var(--color-border); padding: var(--space-3) var(--space-4); vertical-align: top; }
+tbody tr:last-child td { border-bottom: 0; }
+th:nth-child(1), td:nth-child(1) { width: 20%; }
+th:nth-child(2), td:nth-child(2) { width: 14%; }
+th:nth-child(3), td:nth-child(3) { width: 46%; }
+.cookie-name { color: var(--color-text); font-family: var(--font-family-data); font-size: var(--font-size-xs); overflow-wrap: anywhere; }
+.cookie-type { border: var(--border-width-thin) solid currentColor; display: inline-block; font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); padding: var(--space-1) var(--space-2); }
+.cookie-type-necessary { color: var(--color-status-success); }
+.cookie-type-analytics { color: var(--color-status-info); }
+.reset-button { background: transparent; border: var(--border-width-thin) solid var(--color-border-strong); color: var(--color-text); cursor: pointer; font-family: var(--font-family-body); font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); margin-top: var(--space-4); min-height: var(--control-height-lg); padding: 0 var(--space-4); transition: border-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard); }
+.reset-button:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.reset-button:active { transform: translateY(1px); }
+.browser-list { display: grid; gap: var(--space-2); margin: var(--space-4) 0 0; padding-left: var(--space-5); }
+.browser-list li { color: var(--color-text-muted); font-size: var(--font-size-md); line-height: var(--line-height-relaxed); }
+.cookie-policy-section a:focus-visible,.reset-button:focus-visible,.back-link:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.cookie-policy-footer { border-top: var(--border-width-thin) solid var(--color-border); padding-top: var(--space-5); }
+.back-link { align-items: center; color: var(--color-text); display: inline-flex; font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); gap: var(--space-2); min-height: var(--control-height-lg); text-decoration: none; }
+.back-link:hover { color: var(--color-accent); }
+@media (max-width: 640px) { .cookie-policy-page { gap: var(--space-6); padding: var(--space-6) 0 var(--space-10); }.cookie-policy-intro h1 { font-size: var(--font-size-3xl); }.cookie-policy-section { padding: var(--space-5); }.cookie-policy-section h2 { font-size: var(--font-size-lg); }.cookie-policy-section p,.browser-list li { font-size: var(--font-size-sm); } }
 </style>

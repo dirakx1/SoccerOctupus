@@ -1,0 +1,26 @@
+{
+  "eyebrow": "Billing update",
+  "title": "Your subscription is being confirmed",
+  "subtitle": "We are reconciling your Stripe checkout with your SoccerOctopus account.",
+  "note": "You can return to your account now. We will also take you there automatically.",
+  "profile": "Go to profile",
+  "retry": "Check again",
+  "missingSession": "No checkout session was included in this return link.",
+  "states": {
+    "pending": {
+      "eyebrow": "Checking checkout",
+      "title": "Confirming your subscription",
+      "copy": "This can take a moment while we verify your checkout and update your account."
+    },
+    "complete": {
+      "eyebrow": "Checkout confirmed",
+      "title": "Your account is up to date",
+      "copy": "Your subscription has been reconciled. You can review billing and access from your profile."
+    },
+    "retryable-error": {
+      "eyebrow": "Still updating",
+      "title": "We are waiting for the billing update",
+      "copy": "Stripe may still be completing the update. You can check again or continue to your profile."
+    }
+  }
+}

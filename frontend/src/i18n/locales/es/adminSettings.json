@@ -1,0 +1,47 @@
+{
+  "eyebrow": "Controles de administración",
+  "title": "Configuración de ejecución",
+  "subtitle": "Configura los proveedores, la política de ejecución y los límites de clientes compartidos por SoccerOctopus.",
+  "updated": "Última actualización",
+  "configured": "Configurada",
+  "notConfigured": "Sin configurar",
+  "keyPlaceholder": "Pega una clave nueva para reemplazarla",
+  "showKey": "Mostrar clave de API",
+  "hideKey": "Ocultar clave de API",
+  "clearKey": "Borrar clave de API guardada",
+  "save": "Guardar configuración",
+  "saveLimits": "Guardar límites",
+  "saving": "Guardando...",
+  "limitsSaved": "Límites guardados.",
+  "success": "Configuración guardada.",
+  "feature": "Función",
+  "unlimited": "Ilimitado",
+  "tiers": { "free": "Gratis", "basic": "Básico", "pro": "Pro" },
+  "fields": {
+    "llmBaseUrl": "URL base del LLM",
+    "llmModelName": "Nombre del modelo LLM",
+    "llmKey": "Clave de API del LLM",
+    "zepGraphId": "ID de grafo de Zep",
+    "zepKey": "Clave de API de Zep",
+    "youtubeKey": "Clave de API de YouTube",
+    "optaBaseUrl": "URL base de Opta",
+    "optaKey": "Clave de API de Opta",
+    "parallelAgents": "Agentes paralelos del enjambre",
+    "timeoutSeconds": "Tiempo de espera del enjambre en segundos",
+    "simulations": "Simulaciones Monte Carlo"
+  },
+  "sections": {
+    "llm": { "title": "Proveedor LLM", "copy": "Controla la síntesis narrativa y cualquier extremo de modelo compatible con OpenAI." },
+    "zep": { "title": "Grafo de conocimiento Zep", "copy": "Guarda la conexión de grafo que los agentes usan para el contexto futbolístico compartido." },
+    "youtube": { "title": "Datos de YouTube", "copy": "Impulsa las señales de impulso en video y análisis táctico. Las claves se cifran al almacenarse y nunca vuelven después de guardarlas." },
+    "opta": { "title": "Datos de Opta", "copy": "Controla los datos de calidad de jugadores de Stats Perform para la profundidad de plantilla y respaldos de referencia." },
+    "execution": { "title": "Ajuste de ejecución", "copy": "Controla la concurrencia del enjambre, el plazo de solicitudes y la profundidad de simulación del torneo." },
+    "limits": { "title": "Límites de funciones", "copy": "Límites por ciclo y nivel. Deja los límites de pago vacíos para que sean ilimitados. Los cambios se aplican a nuevos clientes y a clientes actuales en su próximo ciclo de facturación; las instantáneas del ciclo activo no cambian." }
+  },
+  "errors": {
+    "load": "No se pudo cargar la configuración.",
+    "save": "No se pudo guardar la configuración.",
+    "loadLimits": "No se pudieron cargar los límites de funciones.",
+    "saveLimits": "No se pudieron guardar los límites."
+  }
+}

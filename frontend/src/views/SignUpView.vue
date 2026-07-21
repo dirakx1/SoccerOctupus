@@ -1,134 +1,164 @@
 <template>
-  <div class="auth-page">
-    <section class="auth-panel">
-      <div class="eyebrow">Create account</div>
-      <h1>Sign up</h1>
-      <p class="subtitle">Join the workspace to run predictions and receive role-based access.</p>
+  <AtlasAuthLayout>
+    <template #intro>
+      <h1 id="sign-up-title">{{ t('signUp.title') }}</h1><p>{{ t('signUp.subtitle') }}</p>
+    </template>
+      <form v-if="step === 'details'" class="auth-form" :aria-busy="loading || Boolean(loadingStrategy)" @submit.prevent="createAccount">
+        <SocialAuthButtons
+          :disabled="loading || !isLoaded"
+          :loading-provider="loadingStrategy"
+          appearance="atlas"
+          :labels="providerLabels"
+          @select="signUpWithProvider"
+        />
 
-      <form v-if="step === 'details'" class="auth-form" @submit.prevent="createAccount">
-        <button
-          class="btn-google"
-          type="button"
-          :disabled="loading || googleLoading || !isLoaded"
-          @click="signUpWithGoogle"
-        >
-          <span class="google-mark" aria-hidden="true">G</span>
-          {{ googleLoading ? 'Opening Google...' : 'Continue with Google' }}
-        </button>
-
-        <div class="auth-divider"><span>or use email</span></div>
+        <div class="auth-divider"><span>{{ t('signUp.divider') }}</span></div>
 
         <div class="name-grid">
           <label class="field">
-            <span>First name</span>
+            <span>{{ t('signUp.firstName') }}</span>
             <input v-model.trim="form.firstName" type="text" autocomplete="given-name" placeholder="Alex" />
           </label>
 
           <label class="field">
-            <span>Last name</span>
+            <span>{{ t('signUp.lastName') }}</span>
             <input v-model.trim="form.lastName" type="text" autocomplete="family-name" placeholder="Morgan" />
           </label>
         </div>
 
         <label class="field">
-          <span>Email address</span>
+          <span>{{ t('signUp.email') }}</span>
           <input
             v-model.trim="form.email"
             type="email"
             autocomplete="email"
             required
-            placeholder="you@example.com"
+            :placeholder="t('signUp.emailPlaceholder')"
           />
         </label>
 
         <label class="field">
-          <span>Password</span>
+          <span>{{ t('signUp.username') }}</span>
+          <input
+            v-model.trim="form.username"
+            type="text"
+            autocomplete="username"
+            required
+            :placeholder="t('signUp.usernamePlaceholder')"
+          />
+        </label>
+
+        <label class="field">
+          <span>{{ t('signUp.password') }}</span>
           <input
             v-model="form.password"
             type="password"
             autocomplete="new-password"
             required
-            minlength="8"
-            placeholder="Create a password"
+            :placeholder="t('signUp.passwordPlaceholder')"
           />
         </label>
+        <PasswordPolicyChecklist :policy="passwordPolicy" />
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
         <div id="clerk-captcha" />
 
-        <button class="btn-primary" :disabled="loading || googleLoading || !isLoaded">
-          {{ loading ? 'Creating account...' : 'Create account' }}
+        <button class="btn-primary" :disabled="!canSubmit">
+          {{ loading ? t('signUp.submitting') : t('signUp.submit') }}
         </button>
       </form>
 
-      <form v-else class="auth-form" @submit.prevent="verifyEmail">
+      <form v-else class="auth-form" :aria-busy="loading" @submit.prevent="verifyEmail">
         <p class="verification-copy">
-          Enter the verification code Clerk sent to {{ form.email }}.
+          {{ t('signUp.verificationCopy', { email: form.email }) }}
         </p>
 
         <label class="field">
-          <span>Verification code</span>
+          <span>{{ t('signUp.verificationCode') }}</span>
           <input
             v-model.trim="form.code"
             type="text"
             inputmode="numeric"
             autocomplete="one-time-code"
             required
-            placeholder="123456"
+            :placeholder="t('signUp.codePlaceholder')"
           />
         </label>
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
         <button class="btn-primary" :disabled="loading || !isLoaded">
-          {{ loading ? 'Verifying...' : 'Verify email' }}
+          {{ loading ? t('signUp.verifying') : t('signUp.verify') }}
         </button>
 
         <button class="btn-link" type="button" :disabled="loading" @click="resendEmailCode">
-          Resend code
+          {{ t('signUp.resend') }}
         </button>
       </form>
 
       <p class="auth-switch">
-        Already have an account?
-        <router-link to="/sign-in">Sign in</router-link>
+        {{ t('signUp.signInPrompt') }}
+        <router-link to="/sign-in">{{ t('signUp.signIn') }}</router-link>
       </p>
-    </section>
-  </div>
+  </AtlasAuthLayout>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useClerk, useSignUp } from '@clerk/vue'
 
+import PasswordPolicyChecklist from '../components/PasswordPolicyChecklist.vue'
+import SocialAuthButtons from '../components/SocialAuthButtons.vue'
+import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
+import { usePasswordPolicy } from '../composables/usePasswordPolicy'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
+import { clearPostAuthCompletion, startPostAuthCompletion } from '../lib/postAuthCompletion'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
+import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
+const { t } = useI18n()
 const clerk = useClerk()
 const { isLoaded, signUp, setActive } = useSignUp()
 
 const step = ref('details')
 const loading = ref(false)
-const googleLoading = ref(false)
+const loadingStrategy = ref('')
 const error = ref('')
 const form = reactive({
   firstName: '',
   lastName: '',
   email: '',
+  username: '',
   password: '',
   code: '',
 })
+const passwordPolicy = usePasswordPolicy({
+  password: computed(() => form.password),
+  validator: computed(() => signUp.value?.validatePassword),
+  clerk,
+})
+const emailLooksValid = computed(() => /\S+@\S+\.\S+/.test(form.email))
+const canSubmit = computed(() => {
+  return isLoaded.value &&
+    !loading.value &&
+    !loadingStrategy.value &&
+    emailLooksValid.value &&
+    Boolean(form.username && form.password) &&
+    passwordPolicy.passesRequiredRules.value
+})
+const providerLabels = { continueWith: (name) => t('signUp.provider.continueWith', { name }), opening: (name) => t('signUp.provider.opening', { name }) }
 
 function authError(err) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || 'Unable to create your account. Check your details and try again.'
+  return userFacingError(err, t('signUp.errors.fallback'))
 }
 
 async function completeSignUp(result) {
   if (!setActive.value || !result.createdSessionId) {
-    error.value = 'Unable to activate your session. Please try signing in.'
+    error.value = t('signUp.errors.activate')
     return
   }
 
@@ -144,7 +174,7 @@ async function prepareEmailVerification() {
   const supportedStrategies = signUp.value?.verifications?.emailAddress?.supportedStrategies || []
 
   if (supportedStrategies.length && !supportedStrategies.includes('email_code')) {
-    error.value = `This sign-up requires ${supportedStrategies.join(', ')}, which is not supported by this custom sign-up page yet.`
+    error.value = t('signUp.errors.unsupported', { methods: supportedStrategies.join(', ') })
     return false
   }
 
@@ -165,11 +195,12 @@ async function handleSignUpResult(result) {
     return
   }
 
-  error.value = 'Unable to complete sign-up. Please check your details and try again.'
+  error.value = t('signUp.errors.complete')
 }
 
 async function createAccount() {
   if (!isLoaded.value || !signUp.value) return
+  if (!canSubmit.value) return
 
   loading.value = true
   error.value = ''
@@ -177,6 +208,7 @@ async function createAccount() {
   try {
     const result = await signUp.value.create({
       emailAddress: form.email,
+      username: form.username,
       password: form.password,
       firstName: form.firstName || undefined,
       lastName: form.lastName || undefined,
@@ -190,20 +222,22 @@ async function createAccount() {
   }
 }
 
-async function signUpWithGoogle() {
+async function signUpWithProvider(strategy) {
   if (!isLoaded.value || !signUp.value) return
 
-  googleLoading.value = true
+  loadingStrategy.value = strategy
   error.value = ''
+  startPostAuthCompletion()
 
   try {
     await signUp.value.authenticateWithRedirect({
-      strategy: 'oauth_google',
+      strategy,
       redirectUrl: '/sso-callback',
       redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
-    googleLoading.value = false
+    clearPostAuthCompletion()
+    loadingStrategy.value = ''
     error.value = authError(err)
   }
 }
@@ -241,95 +275,25 @@ async function resendEmailCode() {
 </script>
 
 <style scoped>
-.auth-page {
-  display: flex;
-  justify-content: center;
-  padding: 48px 0;
-}
-
-.auth-panel {
-  width: min(100%, 560px);
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  padding: 32px;
-}
-
-.eyebrow {
-  color: #e2b714;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-}
-
-h1 {
-  color: #e0e0e0;
-  font-size: 30px;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #8888aa;
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.btn-google {
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  color: #1f2937;
-  cursor: pointer;
-  display: flex;
-  font-size: 15px;
-  font-weight: 700;
-  gap: 10px;
-  justify-content: center;
-  padding: 12px 20px;
-  transition: opacity 0.2s, transform 0.2s;
-}
-
-.btn-google:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.btn-google:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.google-mark {
-  align-items: center;
-  color: #4285f4;
-  display: inline-flex;
-  font-size: 17px;
-  font-weight: 800;
-  height: 20px;
-  justify-content: center;
-  width: 20px;
-}
-
 .auth-divider {
   align-items: center;
-  color: #8888aa;
+  color: var(--color-text-muted);
   display: flex;
   font-size: 11px;
   gap: 12px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .auth-divider::before,
 .auth-divider::after {
-  background: #0f3460;
+  background: var(--color-border);
   content: '';
   flex: 1;
   height: 1px;
@@ -348,44 +312,37 @@ h1 {
 }
 
 .field span {
-  color: #8888aa;
+  color: var(--color-text-muted);
   font-size: 13px;
 }
 
 input {
-  background: #0a0a1a;
-  color: #e0e0e0;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 14px;
+  background: var(--color-surface-raised); color: var(--color-text); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); min-height: var(--control-height-lg); padding: 0 var(--space-3); font-size: var(--font-size-sm);
 }
 
 input:focus {
-  border-color: #e2b714;
-  outline: none;
+  border-color: var(--color-accent); outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 1px;
 }
 
 .verification-copy {
-  background: #0f3460;
-  border-radius: 8px;
-  color: #c0c0d0;
+  background: var(--color-surface-inset); border-left: var(--border-width-strong) solid var(--color-accent); color: var(--color-text-muted);
   font-size: 14px;
   line-height: 1.5;
   padding: 12px 14px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  color: #0a0a1a;
+  background: var(--color-accent); color: var(--color-accent-contrast);
   font-weight: 700;
   font-size: 15px;
   border: none;
-  border-radius: 10px;
-  padding: 13px 24px;
+  border-radius: var(--radius-md); min-height: var(--control-height-lg); padding: 0 var(--space-5);
   cursor: pointer;
   transition: opacity 0.2s;
+  width: 100%;
 }
+.btn-primary:hover:not(:disabled) { background: var(--color-accent-hover); }
+.btn-primary:focus-visible, .btn-link:focus-visible, .auth-switch a:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
 
 .btn-primary:disabled {
   cursor: default;
@@ -396,11 +353,11 @@ input:focus {
   align-self: center;
   background: transparent;
   border: none;
-  color: #e2b714;
+  color: var(--color-accent);
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
-  padding: 4px 8px;
+  min-height: var(--control-height-lg); padding: 0 var(--space-3);
 }
 
 .btn-link:disabled {
@@ -409,10 +366,7 @@ input:focus {
 }
 
 .error-box {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  border-radius: 8px;
-  color: #fc8181;
+  background: var(--color-danger-surface); border: var(--border-width-thin) solid var(--color-danger); color: var(--color-danger);
   font-size: 13px;
   padding: 12px 14px;
 }
@@ -423,14 +377,14 @@ input:focus {
 }
 
 .auth-switch {
-  color: #8888aa;
+  color: var(--color-text-muted);
   font-size: 13px;
   margin-top: 20px;
   text-align: center;
 }
 
 .auth-switch a {
-  color: #e2b714;
+  color: var(--color-accent);
   font-weight: 700;
   text-decoration: none;
 }

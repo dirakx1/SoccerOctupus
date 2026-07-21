@@ -1,0 +1,56 @@
+{
+  "brand": {
+    "name": "SoccerOctopus",
+    "strapline": "Tournament Atlas"
+  },
+  "workspace": {
+    "overview": "Overview",
+    "groups": "Groups",
+    "predict": "Predict",
+    "bracket": "Bracket",
+    "markets": "Markets"
+  },
+  "public": {
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "signUp": "Sign up"
+  },
+  "account": {
+    "profile": "Profile",
+    "signOut": "Sign out",
+    "admin": "Admin"
+  },
+  "controls": {
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language",
+    "languageMenu": "Change language",
+    "localeEnglish": "English",
+    "localeSpanish": "Español",
+    "theme": "Theme",
+    "themeMenu": "Change theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "openAccount": "Open account menu",
+    "closeAccount": "Close account menu",
+    "competitionMenu": "Choose competition"
+  },
+  "competition": {
+    "label": "Competition workspace"
+  },
+  "authRecovery": {
+    "title": "Finishing sign-in",
+    "loading": "Loading your account securely.",
+    "error": "Your session is active, but your account could not be loaded. Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "footer": {
+    "label": "Footer",
+    "disclaimer": "© 2026 SoccerOctopus. Predictions are approximations only, not betting advice.",
+    "legal": "Legal notice",
+    "cookies": "Cookie policy",
+    "contact": "Contact",
+    "about": "About"
+  }
+}

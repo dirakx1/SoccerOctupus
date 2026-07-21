@@ -1,0 +1,47 @@
+{
+  "eyebrow": "Administrator controls",
+  "title": "Runtime settings",
+  "subtitle": "Configure the providers, execution policy, and customer limits shared by SoccerOctopus.",
+  "updated": "Last updated",
+  "configured": "Configured",
+  "notConfigured": "Not configured",
+  "keyPlaceholder": "Paste a new key to replace",
+  "showKey": "Show API key",
+  "hideKey": "Hide API key",
+  "clearKey": "Clear stored API key",
+  "save": "Save settings",
+  "saveLimits": "Save limits",
+  "saving": "Saving...",
+  "limitsSaved": "Limits saved.",
+  "success": "Settings saved.",
+  "feature": "Feature",
+  "unlimited": "Unlimited",
+  "tiers": { "free": "Free", "basic": "Basic", "pro": "Pro" },
+  "fields": {
+    "llmBaseUrl": "LLM base URL",
+    "llmModelName": "LLM model name",
+    "llmKey": "LLM API key",
+    "zepGraphId": "Zep graph ID",
+    "zepKey": "Zep API key",
+    "youtubeKey": "YouTube API key",
+    "optaBaseUrl": "Opta base URL",
+    "optaKey": "Opta API key",
+    "parallelAgents": "Swarm parallel agents",
+    "timeoutSeconds": "Swarm timeout seconds",
+    "simulations": "Monte Carlo simulations"
+  },
+  "sections": {
+    "llm": { "title": "LLM provider", "copy": "Controls narrative synthesis and any OpenAI-compatible model endpoint." },
+    "zep": { "title": "Zep knowledge graph", "copy": "Stores the graph connection agents use for shared football context." },
+    "youtube": { "title": "YouTube data", "copy": "Powers video momentum and tactical analysis signals. Keys are encrypted at rest and never returned after saving." },
+    "opta": { "title": "Opta data", "copy": "Controls Stats Perform player-quality data for squad depth and benchmark fallbacks." },
+    "execution": { "title": "Execution tuning", "copy": "Controls swarm concurrency, request deadline, and tournament simulation depth." },
+    "limits": { "title": "Feature limits", "copy": "Cycle limits by tier. Leave paid limits blank for unlimited. Changes apply to new customers and existing customers at their next billing cycle; active-cycle snapshots stay unchanged." }
+  },
+  "errors": {
+    "load": "Could not load settings.",
+    "save": "Could not save settings.",
+    "loadLimits": "Could not load feature limits.",
+    "saveLimits": "Could not save limits."
+  }
+}

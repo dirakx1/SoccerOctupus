@@ -63,7 +63,7 @@ setup if they were exposed outside the local machine.
 4. Visit `/pricing` while signed out.
 5. Choose Basic, sign up, and confirm redirect to Stripe Checkout.
 6. Complete Checkout with a Stripe test card.
-7. Return to `/billing/success`, then `/profile`.
+7. Return to `/billing/success?session_id={CHECKOUT_SESSION_ID}`, then `/profile`.
 8. Run a prediction and confirm no `Video Intelligence Agent` appears in the
    agent breakdown.
 9. Use the Billing section on the Profile page to change to Pro.
@@ -71,3 +71,36 @@ setup if they were exposed outside the local machine.
     `Video Intelligence Agent`.
 11. Use the portal cancel flow and confirm local subscription becomes free after
     webhook sync.
+
+## Pricing Surface
+
+`/pricing` is a public Tournament Atlas page. It uses the active persisted
+Locale (English or Spanish) for its frontend-owned page, plan-note, action,
+loading, and error copy. Server-provided plan labels, prices, intervals, and
+feature strings remain verbatim so that billing configuration stays the single
+source of truth.
+
+For a signed-out paid-plan choice, the page stores the exact local return path
+`/pricing?plan={basic|pro}&checkout=1` before sending the user to sign-up. Once
+signed in, it removes only `checkout=1`, then calls the existing plan-change
+endpoint. A signed-in selection uses the existing `POST /api/billing/change-plan`
+request and follows a returned Stripe URL unchanged. Choosing Free while paid
+continues to use that same plan-change path, including a returned cancellation
+portal URL. No Locale, return-path, or extra frontend field is sent to the
+billing endpoint.
+
+## Checkout Return
+
+`/billing/success` is a signed-in route. Stripe supplies `session_id` through
+the configured success URL; the frontend sends it unchanged to
+`GET /api/billing/checkout-session/{session_id}`. The backend verifies that the
+Stripe session belongs to the current user, synchronizes the embedded
+subscription when available, and returns the current serialized subscription.
+
+The localized Tournament Atlas return screen uses the active persisted Locale
+(English or Spanish) for its frontend-owned pending, confirmed, missing-session,
+and retry labels. It does not pass Locale to Stripe or add client-side billing
+state. A missing or failed verification retains any backend error detail and
+offers one manual recheck. The original 3.5-second return to `/profile` remains
+in effect after success, failure, a missing session ID, or a manual retry; the
+Stripe webhook may complete reconciliation asynchronously after a failed check.

@@ -2,6 +2,9 @@
   "name": "socceroctopus-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,7 +15,9 @@
     "@clerk/vue": "^1.9.0",
     "@lucide/vue": "^1.21.0",
     "axios": "^1.7.2",
+    "qrcode": "^1.5.4",
     "vue": "^3.4.0",
+    "vue-i18n": "^11.4.6",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {

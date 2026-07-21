@@ -1,148 +1,73 @@
 <template>
-  <div class="legal">
-    <h1>About SoccerOctopus</h1>
+  <main class="about-page" aria-labelledby="about-title">
+    <header class="about-intro">
+      <p class="atlas-kicker">{{ t('about.eyebrow') }}</p>
+      <h1 id="about-title">{{ t('about.title') }}</h1>
+      <p>{{ t('about.intro') }}</p>
+    </header>
 
-    <section>
-      <h2>What is SoccerOctopus?</h2>
-      <p>
-        SoccerOctopus is an open-source swarm AI engine built to predict every match of the
-        FIFA World Cup 2026. A coordinated ensemble of specialised agents — each analysing a
-        different data source — votes on match outcomes, and an aggregator agent synthesises
-        their predictions into final probabilities, goal forecasts, and tournament simulations.
-      </p>
-    </section>
+    <article class="about-document">
+      <section class="about-section" aria-labelledby="about-what">
+        <h2 id="about-what">{{ t('about.sections.what.title') }}</h2>
+        <p>{{ t('about.sections.what.body') }}</p>
+      </section>
 
-    <section>
-      <h2>Tech Stack</h2>
-      <ul>
-        <li><strong>Frontend:</strong> Vue 3 + Vite, Vue Router, Clerk auth</li>
-        <li><strong>Backend:</strong> Python 3.11 / 3.12, Flask 3, SQLAlchemy 2, Alembic</li>
-        <li><strong>Inference:</strong> OpenAI API (GPT-4o) — aggregator narrative synthesis</li>
-        <li><strong>Serving:</strong> Gunicorn (sync workers, 240 s timeout) behind Nginx</li>
-        <li><strong>Simulation:</strong> Monte Carlo (Poisson goal model) as swarm fallback</li>
-        <li><strong>Database:</strong> PostgreSQL via psycopg3</li>
-      </ul>
-    </section>
+      <section v-for="section in listSections" :key="section.key" class="about-section" :aria-labelledby="`about-${section.key}`">
+        <h2 :id="`about-${section.key}`">{{ t(`about.sections.${section.key}.title`) }}</h2>
+        <ul>
+          <li v-for="item in tm(`about.sections.${section.key}.items`)" :key="item">
+            <template v-if="section.key === 'agents'">
+              <strong>{{ item.split('|')[0] }}</strong>{{ ' - ' }}{{ item.split('|')[1] }}
+            </template>
+            <template v-else>{{ item }}</template>
+          </li>
+        </ul>
+      </section>
 
-    <section>
-      <h2>Swarm Agents</h2>
-      <ul>
-        <li>
-          <strong>Statistical Agent (weight 1.8×)</strong> — ELO ratings, Poisson model,
-          SofaScore attack / defence stats, head-to-head records.
-        </li>
-        <li>
-          <strong>Video Intelligence Agent (weight 1.0×)</strong> — YouTube highlight
-          engagement ratios, title sentiment, tactical momentum scores derived from
-          recent match footage.
-        </li>
-        <li>
-          <strong>Recent Form Agent (weight 1.3×)</strong> — Points earned in last 10
-          official matches, goal rates adjusted by form trajectory.
-        </li>
-        <li>
-          <strong>Tactical Agent (weight 1.2×)</strong> — Style-matchup matrix
-          (high-press vs counter, tiki-taka vs defensive block, etc.).
-        </li>
-        <li>
-          <strong>Aggregator Agent</strong> — Confidence-weighted ensemble + LLM-synthesised
-          narrative and key factor extraction.
-        </li>
-      </ul>
-    </section>
+      <section class="about-section" aria-labelledby="about-open-source">
+        <h2 id="about-open-source">{{ t('about.sections.openSource.title') }}</h2>
+        <p>{{ t('about.sections.openSource.intro') }}</p>
+        <p><a class="repository-link" href="https://github.com/dirakx1/SoccerOctupus" target="_blank" rel="noopener noreferrer">{{ t('about.sections.openSource.repository') }}<ExternalLink :size="15" aria-hidden="true" /></a></p>
+        <p>{{ t('about.sections.openSource.licensePrefix') }} <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener noreferrer">{{ t('about.sections.openSource.license') }}</a>. {{ t('about.sections.openSource.copyright') }}</p>
+        <p>{{ t('about.sections.openSource.termsPrefix') }} <a href="https://github.com/dirakx1/SoccerOctupus/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">{{ t('about.sections.openSource.termsLink') }}</a> {{ t('about.sections.openSource.termsSuffix') }}</p>
+      </section>
+    </article>
 
-    <section>
-      <h2>Data Sources</h2>
-      <ul>
-        <li>SofaScore — static team attack / defence ratings and ELO</li>
-        <li>YouTube Data API v3 — video engagement and sentiment</li>
-        <li>FotMob — xG and heatmaps</li>
-        <li>FlashScore — form history and head-to-head results</li>
-        <li>ESPN public API — live WC 2026 group stage results</li>
-        <li>Opta — squad quality metrics</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Open Source</h2>
-      <p>
-        SoccerOctopus is free software. The full source code is available on GitHub:
-      </p>
-      <p class="repo-link">
-        <a href="https://github.com/dirakx1/SoccerOctupus" target="_blank" rel="noopener noreferrer">
-          github.com/dirakx1/SoccerOctupus ↗
-        </a>
-      </p>
-      <p>
-        Licensed under the
-        <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener noreferrer">
-          GNU Affero General Public License v3.0 (AGPL-3.0)
-        </a>.
-        Copyright © 2026 Rafael Ortiz / KubeAIllc.
-      </p>
-      <p>
-        The AGPL-3.0 requires that any modified version deployed as a network service
-        must also publish its source code. See the
-        <a href="https://github.com/dirakx1/SoccerOctupus/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
-          LICENSE file
-        </a>
-        for the full terms.
-      </p>
-    </section>
-
-    <div class="back">
-      <router-link to="/">← Back to Home</router-link>
-    </div>
-  </div>
+    <footer class="about-footer">
+      <router-link class="back-link" to="/"><ArrowLeft :size="18" aria-hidden="true" /><span>{{ t('about.back') }}</span></router-link>
+    </footer>
+  </main>
 </template>
 
+<script setup>
+import { ArrowLeft, ExternalLink } from '@lucide/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, tm } = useI18n()
+const listSections = [{ key: 'stack' }, { key: 'agents' }, { key: 'sources' }]
+</script>
+
 <style scoped>
-.legal {
-  max-width: 760px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-h1 { color: #e2b714; font-size: 28px; }
-
-section {
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 10px;
-  padding: 22px 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-h2 { color: #a0c0ff; font-size: 16px; font-weight: 700; }
-
-p { color: #c0c0d8; font-size: 14px; line-height: 1.7; margin: 0; }
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-li { color: #c0c0d8; font-size: 14px; line-height: 1.7; padding-left: 16px; position: relative; }
-li::before { content: '›'; position: absolute; left: 0; color: #e2b714; }
-li strong { color: #e0e0e0; }
-
-a { color: #a0c0ff; text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-.repo-link a {
-  font-size: 15px;
-  font-weight: 600;
-  color: #e2b714;
-}
-
-.back { font-size: 14px; }
-.back a { color: #e2b714; }
+.about-page { display: flex; flex-direction: column; gap: var(--space-8); margin: 0 auto; max-width: 52rem; padding: var(--space-10) 0 var(--space-16); }
+.atlas-kicker { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); margin: 0 0 var(--space-3); text-transform: uppercase; }
+.about-intro { border-bottom: var(--border-width-strong) solid var(--color-border-strong); padding-bottom: var(--space-6); }
+.about-intro h1 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-4xl); font-weight: var(--font-weight-heavy); line-height: var(--line-height-tight); margin: 0; }
+.about-intro > p:last-child { color: var(--color-text-muted); font-size: var(--font-size-md); line-height: var(--line-height-relaxed); margin: var(--space-4) 0 0; max-width: 62ch; }
+.about-document { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); }
+.about-section { border-bottom: var(--border-width-thin) solid var(--color-border); padding: var(--space-6); }
+.about-section:last-child { border-bottom: 0; }
+.about-section h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); line-height: var(--line-height-tight); margin: 0; }
+.about-section p,.about-section li { color: var(--color-text-muted); font-size: var(--font-size-md); line-height: var(--line-height-relaxed); }
+.about-section p { margin: var(--space-3) 0 0; max-width: 66ch; }
+.about-section ul { display: grid; gap: var(--space-3); list-style: none; margin: var(--space-4) 0 0; padding: 0; }
+.about-section li { border-left: var(--border-width-strong) solid var(--color-border-strong); padding-left: var(--space-3); }
+.about-section li strong { color: var(--color-text); font-weight: var(--font-weight-bold); }
+.about-section a { color: var(--color-accent); font-weight: var(--font-weight-semibold); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+.about-section a:hover { color: var(--color-accent-hover); }
+.repository-link { align-items: center; display: inline-flex; gap: var(--space-2); }
+.about-section a:focus-visible,.back-link:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.about-footer { border-top: var(--border-width-thin) solid var(--color-border); padding-top: var(--space-5); }
+.back-link { align-items: center; color: var(--color-text); display: inline-flex; font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); gap: var(--space-2); min-height: var(--control-height-lg); text-decoration: none; }
+.back-link:hover { color: var(--color-accent); }
+@media (max-width: 640px) { .about-page { gap: var(--space-6); padding: var(--space-6) 0 var(--space-10); }.about-intro h1 { font-size: var(--font-size-3xl); }.about-section { padding: var(--space-5); }.about-section h2 { font-size: var(--font-size-lg); }.about-section p,.about-section li { font-size: var(--font-size-sm); } }
 </style>

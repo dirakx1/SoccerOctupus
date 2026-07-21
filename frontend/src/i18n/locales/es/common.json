@@ -1,0 +1,30 @@
+{
+  "localeName": "Español",
+  "reverification": {
+    "title": "Verifica tu identidad",
+    "defaultMessage": "Escribe tu contraseña para continuar.",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Escribe tu contraseña",
+    "verifying": "Verificando...",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "authenticatorCode": "Código de autenticación",
+    "backupCode": "Código de respaldo",
+    "verificationCode": "Código de verificación",
+    "backupPlaceholder": "Escribe el código de respaldo",
+    "useBackupCode": "Usar un código de respaldo",
+    "useAuthenticator": "Usar la aplicación de autenticación",
+    "emailCopy": "Escribe el código enviado a {target} para continuar.",
+    "phoneCopy": "Escribe el código enviado a {target} para continuar.",
+    "passkeyCopy": "Usa tu llave de acceso para continuar.",
+    "authenticatorCopy": "Escribe el código de 6 dígitos de tu aplicación de autenticación para continuar.",
+    "backupCopy": "Escribe uno de tus códigos de respaldo para continuar.",
+    "yourEmail": "tu correo electrónico",
+    "yourPhone": "tu teléfono",
+    "signInAgain": "Vuelve a iniciar sesión antes de cambiar la configuración de seguridad.",
+    "verificationFailed": "No se pudo verificar. Inténtalo de nuevo.",
+    "cancelled": "La verificación se canceló.",
+    "superseded": "Una solicitud de verificación más reciente reemplazó esta solicitud.",
+    "screenClosed": "La verificación se canceló porque se cerró la pantalla de seguridad."
+  }
+}

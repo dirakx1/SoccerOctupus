@@ -1,55 +1,56 @@
 <template>
-  <div class="auth-page">
-    <section class="auth-panel">
-      <div class="eyebrow">Secure access</div>
-      <h1>Sign in</h1>
-      <p class="subtitle">Access the prediction workspace and admin settings.</p>
-
-      <form v-if="step === 'credentials'" class="auth-form" @submit.prevent="submit">
-        <button
-          class="btn-google"
-          type="button"
-          :disabled="loading || googleLoading || !isLoaded"
-          @click="signInWithGoogle"
-        >
-          <span class="google-mark" aria-hidden="true">G</span>
-          {{ googleLoading ? 'Opening Google...' : 'Continue with Google' }}
-        </button>
-
-        <div class="auth-divider"><span>or use email</span></div>
-
-        <label class="field">
-          <span>Email address</span>
-          <input
-            v-model.trim="form.email"
-            type="email"
-            autocomplete="email"
-            required
-            placeholder="you@example.com"
+  <AtlasAuthLayout>
+    <template #intro>
+      <h1 id="sign-in-title">{{ t('signIn.title') }}</h1>
+      <p>{{ t('signIn.subtitle') }}</p>
+    </template>
+      <form v-if="step === 'credentials'" class="auth-form" :aria-busy="loading || Boolean(loadingStrategy)" @submit.prevent="submit">
+        <template v-if="!resumingPasswordFirstFactor">
+          <SocialAuthButtons
+            :disabled="loading || !isLoaded"
+            :loading-provider="loadingStrategy"
+            appearance="atlas"
+            :labels="providerLabels"
+            @select="signInWithProvider"
           />
-        </label>
+
+          <div class="auth-divider"><span>{{ t('signIn.divider') }}</span></div>
+
+          <label class="field">
+            <span>{{ t('signIn.identifier') }}</span>
+            <input
+              v-model.trim="form.identifier"
+              type="text"
+              autocomplete="username"
+              required
+              :placeholder="t('signIn.identifierPlaceholder')"
+            />
+          </label>
+        </template>
+
+        <p v-else class="verification-copy">{{ t('signIn.verification.passwordResume') }}</p>
 
         <label class="field">
-          <span>Password</span>
+          <span>{{ t('signIn.password') }}</span>
           <input
             v-model="form.password"
             type="password"
             autocomplete="current-password"
             required
-            placeholder="Enter your password"
+            :placeholder="t('signIn.passwordPlaceholder')"
           />
         </label>
 
-        <router-link class="forgot-link" to="/forgot-password">Forgot password?</router-link>
+        <router-link v-if="!resumingPasswordFirstFactor" class="forgot-link" to="/forgot-password">{{ t('signIn.forgot') }}</router-link>
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
-        <button class="btn-primary" :disabled="loading || !isLoaded">
-          {{ loading ? 'Signing in...' : 'Sign in' }}
+        <button class="btn-primary" :disabled="!canSubmit">
+          {{ loading ? t('signIn.submitting') : (resumingPasswordFirstFactor ? t('signIn.continue') : t('signIn.submit')) }}
         </button>
       </form>
 
-      <form v-else class="auth-form" @submit.prevent="verifyCode">
+      <form v-else class="auth-form" :aria-busy="loading" @submit.prevent="verifyCode">
         <p class="verification-copy">{{ verificationCopy }}</p>
 
         <label class="field">
@@ -64,10 +65,20 @@
           />
         </label>
 
-        <p v-if="error" class="error-box">{{ error }}</p>
+        <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
         <button class="btn-primary" :disabled="loading || !isLoaded">
-          {{ loading ? 'Verifying...' : 'Verify' }}
+          {{ loading ? t('signIn.verifying') : t('signIn.verify') }}
+        </button>
+
+        <button
+          v-if="canSwitchSecondFactor"
+          class="btn-link second-factor-switch"
+          type="button"
+          :disabled="loading"
+          @click="switchSecondFactor"
+        >
+          {{ secondFactorSwitchLabel }}
         </button>
 
         <button
@@ -77,81 +88,110 @@
           :disabled="loading"
           @click="resendCode"
         >
-          Resend code
+          {{ t('signIn.resend') }}
         </button>
 
         <button class="btn-link" type="button" :disabled="loading" @click="backToCredentials">
-          Use a different account
+          {{ t('signIn.differentAccount') }}
         </button>
       </form>
 
       <p class="auth-switch">
-        Need access?
-        <router-link to="/sign-up">Create an account</router-link>
+        {{ t('signIn.createPrompt') }}
+        <router-link to="/sign-up">{{ t('signIn.createAccount') }}</router-link>
       </p>
-    </section>
-  </div>
+  </AtlasAuthLayout>
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
 import { useClerk, useSignIn } from '@clerk/vue'
 
+import SocialAuthButtons from '../components/SocialAuthButtons.vue'
+import AtlasAuthLayout from '../ui/patterns/AtlasAuthLayout.vue'
 import { activateSessionAndHydrateAuth } from '../lib/clerkSession'
+import { clearPostAuthCompletion, startPostAuthCompletion } from '../lib/postAuthCompletion'
 import { consumePostAuthRedirect, peekPostAuthRedirect } from '../lib/postAuthRedirect'
+import { userFacingError } from '../lib/userFacingError'
 
 const router = useRouter()
+const route = useRoute()
+const { t } = useI18n()
 const clerk = useClerk()
 const { isLoaded, signIn, setActive } = useSignIn()
 
 const loading = ref(false)
-const googleLoading = ref(false)
+const loadingStrategy = ref('')
 const error = ref('')
 const step = ref('credentials')
+const resumingPasswordFirstFactor = ref(false)
 const verificationReason = ref('')
 const verificationStage = ref('')
 const verificationStrategy = ref('')
 const verificationTarget = ref('')
+const availableSecondFactorStrategies = ref([])
 const form = reactive({
-  email: '',
+  identifier: '',
   password: '',
   code: '',
 })
+let resumedSignIn = null
 
 const codeStrategies = ['email_code', 'phone_code']
 const supportedSecondFactorStrategies = ['totp', 'email_code', 'phone_code', 'backup_code']
 
 const canResendCode = computed(() => codeStrategies.includes(verificationStrategy.value))
+const canSubmit = computed(() => (
+  isLoaded.value
+  && !loading.value
+  && !loadingStrategy.value
+  && Boolean(form.password)
+  && (resumingPasswordFirstFactor.value || Boolean(form.identifier))
+))
 const codeInputMode = computed(() => verificationStrategy.value === 'backup_code' ? 'text' : 'numeric')
-const verificationLabel = computed(() => verificationStrategy.value === 'backup_code' ? 'Backup code' : 'Verification code')
-const verificationPlaceholder = computed(() => verificationStrategy.value === 'backup_code' ? 'abcd-1234' : '123456')
+const verificationLabel = computed(() => t(verificationStrategy.value === 'backup_code' ? 'signIn.verification.backupCode' : 'signIn.verification.code'))
+const verificationPlaceholder = computed(() => t(verificationStrategy.value === 'backup_code' ? 'signIn.verification.backupPlaceholder' : 'signIn.verification.codePlaceholder'))
+const providerLabels = {
+  continueWith: (name) => t('signIn.provider.continueWith', { name }),
+  opening: (name) => t('signIn.provider.opening', { name }),
+}
+const canSwitchSecondFactor = computed(() => (
+  verificationStage.value === 'second'
+  && availableSecondFactorStrategies.value.includes('totp')
+  && availableSecondFactorStrategies.value.includes('backup_code')
+  && ['totp', 'backup_code'].includes(verificationStrategy.value)
+))
+const secondFactorSwitchLabel = computed(() => verificationStrategy.value === 'totp'
+  ? t('signIn.switchBackup')
+  : t('signIn.switchAuthenticator'))
 const verificationCopy = computed(() => {
   if (verificationReason.value === 'client_trust') {
     if (verificationStrategy.value === 'phone_code') {
-      return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || 'your phone'}.`
+      return t('signIn.verification.clientTrustPhone', { target: verificationTarget.value || t('signIn.verification.yourPhone') })
     }
 
-    return `This device needs one more verification. Enter the code Clerk sent to ${verificationTarget.value || form.email}.`
+    return t('signIn.verification.clientTrustEmail', { target: verificationTarget.value || form.identifier })
   }
 
   if (verificationStrategy.value === 'totp') {
-    return 'Enter the code from your authenticator app.'
+    return t('signIn.verification.authenticator')
   }
 
   if (verificationStrategy.value === 'backup_code') {
-    return 'Enter one of your backup codes.'
+    return t('signIn.verification.backupCopy')
   }
 
   if (verificationStrategy.value === 'phone_code') {
-    return `Enter the verification code Clerk sent to ${verificationTarget.value || 'your phone'}.`
+    return t('signIn.verification.phone', { target: verificationTarget.value || t('signIn.verification.yourPhone') })
   }
 
-  return `Enter the verification code Clerk sent to ${verificationTarget.value || form.email}.`
+  return t('signIn.verification.email', { target: verificationTarget.value || form.identifier })
 })
 
 function authError(err) {
-  return err?.response?.data?.error || err?.errors?.[0]?.longMessage || err?.errors?.[0]?.message || err?.message || 'Unable to sign in. Check your details and try again.'
+  return userFacingError(err, t('signIn.errors.fallback'))
 }
 
 function findFactor(factors = [], strategies = []) {
@@ -173,8 +213,8 @@ function codeFactorParams(factor, stage) {
 function unsupportedFactorMessage(factors = []) {
   const methods = factors.map((factor) => factor.strategy).filter(Boolean).join(', ')
   return methods
-    ? `This sign-in requires ${methods}, which is not supported by this custom sign-in page yet.`
-    : 'This sign-in requires a verification method that is not available for this account.'
+    ? t('signIn.errors.unsupported', { methods })
+    : t('signIn.errors.unsupportedGeneric')
 }
 
 function getCreatedSessionId(result) {
@@ -185,7 +225,7 @@ async function completeSignIn(result) {
   const sessionId = getCreatedSessionId(result)
 
   if (!sessionId) {
-    error.value = 'Unable to activate your session. Please try signing in again.'
+    error.value = t('signIn.errors.activate')
     return
   }
 
@@ -224,6 +264,14 @@ function prepareLocalVerification(stage, factor) {
   step.value = 'verify'
 }
 
+function switchSecondFactor() {
+  if (!canSwitchSecondFactor.value) return
+
+  verificationStrategy.value = verificationStrategy.value === 'totp' ? 'backup_code' : 'totp'
+  form.code = ''
+  error.value = ''
+}
+
 async function handleSignInResult(result, attemptedPasswordFactor = false) {
   const currentSignIn = result || signIn.value
 
@@ -233,7 +281,7 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
   }
 
   if (currentSignIn?.status === 'needs_identifier') {
-    error.value = 'Unable to find this account. Check your email address and try again.'
+    error.value = t('signIn.errors.identifier')
     return false
   }
 
@@ -268,7 +316,12 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
       return false
     }
 
+    availableSecondFactorStrategies.value = secondFactors
+      .map((factor) => factor.strategy)
+      .filter((strategy) => ['totp', 'backup_code'].includes(strategy))
+
     if (codeStrategies.includes(secondFactor.strategy)) {
+      availableSecondFactorStrategies.value = []
       await prepareCodeVerification('second', secondFactor)
     } else {
       prepareLocalVerification('second', secondFactor)
@@ -292,31 +345,41 @@ async function handleSignInResult(result, attemptedPasswordFactor = false) {
   }
 
   if (currentSignIn?.status === 'needs_new_password') {
-    error.value = 'This account requires a password reset before signing in.'
+    error.value = t('signIn.errors.newPassword')
     return false
   }
 
-  error.value = currentSignIn?.status
-    ? `Unable to complete sign-in from Clerk status: ${currentSignIn.status}.`
-    : 'Unable to complete sign-in. Clerk did not return a sign-in status.'
+  error.value = t('signIn.errors.complete')
   return false
 }
 
-async function submit() {
-  if (!isLoaded.value || !signIn.value || !setActive.value) return
+async function resumePendingSignIn() {
+  if (route.query.resume !== 'oauth') return
+  if (!isLoaded.value || !signIn.value || resumedSignIn === signIn.value) return
 
+  if (!['needs_first_factor', 'needs_second_factor', 'needs_client_trust'].includes(signIn.value.status)) return
+
+  resumedSignIn = signIn.value
   loading.value = true
   error.value = ''
-  form.code = ''
 
   try {
-    const result = await signIn.value.create({
-      strategy: 'password',
-      identifier: form.email,
-      password: form.password,
-    })
+    if (signIn.value.status === 'needs_first_factor') {
+      const firstFactors = signIn.value.supportedFirstFactors || []
+      const passwordFactor = findFactor(firstFactors, ['password'])
+      const codeFactor = findFactor(firstFactors, codeStrategies)
 
-    await handleSignInResult(result)
+      if (codeFactor) {
+        await handleSignInResult(signIn.value, true)
+      } else if (passwordFactor) {
+        resumingPasswordFirstFactor.value = true
+        step.value = 'credentials'
+      } else {
+        error.value = unsupportedFactorMessage(firstFactors)
+      }
+    } else {
+      await handleSignInResult(signIn.value)
+    }
   } catch (err) {
     error.value = authError(err)
   } finally {
@@ -324,20 +387,54 @@ async function submit() {
   }
 }
 
-async function signInWithGoogle() {
+watch([isLoaded, () => signIn.value?.status], resumePendingSignIn, { immediate: true })
+
+async function submit() {
+  if (!isLoaded.value || !signIn.value || !setActive.value) return
+  if (!canSubmit.value) return
+
+  loading.value = true
+  error.value = ''
+  form.code = ''
+
+  try {
+    const wasResumingPasswordFirstFactor = resumingPasswordFirstFactor.value
+    const result = wasResumingPasswordFirstFactor
+      ? await signIn.value.attemptFirstFactor({
+        strategy: 'password',
+        password: form.password,
+      })
+      : await signIn.value.create({
+        strategy: 'password',
+        identifier: form.identifier,
+        password: form.password,
+      })
+
+    if (wasResumingPasswordFirstFactor) resumingPasswordFirstFactor.value = false
+    await handleSignInResult(result, wasResumingPasswordFirstFactor)
+  } catch (err) {
+    error.value = authError(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+async function signInWithProvider(strategy) {
   if (!isLoaded.value || !signIn.value) return
 
-  googleLoading.value = true
+  loadingStrategy.value = strategy
   error.value = ''
+  startPostAuthCompletion()
 
   try {
     await signIn.value.authenticateWithRedirect({
-      strategy: 'oauth_google',
+      strategy,
       redirectUrl: '/sso-callback',
       redirectUrlComplete: peekPostAuthRedirect() || '/',
     })
   } catch (err) {
-    googleLoading.value = false
+    clearPostAuthCompletion()
+    loadingStrategy.value = ''
     error.value = authError(err)
   }
 }
@@ -374,7 +471,7 @@ async function resendCode() {
     const factor = findFactor(factors, [verificationStrategy.value])
 
     if (!factor) {
-      error.value = 'Unable to resend this verification code. Please start sign-in again.'
+      error.value = t('signIn.errors.resend')
       return
     }
 
@@ -396,101 +493,32 @@ function backToCredentials() {
   verificationStage.value = ''
   verificationStrategy.value = ''
   verificationTarget.value = ''
+  availableSecondFactorStrategies.value = []
   form.code = ''
   error.value = ''
 }
 </script>
 
 <style scoped>
-.auth-page {
-  display: flex;
-  justify-content: center;
-  padding: 48px 0;
-}
-
-.auth-panel {
-  width: min(100%, 520px);
-  background: #16213e;
-  border: 1px solid #0f3460;
-  border-radius: 12px;
-  padding: 32px;
-}
-
-.eyebrow {
-  color: #e2b714;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-}
-
-h1 {
-  color: #e0e0e0;
-  font-size: 30px;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #8888aa;
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.btn-google {
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  color: #1f2937;
-  cursor: pointer;
-  display: flex;
-  font-size: 15px;
-  font-weight: 700;
-  gap: 10px;
-  justify-content: center;
-  padding: 12px 20px;
-  transition: opacity 0.2s, transform 0.2s;
-}
-
-.btn-google:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.btn-google:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.google-mark {
-  align-items: center;
-  color: #4285f4;
-  display: inline-flex;
-  font-size: 17px;
-  font-weight: 800;
-  height: 20px;
-  justify-content: center;
-  width: 20px;
-}
-
 .auth-divider {
   align-items: center;
-  color: #8888aa;
+  color: var(--color-text-muted);
   display: flex;
   font-size: 11px;
   gap: 12px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .auth-divider::before,
 .auth-divider::after {
-  background: #0f3460;
+  background: var(--color-border);
   content: '';
   flex: 1;
   height: 1px;
@@ -503,13 +531,13 @@ h1 {
 }
 
 .field span {
-  color: #8888aa;
+  color: var(--color-text-muted);
   font-size: 13px;
 }
 
 .forgot-link {
   align-self: flex-end;
-  color: #e2b714;
+  color: var(--color-accent);
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
@@ -520,54 +548,57 @@ h1 {
 }
 
 input {
-  background: #0a0a1a;
-  color: #e0e0e0;
-  border: 1px solid #0f3460;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 14px;
+  background: var(--color-surface-raised);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
+  width: 100%;
 }
 
-input:focus {
-  border-color: #e2b714;
-  outline: none;
-}
+input:focus { border-color: var(--color-accent); outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 1px; }
 
 .verification-copy {
-  background: #0f3460;
-  border-radius: 8px;
-  color: #c0c0d0;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 12px 14px;
+  background: var(--color-surface-inset);
+  border-left: var(--border-width-strong) solid var(--color-accent);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #e2b714, #f6d860);
-  color: #0a0a1a;
-  font-weight: 700;
-  font-size: 15px;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 24px;
+  align-items: center;
+  background: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-accent-contrast);
   cursor: pointer;
-  transition: opacity 0.2s;
+  display: inline-flex;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-5);
+  width: 100%;
 }
-
-.btn-primary:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
+.btn-primary:hover:not(:disabled) { background: var(--color-accent-hover); }
+.btn-primary:focus-visible, .btn-link:focus-visible, .forgot-link:focus-visible, .auth-switch a:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.btn-primary:disabled { cursor: not-allowed; opacity: 0.55; }
 
 .btn-link {
   align-self: center;
   background: transparent;
   border: none;
-  color: #e2b714;
+  color: var(--color-accent);
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
-  padding: 4px 8px;
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
 }
 
 .btn-link:disabled {
@@ -576,24 +607,25 @@ input:focus {
 }
 
 .error-box {
-  background: #3d1a1a;
-  border: 1px solid #c53030;
-  border-radius: 8px;
-  color: #fc8181;
-  font-size: 13px;
-  padding: 12px 14px;
+  background: var(--color-danger-surface);
+  border: var(--border-width-thin) solid var(--color-danger);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  padding: var(--space-3) var(--space-4);
 }
 
 .auth-switch {
-  color: #8888aa;
-  font-size: 13px;
-  margin-top: 20px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: var(--space-6) 0 0;
   text-align: center;
 }
 
 .auth-switch a {
-  color: #e2b714;
+  color: var(--color-accent);
   font-weight: 700;
   text-decoration: none;
 }
+
 </style>

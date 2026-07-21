@@ -1,0 +1,13 @@
+{
+  "eyebrow": "Methodology",
+  "title": "About SoccerOctopus",
+  "intro": "SoccerOctopus is an open-source swarm AI engine built to predict every match of the FIFA World Cup 2026.",
+  "sections": {
+    "what": { "title": "What is SoccerOctopus?", "body": "A coordinated ensemble of specialised agents, each analysing a different data source, votes on match outcomes. An aggregator agent synthesises their predictions into final probabilities, goal forecasts, and tournament simulations." },
+    "stack": { "title": "Technology stack", "items": ["Frontend: Vue 3 + Vite, Vue Router, account authentication", "Backend: Python 3.11 / 3.12, Flask 3, SQLAlchemy 2, Alembic", "Inference: OpenAI API (GPT-4o) - aggregator narrative synthesis", "Serving: Gunicorn (sync workers, 240 s timeout) behind Nginx", "Simulation: Monte Carlo (Poisson goal model) as swarm fallback", "Database: PostgreSQL via psycopg3"] },
+    "agents": { "title": "Swarm agents", "items": ["Statistical Agent (weight 1.8×)|ELO ratings, Poisson model, SofaScore attack / defence stats, head-to-head records.", "Video Intelligence Agent (weight 1.0×)|YouTube highlight engagement ratios, title sentiment, tactical momentum scores derived from recent match footage.", "Recent Form Agent (weight 1.3×)|Points earned in last 10 official matches, goal rates adjusted by form trajectory.", "Tactical Agent (weight 1.2×)|Style-matchup matrix (high-press vs counter, tiki-taka vs defensive block, etc.).", "Aggregator Agent|Confidence-weighted ensemble + LLM-synthesised narrative and key factor extraction."] },
+    "sources": { "title": "Data sources", "items": ["SofaScore - static team attack / defence ratings and ELO", "YouTube Data API v3 - video engagement and sentiment", "FotMob - xG and heatmaps", "FlashScore - form history and head-to-head results", "ESPN public API - live WC 2026 group stage results", "Opta - squad quality metrics"] },
+    "openSource": { "title": "Open source", "intro": "SoccerOctopus is free software. The full source code is available on GitHub:", "repository": "github.com/dirakx1/SoccerOctupus", "licensePrefix": "Licensed under the", "license": "GNU Affero General Public License v3.0 (AGPL-3.0)", "copyright": "Copyright © 2026 Rafael Ortiz / KubeAIllc.", "termsPrefix": "The AGPL-3.0 requires that any modified version deployed as a network service must also publish its source code. See the", "termsLink": "LICENSE file", "termsSuffix": "for the full terms." }
+  },
+  "back": "Back to home"
+}
