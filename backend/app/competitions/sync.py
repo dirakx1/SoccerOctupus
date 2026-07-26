@@ -40,7 +40,10 @@ def sync_season(config: CompetitionEditionConfig) -> tuple[int, int, int]:
         config.provider_competition_id, config.provider_season
     )
     fixture_data = EspnFixturesProvider().fetch(
-        config.provider_competition_id, config.provider_season
+        config.provider_competition_id,
+        config.provider_season,
+        config.fixture_date_from.strftime("%Y%m%d"),
+        config.fixture_date_until.strftime("%Y%m%d"),
     )
     reverse_mappings = {provider_id: team_slug for team_slug, provider_id in mappings.items()}
     for entry in provider_data.entries:

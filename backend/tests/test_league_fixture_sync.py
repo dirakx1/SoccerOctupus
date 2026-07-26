@@ -44,6 +44,24 @@ def mock_espn(monkeypatch, fixtures):
     )
 
 
+def test_fixture_provider_requests_the_complete_configured_date_range(monkeypatch):
+    requests = []
+    monkeypatch.setattr(
+        "app.competitions.providers.espn.requests.get",
+        lambda url, **kwargs: (
+            requests.append((url, kwargs["params"]))
+            or Response({"events": []})
+        ),
+    )
+
+    from app.competitions.providers.espn import EspnFixturesProvider
+
+    EspnFixturesProvider().fetch("eng.1", "2026", "20260801", "20270531")
+
+    fixture_request = requests[0][1]
+    assert fixture_request == {"dates": "20260801-20270531", "limit": 500}
+
+
 def test_sync_season_persists_fixture_identity_and_rescheduling(app, monkeypatch):
     payload = fixture_payload()
     mock_espn(monkeypatch, payload)

@@ -127,10 +127,16 @@ class EspnFixturesProvider:
         "STATUS_FINAL": "completed",
     }
 
-    def fetch(self, competition_id: str, season: str) -> ProviderFixtures:
+    def fetch(
+        self,
+        competition_id: str,
+        season: str,
+        date_from: str,
+        date_until: str,
+    ) -> ProviderFixtures:
         response = requests.get(
             self.URL.format(competition=competition_id),
-            params={"season": season, "limit": 500},
+            params={"dates": f"{date_from}-{date_until}", "limit": 500},
             timeout=20,
         )
         response.raise_for_status()
