@@ -1,8 +1,20 @@
 <template>
   <main class="league-table-view">
-    <section v-if="loading" data-testid="league-table-loading" class="table-state" aria-live="polite">
-      <LoaderCircle :size="24" class="spin" aria-hidden="true" />
-      <p>{{ t('league.table.loading') }}</p>
+    <section v-if="loading" data-testid="league-table-loading" class="table-skeleton" aria-busy="true" aria-live="polite">
+      <p class="sr-only">{{ t('league.table.loading') }}</p>
+      <header class="skeleton-table-heading" aria-hidden="true">
+        <div><span class="skeleton-line skeleton-eyebrow"></span><span class="skeleton-line skeleton-title"></span></div>
+        <div><span class="skeleton-line skeleton-source"></span><span class="skeleton-line skeleton-updated"></span></div>
+      </header>
+      <div class="skeleton-table" aria-hidden="true">
+        <div class="skeleton-table-labels"><span v-for="column in 10" :key="column" class="skeleton-line"></span></div>
+        <div v-for="row in 10" :key="row" class="skeleton-table-row">
+          <span class="skeleton-line skeleton-cell skeleton-position"></span>
+          <span class="skeleton-line skeleton-cell skeleton-team"></span>
+          <span class="skeleton-line skeleton-cell skeleton-stat"></span>
+          <span class="skeleton-line skeleton-cell skeleton-stat"></span>
+        </div>
+      </div>
     </section>
     <section v-else-if="error" data-testid="league-table-error" class="table-state" role="alert">
       <CircleAlert :size="24" aria-hidden="true" />
@@ -48,7 +60,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { CircleAlert, LoaderCircle, TriangleAlert } from '@lucide/vue'
+import { CircleAlert, TriangleAlert } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 
 import { api } from '../lib/api.js'
@@ -115,5 +127,24 @@ tbody th { font-weight: var(--font-weight-semibold); }
 .table-state { align-items: flex-start; display: flex; flex-direction: column; gap: var(--space-3); min-height: 20rem; justify-content: center; }
 .table-state h1, .table-state p { margin: 0; }
 .table-state button { background: var(--color-accent); border: 0; color: var(--color-accent-contrast); min-height: var(--control-height-lg); padding: 0 var(--space-4); }
-@media (max-width: 720px) { .table-heading { align-items: flex-start; flex-direction: column; gap: var(--space-3); } .table-heading > p { text-align: left; } }
+.table-skeleton { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-8) 0; }
+.skeleton-line { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.skeleton-table-heading { align-items: flex-end; border-bottom: var(--border-width-thin) solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-6); }
+.skeleton-table-heading > div { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeleton-table-heading > div:last-child { align-items: flex-end; }
+.skeleton-eyebrow { height: .75rem; width: 10rem; }
+.skeleton-title { height: 2.25rem; width: 22rem; }
+.skeleton-source { height: 1rem; width: 9rem; }
+.skeleton-updated { height: .75rem; width: 12rem; }
+.skeleton-table { min-width: 48rem; overflow: hidden; }
+.skeleton-table-labels { border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-4); grid-template-columns: 2rem minmax(12rem, 1fr) repeat(8, 2rem); height: 3.25rem; padding: 0 var(--space-3); }
+.skeleton-table-labels .skeleton-line { align-self: center; height: .7rem; }
+.skeleton-table-row { align-items: center; border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-4); grid-template-columns: 2rem minmax(12rem, 1fr) 3rem 3rem; height: 3.25rem; padding: 0 var(--space-3); }
+.skeleton-cell { height: .85rem; }
+.skeleton-position { width: 1rem; }
+.skeleton-team { max-width: 12rem; width: 58%; }
+.skeleton-stat { justify-self: end; width: 1.5rem; }
+@keyframes skeleton-pulse { 50% { opacity: .45; } }
+@media (max-width: 720px) { .table-heading, .skeleton-table-heading { align-items: flex-start; flex-direction: column; gap: var(--space-3); } .table-heading > p { text-align: left; } .skeleton-table-heading > div:last-child { align-items: flex-start; } .skeleton-title { max-width: 22rem; width: 78vw; } .table-skeleton { overflow-x: hidden; } }
+@media (prefers-reduced-motion: reduce) { .skeleton-line { animation: none; } }
 </style>

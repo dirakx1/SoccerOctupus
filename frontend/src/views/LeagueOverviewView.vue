@@ -1,8 +1,21 @@
 <template>
   <main class="league-overview">
-    <section v-if="loading" data-testid="league-loading" class="league-state" aria-live="polite">
-      <LoaderCircle :size="24" class="spin" aria-hidden="true" />
-      <p>{{ t('league.states.loading') }}</p>
+    <section v-if="loading" data-testid="league-loading" class="overview-skeleton" aria-busy="true" aria-live="polite">
+      <p class="sr-only">{{ t('league.states.loading') }}</p>
+      <header class="skeleton-heading" aria-hidden="true">
+        <span class="skeleton-line skeleton-eyebrow"></span>
+        <span class="skeleton-line skeleton-title"></span>
+        <span class="skeleton-line skeleton-subtitle"></span>
+      </header>
+      <div class="skeleton-capabilities" aria-hidden="true">
+        <span v-for="item in 4" :key="item" class="skeleton-capability"><i class="skeleton-line"></i></span>
+      </div>
+      <div class="skeleton-previews" aria-hidden="true">
+        <article v-for="preview in 3" :key="preview" class="skeleton-preview">
+          <span class="skeleton-line skeleton-preview-title"></span>
+          <span v-for="row in preview === 1 ? 5 : 2" :key="row" class="skeleton-line skeleton-preview-row"></span>
+        </article>
+      </div>
     </section>
 
     <section v-else-if="error" data-testid="league-error" class="league-state" role="alert">
@@ -60,7 +73,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { ArrowUpRight, CircleAlert, LoaderCircle } from '@lucide/vue'
+import { ArrowUpRight, CircleAlert } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 
 import { api } from '../lib/api.js'
@@ -140,5 +153,22 @@ onMounted(loadEdition)
 .league-state { align-items: flex-start; display: flex; flex-direction: column; gap: var(--space-3); min-height: 20rem; justify-content: center; }
 .league-state h1, .league-state p { margin: 0; }
 .league-state button { background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; min-height: var(--control-height-lg); padding: 0 var(--space-4); }
-@media (max-width: 720px) { .league-capabilities, .league-previews { grid-template-columns: 1fr; } .league-capabilities a + a { border-left: 0; border-top: var(--border-width-thin) solid var(--color-border); } .league-heading h1 { font-size: var(--font-size-3xl); } }
+.overview-skeleton { display: flex; flex-direction: column; gap: var(--space-10); padding: var(--space-8) 0; }
+.skeleton-line { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.skeleton-heading { border-bottom: var(--border-width-thin) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-3); padding-bottom: var(--space-8); }
+.skeleton-eyebrow { height: .75rem; width: 8rem; }
+.skeleton-title { height: 3rem; max-width: 28rem; width: 58%; }
+.skeleton-subtitle { height: 1rem; width: 11rem; }
+.skeleton-capabilities { border-bottom: var(--border-width-thin) solid var(--color-border); border-top: var(--border-width-thin) solid var(--color-border); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.skeleton-capability { align-items: center; display: flex; min-height: 4.5rem; padding: 0 var(--space-4); }
+.skeleton-capability + .skeleton-capability { border-left: var(--border-width-thin) solid var(--color-border); }
+.skeleton-capability .skeleton-line { height: 1rem; width: 54%; }
+.skeleton-previews { display: grid; gap: var(--space-6); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.skeleton-preview { border-top: var(--border-width-strong) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-3); padding-top: var(--space-4); }
+.skeleton-preview-title { height: 1.25rem; margin-bottom: var(--space-2); width: 48%; }
+.skeleton-preview-row { height: 1rem; width: 88%; }
+.skeleton-preview-row:nth-child(3n) { width: 68%; }
+@keyframes skeleton-pulse { 50% { opacity: .45; } }
+@media (max-width: 720px) { .league-capabilities, .league-previews, .skeleton-capabilities, .skeleton-previews { grid-template-columns: 1fr; } .league-capabilities a + a, .skeleton-capability + .skeleton-capability { border-left: 0; border-top: var(--border-width-thin) solid var(--color-border); } .league-heading h1 { font-size: var(--font-size-3xl); } .skeleton-title { width: 82%; } }
+@media (prefers-reduced-motion: reduce) { .skeleton-line { animation: none; } }
 </style>

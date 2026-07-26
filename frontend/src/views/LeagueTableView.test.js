@@ -30,6 +30,8 @@ describe('LeagueTableView', () => {
     api.get.mockReturnValueOnce(new Promise((resolve) => { resolveRequest = resolve }))
     const wrapper = mountView()
     expect(wrapper.get('[data-testid="league-table-loading"]').text()).toContain('Loading')
+    expect(wrapper.findAll('[data-testid="league-table-loading"] .skeleton-table-row')).toHaveLength(10)
+    expect(wrapper.findAll('[data-testid="league-table-loading"] .skeleton-cell')).toHaveLength(40)
 
     resolveRequest({ data: {
       edition: { display_name: 'Premier League 2026-27' },
