@@ -57,12 +57,13 @@ Implemented Competition Workspace routes use stable, untranslated path segments:
 /:locale(en|es)/competitions/:competitionSlug
 /:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug
 /:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/table
+/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/fixtures
 ```
 
 The generic Competition route resolves its Current Competition Edition. Immutable
-edition routes preserve historical links, and the authenticated `table` route
-renders the authoritative League Table for league-format editions. `fixtures`
-remains reserved until its real view exists. A Spanish
+edition routes preserve historical links, and the authenticated `table` and
+`fixtures` routes render league-format capabilities. The Fixtures view supports
+upcoming/results modes plus Team and Matchweek query filters. A Spanish
 workspace URL applies `es` to Vue I18n, persisted preference, and the document
 language before auth handling. Page copy and navigation labels remain English
 until their owning views and shell migrate. Localized path aliases can be added
@@ -84,6 +85,9 @@ same-locale World Cup overview while preserving query and hash.
 League Competition metadata comes from `GET /api/competitions`. Public overviews
 use `GET /api/competitions/:competition/editions/:edition/table/preview`; the
 complete table uses the authenticated sibling endpoint without `/preview`.
+Public Fixture previews use the equivalent `/fixtures/preview` endpoint, while
+the authenticated `/fixtures` endpoint returns Matchweeks, Teams, normalized
+Fixture states, scores, freshness, and the selected filter state.
 
 Current flat routes redirect to their World Cup 2026 equivalents during migration:
 

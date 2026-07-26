@@ -32,6 +32,26 @@ class ProviderStandings:
     entries: tuple[ProviderStanding, ...]
 
 
+@dataclass(frozen=True)
+class ProviderFixture:
+    provider_fixture_id: str
+    home_provider_team_id: str
+    away_provider_team_id: str
+    kickoff_at: datetime
+    matchweek: int
+    venue: str | None
+    status: str
+    provider_status: str
+    home_score: int | None
+    away_score: int | None
+
+
+@dataclass(frozen=True)
+class ProviderFixtures:
+    fetched_at: datetime
+    entries: tuple[ProviderFixture, ...]
+
+
 class EspnStandingsProvider:
     URL = "https://site.api.espn.com/apis/v2/sports/soccer/{competition}/standings"
 
@@ -90,3 +110,71 @@ class EspnStandingsProvider:
             )
         except (KeyError, TypeError, ValueError) as exc:
             raise ProviderDataError("ESPN standing entry is malformed") from exc
+
+
+class EspnFixturesProvider:
+    URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/{competition}/scoreboard"
+    STATUS_MAP = {
+        "STATUS_SCHEDULED": "scheduled",
+        "STATUS_IN_PROGRESS": "in_progress",
+        "STATUS_HALFTIME": "in_progress",
+        "STATUS_POSTPONED": "postponed",
+        "STATUS_CANCELED": "cancelled",
+        "STATUS_CANCELLED": "cancelled",
+        "STATUS_SUSPENDED": "suspended",
+        "STATUS_ABANDONED": "abandoned",
+        "STATUS_FULL_TIME": "completed",
+        "STATUS_FINAL": "completed",
+    }
+
+    def fetch(self, competition_id: str, season: str) -> ProviderFixtures:
+        response = requests.get(
+            self.URL.format(competition=competition_id),
+            params={"season": season, "limit": 500},
+            timeout=20,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        events = payload.get("events") if isinstance(payload, dict) else None
+        if not isinstance(events, list):
+            raise ProviderDataError("ESPN Fixtures response is malformed")
+        entries = tuple(self._normalize_event(event) for event in events)
+        identities = {}
+        for entry in entries:
+            identity = (entry.home_provider_team_id, entry.away_provider_team_id)
+            previous = identities.setdefault(entry.provider_fixture_id, identity)
+            if previous != identity:
+                raise ProviderDataError(
+                    f"ESPN Fixture {entry.provider_fixture_id} has conflicting identity"
+                )
+        return ProviderFixtures(datetime.now(timezone.utc), entries)
+
+    @classmethod
+    def _normalize_event(cls, event: dict) -> ProviderFixture:
+        try:
+            competition = event["competitions"][0]
+            competitors = {item["homeAway"]: item for item in competition["competitors"]}
+            status_type = event["status"]["type"]
+            provider_status = str(status_type["name"])
+            kickoff_at = datetime.fromisoformat(str(event["date"]).replace("Z", "+00:00"))
+            if kickoff_at.tzinfo is None:
+                kickoff_at = kickoff_at.replace(tzinfo=timezone.utc)
+
+            def score(side: str) -> int | None:
+                value = competitors[side].get("score")
+                return int(value) if value not in (None, "") else None
+
+            return ProviderFixture(
+                provider_fixture_id=str(event["id"]),
+                home_provider_team_id=str(competitors["home"]["team"]["id"]),
+                away_provider_team_id=str(competitors["away"]["team"]["id"]),
+                kickoff_at=kickoff_at,
+                matchweek=int(event["week"]["number"]),
+                venue=competition.get("venue", {}).get("fullName"),
+                status=cls.STATUS_MAP.get(provider_status, "unknown"),
+                provider_status=provider_status,
+                home_score=score("home"),
+                away_score=score("away"),
+            )
+        except (KeyError, IndexError, TypeError, ValueError) as exc:
+            raise ProviderDataError("ESPN Fixture entry is malformed") from exc

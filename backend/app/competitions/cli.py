@@ -14,10 +14,13 @@ def sync_season_command(competition_slug: str, edition_slug: str) -> None:
     if config is None:
         raise click.ClickException("Competition Edition not found")
     try:
-        team_count, standing_count = sync_season(config)
+        team_count, standing_count, fixture_count = sync_season(config)
     except Exception as exc:
         db.session.rollback()
         if isinstance(exc, ProviderDataError):
             raise click.ClickException(str(exc)) from exc
         raise
-    click.echo(f"Synced {team_count} Teams and {standing_count} standings")
+    suffix = "Fixture" if fixture_count == 1 else "Fixtures"
+    click.echo(
+        f"Synced {team_count} Teams and {standing_count} standings; {fixture_count} {suffix}"
+    )

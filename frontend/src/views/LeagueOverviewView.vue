@@ -61,9 +61,25 @@
           <h2>{{ t('league.previews.table.title') }}</h2>
           <p>{{ t('league.previews.table.empty') }}</p>
         </article>
-        <article v-for="preview in otherPreviews" :key="preview" :data-testid="`league-preview-empty-${preview}`">
-          <h2>{{ t(`league.previews.${preview}.title`) }}</h2>
-          <p>{{ t(`league.previews.${preview}.empty`) }}</p>
+        <article
+          v-for="preview in otherPreviews"
+          :key="preview.key"
+          :data-testid="fixturePreview?.[preview.dataKey]?.length ? `league-${preview.key}-preview` : `league-preview-empty-${preview.key}`"
+          class="fixture-preview"
+        >
+          <h2>{{ t(`league.previews.${preview.key}.title`) }}</h2>
+          <ul v-if="fixturePreview?.[preview.dataKey]?.length">
+            <li v-for="fixture in fixturePreview[preview.dataKey]" :key="fixture.id">
+              <small>{{ formatDate(fixture.kickoff_at) }}</small>
+              <span>
+                <strong>{{ fixture.home_team.display_name }}</strong>
+                <b v-if="preview.key === 'results'">{{ fixture.home_team.score }}-{{ fixture.away_team.score }}</b>
+                <i v-else>{{ t('league.previews.fixtures.versus') }}</i>
+                <strong>{{ fixture.away_team.display_name }}</strong>
+              </span>
+            </li>
+          </ul>
+          <p v-else>{{ t(`league.previews.${preview.key}.empty`) }}</p>
         </article>
       </section>
     </template>
@@ -88,7 +104,11 @@ const edition = ref(null)
 const error = ref(false)
 const loading = ref(true)
 const tablePreview = ref(null)
-const otherPreviews = ['fixtures', 'results']
+const fixturePreview = ref(null)
+const otherPreviews = [
+  { key: 'fixtures', dataKey: 'upcoming' },
+  { key: 'results', dataKey: 'results' },
+]
 
 async function loadEdition() {
   loading.value = true
@@ -107,6 +127,14 @@ async function loadEdition() {
         : null
     } catch {
       tablePreview.value = null
+    }
+    try {
+      const preview = await api.get(
+        `/api/competitions/${props.competitionSlug}/editions/${edition.value.slug}/fixtures/preview`
+      )
+      fixturePreview.value = preview.data
+    } catch {
+      fixturePreview.value = null
     }
   } catch {
     edition.value = null
@@ -149,6 +177,13 @@ onMounted(loadEdition)
 .table-preview small { color: var(--color-text-muted); }
 .table-preview ol { list-style: none; margin: 0; padding: 0; }
 .table-preview li { align-items: center; border-top: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); grid-template-columns: 2rem 1fr auto; min-height: 2.75rem; }
+.fixture-preview ul { list-style: none; margin: 0; padding: 0; }
+.fixture-preview li { border-top: var(--border-width-thin) solid var(--color-border); padding: var(--space-3) 0; }
+.fixture-preview li small { color: var(--color-text-muted); display: block; margin-bottom: var(--space-2); }
+.fixture-preview li span { align-items: center; display: grid; gap: var(--space-2); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+.fixture-preview li strong:last-child { text-align: right; }
+.fixture-preview li b { font-family: var(--font-family-data); }
+.fixture-preview li i { color: var(--color-text-muted); font-style: normal; }
 .league-state { align-items: flex-start; display: flex; flex-direction: column; gap: var(--space-3); min-height: 20rem; justify-content: center; }
 .league-state h1, .league-state p { margin: 0; }
 .league-state button { background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; min-height: var(--control-height-lg); padding: 0 var(--space-4); }

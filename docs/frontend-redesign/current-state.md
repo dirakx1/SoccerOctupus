@@ -22,14 +22,17 @@ links, and cookie-banner behavior remain mounted through explicit slots.
 
 Signed-out navigation exposes the canonical Competition overview, Pricing, Sign
 In, and Sign Up. Signed-in workspace navigation is derived from the registered
-Competition Capabilities; unsupported `table` and `fixtures` items are not
-shown. The Competition Edition button lists only registered editions and shows
+Competition Capabilities. Premier League `table` and `fixtures` items open their
+authenticated capability views. The Competition Edition button lists only registered editions and shows
 the current display-name key; it does not invent a selector option. Home and
 Groups now use Atlas page structure, semantic tokens, canonical workspace links,
 and localized page messages; other views remain legacy until each view migrates.
 The backend Competition catalog also supplies the Current Premier League Edition.
-Its public overview includes an authoritative table preview, while the complete
-League Table capability requires authentication.
+Its public overview includes an authoritative table preview, upcoming Fixtures,
+and recent results. The complete League Table and Fixtures capabilities require
+authentication. Fixtures support upcoming/results modes, Team and Matchweek URL
+filters, normalized live and exceptional states, and localized loading, empty,
+and retryable error states.
 
 ## Localization Core
 

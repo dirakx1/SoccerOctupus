@@ -94,11 +94,15 @@ class Response:
         return self.payload
 
 
+def response_for(url, standings):
+    return Response({"events": []} if "scoreboard" in url else standings)
+
+
 def test_sync_season_normalizes_and_idempotently_updates_standings(app, monkeypatch):
     payload = espn_payload()
     monkeypatch.setattr(
         "app.competitions.providers.espn.requests.get",
-        lambda *args, **kwargs: Response(payload),
+        lambda url, **kwargs: response_for(url, payload),
     )
     runner = app.test_cli_runner()
 
@@ -141,7 +145,7 @@ def test_sync_season_rejects_missing_and_malformed_provider_data(app, monkeypatc
     missing["children"][0]["standings"]["entries"].pop()
     monkeypatch.setattr(
         "app.competitions.providers.espn.requests.get",
-        lambda *args, **kwargs: Response(missing),
+        lambda url, **kwargs: response_for(url, missing),
     )
     result = app.test_cli_runner().invoke(
         args=["sync-season", "premier-league", "2026-27"]
@@ -151,7 +155,7 @@ def test_sync_season_rejects_missing_and_malformed_provider_data(app, monkeypatc
 
     monkeypatch.setattr(
         "app.competitions.providers.espn.requests.get",
-        lambda *args, **kwargs: Response({"children": []}),
+        lambda url, **kwargs: response_for(url, {"children": []}),
     )
     result = app.test_cli_runner().invoke(
         args=["sync-season", "premier-league", "2026-27"]
@@ -174,7 +178,7 @@ def test_sync_season_rejects_persisted_provider_mapping_collision(app, monkeypat
         db.session.commit()
     monkeypatch.setattr(
         "app.competitions.providers.espn.requests.get",
-        lambda *args, **kwargs: Response(espn_payload()),
+        lambda url, **kwargs: response_for(url, espn_payload()),
     )
 
     result = app.test_cli_runner().invoke(
@@ -188,7 +192,7 @@ def test_sync_season_rejects_persisted_provider_mapping_collision(app, monkeypat
 def test_sync_season_rejects_unknown_provider_team_without_partial_writes(app, monkeypatch):
     monkeypatch.setattr(
         "app.competitions.providers.espn.requests.get",
-        lambda *args, **kwargs: Response(espn_payload(include_unknown=True)),
+        lambda url, **kwargs: response_for(url, espn_payload(include_unknown=True)),
     )
 
     result = app.test_cli_runner().invoke(
@@ -208,7 +212,7 @@ def test_table_api_exposes_public_preview_and_authenticated_complete_table(
 ):
     monkeypatch.setattr(
         "app.competitions.providers.espn.requests.get",
-        lambda *args, **kwargs: Response(espn_payload()),
+        lambda url, **kwargs: response_for(url, espn_payload()),
     )
     assert app.test_cli_runner().invoke(
         args=["sync-season", "premier-league", "2026-27"]
