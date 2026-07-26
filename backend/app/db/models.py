@@ -125,3 +125,95 @@ class AppSettings(db.Model, TimestampMixin):
         nullable=True,
     )
     updated_by = db.relationship("User", foreign_keys=[updated_by_user_id], lazy="joined")
+
+
+class Team(db.Model, TimestampMixin):
+    __tablename__ = "teams"
+
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(128), unique=True, nullable=False, index=True)
+    display_name = db.Column(db.String(255), nullable=False)
+    abbreviation = db.Column(db.String(16), nullable=True)
+
+
+class CompetitionEdition(db.Model, TimestampMixin):
+    __tablename__ = "competition_editions"
+    __table_args__ = (
+        db.UniqueConstraint("competition_slug", "edition_slug", name="uq_competition_edition"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    competition_slug = db.Column(db.String(128), nullable=False, index=True)
+    edition_slug = db.Column(db.String(64), nullable=False)
+    display_name = db.Column(db.String(255), nullable=False)
+    configuration_revision = db.Column(db.String(64), nullable=False)
+
+
+class CompetitionEditionTeam(db.Model, TimestampMixin):
+    __tablename__ = "competition_edition_teams"
+    __table_args__ = (
+        db.UniqueConstraint("competition_edition_id", "team_id", name="uq_edition_team"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    competition_edition_id = db.Column(
+        db.Integer, db.ForeignKey("competition_editions.id", ondelete="CASCADE"), nullable=False
+    )
+    team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
+
+
+class TeamProviderMapping(db.Model, TimestampMixin):
+    __tablename__ = "team_provider_mappings"
+    __table_args__ = (
+        db.UniqueConstraint("provider", "provider_team_id", name="uq_provider_team_id"),
+        db.UniqueConstraint("provider", "team_id", name="uq_provider_team"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    provider = db.Column(db.String(32), nullable=False)
+    provider_team_id = db.Column(db.String(128), nullable=False)
+    team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
+    team = db.relationship("Team", lazy="joined")
+
+
+class StandingsSnapshot(db.Model, TimestampMixin):
+    __tablename__ = "standings_snapshots"
+    __table_args__ = (
+        db.UniqueConstraint("competition_edition_id", "content_hash", name="uq_edition_standings_hash"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    competition_edition_id = db.Column(
+        db.Integer, db.ForeignKey("competition_editions.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    source = db.Column(db.String(32), nullable=False)
+    source_updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    content_hash = db.Column(db.String(64), nullable=False)
+    standings = db.relationship(
+        "Standing", back_populates="snapshot", cascade="all, delete-orphan", order_by="Standing.position"
+    )
+
+
+class Standing(db.Model):
+    __tablename__ = "standings"
+    __table_args__ = (
+        db.UniqueConstraint("snapshot_id", "position", name="uq_snapshot_position"),
+        db.UniqueConstraint("snapshot_id", "team_id", name="uq_snapshot_team"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    snapshot_id = db.Column(
+        db.Integer, db.ForeignKey("standings_snapshots.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
+    position = db.Column(db.Integer, nullable=False)
+    played = db.Column(db.Integer, nullable=False)
+    won = db.Column(db.Integer, nullable=False)
+    drawn = db.Column(db.Integer, nullable=False)
+    lost = db.Column(db.Integer, nullable=False)
+    goals_for = db.Column(db.Integer, nullable=False)
+    goals_against = db.Column(db.Integer, nullable=False)
+    goal_difference = db.Column(db.Integer, nullable=False)
+    points = db.Column(db.Integer, nullable=False)
+    snapshot = db.relationship("StandingsSnapshot", back_populates="standings")
+    team = db.relationship("Team", lazy="joined")

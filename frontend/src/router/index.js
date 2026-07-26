@@ -64,8 +64,8 @@ const router = createRouter({
     {
       path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/table',
       name: WORKSPACE_ROUTE_NAMES.leagueTable,
-      component: () => import('../views/LeagueCapabilityView.vue'),
-      props: { capability: 'table' },
+       component: () => import('../views/LeagueTableView.vue'),
+       props: true,
       meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
     },
     {

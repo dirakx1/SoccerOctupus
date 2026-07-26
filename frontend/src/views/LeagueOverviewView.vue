@@ -32,7 +32,24 @@
       </nav>
 
       <section class="league-previews" :aria-label="t('league.previews.label')">
-        <article v-for="preview in previews" :key="preview" :data-testid="`league-preview-empty-${preview}`">
+        <article v-if="tablePreview" data-testid="league-table-preview" class="table-preview">
+          <header>
+            <h2>{{ t('league.previews.table.title') }}</h2>
+            <small>{{ t('league.table.updated', { date: formatDate(tablePreview.source_updated_at) }) }}</small>
+          </header>
+          <ol>
+            <li v-for="row in tablePreview.standings" :key="row.team.slug">
+              <span>{{ row.position }}</span>
+              <strong>{{ row.team.display_name }}</strong>
+              <span>{{ row.points }} {{ t('league.table.pointsShort') }}</span>
+            </li>
+          </ol>
+        </article>
+        <article v-else data-testid="league-preview-empty-table">
+          <h2>{{ t('league.previews.table.title') }}</h2>
+          <p>{{ t('league.previews.table.empty') }}</p>
+        </article>
+        <article v-for="preview in otherPreviews" :key="preview" :data-testid="`league-preview-empty-${preview}`">
           <h2>{{ t(`league.previews.${preview}.title`) }}</h2>
           <p>{{ t(`league.previews.${preview}.empty`) }}</p>
         </article>
@@ -58,7 +75,8 @@ const { t } = useI18n()
 const edition = ref(null)
 const error = ref(false)
 const loading = ref(true)
-const previews = ['table', 'fixtures', 'results']
+const tablePreview = ref(null)
+const otherPreviews = ['fixtures', 'results']
 
 async function loadEdition() {
   loading.value = true
@@ -67,12 +85,27 @@ async function loadEdition() {
     const suffix = props.editionSlug ? `/editions/${props.editionSlug}` : ''
     const response = await api.get(`/api/competitions/${props.competitionSlug}${suffix}`)
     edition.value = response.data.edition
+    try {
+      const preview = await api.get(
+        `/api/competitions/${props.competitionSlug}/editions/${edition.value.slug}/table/preview`
+      )
+      tablePreview.value = Array.isArray(preview.data?.standings)
+        && !Number.isNaN(Date.parse(preview.data?.source_updated_at))
+        ? preview.data
+        : null
+    } catch {
+      tablePreview.value = null
+    }
   } catch {
     edition.value = null
     error.value = true
   } finally {
     loading.value = false
   }
+}
+
+function formatDate(value) {
+  return new Intl.DateTimeFormat(props.locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
 }
 
 function capabilityLocation(capability) {
@@ -100,6 +133,10 @@ onMounted(loadEdition)
 .league-previews article { border-top: var(--border-width-strong) solid var(--color-text); padding-top: var(--space-4); }
 .league-previews h2 { font-family: var(--font-family-display); font-size: var(--font-size-lg); margin: 0 0 var(--space-3); }
 .league-previews p { color: var(--color-text-muted); margin: 0; }
+.table-preview header { align-items: baseline; display: flex; justify-content: space-between; }
+.table-preview small { color: var(--color-text-muted); }
+.table-preview ol { list-style: none; margin: 0; padding: 0; }
+.table-preview li { align-items: center; border-top: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); grid-template-columns: 2rem 1fr auto; min-height: 2.75rem; }
 .league-state { align-items: flex-start; display: flex; flex-direction: column; gap: var(--space-3); min-height: 20rem; justify-content: center; }
 .league-state h1, .league-state p { margin: 0; }
 .league-state button { background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; min-height: var(--control-height-lg); padding: 0 var(--space-4); }
