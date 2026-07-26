@@ -160,6 +160,7 @@ class CompetitionEditionTeam(db.Model, TimestampMixin):
         db.Integer, db.ForeignKey("competition_editions.id", ondelete="CASCADE"), nullable=False
     )
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
+    team = db.relationship("Team", lazy="joined")
 
 
 class TeamProviderMapping(db.Model, TimestampMixin):
@@ -174,6 +175,41 @@ class TeamProviderMapping(db.Model, TimestampMixin):
     provider_team_id = db.Column(db.String(128), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
     team = db.relationship("Team", lazy="joined")
+
+
+class Fixture(db.Model, TimestampMixin):
+    __tablename__ = "fixtures"
+
+    id = db.Column(db.Integer, primary_key=True)
+    competition_edition_id = db.Column(
+        db.Integer, db.ForeignKey("competition_editions.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    home_team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
+    away_team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
+    matchweek = db.Column(db.Integer, nullable=True, index=True)
+    kickoff_at = db.Column(db.DateTime(timezone=True), nullable=False, index=True)
+    venue = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(32), nullable=False, index=True)
+    provider_status = db.Column(db.String(128), nullable=False)
+    home_score = db.Column(db.Integer, nullable=True)
+    away_score = db.Column(db.Integer, nullable=True)
+    source_updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    home_team = db.relationship("Team", foreign_keys=[home_team_id], lazy="joined")
+    away_team = db.relationship("Team", foreign_keys=[away_team_id], lazy="joined")
+
+
+class FixtureProviderMapping(db.Model, TimestampMixin):
+    __tablename__ = "fixture_provider_mappings"
+    __table_args__ = (
+        db.UniqueConstraint("provider", "provider_fixture_id", name="uq_provider_fixture_id"),
+        db.UniqueConstraint("provider", "fixture_id", name="uq_provider_fixture"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    provider = db.Column(db.String(32), nullable=False)
+    provider_fixture_id = db.Column(db.String(128), nullable=False)
+    fixture_id = db.Column(db.Integer, db.ForeignKey("fixtures.id", ondelete="CASCADE"), nullable=False)
+    fixture = db.relationship("Fixture", lazy="joined")
 
 
 class StandingsSnapshot(db.Model, TimestampMixin):

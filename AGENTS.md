@@ -11,3 +11,10 @@ Uses the canonical `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-h
 ### Domain docs
 
 Single-context: root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
+
+### Frontend loading states
+
+Use structural skeletons for page-level loading states. Match the final heading,
+controls, table, or list geometry so content does not jump after loading. Follow
+the League Overview and League Table skeleton tokens and pulse behavior, include
+a reduced-motion fallback, and reserve spinners for compact in-control actions.

@@ -71,8 +71,8 @@ const router = createRouter({
     {
       path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/fixtures',
       name: WORKSPACE_ROUTE_NAMES.leagueFixtures,
-      component: () => import('../views/LeagueCapabilityView.vue'),
-      props: { capability: 'fixtures' },
+       component: () => import('../views/LeagueFixturesView.vue'),
+       props: true,
       meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
     },
     {

@@ -7,16 +7,18 @@ from ..db.base import db
 from ..db.models import (
     CompetitionEdition,
     CompetitionEditionTeam,
+    Fixture,
+    FixtureProviderMapping,
     Standing,
     StandingsSnapshot,
     Team,
     TeamProviderMapping,
 )
 from .config import CompetitionEditionConfig
-from .providers import EspnStandingsProvider, ProviderDataError
+from .providers import EspnFixturesProvider, EspnStandingsProvider, ProviderDataError
 
 
-def sync_season(config: CompetitionEditionConfig) -> tuple[int, int]:
+def sync_season(config: CompetitionEditionConfig) -> tuple[int, int, int]:
     mappings = dict(config.provider_team_mappings)
     if len(mappings) != len(config.provider_team_mappings):
         raise ProviderDataError("Edition configuration contains duplicate Team mappings")
@@ -37,6 +39,12 @@ def sync_season(config: CompetitionEditionConfig) -> tuple[int, int]:
     provider_data = EspnStandingsProvider().fetch(
         config.provider_competition_id, config.provider_season
     )
+    fixture_data = EspnFixturesProvider().fetch(
+        config.provider_competition_id,
+        config.provider_season,
+        config.fixture_date_from.strftime("%Y%m%d"),
+        config.fixture_date_until.strftime("%Y%m%d"),
+    )
     reverse_mappings = {provider_id: team_slug for team_slug, provider_id in mappings.items()}
     for entry in provider_data.entries:
         if entry.provider_team_id not in reverse_mappings:
@@ -49,6 +57,16 @@ def sync_season(config: CompetitionEditionConfig) -> tuple[int, int]:
     if missing_provider_teams:
         missing_slugs = sorted(reverse_mappings[team_id] for team_id in missing_provider_teams)
         raise ProviderDataError(f"Missing ESPN standings Teams: {', '.join(missing_slugs)}")
+    for fixture in fixture_data.entries:
+        unknown = {
+            fixture.home_provider_team_id, fixture.away_provider_team_id
+        } - reverse_mappings.keys()
+        if unknown:
+            raise ProviderDataError(f"Unknown ESPN Fixture Team mapping: {', '.join(sorted(unknown))}")
+        if not config.fixture_date_from <= fixture.kickoff_at.date() <= config.fixture_date_until:
+            raise ProviderDataError(
+                f"ESPN Fixture {fixture.provider_fixture_id} is outside configured date bounds"
+            )
 
     edition = CompetitionEdition.query.filter_by(
         competition_slug=config.competition_slug, edition_slug=config.edition_slug
@@ -126,5 +144,60 @@ def sync_season(config: CompetitionEditionConfig) -> tuple[int, int]:
     else:
         snapshot.source_updated_at = provider_data.fetched_at
 
+    for row in fixture_data.entries:
+        mapping = FixtureProviderMapping.query.filter_by(
+            provider="espn", provider_fixture_id=row.provider_fixture_id
+        ).one_or_none()
+        home_team = teams[reverse_mappings[row.home_provider_team_id]]
+        away_team = teams[reverse_mappings[row.away_provider_team_id]]
+        if mapping is None:
+            fixture = Fixture.query.filter_by(
+                competition_edition_id=edition.id,
+                home_team_id=home_team.id,
+                away_team_id=away_team.id,
+            ).one_or_none()
+            if fixture is None:
+                fixture = Fixture(
+                    competition_edition_id=edition.id,
+                    home_team=home_team,
+                    away_team=away_team,
+                    matchweek=row.matchweek,
+                    kickoff_at=row.kickoff_at,
+                    venue=row.venue,
+                    status=row.status,
+                    provider_status=row.provider_status,
+                    home_score=row.home_score,
+                    away_score=row.away_score,
+                    source_updated_at=fixture_data.fetched_at,
+                )
+                db.session.add(fixture)
+                db.session.flush()
+            mapping = FixtureProviderMapping.query.filter_by(
+                provider="espn", fixture_id=fixture.id
+            ).one_or_none()
+            if mapping is None:
+                db.session.add(FixtureProviderMapping(
+                    provider="espn", provider_fixture_id=row.provider_fixture_id, fixture=fixture
+                ))
+            else:
+                mapping.provider_fixture_id = row.provider_fixture_id
+        else:
+            fixture = mapping.fixture
+            if (
+                fixture.competition_edition_id != edition.id
+                or fixture.home_team_id != home_team.id
+                or fixture.away_team_id != away_team.id
+            ):
+                raise ProviderDataError(
+                    f"ESPN Fixture {row.provider_fixture_id} has conflicting identity"
+                )
+        fixture.kickoff_at = row.kickoff_at
+        fixture.venue = row.venue
+        fixture.status = row.status
+        fixture.provider_status = row.provider_status
+        fixture.home_score = row.home_score
+        fixture.away_score = row.away_score
+        fixture.source_updated_at = fixture_data.fetched_at
+
     db.session.commit()
-    return len(teams), len(normalized)
+    return len(teams), len(normalized), len(fixture_data.entries)

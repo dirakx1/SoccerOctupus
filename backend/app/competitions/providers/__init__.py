@@ -1,3 +1,3 @@
-from .espn import EspnStandingsProvider, ProviderDataError
+from .espn import EspnFixturesProvider, EspnStandingsProvider, ProviderDataError
 
-__all__ = ["EspnStandingsProvider", "ProviderDataError"]
+__all__ = ["EspnFixturesProvider", "EspnStandingsProvider", "ProviderDataError"]

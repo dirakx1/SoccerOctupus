@@ -85,4 +85,31 @@ describe('LeagueOverviewView', () => {
 
     expect(wrapper.get('[data-testid="league-preview-empty-table"]').text()).toContain('not available')
   })
+
+  it('renders upcoming Fixtures and recent results from synchronized records', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: {
+        competition: { slug: 'premier-league' },
+        edition: { slug: '2026-27', display_name: 'Premier League 2026-27', capabilities: [] },
+      } })
+      .mockRejectedValueOnce(new Error('table unavailable'))
+      .mockResolvedValueOnce({ data: {
+        upcoming: [{
+          id: 1, kickoff_at: '2026-08-15T14:00:00+00:00', status: 'scheduled',
+          home_team: { display_name: 'Arsenal', score: null }, away_team: { display_name: 'Liverpool', score: null },
+        }],
+        results: [{
+          id: 2, kickoff_at: '2026-08-08T14:00:00+00:00', status: 'completed',
+          home_team: { display_name: 'Chelsea', score: 2 }, away_team: { display_name: 'Everton', score: 1 },
+        }],
+      } })
+
+    const wrapper = mountView()
+    await flushPromises()
+
+    expect(wrapper.get('[data-testid="league-fixtures-preview"]').text()).toContain('Arsenal')
+    expect(wrapper.get('[data-testid="league-fixtures-preview"]').text()).toContain('Liverpool')
+    expect(wrapper.get('[data-testid="league-results-preview"]').text()).toContain('Chelsea')
+    expect(wrapper.get('[data-testid="league-results-preview"]').text()).toContain('2-1')
+  })
 })

@@ -29,10 +29,39 @@
     "abbreviations": { "position": "#", "played": "PJ", "won": "G", "drawn": "E", "lost": "P", "goalsFor": "GF", "goalsAgainst": "GC", "goalDifference": "DG", "points": "Pts" },
     "columns": { "position": "Posición", "team": "Equipo", "played": "Jugados", "won": "Ganados", "drawn": "Empatados", "lost": "Perdidos", "goalsFor": "Goles a favor", "goalsAgainst": "Goles en contra", "goalDifference": "Diferencia de goles", "points": "Puntos" }
   },
+  "fixtures": {
+    "eyebrow": "Partidos por jornada",
+    "title": "Partidos de {edition}",
+    "loading": "Cargando partidos...",
+    "errorTitle": "Partidos no disponibles",
+    "error": "No se pudieron cargar los partidos.",
+    "empty": "Ningún partido coincide con estos filtros.",
+    "filters": "Filtros de partidos",
+    "list": "Partidos",
+    "upcoming": "Próximos",
+    "results": "Resultados",
+    "matchweek": "Jornada",
+    "matchweekNumber": "Jornada {number}",
+    "matchweekPending": "Jornada por confirmar",
+    "allMatchweeks": "Todas las jornadas",
+    "team": "Equipo",
+    "allTeams": "Todos los equipos",
+    "venuePending": "Estadio por confirmar",
+    "status": {
+      "scheduled": "Programado",
+      "in_progress": "En vivo",
+      "postponed": "Aplazado",
+      "cancelled": "Cancelado",
+      "suspended": "Suspendido",
+      "abandoned": "Abandonado",
+      "completed": "Finalizado",
+      "unknown": "Estado no disponible"
+    }
+  },
   "previews": {
     "label": "Vistas previas de la competición",
     "table": { "title": "Tabla de la liga", "empty": "Los datos de la tabla aún no están disponibles." },
-    "fixtures": { "title": "Próximos partidos", "empty": "Los próximos partidos aún no están disponibles." },
+    "fixtures": { "title": "Próximos partidos", "empty": "Los próximos partidos aún no están disponibles.", "versus": "vs" },
     "results": { "title": "Resultados recientes", "empty": "Los resultados recientes aún no están disponibles." }
   }
 }
