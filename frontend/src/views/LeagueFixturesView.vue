@@ -61,7 +61,9 @@
       <section v-else class="matchweek-list" :aria-label="t('league.fixtures.list')">
         <article v-for="fixture in data.fixtures" :key="fixture.id" :data-testid="`fixture-${fixture.id}`">
           <header>
-            <span>{{ t('league.fixtures.matchweekNumber', { number: fixture.matchweek }) }}</span>
+            <span>{{ fixture.matchweek
+              ? t('league.fixtures.matchweekNumber', { number: fixture.matchweek })
+              : t('league.fixtures.matchweekPending') }}</span>
             <time :datetime="fixture.kickoff_at">{{ formatDate(fixture.kickoff_at) }}</time>
             <strong :class="`status status-${fixture.status}`">{{ t(`league.fixtures.status.${fixture.status}`) }}</strong>
           </header>

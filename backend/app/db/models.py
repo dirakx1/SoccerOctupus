@@ -186,7 +186,7 @@ class Fixture(db.Model, TimestampMixin):
     )
     home_team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
     away_team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
-    matchweek = db.Column(db.Integer, nullable=False, index=True)
+    matchweek = db.Column(db.Integer, nullable=True, index=True)
     kickoff_at = db.Column(db.DateTime(timezone=True), nullable=False, index=True)
     venue = db.Column(db.String(255), nullable=True)
     status = db.Column(db.String(32), nullable=False, index=True)

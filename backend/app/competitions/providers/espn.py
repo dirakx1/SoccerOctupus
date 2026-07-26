@@ -38,7 +38,7 @@ class ProviderFixture:
     home_provider_team_id: str
     away_provider_team_id: str
     kickoff_at: datetime
-    matchweek: int
+    matchweek: int | None
     venue: str | None
     status: str
     provider_status: str
@@ -169,7 +169,11 @@ class EspnFixturesProvider:
                 home_provider_team_id=str(competitors["home"]["team"]["id"]),
                 away_provider_team_id=str(competitors["away"]["team"]["id"]),
                 kickoff_at=kickoff_at,
-                matchweek=int(event["week"]["number"]),
+                matchweek=(
+                    int(event["week"]["number"])
+                    if event.get("week", {}).get("number") is not None
+                    else None
+                ),
                 venue=competition.get("venue", {}).get("fullName"),
                 status=cls.STATUS_MAP.get(provider_status, "unknown"),
                 provider_status=provider_status,

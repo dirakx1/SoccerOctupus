@@ -194,7 +194,13 @@ def fixtures(competition_slug: str, edition_slug: str):
     if team_slug and selected_team is None:
         return {"error": "Team not found in Competition Edition"}, 400
 
-    matchweeks = [row[0] for row in all_fixtures.with_entities(Fixture.matchweek).distinct().order_by(Fixture.matchweek)]
+    matchweeks = [
+        row[0]
+        for row in all_fixtures.with_entities(Fixture.matchweek)
+        .filter(Fixture.matchweek.is_not(None))
+        .distinct()
+        .order_by(Fixture.matchweek)
+    ]
     query = all_fixtures.filter(
         Fixture.status.in_(("completed", "cancelled", "abandoned"))
         if mode == "results"

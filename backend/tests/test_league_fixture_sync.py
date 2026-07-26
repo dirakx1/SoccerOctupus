@@ -122,6 +122,18 @@ def test_sync_season_rolls_back_conflicting_fixture_identity(app, monkeypatch):
         assert FixtureProviderMapping.query.count() == 0
 
 
+def test_sync_season_accepts_fixture_before_espn_assigns_matchweek(app, monkeypatch):
+    payload = fixture_payload()
+    payload["events"][0].pop("week")
+    mock_espn(monkeypatch, payload)
+
+    result = app.test_cli_runner().invoke(args=["sync-season", "premier-league", "2026-27"])
+
+    assert result.exit_code == 0, result.output
+    with app.app_context():
+        assert Fixture.query.one().matchweek is None
+
+
 def test_fixture_api_exposes_public_previews_and_authenticated_filters(
     app, client, user, monkeypatch
 ):

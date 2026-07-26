@@ -42,6 +42,7 @@
     "results": "Resultados",
     "matchweek": "Jornada",
     "matchweekNumber": "Jornada {number}",
+    "matchweekPending": "Jornada por confirmar",
     "allMatchweeks": "Todas las jornadas",
     "team": "Equipo",
     "allTeams": "Todos los equipos",
