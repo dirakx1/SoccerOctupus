@@ -100,6 +100,8 @@ describe('Premier League Fixtures view', () => {
     apiGet.mockReturnValue(new Promise((resolve) => { resolveRequest = resolve }))
     const { router, wrapper } = await mountRouted()
     expect(wrapper.get('[data-testid="fixtures-loading"]').exists()).toBe(true)
+    expect(wrapper.findAll('[data-testid="fixtures-loading"] .skeleton-control')).toHaveLength(3)
+    expect(wrapper.findAll('[data-testid="fixtures-loading"] .skeleton-fixture')).toHaveLength(4)
 
     resolveRequest(response({ fixtures: [] }))
     await flushPromises()

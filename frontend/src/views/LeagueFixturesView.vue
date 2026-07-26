@@ -1,8 +1,28 @@
 <template>
   <main class="fixtures-view">
-    <section v-if="loading" data-testid="fixtures-loading" class="fixtures-state" aria-busy="true">
-      <LoaderCircle class="spin" :size="24" aria-hidden="true" />
-      <p>{{ t('league.fixtures.loading') }}</p>
+    <section v-if="loading" data-testid="fixtures-loading" class="fixtures-skeleton" aria-busy="true">
+      <header class="skeleton-heading" aria-hidden="true">
+        <div>
+          <span class="skeleton-line skeleton-eyebrow"></span>
+          <span class="skeleton-line skeleton-title"></span>
+        </div>
+        <span class="skeleton-line skeleton-updated"></span>
+      </header>
+      <div class="skeleton-controls" aria-hidden="true">
+        <span v-for="control in 3" :key="control" class="skeleton-line skeleton-control"></span>
+      </div>
+      <div class="skeleton-list" aria-hidden="true">
+        <article v-for="fixture in 4" :key="fixture" class="skeleton-fixture">
+          <div class="skeleton-meta">
+            <span class="skeleton-line"></span>
+            <span class="skeleton-line"></span>
+            <span class="skeleton-line"></span>
+          </div>
+          <span class="skeleton-line skeleton-team"></span>
+          <span class="skeleton-line skeleton-team"></span>
+          <span class="skeleton-line skeleton-venue"></span>
+        </article>
+      </div>
     </section>
     <section v-else-if="error" data-testid="fixtures-error" class="fixtures-state" role="alert">
       <CircleAlert :size="24" aria-hidden="true" />
@@ -78,7 +98,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { CalendarX, CircleAlert, LoaderCircle } from '@lucide/vue'
+import { CalendarX, CircleAlert } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -172,8 +192,23 @@ watch(() => route.query, loadFixtures, { immediate: true })
 .fixtures-state { align-items: flex-start; display: flex; flex-direction: column; gap: var(--space-3); justify-content: center; min-height: 18rem; }
 .fixtures-state h1, .fixtures-state p { margin: 0; }
 .fixtures-state button { background: var(--color-accent); border: 0; color: var(--color-accent-contrast); min-height: var(--control-height-lg); padding: 0 var(--space-4); }
-.spin { animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@media (max-width: 720px) { .fixtures-heading { align-items: flex-start; flex-direction: column; gap: var(--space-3); } .fixtures-controls, .matchweek-list { grid-template-columns: 1fr; } .mode-control button { flex: 1; } }
-@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+.fixtures-skeleton { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-8) 0; }
+.skeleton-line { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.skeleton-heading { align-items: flex-end; border-bottom: var(--border-width-thin) solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-6); }
+.skeleton-heading > div { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeleton-eyebrow { height: .75rem; width: 9rem; }
+.skeleton-title { height: 2.25rem; width: 24rem; }
+.skeleton-updated { height: .75rem; width: 11rem; }
+.skeleton-controls { display: grid; gap: var(--space-4); grid-template-columns: 13rem minmax(9rem, 12rem) minmax(11rem, 16rem); }
+.skeleton-control { height: var(--control-height-md); }
+.skeleton-list { display: grid; gap: var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.skeleton-fixture { border-top: var(--border-width-strong) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-3) 0; }
+.skeleton-meta { display: grid; gap: var(--space-3); grid-template-columns: 5rem 1fr 4rem; }
+.skeleton-meta .skeleton-line { height: .75rem; }
+.skeleton-team { height: 1.25rem; width: 78%; }
+.skeleton-team:nth-of-type(3) { width: 64%; }
+.skeleton-venue { height: .75rem; margin-top: var(--space-2); width: 42%; }
+@keyframes skeleton-pulse { 50% { opacity: .45; } }
+@media (max-width: 720px) { .fixtures-heading, .skeleton-heading { align-items: flex-start; flex-direction: column; gap: var(--space-3); } .fixtures-controls, .matchweek-list, .skeleton-controls, .skeleton-list { grid-template-columns: 1fr; } .mode-control button { flex: 1; } .skeleton-title { max-width: 24rem; width: 82vw; } }
+@media (prefers-reduced-motion: reduce) { .skeleton-line { animation: none; } }
 </style>
