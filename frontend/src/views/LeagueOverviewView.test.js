@@ -36,7 +36,7 @@ describe('LeagueOverviewView', () => {
       } })
     const wrapper = mountView()
 
-    expect(wrapper.get('[data-testid="league-loading"]').text()).toContain('Loading')
+    expect(wrapper.get('[data-testid="league-loading"]').attributes('aria-busy')).toBe('true')
     expect(wrapper.findAll('[data-testid="league-loading"] .skeleton-capability')).toHaveLength(4)
     expect(wrapper.findAll('[data-testid="league-loading"] .skeleton-preview')).toHaveLength(3)
 

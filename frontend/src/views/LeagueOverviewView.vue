@@ -1,7 +1,6 @@
 <template>
   <main class="league-overview">
-    <section v-if="loading" data-testid="league-loading" class="overview-skeleton" aria-busy="true" aria-live="polite">
-      <p class="sr-only">{{ t('league.states.loading') }}</p>
+    <section v-if="loading" data-testid="league-loading" class="overview-skeleton" aria-busy="true">
       <header class="skeleton-heading" aria-hidden="true">
         <span class="skeleton-line skeleton-eyebrow"></span>
         <span class="skeleton-line skeleton-title"></span>
