@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useAuth, useClerk } from '@clerk/vue'
 import { LoaderCircle } from '@lucide/vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -70,7 +70,7 @@ import {
   i18n,
   normalizeLocale,
 } from './i18n/index.js'
-import { installAuthInterceptor } from './lib/api'
+import { api, installAuthInterceptor } from './lib/api'
 import { clearAuthState, refreshAuthState, setAuthPendingState, useAuthState } from './lib/auth'
 import {
   consumePostAuthRedirect,
@@ -82,7 +82,7 @@ import {
   hasPostAuthCompletion,
 } from './lib/postAuthCompletion'
 import { useThemePreference } from './ui/themePreference.js'
-import { workspaceLocaleLocation, workspaceLocation } from './router/workspace.js'
+import { leagueWorkspaceLocation, workspaceLocaleLocation, workspaceLocation } from './router/workspace.js'
 
 function getBrowserStorage() {
   try {
@@ -111,8 +111,9 @@ const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 const browserStorage = getBrowserStorage()
-const competitionEditions = listCompetitionEditions()
-const defaultEdition = competitionEditions[0]
+const defaultEdition = listCompetitionEditions()[0]
+const competitionEditions = ref(listCompetitionEditions())
+const routeEdition = ref(null)
 const userMenuOpen = ref(false)
 const mobileMenuOpen = ref(false)
 const authRecoveryError = ref('')
@@ -145,7 +146,11 @@ const {
 } = useBillingStatus()
 
 const activeEdition = computed(() => (
-  getCompetitionEdition(route.params.competitionEditionSlug) || defaultEdition
+  route.meta.leagueWorkspace
+    ? routeEdition.value
+      || competitionEditions.value.find((entry) => entry.competitionSlug === route.params.competitionSlug)
+      || defaultEdition
+    : getCompetitionEdition(route.params.competitionEditionSlug) || defaultEdition
 ))
 const currentLocale = computed(() => (
   normalizeLocale(route.params.locale) || normalizeLocale(i18n.global.locale.value) || 'en'
@@ -153,13 +158,30 @@ const currentLocale = computed(() => (
 const isWorkspaceRoute = computed(() => Boolean(
   route.meta.competitionWorkspace && route.params.locale
 ))
-const homeLocation = computed(() => workspaceLocation('overview', {
-  locale: currentLocale.value,
-  competitionEditionSlug: activeEdition.value.slug,
-}))
-const competitionNavigation = computed(() => getCompetitionNavigation(activeEdition.value, {
-  locale: currentLocale.value,
-}))
+const homeLocation = computed(() => activeEdition.value.competitionSlug
+  ? leagueWorkspaceLocation('overview', {
+      locale: currentLocale.value,
+      competitionSlug: activeEdition.value.competitionSlug,
+    })
+  : workspaceLocation('overview', {
+      locale: currentLocale.value,
+      competitionEditionSlug: activeEdition.value.slug,
+    }))
+const competitionNavigation = computed(() => {
+  if (!activeEdition.value.competitionSlug) {
+    return getCompetitionNavigation(activeEdition.value, { locale: currentLocale.value })
+  }
+
+  return activeEdition.value.capabilities.map((capability) => ({
+    key: capability,
+    labelKey: `league.capabilities.${capability}`,
+    route: leagueWorkspaceLocation(capability === 'predictions' ? 'predict' : capability, {
+      locale: currentLocale.value,
+      competitionSlug: activeEdition.value.competitionSlug,
+      editionSlug: activeEdition.value.editionSlug,
+    }),
+  }))
+})
 
 installAuthInterceptor(async () => {
   return await getToken.value?.()
@@ -201,15 +223,68 @@ async function changeLocale(value) {
 }
 
 async function changeEdition(edition) {
-  if (!isWorkspaceRoute.value || !route.name || !edition?.slug) return
+  if (!edition?.slug) return
 
-  await router.push({
-    name: route.name,
-    params: { ...route.params, competitionEditionSlug: edition.slug },
-    query: route.query,
-    hash: route.hash,
-  })
+  const location = edition.competitionSlug
+    ? leagueWorkspaceLocation('overview', {
+        locale: currentLocale.value,
+        competitionSlug: edition.competitionSlug,
+      })
+    : workspaceLocation('overview', {
+        locale: currentLocale.value,
+        competitionEditionSlug: edition.slug,
+      })
+  await router.push(location)
 }
+
+async function loadCompetitionCatalog() {
+  try {
+    const { data } = await api.get('/api/competitions')
+    const leagues = data.competitions.map((competition) => ({
+      id: `${competition.slug}-${competition.current_edition.slug}`,
+      competitionSlug: competition.slug,
+      editionSlug: competition.current_edition.slug,
+      slug: competition.slug,
+      displayName: competition.current_edition.display_name,
+      format: competition.current_edition.format,
+      capabilities: competition.current_edition.capabilities,
+    }))
+    competitionEditions.value = [...listCompetitionEditions(), ...leagues]
+  } catch {
+    // The shipped World Cup workspace remains available if the catalog is offline.
+  }
+}
+
+async function loadRouteEdition() {
+  if (!route.meta.leagueWorkspace || !route.params.editionSlug) {
+    routeEdition.value = null
+    return
+  }
+
+  try {
+    const { data } = await api.get(
+      `/api/competitions/${route.params.competitionSlug}/editions/${route.params.editionSlug}`
+    )
+    routeEdition.value = {
+      id: `${data.competition.slug}-${data.edition.slug}`,
+      competitionSlug: data.competition.slug,
+      editionSlug: data.edition.slug,
+      slug: data.competition.slug,
+      displayName: data.edition.display_name,
+      format: data.edition.format,
+      capabilities: data.edition.capabilities,
+    }
+  } catch {
+    routeEdition.value = null
+  }
+}
+
+watch(
+  () => [route.params.competitionSlug, route.params.editionSlug],
+  loadRouteEdition,
+  { immediate: true }
+)
+onMounted(loadCompetitionCatalog)
 
 watch(() => route.fullPath, closeMenus)
 

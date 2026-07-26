@@ -53,6 +53,35 @@ describe('router', () => {
     expect(router.currentRoute.value.meta.public).toBe(true)
   })
 
+  it('resolves rolling and immutable Premier League overviews', async () => {
+    await router.push('/es/competitions/premier-league')
+    expect(router.currentRoute.value.name).toBe(WORKSPACE_ROUTE_NAMES.leagueOverview)
+    expect(router.currentRoute.value.params).toEqual({
+      locale: 'es',
+      competitionSlug: 'premier-league',
+    })
+
+    await router.push('/en/competitions/premier-league/editions/2026-27')
+    expect(router.currentRoute.value.name).toBe(WORKSPACE_ROUTE_NAMES.leagueEditionOverview)
+    expect(router.currentRoute.value.params).toEqual({
+      locale: 'en',
+      competitionSlug: 'premier-league',
+      editionSlug: '2026-27',
+    })
+  })
+
+  it('preserves the full Premier League destination when authentication is required', async () => {
+    clearAuthState()
+    consumePostAuthRedirect()
+
+    await router.push('/es/competitions/premier-league/editions/2026-27/table?view=projected#teams')
+
+    expect(router.currentRoute.value.path).toBe('/sign-in')
+    expect(consumePostAuthRedirect()).toBe(
+      '/es/competitions/premier-league/editions/2026-27/table?view=projected#teams'
+    )
+  })
+
   it('resolves protected Competition Workspace areas through stable route names', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
 

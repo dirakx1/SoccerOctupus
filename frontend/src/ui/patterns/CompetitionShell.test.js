@@ -132,6 +132,22 @@ describe('CompetitionShell', () => {
     expect(wrapper.find('[data-testid="competition-menu"]').exists()).toBe(false)
   })
 
+  it('lists and selects the current Premier League Competition Edition', async () => {
+    const premierLeague = {
+      id: 'premier-league-2026-27',
+      slug: 'premier-league',
+      displayName: 'Premier League 2026-27',
+      capabilities: ['table', 'fixtures', 'predictions', 'markets'],
+    }
+    const wrapper = mountShell({ editions: [worldCup2026, premierLeague] })
+
+    await wrapper.find('[data-testid="competition-toggle"]').trigger('click')
+
+    expect(wrapper.find('[data-testid="competition-menu"]').text()).toContain('Premier League 2026-27')
+    await wrapper.find('[data-testid="competition-option-premier-league"]').trigger('click')
+    expect(wrapper.emitted('edition-change')).toContainEqual([premierLeague])
+  })
+
   it('closes an open control menu when focus moves outside the shell', async () => {
     const wrapper = mountShell()
 

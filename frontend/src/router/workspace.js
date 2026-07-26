@@ -15,7 +15,39 @@ export const WORKSPACE_ROUTE_NAMES = Object.freeze({
   predict: 'competition-workspace-predict',
   bracket: 'competition-workspace-bracket',
   markets: 'competition-workspace-markets',
+  leagueOverview: 'league-competition-workspace-overview',
+  leagueEditionOverview: 'league-edition-workspace-overview',
+  leagueTable: 'league-edition-workspace-table',
+  leagueFixtures: 'league-edition-workspace-fixtures',
+  leaguePredict: 'league-edition-workspace-predict',
+  leagueMarkets: 'league-edition-workspace-markets',
 })
+
+export function leagueWorkspaceLocation(area = 'overview', {
+  locale = DEFAULT_LOCALE,
+  competitionSlug,
+  editionSlug,
+  query,
+  hash,
+} = {}) {
+  const name = area === 'overview' && !editionSlug
+    ? WORKSPACE_ROUTE_NAMES.leagueOverview
+    : area === 'overview'
+      ? WORKSPACE_ROUTE_NAMES.leagueEditionOverview
+      : WORKSPACE_ROUTE_NAMES[`league${area.charAt(0).toUpperCase()}${area.slice(1)}`]
+  if (!name || !competitionSlug) throw new Error(`Unknown league Competition Workspace area: ${area}`)
+
+  return {
+    name,
+    params: {
+      locale,
+      competitionSlug,
+      ...(editionSlug ? { editionSlug } : {}),
+    },
+    ...(query ? { query } : {}),
+    ...(hash ? { hash } : {}),
+  }
+}
 
 export function workspaceLocation(area = 'overview', {
   locale = DEFAULT_LOCALE,
