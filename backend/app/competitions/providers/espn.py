@@ -63,7 +63,11 @@ class EspnStandingsProvider:
     def _normalize_entry(entry: dict) -> ProviderStanding:
         try:
             team = entry["team"]
-            stats = {stat["name"]: stat["value"] for stat in entry["stats"]}
+            stats = {
+                stat["name"]: stat["value"]
+                for stat in entry["stats"]
+                if "name" in stat and "value" in stat
+            }
             required = (
                 "rank", "gamesPlayed", "wins", "ties", "losses", "points",
                 "pointsFor", "pointsAgainst", "pointDifferential",

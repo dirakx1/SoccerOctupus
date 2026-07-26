@@ -78,6 +78,8 @@ def espn_payload(*, arsenal_points=6, include_unknown=False):
             ],
         })
         position += 1
+    for entry in entries:
+        entry["stats"].append({"name": "overall", "summary": "0-0-0"})
     return {"children": [{"standings": {"entries": entries}}]}
 
 
