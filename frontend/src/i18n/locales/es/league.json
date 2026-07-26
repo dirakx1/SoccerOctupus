@@ -16,6 +16,19 @@
     "error": "No se pudo cargar esta edición de la competición.",
     "retry": "Intentar de nuevo"
   },
+  "table": {
+    "eyebrow": "Tabla oficial de la liga",
+    "loading": "Cargando la tabla de la liga…",
+    "errorTitle": "Tabla de la liga no disponible",
+    "error": "No se pudo cargar la tabla de la liga.",
+    "empty": "No hay posiciones disponibles para esta edición de la competición.",
+    "source": "Fuente oficial: {source}",
+    "updated": "Actualizada {date}",
+    "stale": "Esta tabla de la liga puede estar desactualizada.",
+    "pointsShort": "pts",
+    "abbreviations": { "position": "#", "played": "PJ", "won": "G", "drawn": "E", "lost": "P", "goalsFor": "GF", "goalsAgainst": "GC", "goalDifference": "DG", "points": "Pts" },
+    "columns": { "position": "Posición", "team": "Equipo", "played": "Jugados", "won": "Ganados", "drawn": "Empatados", "lost": "Perdidos", "goalsFor": "Goles a favor", "goalsAgainst": "Goles en contra", "goalDifference": "Diferencia de goles", "points": "Puntos" }
+  },
   "previews": {
     "label": "Vistas previas de la competición",
     "table": { "title": "Tabla de la liga", "empty": "Los datos de la tabla aún no están disponibles." },

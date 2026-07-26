@@ -58,6 +58,10 @@ def create_app(config_overrides: dict | None = None) -> Flask:
     app.register_blueprint(competitions_bp)
     app.register_blueprint(webhooks_bp)
 
+    from .competitions.cli import sync_season_command
+
+    app.cli.add_command(sync_season_command)
+
     @app.route("/health")
     def health():
         return {"status": "ok", "service": "FifaOctopus"}

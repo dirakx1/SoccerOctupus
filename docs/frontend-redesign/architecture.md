@@ -54,10 +54,15 @@ Implemented Competition Workspace routes use stable, untranslated path segments:
 /:locale(en|es)/competitions/:competitionEditionSlug/predict
 /:locale(en|es)/competitions/:competitionEditionSlug/bracket
 /:locale(en|es)/competitions/:competitionEditionSlug/markets
+/:locale(en|es)/competitions/:competitionSlug
+/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug
+/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/table
 ```
 
-`table` and `fixtures` paths remain reserved for Competition Editions that expose
-those capabilities; no route is registered before a real view exists. A Spanish
+The generic Competition route resolves its Current Competition Edition. Immutable
+edition routes preserve historical links, and the authenticated `table` route
+renders the authoritative League Table for league-format editions. `fixtures`
+remains reserved until its real view exists. A Spanish
 workspace URL applies `es` to Vue I18n, persisted preference, and the document
 language before auth handling. Page copy and navigation labels remain English
 until their owning views and shell migrate. Localized path aliases can be added
@@ -70,10 +75,15 @@ later if search requirements justify their complexity.
 | `WORKSPACE_ROUTE_NAMES` | Stable names for overview, groups, predict, bracket, and markets. |
 | `DEFAULT_COMPETITION_EDITION_SLUG` | Default slug derived from the Competition registry rather than duplicated in the router. |
 | `workspaceLocation(area, options)` | Builds a named route location with Locale, Competition Edition slug, query, and hash. |
+| `leagueWorkspaceLocation(area, options)` | Builds current or immutable league Competition Workspace locations. |
 
 The router validates every canonical Competition Edition slug through
 `getCompetitionEdition`. Unknown or blank edition paths redirect to the
 same-locale World Cup overview while preserving query and hash.
+
+League Competition metadata comes from `GET /api/competitions`. Public overviews
+use `GET /api/competitions/:competition/editions/:edition/table/preview`; the
+complete table uses the authenticated sibling endpoint without `/preview`.
 
 Current flat routes redirect to their World Cup 2026 equivalents during migration:
 

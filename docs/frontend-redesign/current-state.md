@@ -27,6 +27,9 @@ shown. The Competition Edition button lists only registered editions and shows
 the current display-name key; it does not invent a selector option. Home and
 Groups now use Atlas page structure, semantic tokens, canonical workspace links,
 and localized page messages; other views remain legacy until each view migrates.
+The backend Competition catalog also supplies the Current Premier League Edition.
+Its public overview includes an authoritative table preview, while the complete
+League Table capability requires authentication.
 
 ## Localization Core
 
@@ -95,6 +98,9 @@ phase.
 |---|---|---|---|
 | `/` | Public | Redirect | Redirects to `/en/competitions/world-cup-2026`. |
 | `/:locale/competitions/:competitionEditionSlug` | Public | `Home.vue` | Atlas overview with localized World Cup 2026 scope, four canonical workflow links, five current Swarm Agent roles, and the existing Video Agent evidence modal trigger. |
+| `/:locale/competitions/:competitionSlug` | Public | `LeagueOverviewView.vue` | Current league Competition Edition overview with capability links and an authoritative table preview. |
+| `/:locale/competitions/:competitionSlug/editions/:editionSlug` | Public | `LeagueOverviewView.vue` | Immutable league Competition Edition overview. |
+| `/:locale/competitions/:competitionSlug/editions/:editionSlug/table` | Signed in | `LeagueTableView.vue` | Complete authoritative League Table with source timestamp and stale state. |
 | `/groups` | Signed in | Redirect | Redirects to the canonical English Groups workspace. |
 | `/:locale/competitions/:competitionEditionSlug/groups` | Signed in | `GroupsView.vue` | Atlas standings tables from `GET /api/predictions/groups`, with Team name, ELO, and rank sorted by descending ELO, response-derived counts, loading, empty, and retryable error states. |
 | `/predict` | Signed in | Redirect | Redirects to the canonical English Match Prediction workspace. |
@@ -134,6 +140,9 @@ references, and Home return path.
 | Workflow | Frontend request |
 |---|---|
 | Groups | `GET /api/predictions/groups` |
+| Competition catalog | `GET /api/competitions` |
+| League Table preview | `GET /api/competitions/:competition/editions/:edition/table/preview` |
+| Complete League Table | `GET /api/competitions/:competition/editions/:edition/table` |
 | Team selection | `GET /api/predictions/teams` |
 | Match Prediction | `POST /api/predictions/match` |
 | Live tournament results | `GET /api/predictions/live-results` |

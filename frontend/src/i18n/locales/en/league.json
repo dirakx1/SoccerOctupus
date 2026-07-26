@@ -16,6 +16,19 @@
     "error": "This Competition Edition could not be loaded.",
     "retry": "Try again"
   },
+  "table": {
+    "eyebrow": "Authoritative League Table",
+    "loading": "Loading League Table…",
+    "errorTitle": "League Table unavailable",
+    "error": "The League Table could not be loaded.",
+    "empty": "No standings are available for this Competition Edition.",
+    "source": "Official source: {source}",
+    "updated": "Updated {date}",
+    "stale": "This League Table may be out of date.",
+    "pointsShort": "pts",
+    "abbreviations": { "position": "#", "played": "P", "won": "W", "drawn": "D", "lost": "L", "goalsFor": "GF", "goalsAgainst": "GA", "goalDifference": "GD", "points": "Pts" },
+    "columns": { "position": "Position", "team": "Team", "played": "Played", "won": "Won", "drawn": "Drawn", "lost": "Lost", "goalsFor": "Goals for", "goalsAgainst": "Goals against", "goalDifference": "Goal difference", "points": "Points" }
+  },
   "previews": {
     "label": "Competition previews",
     "table": { "title": "League Table", "empty": "Table data is not available yet." },
