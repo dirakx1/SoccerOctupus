@@ -42,10 +42,52 @@ const router = createRouter({
       meta: { public: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug',
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(world-cup-2026)',
       name: WORKSPACE_ROUTE_NAMES.overview,
       component: () => import('../views/Home.vue'),
       meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionSlug',
+      name: WORKSPACE_ROUTE_NAMES.leagueOverview,
+      component: () => import('../views/LeagueOverviewView.vue'),
+      props: true,
+      meta: { public: true, competitionWorkspace: true, leagueWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug',
+      name: WORKSPACE_ROUTE_NAMES.leagueEditionOverview,
+      component: () => import('../views/LeagueOverviewView.vue'),
+      props: true,
+      meta: { public: true, competitionWorkspace: true, leagueWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/table',
+      name: WORKSPACE_ROUTE_NAMES.leagueTable,
+      component: () => import('../views/LeagueCapabilityView.vue'),
+      props: { capability: 'table' },
+      meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/fixtures',
+      name: WORKSPACE_ROUTE_NAMES.leagueFixtures,
+      component: () => import('../views/LeagueCapabilityView.vue'),
+      props: { capability: 'fixtures' },
+      meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/predict',
+      name: WORKSPACE_ROUTE_NAMES.leaguePredict,
+      component: () => import('../views/LeagueCapabilityView.vue'),
+      props: { capability: 'predict' },
+      meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/markets',
+      name: WORKSPACE_ROUTE_NAMES.leagueMarkets,
+      component: () => import('../views/LeagueCapabilityView.vue'),
+      props: { capability: 'markets' },
+      meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
     },
     {
       path: '/:locale(en|es)/competitions/:competitionEditionSlug/groups',
@@ -104,7 +146,7 @@ const auth = useAuthState()
 
 router.beforeEach((to) => {
   if (to.meta.competitionWorkspace) {
-    if (!getCompetitionEdition(to.params.competitionEditionSlug)) {
+    if (!to.meta.leagueWorkspace && !getCompetitionEdition(to.params.competitionEditionSlug)) {
       return localizedWorkspaceFallback(to)
     }
 

@@ -20,7 +20,7 @@
             :title="t('navigation.controls.competitionMenu')"
             @click="toggleMenu('competition')"
           >
-            <strong>{{ t(edition.displayNameKey) }}</strong>
+            <strong>{{ edition.displayName || t(edition.displayNameKey) }}</strong>
             <ChevronDown :size="15" aria-hidden="true" />
           </button>
           <div v-if="competitionMenuOpen" data-testid="competition-menu" class="header-menu competition-menu" role="menu">
@@ -34,7 +34,7 @@
               @click="selectEdition(registeredEdition)"
             >
               <Trophy :size="15" aria-hidden="true" />
-              <span>{{ t(registeredEdition.displayNameKey) }}</span>
+              <span>{{ registeredEdition.displayName || t(registeredEdition.displayNameKey) }}</span>
               <Check v-if="registeredEdition.slug === edition.slug" :size="15" aria-hidden="true" />
             </button>
           </div>

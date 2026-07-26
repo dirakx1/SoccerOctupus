@@ -1,0 +1,25 @@
+{
+  "eyebrow": "Espacio de la competición",
+  "publicOverview": "Resumen público de la competición",
+  "capabilityNavigation": "Funciones de la Premier League",
+  "capabilities": {
+    "table": "Tabla",
+    "fixtures": "Partidos",
+    "predictions": "Predicciones",
+    "predict": "Predicciones",
+    "markets": "Mercados"
+  },
+  "states": {
+    "loading": "Cargando la edición de la competición…",
+    "empty": "Los datos aparecerán aquí cuando se sincronice la edición de la competición.",
+    "errorTitle": "Competición no disponible",
+    "error": "No se pudo cargar esta edición de la competición.",
+    "retry": "Intentar de nuevo"
+  },
+  "previews": {
+    "label": "Vistas previas de la competición",
+    "table": { "title": "Tabla de la liga", "empty": "Los datos de la tabla aún no están disponibles." },
+    "fixtures": { "title": "Próximos partidos", "empty": "Los próximos partidos aún no están disponibles." },
+    "results": { "title": "Resultados recientes", "empty": "Los resultados recientes aún no están disponibles." }
+  }
+}

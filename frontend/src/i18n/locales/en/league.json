@@ -1,0 +1,25 @@
+{
+  "eyebrow": "Competition Workspace",
+  "publicOverview": "Public competition overview",
+  "capabilityNavigation": "Premier League capabilities",
+  "capabilities": {
+    "table": "Table",
+    "fixtures": "Fixtures",
+    "predictions": "Predictions",
+    "predict": "Predictions",
+    "markets": "Markets"
+  },
+  "states": {
+    "loading": "Loading competition edition…",
+    "empty": "Data will appear here when the Competition Edition is synchronized.",
+    "errorTitle": "Competition unavailable",
+    "error": "This Competition Edition could not be loaded.",
+    "retry": "Try again"
+  },
+  "previews": {
+    "label": "Competition previews",
+    "table": { "title": "League Table", "empty": "Table data is not available yet." },
+    "fixtures": { "title": "Upcoming Fixtures", "empty": "Upcoming Fixtures are not available yet." },
+    "results": { "title": "Recent Results", "empty": "Recent results are not available yet." }
+  }
+}
