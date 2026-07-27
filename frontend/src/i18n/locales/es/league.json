@@ -16,6 +16,12 @@
     "error": "No se pudo cargar esta edición de la competición.",
     "retry": "Intentar de nuevo"
   },
+  "freshness": {
+    "refreshing": "Actualizando los datos oficiales de {source}. Se muestra la última actualización correcta.",
+    "stale": "No se pudo contactar con {source}. Se muestra la última actualización correcta.",
+    "hard_stale": "Los datos oficiales son demasiado antiguos para nuevas predicciones de pago. Los datos existentes siguen disponibles.",
+    "retry": "Reintentar actualización"
+  },
   "table": {
     "eyebrow": "Tabla oficial de la liga",
     "loading": "Cargando la tabla de la liga…",

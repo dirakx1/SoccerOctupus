@@ -1,9 +1,10 @@
-from datetime import datetime, timezone
+from datetime import timezone
 
 from flask import Blueprint, request
 
 from ..auth import require_user
 from ..competitions import get_competition, get_edition, list_competitions
+from ..competitions.freshness import refresh_on_demand
 from ..db.base import db
 from ..db.models import CompetitionEdition, CompetitionEditionTeam, Fixture, StandingsSnapshot
 
@@ -56,6 +57,7 @@ def _table_response(competition_slug: str, edition_slug: str, *, preview: bool =
     ).one_or_none()
     if edition is None:
         return {"error": "League Table data is not available"}, 503
+    freshness = refresh_on_demand(config, edition)
     snapshot = StandingsSnapshot.query.filter_by(
         competition_edition_id=edition.id
     ).order_by(StandingsSnapshot.source_updated_at.desc(), StandingsSnapshot.id.desc()).first()
@@ -93,8 +95,8 @@ def _table_response(competition_slug: str, edition_slug: str, *, preview: bool =
         "edition": {"slug": edition_slug, "display_name": edition.display_name},
         "source": snapshot.source,
         "source_updated_at": source_updated_at.isoformat(),
-        "stale": (datetime.now(timezone.utc) - source_updated_at).total_seconds()
-        > config.in_season_stale_seconds,
+        "stale": freshness["status"] in {"stale", "hard_stale"},
+        "freshness": freshness,
         "standings": standings,
     }
 
@@ -156,12 +158,14 @@ def fixture_preview(competition_slug: str, edition_slug: str):
     edition, error = _persisted_edition(competition_slug, edition_slug)
     if error:
         return error
+    freshness = refresh_on_demand(get_edition(competition_slug, edition_slug), edition)
     fixtures = Fixture.query.filter_by(competition_edition_id=edition.id)
     upcoming = fixtures.filter(Fixture.status.notin_(("completed", "cancelled", "abandoned"))).order_by(Fixture.kickoff_at).limit(3).all()
     results = fixtures.filter_by(status="completed").order_by(Fixture.kickoff_at.desc()).limit(3).all()
     return {
         "upcoming": [_fixture_item(fixture) for fixture in upcoming],
         "results": [_fixture_item(fixture) for fixture in results],
+        "freshness": freshness,
     }
 
 
@@ -180,6 +184,7 @@ def fixtures(competition_slug: str, edition_slug: str):
     edition, error = _persisted_edition(competition_slug, edition_slug)
     if error:
         return error
+    freshness = refresh_on_demand(get_edition(competition_slug, edition_slug), edition)
     all_fixtures = Fixture.query.filter_by(competition_edition_id=edition.id)
     if all_fixtures.count() == 0:
         return {"error": "Fixture data is not available"}, 503
@@ -233,4 +238,5 @@ def fixtures(competition_slug: str, edition_slug: str):
             for team in teams
         ],
         "fixtures": [_fixture_item(fixture) for fixture in query.order_by(ordering).all()],
+        "freshness": freshness,
     }
