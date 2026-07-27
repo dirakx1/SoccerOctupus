@@ -64,6 +64,35 @@
       "unknown": "Status unavailable"
     }
   },
+  "predictions": {
+    "eyebrow": "Fixture Match Prediction",
+    "title": "{edition} Predictions",
+    "fixture": "Scheduled Fixture",
+    "selectFixture": "Select a Fixture",
+    "reveal": "Reveal prediction",
+    "generating": "Generating prediction...",
+    "fixturesErrorTitle": "Fixtures unavailable",
+    "fixturesError": "Scheduled Fixtures could not be loaded.",
+    "likelyScore": "Most likely score",
+    "probabilities": "Outcome probabilities",
+    "homeWin": "Home win",
+    "draw": "Draw",
+    "awayWin": "Away win",
+    "confidence": "Confidence",
+    "source": "Source",
+    "sourceUpdated": "Source updated",
+    "generated": "Generated",
+    "availableAgents": "Available agents",
+    "unavailableAgents": "Unavailable agents",
+    "errors": {
+      "limit": { "title": "Prediction limit reached", "description": "Your Match Prediction allowance has been used. No reveal was charged." },
+      "blocked": { "title": "Fixture not eligible", "description": "The server blocked this prediction because the Fixture is not eligible. No reveal was charged." },
+      "generation": { "title": "Prediction could not be generated", "description": "No reveal was charged. Try this Fixture again." }
+    },
+    "revealStatus": { "charged": "Charged reveal", "reopened": "Free reopen" },
+    "agents": { "statistical": "Statistical", "form": "Form", "tactical": "Tactical", "live_data": "Live data", "market_signals": "Market signals", "squad_quality": "Squad quality", "video": "Video" },
+    "agentReasons": { "tactical": "No genuine club tactical input", "live_data": "No genuine club live-data input", "market_signals": "No genuine club market input", "squad_quality": "No genuine club squad input", "video": "No genuine club video input" }
+  },
   "previews": {
     "label": "Competition previews",
     "table": { "title": "League Table", "empty": "Table data is not available yet." },

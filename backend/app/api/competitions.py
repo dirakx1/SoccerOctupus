@@ -1,12 +1,22 @@
 from datetime import timezone
 
-from flask import Blueprint, request
+from flask import Blueprint, g, request
+from sqlalchemy.exc import IntegrityError
 
 from ..auth import require_user
 from ..competitions import get_competition, get_edition, list_competitions
 from ..competitions.freshness import refresh_on_demand
 from ..db.base import db
-from ..db.models import CompetitionEdition, CompetitionEditionTeam, Fixture, StandingsSnapshot
+from ..db.models import (
+    CompetitionEdition,
+    CompetitionEditionTeam,
+    Fixture,
+    MatchPredictionVersion,
+    StandingsSnapshot,
+    UserMatchPredictionGrant,
+)
+from ..feature_limits import FEATURE_MATCH_PREDICTION, reserve_feature_usage
+from ..competitions.predictions import get_or_create_prediction, serialize_prediction
 
 
 bp = Blueprint("competitions", __name__, url_prefix="/api/competitions")
@@ -240,3 +250,85 @@ def fixtures(competition_slug: str, edition_slug: str):
         "fixtures": [_fixture_item(fixture) for fixture in query.order_by(ordering).all()],
         "freshness": freshness,
     }
+
+
+def _scoped_fixture(competition_slug: str, edition_slug: str, fixture_id: int):
+    edition, error = _persisted_edition(competition_slug, edition_slug)
+    if error:
+        return None, error
+    fixture = Fixture.query.filter_by(
+        id=fixture_id, competition_edition_id=edition.id
+    ).one_or_none()
+    if fixture is None:
+        return None, ({"error": "Fixture not found"}, 404)
+    return fixture, None
+
+
+@bp.post("/<competition_slug>/editions/<edition_slug>/fixtures/<int:fixture_id>/prediction")
+@require_user(db)
+def reveal_match_prediction(competition_slug: str, edition_slug: str, fixture_id: int):
+    fixture, error = _scoped_fixture(competition_slug, edition_slug, fixture_id)
+    if error:
+        return error
+    if fixture.status != "scheduled":
+        return {"error": "Only scheduled Fixtures are eligible", "code": "fixture_ineligible"}, 409
+    config = get_edition(competition_slug, edition_slug)
+    edition = db.session.get(CompetitionEdition, fixture.competition_edition_id)
+    freshness = refresh_on_demand(config, edition)
+    if freshness["status"] == "hard_stale":
+        return {
+            "error": "Official Fixture data is too stale for a paid prediction",
+            "code": "prediction_data_stale",
+            "freshness": freshness,
+        }, 503
+    try:
+        version = get_or_create_prediction(fixture, config, db)
+    except ValueError as exc:
+        return {"error": str(exc), "code": "baseline_unavailable"}, 422
+    grant = UserMatchPredictionGrant.query.filter_by(
+        user_id=g.current_user.id, prediction_version_id=version.id
+    ).one_or_none()
+    reveal_status = "reopened"
+    if grant is None:
+        grant = UserMatchPredictionGrant(
+            user_id=g.current_user.id,
+            prediction_version_id=version.id,
+            charged=True,
+        )
+        reservation = reserve_feature_usage(
+            g.current_user, FEATURE_MATCH_PREDICTION, db, commit=False
+        )
+        if not reservation.allowed:
+            db.session.rollback()
+            return reservation.response
+        grant.cycle_limit_id = reservation.cycle_limit_id
+        db.session.add(grant)
+        try:
+            db.session.commit()
+            reveal_status = "charged"
+        except IntegrityError:
+            db.session.rollback()
+            grant = UserMatchPredictionGrant.query.filter_by(
+                user_id=g.current_user.id, prediction_version_id=version.id
+            ).one()
+    return {"reveal_status": reveal_status, "prediction": serialize_prediction(version)}
+
+
+@bp.get("/<competition_slug>/editions/<edition_slug>/match-predictions/<int:version_id>")
+@require_user(db)
+def match_prediction(competition_slug: str, edition_slug: str, version_id: int):
+    grant = UserMatchPredictionGrant.query.filter_by(
+        user_id=g.current_user.id, prediction_version_id=version_id
+    ).one_or_none()
+    version = grant.prediction_version if grant and grant.charged else None
+    edition = (
+        db.session.get(CompetitionEdition, version.fixture.competition_edition_id)
+        if version else None
+    )
+    if (
+        edition is None
+        or edition.competition_slug != competition_slug
+        or edition.edition_slug != edition_slug
+    ):
+        return {"error": "Match Prediction not found"}, 404
+    return {"prediction": serialize_prediction(version)}

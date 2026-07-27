@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from app.competitions.editions import PREMIER_LEAGUE_2026_27
-from app.db.models import Fixture, FixtureProviderMapping
+from app.db.models import ClubMatch, Fixture, FixtureProviderMapping
 
 from test_league_table_sync import Response, espn_payload
 
@@ -60,6 +60,51 @@ def test_fixture_provider_requests_the_complete_configured_date_range(monkeypatc
 
     fixture_request = requests[0][1]
     assert fixture_request == {"dates": "20260801-20270531", "limit": 500}
+
+
+def test_edition_config_declares_required_club_history_sources():
+    sources = PREMIER_LEAGUE_2026_27.historical_match_sources
+
+    assert [(source.competition_id, source.edition) for source in sources] == [
+        ("eng.1", "2024"),
+        ("eng.1", "2025"),
+        ("eng.2", "2025"),
+    ]
+
+
+def test_sync_season_persists_all_configured_completed_club_history(app, monkeypatch):
+    current = fixture_payload()
+    historical_ranges = {
+        "20240801-20250531": ("history-pl-2024", "2025-05-10T14:00:00Z"),
+        "20250801-20260531": ("history-2025", "2026-05-10T14:00:00Z"),
+    }
+
+    def response(url, **kwargs):
+        if "standings" in url:
+            return Response(espn_payload())
+        date_range = kwargs["params"]["dates"]
+        if date_range == "20260801-20270531":
+            return Response(current)
+        match_id, kickoff = historical_ranges[date_range]
+        event = fixture_payload(kickoff=kickoff, status="STATUS_FULL_TIME")["events"][0]
+        event["id"] = f"{match_id}-championship" if "eng.2" in url else match_id
+        return Response({"events": [event]})
+
+    monkeypatch.setattr("app.competitions.providers.espn.requests.get", response)
+
+    result = app.test_cli_runner().invoke(
+        args=["sync-season", "premier-league", "2026-27"]
+    )
+
+    assert result.exit_code == 0, result.output
+    with app.app_context():
+        rows = ClubMatch.query.order_by(ClubMatch.source_competition, ClubMatch.source_edition).all()
+        assert {(row.source_competition, row.source_edition) for row in rows} == {
+            ("eng.1", "2024"),
+            ("eng.1", "2025"),
+            ("eng.2", "2025"),
+        }
+        assert all(row.home_score == 2 and row.away_score == 1 for row in rows)
 
 
 def test_sync_season_persists_fixture_identity_and_rescheduling(app, monkeypatch):

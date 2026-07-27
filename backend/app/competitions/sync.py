@@ -5,6 +5,7 @@ import json
 
 from ..db.base import db
 from ..db.models import (
+    ClubMatch,
     CompetitionEdition,
     CompetitionEditionRefresh,
     CompetitionEditionTeam,
@@ -19,8 +20,62 @@ from .config import CompetitionEditionConfig
 from .providers import EspnFixturesProvider, EspnStandingsProvider, ProviderDataError
 
 
+def _sync_historical_matches(config: CompetitionEditionConfig) -> None:
+    for source in config.historical_match_sources:
+        data = EspnFixturesProvider().fetch(
+            source.competition_id,
+            source.edition,
+            source.date_from.strftime("%Y%m%d"),
+            source.date_until.strftime("%Y%m%d"),
+        )
+        for row in data.entries:
+            if row.status != "completed" or row.home_score is None or row.away_score is None:
+                continue
+            teams = []
+            for provider_team_id in (row.home_provider_team_id, row.away_provider_team_id):
+                mapping = TeamProviderMapping.query.filter_by(
+                    provider="espn", provider_team_id=provider_team_id
+                ).one_or_none()
+                if mapping is None:
+                    team = Team(
+                        slug=f"espn-{provider_team_id}",
+                        display_name=f"ESPN Team {provider_team_id}",
+                    )
+                    db.session.add(team)
+                    db.session.flush()
+                    mapping = TeamProviderMapping(
+                        provider="espn", provider_team_id=provider_team_id, team=team
+                    )
+                    db.session.add(mapping)
+                teams.append(mapping.team)
+            match = ClubMatch.query.filter_by(
+                source="ESPN", provider_match_id=row.provider_fixture_id
+            ).one_or_none()
+            if match is None:
+                match = ClubMatch(
+                    source="ESPN",
+                    provider_match_id=row.provider_fixture_id,
+                    home_team=teams[0],
+                    away_team=teams[1],
+                )
+                db.session.add(match)
+            elif match.home_team_id != teams[0].id or match.away_team_id != teams[1].id:
+                raise ProviderDataError(
+                    f"ESPN historical Fixture {row.provider_fixture_id} has conflicting identity"
+                )
+            match.source_competition = source.competition_id
+            match.source_edition = source.edition
+            match.played_at = row.kickoff_at
+            match.home_score = row.home_score
+            match.away_score = row.away_score
+            match.source_updated_at = data.fetched_at
+
+
 def sync_season(
-    config: CompetitionEditionConfig, *, refresh_state_id: int | None = None
+    config: CompetitionEditionConfig,
+    *,
+    refresh_state_id: int | None = None,
+    include_history: bool = True,
 ) -> tuple[int, int, int]:
     mappings = dict(config.provider_team_mappings)
     if len(mappings) != len(config.provider_team_mappings):
@@ -222,5 +277,7 @@ def sync_season(
         refresh_state.refresh_started_at = None
         refresh_state.refresh_lease_until = None
 
+    if include_history:
+        _sync_historical_matches(config)
     db.session.commit()
     return len(teams), len(normalized), len(fixture_data.entries)

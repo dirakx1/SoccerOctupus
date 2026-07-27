@@ -273,7 +273,14 @@ def feature_limit_response(row: UserFeatureCycleLimit):
     ), 402
 
 
-def reserve_feature_usage(user: User, feature_key: str, db_session, now: datetime | None = None) -> UsageReservation:
+def reserve_feature_usage(
+    user: User,
+    feature_key: str,
+    db_session,
+    now: datetime | None = None,
+    *,
+    commit: bool = True,
+) -> UsageReservation:
     validate_feature_key(feature_key)
     session = _session(db_session)
     ensure_cycle_limits(user, db_session, now)
@@ -291,7 +298,8 @@ def reserve_feature_usage(user: User, feature_key: str, db_session, now: datetim
         return UsageReservation(False, row.id, feature_limit_response(row))
     row.used_count += 1
     session.add(row)
-    session.commit()
+    if commit:
+        session.commit()
     return UsageReservation(True, row.id)
 
 

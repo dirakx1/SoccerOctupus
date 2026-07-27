@@ -99,6 +99,23 @@ describe('router', () => {
     }
   })
 
+  it('uses separate prediction views for league Fixtures and the World Cup', async () => {
+    const leagueRoute = router.getRoutes().find((entry) => entry.name === WORKSPACE_ROUTE_NAMES.leaguePredict)
+    const worldCupRoute = router.getRoutes().find((entry) => entry.name === WORKSPACE_ROUTE_NAMES.predict)
+    const load = async (route) => {
+      const component = route.components.default
+      return typeof component === 'function' && !component.__name ? (await component()).default : component
+    }
+
+    const [leagueView, worldCupView] = await Promise.all([
+      load(leagueRoute),
+      load(worldCupRoute),
+    ])
+
+    expect(leagueView.__name).toBe('LeaguePredictView')
+    expect(worldCupView.__name).toBe('PredictView')
+  })
+
   it('redirects legacy workspace paths while preserving query and hash', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
 

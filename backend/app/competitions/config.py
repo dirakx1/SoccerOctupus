@@ -5,6 +5,14 @@ from datetime import date
 
 
 @dataclass(frozen=True)
+class HistoricalMatchSource:
+    competition_id: str
+    edition: str
+    date_from: date
+    date_until: date
+
+
+@dataclass(frozen=True)
 class CompetitionEditionConfig:
     competition_slug: str
     competition_display_name: str
@@ -34,6 +42,8 @@ class CompetitionEditionConfig:
     live_stale_seconds: int
     kickoff_window_stale_seconds: int
     in_season_stale_seconds: int
+    historical_match_sources: tuple[HistoricalMatchSource, ...] = ()
+    promoted_team_ids: tuple[str, ...] = ()
 
     def public_dict(self) -> dict:
         return {

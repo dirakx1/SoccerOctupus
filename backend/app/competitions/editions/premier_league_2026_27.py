@@ -1,6 +1,6 @@
 from datetime import date
 
-from ..config import CompetitionEditionConfig
+from ..config import CompetitionEditionConfig, HistoricalMatchSource
 
 
 PREMIER_LEAGUE_2026_27 = CompetitionEditionConfig(
@@ -79,4 +79,10 @@ PREMIER_LEAGUE_2026_27 = CompetitionEditionConfig(
     live_stale_seconds=300,
     kickoff_window_stale_seconds=900,
     in_season_stale_seconds=86400,
+    historical_match_sources=(
+        HistoricalMatchSource("eng.1", "2024", date(2024, 8, 1), date(2025, 5, 31)),
+        HistoricalMatchSource("eng.1", "2025", date(2025, 8, 1), date(2026, 5, 31)),
+        HistoricalMatchSource("eng.2", "2025", date(2025, 8, 1), date(2026, 5, 31)),
+    ),
+    promoted_team_ids=("coventry-city", "hull-city", "ipswich-town"),
 )

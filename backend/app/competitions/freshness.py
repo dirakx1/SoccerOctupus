@@ -112,7 +112,7 @@ def refresh_on_demand(
     db.session.commit()
     if acquired:
         try:
-            sync_season(config, refresh_state_id=state.id)
+            sync_season(config, refresh_state_id=state.id, include_history=False)
         except Exception as exc:
             db.session.rollback()
             failed = db.session.get(CompetitionEditionRefresh, state.id)

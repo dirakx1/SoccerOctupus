@@ -78,8 +78,8 @@ const router = createRouter({
     {
       path: '/:locale(en|es)/competitions/:competitionSlug/editions/:editionSlug/predict',
       name: WORKSPACE_ROUTE_NAMES.leaguePredict,
-      component: () => import('../views/LeagueCapabilityView.vue'),
-      props: { capability: 'predict' },
+      component: () => import('../views/LeaguePredictView.vue'),
+      props: true,
       meta: { requiresAuth: true, competitionWorkspace: true, leagueWorkspace: true },
     },
     {

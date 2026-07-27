@@ -64,6 +64,35 @@
       "unknown": "Estado no disponible"
     }
   },
+  "predictions": {
+    "eyebrow": "Predicción de partido",
+    "title": "Predicciones de {edition}",
+    "fixture": "Partido programado",
+    "selectFixture": "Selecciona un partido",
+    "reveal": "Revelar predicción",
+    "generating": "Generando predicción...",
+    "fixturesErrorTitle": "Partidos no disponibles",
+    "fixturesError": "No se pudieron cargar los partidos programados.",
+    "likelyScore": "Resultado más probable",
+    "probabilities": "Probabilidades del resultado",
+    "homeWin": "Victoria local",
+    "draw": "Empate",
+    "awayWin": "Victoria visitante",
+    "confidence": "Confianza",
+    "source": "Fuente",
+    "sourceUpdated": "Fuente actualizada",
+    "generated": "Generada",
+    "availableAgents": "Agentes disponibles",
+    "unavailableAgents": "Agentes no disponibles",
+    "errors": {
+      "limit": { "title": "Límite de predicciones alcanzado", "description": "Has agotado tus predicciones de partidos. No se realizó ningún cargo." },
+      "blocked": { "title": "Partido no elegible", "description": "El servidor bloqueó la predicción porque el partido no es elegible. No se realizó ningún cargo." },
+      "generation": { "title": "No se pudo generar la predicción", "description": "No se realizó ningún cargo. Vuelve a intentar con este partido." }
+    },
+    "revealStatus": { "charged": "Revelación con cargo", "reopened": "Reapertura gratuita" },
+    "agents": { "statistical": "Estadístico", "form": "Forma", "tactical": "Táctico", "live_data": "Datos en vivo", "market_signals": "Señales de mercado", "squad_quality": "Calidad de plantilla", "video": "Vídeo" },
+    "agentReasons": { "tactical": "No hay datos tácticos reales del club", "live_data": "No hay datos en vivo reales del club", "market_signals": "No hay datos de mercado reales del club", "squad_quality": "No hay datos reales de la plantilla", "video": "No hay vídeo real del club" }
+  },
   "previews": {
     "label": "Vistas previas de la competición",
     "table": { "title": "Tabla de la liga", "empty": "Los datos de la tabla aún no están disponibles." },

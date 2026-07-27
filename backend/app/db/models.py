@@ -230,6 +230,68 @@ class FixtureProviderMapping(db.Model, TimestampMixin):
     fixture = db.relationship("Fixture", lazy="joined")
 
 
+class ClubMatch(db.Model, TimestampMixin):
+    __tablename__ = "club_matches"
+    __table_args__ = (
+        db.UniqueConstraint("source", "provider_match_id", name="uq_club_match_source_provider"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    source = db.Column(db.String(32), nullable=False)
+    source_competition = db.Column(db.String(64), nullable=False, index=True)
+    source_edition = db.Column(db.String(32), nullable=False, index=True)
+    provider_match_id = db.Column(db.String(128), nullable=False)
+    played_at = db.Column(db.DateTime(timezone=True), nullable=False, index=True)
+    home_team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
+    away_team_id = db.Column(db.Integer, db.ForeignKey("teams.id", ondelete="RESTRICT"), nullable=False)
+    home_score = db.Column(db.Integer, nullable=False)
+    away_score = db.Column(db.Integer, nullable=False)
+    source_updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    home_team = db.relationship("Team", foreign_keys=[home_team_id], lazy="joined")
+    away_team = db.relationship("Team", foreign_keys=[away_team_id], lazy="joined")
+
+
+class MatchPredictionVersion(db.Model):
+    __tablename__ = "match_prediction_versions"
+    __table_args__ = (
+        db.UniqueConstraint("fixture_id", "fingerprint", name="uq_match_prediction_fixture_fingerprint"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    fixture_id = db.Column(db.Integer, db.ForeignKey("fixtures.id", ondelete="RESTRICT"), nullable=False, index=True)
+    fingerprint = db.Column(db.String(64), nullable=False)
+    model_version = db.Column(db.String(64), nullable=False)
+    source = db.Column(db.String(64), nullable=False)
+    source_updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    forecast = db.Column(db.JSON, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=utcnow, nullable=False)
+    fixture = db.relationship("Fixture", lazy="joined")
+
+
+class UserMatchPredictionGrant(db.Model):
+    __tablename__ = "user_match_prediction_grants"
+    __table_args__ = (
+        db.UniqueConstraint("user_id", "prediction_version_id", name="uq_user_match_prediction_grant"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    prediction_version_id = db.Column(
+        db.Integer,
+        db.ForeignKey("match_prediction_versions.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+    cycle_limit_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user_feature_cycle_limits.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    charged = db.Column(db.Boolean, nullable=False, default=False)
+    revealed_at = db.Column(db.DateTime(timezone=True), default=utcnow, nullable=False)
+    prediction_version = db.relationship("MatchPredictionVersion", lazy="joined")
+
+
 class StandingsSnapshot(db.Model, TimestampMixin):
     __tablename__ = "standings_snapshots"
     __table_args__ = (

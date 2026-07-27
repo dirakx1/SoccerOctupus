@@ -235,16 +235,17 @@ def verify_session_token(token: str) -> dict[str, Any]:
 
 
 def load_current_user(db_session) -> User:
-    if hasattr(g, "current_user"):
-        return g.current_user
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         raise PermissionError("Missing bearer token")
     token = auth_header.split(" ", 1)[1].strip()
+    if getattr(g, "current_user_token", None) == token:
+        return g.current_user
     claims = verify_session_token(token)
     identity = build_identity_from_claims(claims)
     user = sync_user(identity, db_session, overwrite_missing=False, sync_last_sign_in=False)
     g.current_user = user
+    g.current_user_token = token
     return user
 
 
