@@ -32,8 +32,9 @@
           <small>{{ t('league.table.updated', { date: formatDate(table.source_updated_at) }) }}</small>
         </p>
       </header>
-      <p v-if="table.stale" data-testid="league-table-stale" class="stale" role="status">
-        <TriangleAlert :size="18" aria-hidden="true" /> {{ t('league.table.stale') }}
+      <FreshnessDisclosure :freshness="table.freshness" @retry="loadTable" />
+      <p v-if="!table.freshness && table.stale" data-testid="league-table-stale" class="legacy-stale" role="status">
+        {{ t('league.table.stale') }}
       </p>
       <section v-if="!table.standings.length" data-testid="league-table-empty" class="table-state">
         <p>{{ t('league.table.empty') }}</p>
@@ -59,10 +60,11 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { CircleAlert, TriangleAlert } from '@lucide/vue'
+import { CircleAlert } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 
 import { api } from '../lib/api.js'
+import FreshnessDisclosure from '../components/FreshnessDisclosure.vue'
 
 const props = defineProps({
   competitionSlug: { type: String, required: true },
@@ -115,7 +117,7 @@ onMounted(loadTable)
 .table-heading div > p { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / 1 var(--font-family-data); text-transform: uppercase; }
 .table-heading h1 { font-family: var(--font-family-display); font-size: var(--font-size-3xl); letter-spacing: 0; margin: var(--space-2) 0 0; }
 .table-heading > p { text-align: right; }
-.stale { align-items: center; background: var(--color-warning-surface); border-left: var(--border-width-strong) solid var(--color-warning); display: flex; gap: var(--space-2); margin: 0; padding: var(--space-3); }
+.legacy-stale { background: var(--color-warning-surface); border-left: var(--border-width-strong) solid var(--color-warning); margin: 0; padding: var(--space-3); }
 .table-scroll { overflow-x: auto; }
 table { border-collapse: collapse; min-width: 48rem; width: 100%; }
 th, td { border-bottom: var(--border-width-thin) solid var(--color-border); height: 3.25rem; padding: 0 var(--space-3); text-align: right; }

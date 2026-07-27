@@ -41,6 +41,8 @@
         </small>
       </header>
 
+      <FreshnessDisclosure :freshness="data.freshness" @retry="loadFixtures" />
+
       <section class="fixtures-controls" :aria-label="t('league.fixtures.filters')">
         <div class="mode-control">
           <button
@@ -103,6 +105,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 import { api } from '../lib/api.js'
+import FreshnessDisclosure from '../components/FreshnessDisclosure.vue'
 
 const props = defineProps({
   competitionSlug: { type: String, required: true },

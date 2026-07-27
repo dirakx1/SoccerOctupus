@@ -43,6 +43,8 @@
         </router-link>
       </nav>
 
+      <FreshnessDisclosure :freshness="freshness" @retry="loadEdition" />
+
       <section class="league-previews" :aria-label="t('league.previews.label')">
         <article v-if="tablePreview" data-testid="league-table-preview" class="table-preview">
           <header>
@@ -87,11 +89,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ArrowUpRight, CircleAlert } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 
 import { api } from '../lib/api.js'
+import FreshnessDisclosure from '../components/FreshnessDisclosure.vue'
 import { leagueWorkspaceLocation } from '../router/workspace.js'
 
 const props = defineProps({
@@ -105,6 +108,11 @@ const error = ref(false)
 const loading = ref(true)
 const tablePreview = ref(null)
 const fixturePreview = ref(null)
+const freshness = computed(() => {
+  const states = [tablePreview.value?.freshness, fixturePreview.value?.freshness].filter(Boolean)
+  const priority = ['hard_stale', 'stale', 'refreshing', 'fresh']
+  return states.sort((left, right) => priority.indexOf(left.status) - priority.indexOf(right.status))[0] || null
+})
 const otherPreviews = [
   { key: 'fixtures', dataKey: 'upcoming' },
   { key: 'results', dataKey: 'results' },

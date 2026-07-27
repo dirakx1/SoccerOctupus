@@ -16,6 +16,12 @@
     "error": "This Competition Edition could not be loaded.",
     "retry": "Try again"
   },
+  "freshness": {
+    "refreshing": "Refreshing official {source} data. Showing the last successful update.",
+    "stale": "{source} could not be reached. Showing the last successful update.",
+    "hard_stale": "Official data is too old for new paid predictions. Existing data remains available.",
+    "retry": "Retry refresh"
+  },
   "table": {
     "eyebrow": "Authoritative League Table",
     "loading": "Loading League Table…",

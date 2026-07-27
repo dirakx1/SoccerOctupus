@@ -149,6 +149,24 @@ class CompetitionEdition(db.Model, TimestampMixin):
     configuration_revision = db.Column(db.String(64), nullable=False)
 
 
+class CompetitionEditionRefresh(db.Model, TimestampMixin):
+    __tablename__ = "competition_edition_refreshes"
+
+    id = db.Column(db.Integer, primary_key=True)
+    competition_edition_id = db.Column(
+        db.Integer,
+        db.ForeignKey("competition_editions.id", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+    source_updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    last_attempt_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    last_error = db.Column(db.Text, nullable=True)
+    refresh_started_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    refresh_lease_until = db.Column(db.DateTime(timezone=True), nullable=True)
+
+
 class CompetitionEditionTeam(db.Model, TimestampMixin):
     __tablename__ = "competition_edition_teams"
     __table_args__ = (

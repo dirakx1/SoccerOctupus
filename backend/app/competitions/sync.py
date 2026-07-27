@@ -6,6 +6,7 @@ import json
 from ..db.base import db
 from ..db.models import (
     CompetitionEdition,
+    CompetitionEditionRefresh,
     CompetitionEditionTeam,
     Fixture,
     FixtureProviderMapping,
@@ -18,7 +19,9 @@ from .config import CompetitionEditionConfig
 from .providers import EspnFixturesProvider, EspnStandingsProvider, ProviderDataError
 
 
-def sync_season(config: CompetitionEditionConfig) -> tuple[int, int, int]:
+def sync_season(
+    config: CompetitionEditionConfig, *, refresh_state_id: int | None = None
+) -> tuple[int, int, int]:
     mappings = dict(config.provider_team_mappings)
     if len(mappings) != len(config.provider_team_mappings):
         raise ProviderDataError("Edition configuration contains duplicate Team mappings")
@@ -198,6 +201,26 @@ def sync_season(config: CompetitionEditionConfig) -> tuple[int, int, int]:
         fixture.home_score = row.home_score
         fixture.away_score = row.away_score
         fixture.source_updated_at = fixture_data.fetched_at
+
+    source_updated_at = min(provider_data.fetched_at, fixture_data.fetched_at)
+    refresh_state = (
+        db.session.get(CompetitionEditionRefresh, refresh_state_id)
+        if refresh_state_id is not None
+        else CompetitionEditionRefresh.query.filter_by(competition_edition_id=edition.id).one_or_none()
+    )
+    if refresh_state is None:
+        refresh_state = CompetitionEditionRefresh(
+            competition_edition_id=edition.id,
+            source_updated_at=source_updated_at,
+            last_attempt_at=source_updated_at,
+        )
+        db.session.add(refresh_state)
+    else:
+        refresh_state.source_updated_at = source_updated_at
+        refresh_state.last_attempt_at = source_updated_at
+        refresh_state.last_error = None
+        refresh_state.refresh_started_at = None
+        refresh_state.refresh_lease_until = None
 
     db.session.commit()
     return len(teams), len(normalized), len(fixture_data.entries)
