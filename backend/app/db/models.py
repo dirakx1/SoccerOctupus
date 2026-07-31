@@ -104,6 +104,19 @@ class UserFeatureCycleLimit(db.Model, TimestampMixin):
     overridden_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
 
+class UserSwarmPreference(db.Model, TimestampMixin):
+    """Per-user agent weight overrides, stored sparsely (deviations only)."""
+
+    __tablename__ = "user_swarm_preferences"
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    weights = db.Column(db.JSON, nullable=False, default=dict)
+
+
 class AppSettings(db.Model, TimestampMixin):
     __tablename__ = "app_settings"
 

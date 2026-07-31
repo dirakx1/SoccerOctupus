@@ -7,6 +7,7 @@ const NAVIGATION_DEFINITIONS = Object.freeze([
   { key: 'predict', capability: 'predictions', labelKey: 'navigation.workspace.predict' },
   { key: 'bracket', capability: 'bracket', labelKey: 'navigation.workspace.bracket' },
   { key: 'markets', capability: 'markets', labelKey: 'navigation.workspace.markets' },
+  { key: 'swarm', capability: 'swarm', labelKey: 'navigation.workspace.swarm' },
 ])
 
 export function getCompetitionNavigation(edition, {

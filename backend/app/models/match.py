@@ -141,6 +141,10 @@ class MatchPrediction:
     # True when this entry is an official played result, not a prediction.
     is_actual: bool = False
 
+    # Effective ensemble weights ({agent_key: weight}) used by the aggregator.
+    # None for MC-fallback and official-result entries where no swarm ran.
+    weights_used: Optional[Dict[str, float]] = None
+
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
     def to_dict(self) -> Dict:
@@ -160,6 +164,7 @@ class MatchPrediction:
             "outcome": self.outcome.value,
             "went_to_penalties": self.went_to_penalties,
             "is_actual": self.is_actual,
+            "weights_used": self.weights_used,
             "overall_confidence": round(self.overall_confidence, 3),
             "agent_predictions": [a.to_dict() for a in self.agent_predictions],
             "swarm_consensus": self.swarm_consensus,

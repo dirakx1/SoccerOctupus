@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional
 from ...models.match import AgentPrediction, MatchOutcome, MatchPrediction, MatchStage
 from ...utils.llm_client import LLMClient
 from ...utils.logger import get_logger
+from .weights import resolve_weights, weights_by_key
 
 logger = get_logger("fifaoctopus.agent.aggregator")
 
@@ -64,37 +65,44 @@ class AggregatorAgent:
         stage: MatchStage,
         group: Optional[str],
         agent_predictions: List[AgentPrediction],
+        weights: Optional[Dict[str, float]] = None,
     ) -> MatchPrediction:
+        """
+        Weighted ensemble. *weights* is a sparse {agent_key: weight} override
+        (see agents.weights.AGENT_REGISTRY); defaults fill the gaps. A weight
+        of 0.0 mutes that agent's contribution.
+        """
         import uuid
 
         if not agent_predictions:
             raise ValueError("No agent predictions to aggregate")
 
-        total_weight = sum(p.confidence for p in agent_predictions)  # confidence-weighted
-        # Actually use agent weight * confidence for true weighting
-        # We need access to agent weights; they are embedded in the prediction names — use fallback weights
-        AGENT_WEIGHTS = {
-            "Statistical Analysis Agent": 1.8,
-            "Video Intelligence Agent": 1.0,
-            "Recent Form Agent": 1.3,
-            "Tactical Analysis Agent": 1.2,
-            "Live Data Agent": 1.4,
-            "Market Signals Agent": 0.8,
-            "Squad Quality Agent": 1.1,
-        }
+        agent_weights = resolve_weights(weights)
 
         w_sum = 0.0
         hw_agg = dr_agg = aw_agg = 0.0
         xg_home = xg_away = 0.0
 
         for pred in agent_predictions:
-            w = AGENT_WEIGHTS.get(pred.agent_name, 1.0) * pred.confidence
+            w = agent_weights.get(pred.agent_name, 1.0) * pred.confidence
             w_sum += w
             hw_agg += pred.home_win_prob * w
             dr_agg += pred.draw_prob * w
             aw_agg += pred.away_win_prob * w
             xg_home += pred.predicted_home_goals * w
             xg_away += pred.predicted_away_goals * w
+
+        if w_sum <= 0:
+            # Every contributing agent was muted — fall back to confidence-only
+            # weighting rather than dividing by zero.
+            for pred in agent_predictions:
+                w = pred.confidence or 1.0
+                w_sum += w
+                hw_agg += pred.home_win_prob * w
+                dr_agg += pred.draw_prob * w
+                aw_agg += pred.away_win_prob * w
+                xg_home += pred.predicted_home_goals * w
+                xg_away += pred.predicted_away_goals * w
 
         hw_final = hw_agg / w_sum
         dr_final = dr_agg / w_sum
@@ -144,6 +152,7 @@ class AggregatorAgent:
             agent_predictions=agent_predictions,
             swarm_consensus=narrative,
             key_factors=key_factors,
+            weights_used=weights_by_key(weights),
         )
 
     # ------------------------------------------------------------------

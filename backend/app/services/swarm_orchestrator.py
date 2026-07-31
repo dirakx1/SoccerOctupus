@@ -48,9 +48,12 @@ class SwarmOrchestrator:
         llm_client=None,
         zep_tools: ZepFootballTools | None = None,
         include_video_analysis: bool = True,
+        agent_weights: dict | None = None,
     ):
         self.settings = settings
         self.llm_client = llm_client
+        # Sparse {agent_key: weight} overrides forwarded to the aggregator
+        self.agent_weights = agent_weights
 
         # One shared Zep tools instance — all agents query the same graph
         # Falls back to static data automatically when DB-backed Zep settings are absent
@@ -158,6 +161,7 @@ class SwarmOrchestrator:
             stage=stage,
             group=group,
             agent_predictions=agent_preds,
+            weights=self.agent_weights,
         )
 
         if progress_callback:

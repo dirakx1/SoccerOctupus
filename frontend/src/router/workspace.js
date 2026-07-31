@@ -15,6 +15,7 @@ export const WORKSPACE_ROUTE_NAMES = Object.freeze({
   predict: 'competition-workspace-predict',
   bracket: 'competition-workspace-bracket',
   markets: 'competition-workspace-markets',
+  swarm: 'competition-workspace-swarm',
 })
 
 export function workspaceLocation(area = 'overview', {

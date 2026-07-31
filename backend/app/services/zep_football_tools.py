@@ -348,6 +348,209 @@ class ZepFootballTools:
         )
 
     # ------------------------------------------------------------------
+    # Graph visualization data
+    # ------------------------------------------------------------------
+
+    MAX_GRAPH_NODES = 500
+    MAX_GRAPH_EDGES = 2000
+    GRAPH_CACHE_TTL = 900  # seconds — the graph changes rarely, Zep calls cost
+
+    def get_graph_data(self, team: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Nodes + edges for the frontend knowledge-graph explorer.
+
+        Returns {mode, nodes, edges, counts, built_at}. With *team*, returns
+        the ego-graph (that node and its 1-hop neighbourhood). Full-graph
+        payloads are cached in-process for GRAPH_CACHE_TTL seconds.
+        """
+        full = self._graph_data_cached()
+        if not team:
+            return full
+
+        needle = team.lower()
+        seed_ids = {
+            n["id"] for n in full["nodes"]
+            if needle in n["label"].lower()
+        }
+        if not seed_ids:
+            return {**full, "nodes": [], "edges": [], "counts": {"nodes": 0, "edges": 0}}
+
+        edges = [
+            e for e in full["edges"]
+            if e["source"] in seed_ids or e["target"] in seed_ids
+        ]
+        keep = set(seed_ids)
+        for e in edges:
+            keep.add(e["source"])
+            keep.add(e["target"])
+        nodes = [n for n in full["nodes"] if n["id"] in keep]
+        return {
+            **full,
+            "nodes": nodes,
+            "edges": edges,
+            "counts": {"nodes": len(nodes), "edges": len(edges)},
+        }
+
+    def _graph_data_cached(self) -> Dict[str, Any]:
+        cache_key = f"{self.graph_id or 'static'}"
+        cached = _GRAPH_CACHE.get(cache_key)
+        if cached and time.time() - cached["at"] < self.GRAPH_CACHE_TTL:
+            return cached["data"]
+
+        if self.has_graph:
+            try:
+                data = self._zep_graph_data()
+            except Exception as exc:
+                logger.warning(f"Zep graph data failed — static fallback: {exc}")
+                data = self._static_graph_data()
+        else:
+            data = self._static_graph_data()
+
+        _GRAPH_CACHE[cache_key] = {"at": time.time(), "data": data}
+        return data
+
+    def _zep_graph_data(self) -> Dict[str, Any]:
+        from ..utils.zep_paging import fetch_all_nodes, fetch_all_edges
+        from datetime import datetime, timezone
+
+        raw_nodes = fetch_all_nodes(self._zep, self.graph_id)[: self.MAX_GRAPH_NODES]
+        node_ids = set()
+        nodes = []
+        for n in raw_nodes:
+            uuid_ = getattr(n, "uuid_", None) or getattr(n, "uuid", None)
+            name = getattr(n, "name", "") or ""
+            if not uuid_ or not name:
+                continue
+            node_ids.add(uuid_)
+            nodes.append({
+                "id": uuid_,
+                "label": name,
+                "type": _node_type(name, getattr(n, "labels", None)),
+                "summary": (getattr(n, "summary", "") or "")[:400],
+            })
+
+        raw_edges = fetch_all_edges(self._zep, self.graph_id)[: self.MAX_GRAPH_EDGES]
+        edges = []
+        for e in raw_edges:
+            src = getattr(e, "source_node_uuid", None)
+            tgt = getattr(e, "target_node_uuid", None)
+            if src not in node_ids or tgt not in node_ids:
+                continue
+            edges.append({
+                "id": getattr(e, "uuid_", None) or getattr(e, "uuid", "") or f"{src}-{tgt}",
+                "source": src,
+                "target": tgt,
+                "name": getattr(e, "name", "") or "RELATED_TO",
+                "fact": (getattr(e, "fact", "") or "")[:300],
+            })
+
+        return {
+            "mode": "zep_graph",
+            "nodes": nodes,
+            "edges": edges,
+            "counts": {"nodes": len(nodes), "edges": len(edges)},
+            "built_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def _static_graph_data(self) -> Dict[str, Any]:
+        """
+        Synthesize the same graph shape from static data + real results so
+        the explorer works without a Zep key.
+        """
+        from datetime import datetime, timezone
+        from .tournament_simulator import WC2026_GROUPS
+        from .data_collectors.live_results import WC2026_RESULTS
+
+        nodes: List[Dict[str, Any]] = []
+        edges: List[Dict[str, Any]] = []
+
+        def team_id(name: str) -> str:
+            return f"team:{name}"
+
+        team_names = set()
+        for letter, teams in WC2026_GROUPS.items():
+            gid = f"group:{letter}"
+            nodes.append({
+                "id": gid,
+                "label": f"Group {letter}",
+                "type": "group",
+                "summary": f"FIFA World Cup 2026 Group {letter}: {', '.join(teams)}.",
+            })
+            for t in teams:
+                team_names.add(t)
+                d = TEAM_STATIC_DATA.get(t, {})
+                nodes.append({
+                    "id": team_id(t),
+                    "label": t,
+                    "type": "team",
+                    "summary": _team_summary_sentence(t, d),
+                })
+                edges.append({
+                    "id": f"in:{t}",
+                    "source": team_id(t),
+                    "target": gid,
+                    "name": "PLAYS_IN_GROUP",
+                    "fact": f"{t} plays in World Cup 2026 Group {letter}.",
+                })
+
+        # Tactical style nodes
+        styles = {}
+        for t in sorted(team_names):
+            style = TEAM_STATIC_DATA.get(t, {}).get("style")
+            if not style:
+                continue
+            sid = f"style:{style}"
+            if sid not in styles:
+                styles[sid] = True
+                nodes.append({
+                    "id": sid,
+                    "label": style,
+                    "type": "style",
+                    "summary": f"Teams playing a {style} tactical system.",
+                })
+            edges.append({
+                "id": f"style:{t}",
+                "source": team_id(t),
+                "target": sid,
+                "name": "HAS_STYLE",
+                "fact": f"{t} plays a {style} system.",
+            })
+
+        # Played-match edges from official results
+        for i, m in enumerate(WC2026_RESULTS):
+            home, away = m["home"], m["away"]
+            if home not in team_names or away not in team_names:
+                continue
+            hg, ag = m["home_goals"], m["away_goals"]
+            winner = m.get("winner")
+            if hg == ag and not winner:
+                name = "DREW_WITH"
+                src, tgt = home, away
+                fact = f"{home} drew {hg}-{ag} with {away} on {m['date']}."
+            else:
+                w = winner or (home if hg > ag else away)
+                loser = away if w == home else home
+                name = "BEAT"
+                src, tgt = w, loser
+                pens = " (decided after extra time / penalties)" if hg == ag else ""
+                fact = f"{w} beat {loser} {max(hg, ag)}-{min(hg, ag)} on {m['date']}{pens}."
+            edges.append({
+                "id": f"match:{i}",
+                "source": team_id(src),
+                "target": team_id(tgt),
+                "name": name,
+                "fact": fact,
+            })
+
+        return {
+            "mode": "static_fallback",
+            "nodes": nodes[: self.MAX_GRAPH_NODES],
+            "edges": edges[: self.MAX_GRAPH_EDGES],
+            "counts": {"nodes": len(nodes), "edges": len(edges)},
+            "built_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    # ------------------------------------------------------------------
     # Retry wrapper (same pattern as MiroFish's _call_with_retry)
     # ------------------------------------------------------------------
 
@@ -368,6 +571,31 @@ class ZepFootballTools:
 # ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------
+
+# Module-level cache for graph visualization payloads ({key: {at, data}}).
+_GRAPH_CACHE: Dict[str, Dict[str, Any]] = {}
+
+
+def _node_type(name: str, labels: Optional[List[str]]) -> str:
+    """Map a Zep node to the frontend type enum."""
+    for label in labels or []:
+        low = str(label).lower()
+        if "team" in low:
+            return "team"
+        if "group" in low:
+            return "group"
+        if "competition" in low:
+            return "competition"
+        if "style" in low or "tactic" in low:
+            return "style"
+    if name in TEAM_STATIC_DATA:
+        return "team"
+    if name.lower().startswith("group "):
+        return "group"
+    if "world cup" in name.lower():
+        return "competition"
+    return "entity"
+
 
 def _team_summary_sentence(team: str, d: Dict[str, Any]) -> str:
     if not d:

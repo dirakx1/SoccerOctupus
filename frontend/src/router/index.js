@@ -72,6 +72,12 @@ const router = createRouter({
       meta: { requiresAuth: true, competitionWorkspace: true },
     },
     {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug/swarm',
+      name: WORKSPACE_ROUTE_NAMES.swarm,
+      component: () => import('../views/SwarmLabView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
       path: '/:locale(en|es)/competitions/:pathMatch(.*)*',
       redirect: localizedWorkspaceFallback,
       meta: { public: true },

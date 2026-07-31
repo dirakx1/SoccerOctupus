@@ -1,0 +1,48 @@
+{
+  "page": {
+    "eyebrow": "Swarm Intelligence · {competition}",
+    "title": "Swarm Lab",
+    "description": "Tune the relative influence of each AI agent in the prediction ensemble, then explore the knowledge graph that powers them."
+  },
+  "tabs": {
+    "label": "Swarm Lab sections",
+    "weights": "Agent Weights",
+    "graph": "Knowledge Graph"
+  },
+  "graph": {
+    "heading": "Knowledge Graph",
+    "description": "Explore the football knowledge graph that informs swarm predictions. Nodes represent teams, groups, and matches; edges represent relationships.",
+    "search": "Filter by team name…",
+    "searchButton": "Filter",
+    "clearFilter": "Show all",
+    "modeLive": "Live · Zep",
+    "modeStatic": "Static data",
+    "nodes": "{count} nodes",
+    "edges": "{count} edges",
+    "legend": "Node types",
+    "dragHint": "Drag nodes · Scroll to zoom · Click background to pan",
+    "loading": "Loading knowledge graph…",
+    "noResults": "No nodes match that team name.",
+    "errorLoad": "Could not load graph data.",
+    "retry": "Retry"
+  },
+  "weights": {
+    "heading": "Agent influence",
+    "description": "Drag a slider to change how much weight that agent carries in the ensemble. Reset to restore factory defaults.",
+    "defaultBadge": "default",
+    "customizedBadge": "customized",
+    "influenceLabel": "Influence",
+    "minLabel": "0×",
+    "maxLabel": "3×",
+    "save": "Save weights",
+    "saving": "Saving…",
+    "reset": "Reset to defaults",
+    "resetting": "Resetting…",
+    "savedNotice": "Your weights have been saved.",
+    "resetNotice": "Weights reset to defaults.",
+    "unsavedNotice": "You have unsaved changes.",
+    "errorLoad": "Could not load agent configuration.",
+    "errorSave": "Could not save weights. Please try again.",
+    "retry": "Retry"
+  }
+}

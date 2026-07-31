@@ -29,14 +29,44 @@ from ..utils.logger import get_logger
 logger = get_logger("fifaoctopus.api.predictions")
 bp = Blueprint("predictions", __name__, url_prefix="/api/predictions")
 
-def _get_orchestrator(include_video_analysis: bool = True) -> SwarmOrchestrator:
+def _get_orchestrator(
+    include_video_analysis: bool = True,
+    agent_weights: Dict[str, float] | None = None,
+) -> SwarmOrchestrator:
     settings = RuntimeSettingsService.current(db)
     llm = None
     if settings.llm_api_key:
         from ..utils.llm_client import LLMClient
 
         llm = LLMClient(settings=settings)
-    return SwarmOrchestrator(settings=settings, llm_client=llm, include_video_analysis=include_video_analysis)
+    return SwarmOrchestrator(
+        settings=settings,
+        llm_client=llm,
+        include_video_analysis=include_video_analysis,
+        agent_weights=agent_weights,
+    )
+
+
+def _saved_weight_overrides(user) -> Dict[str, float]:
+    """The user's persisted sparse weight overrides ({} when none)."""
+    from ..db.models import UserSwarmPreference
+
+    pref = db.session.get(UserSwarmPreference, user.id)
+    return dict(pref.weights or {}) if pref else {}
+
+
+def _effective_weight_overrides(user, body: Dict[str, Any]) -> Dict[str, float]:
+    """
+    Saved overrides, optionally superseded per-request by an `agent_weights`
+    object in the request body (session-only experimentation).
+    Raises ValueError on malformed request weights.
+    """
+    from ..services.agents.weights import validate_overrides
+
+    overrides = _saved_weight_overrides(user)
+    if isinstance(body.get("agent_weights"), dict):
+        overrides.update(validate_overrides(body["agent_weights"]))
+    return overrides
 
 
 # ------------------------------------------------------------------
@@ -70,7 +100,15 @@ def predict_match():
 
     try:
         import random as _random
-        orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user))
+        try:
+            weights = _effective_weight_overrides(g.current_user, data)
+        except ValueError as exc:
+            release_feature_usage(reservation.cycle_limit_id, db)
+            return jsonify({"error": str(exc)}), 400
+        orc = _get_orchestrator(
+            include_video_analysis=includes_video_analysis(g.current_user),
+            agent_weights=weights,
+        )
         result = orc.predict_match(home, away, stage=stage, group=group)
 
         # In knockout stages draws don't exist — resolve to AET/penalties
@@ -112,7 +150,18 @@ def simulate_tournament():
     if not reservation.allowed:
         return reservation.response
 
-    orc = _get_orchestrator(include_video_analysis=includes_video_analysis(g.current_user)) if use_swarm else None
+    try:
+        weights = _effective_weight_overrides(g.current_user, data)
+    except ValueError as exc:
+        release_feature_usage(reservation.cycle_limit_id, db)
+        return jsonify({"error": str(exc)}), 400
+    orc = (
+        _get_orchestrator(
+            include_video_analysis=includes_video_analysis(g.current_user),
+            agent_weights=weights,
+        )
+        if use_swarm else None
+    )
     settings = RuntimeSettingsService.current(db)
     simulator = TournamentSimulator(
         orchestrator=orc,
@@ -173,6 +222,26 @@ def build_graph():
         return jsonify({"error": str(exc)}), 500
 
 
+@bp.route("/graph/data", methods=["GET"])
+@require_user(db)
+def graph_data():
+    """
+    GET /api/predictions/graph/data[?team=France]
+    Nodes + edges for the knowledge-graph explorer. Uses the live Zep graph
+    when configured, otherwise a static-data synthesis. Cached in-process.
+    """
+    from ..services.zep_football_tools import ZepFootballTools
+
+    settings = RuntimeSettingsService.current(db)
+    tools = ZepFootballTools(api_key=settings.zep_api_key, graph_id=settings.zep_graph_id)
+    team = (request.args.get("team") or "").strip() or None
+    try:
+        return jsonify(tools.get_graph_data(team=team)), 200
+    except Exception as exc:
+        logger.error(f"Graph data failed: {exc}")
+        return jsonify({"error": str(exc)}), 500
+
+
 @bp.route("/graph/status", methods=["GET"])
 @require_admin(db)
 def graph_status():
@@ -186,6 +255,89 @@ def graph_status():
         "graph_active": tools.has_graph,
         "mode": "zep_graph" if tools.has_graph else "static_data_fallback",
     }), 200
+
+
+# ------------------------------------------------------------------
+# Swarm configuration — per-user agent weights
+# ------------------------------------------------------------------
+
+def _swarm_config_payload(user) -> Dict[str, Any]:
+    from ..services.agents.weights import AGENT_REGISTRY, WEIGHT_MAX, WEIGHT_MIN
+
+    overrides = _saved_weight_overrides(user)
+    return {
+        "agents": [
+            {
+                "key": key,
+                "name": spec["name"],
+                "description": spec["description"],
+                "default": spec["default"],
+                "current": overrides.get(key, spec["default"]),
+                "min": WEIGHT_MIN,
+                "max": WEIGHT_MAX,
+            }
+            for key, spec in AGENT_REGISTRY.items()
+        ],
+        "customized": bool(overrides),
+    }
+
+
+@bp.route("/swarm-config", methods=["GET"])
+@require_user(db)
+def get_swarm_config():
+    """GET /api/predictions/swarm-config — agent weights for the current user."""
+    return jsonify(_swarm_config_payload(g.current_user)), 200
+
+
+@bp.route("/swarm-config", methods=["PUT"])
+@require_user(db)
+def update_swarm_config():
+    """
+    PUT /api/predictions/swarm-config
+    Body: { "weights": {"statistical": 2.0, ...} }  — full desired state,
+    keyed by agent key. Values equal to the default are not persisted.
+    """
+    from ..db.models import UserSwarmPreference
+    from ..services.agents.weights import AGENT_REGISTRY, validate_overrides
+
+    data = request.get_json(force=True) or {}
+    try:
+        cleaned = validate_overrides(data.get("weights") or {})
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+    # Store sparsely: drop entries that match the default
+    sparse = {
+        key: value
+        for key, value in cleaned.items()
+        if value != AGENT_REGISTRY[key]["default"]
+    }
+
+    pref = db.session.get(UserSwarmPreference, g.current_user.id)
+    if sparse:
+        if pref is None:
+            pref = UserSwarmPreference(user_id=g.current_user.id, weights=sparse)
+            db.session.add(pref)
+        else:
+            pref.weights = sparse
+    elif pref is not None:
+        db.session.delete(pref)
+    db.session.commit()
+
+    return jsonify(_swarm_config_payload(g.current_user)), 200
+
+
+@bp.route("/swarm-config", methods=["DELETE"])
+@require_user(db)
+def reset_swarm_config():
+    """DELETE /api/predictions/swarm-config — reset to default weights."""
+    from ..db.models import UserSwarmPreference
+
+    pref = db.session.get(UserSwarmPreference, g.current_user.id)
+    if pref is not None:
+        db.session.delete(pref)
+        db.session.commit()
+    return jsonify(_swarm_config_payload(g.current_user)), 200
 
 
 # ------------------------------------------------------------------

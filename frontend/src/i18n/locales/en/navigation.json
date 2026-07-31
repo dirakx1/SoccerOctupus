@@ -8,7 +8,8 @@
     "groups": "Groups",
     "predict": "Predict",
     "bracket": "Bracket",
-    "markets": "Markets"
+    "markets": "Markets",
+    "swarm": "Swarm Lab"
   },
   "public": {
     "pricing": "Pricing",

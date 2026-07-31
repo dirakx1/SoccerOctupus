@@ -1104,8 +1104,8 @@ def test_free_user_gets_cycle_limited_prediction_and_markets(client, user, monke
         def to_dict(self):
             return {"question": "France to win?"}
 
-    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: FakeOrchestrator())
-    monkeypatch.setattr("app.api.markets._get_orc", lambda include_video_analysis=True: FakeOrchestrator())
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True, **kw: FakeOrchestrator())
+    monkeypatch.setattr("app.api.markets._get_orc", lambda include_video_analysis=True, **kw: FakeOrchestrator())
     monkeypatch.setattr("app.api.markets._gen.from_match", lambda pred: [FakeQuestion()])
 
     first_prediction = client.post(
@@ -1148,13 +1148,13 @@ def test_failed_prediction_releases_free_usage(client, user, monkeypatch):
         def predict_match(self, *args, **kwargs):
             return PassingResult()
 
-    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: FailingOrchestrator())
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True, **kw: FailingOrchestrator())
     failed = client.post(
         "/api/predictions/match",
         headers=_auth_header(user["clerk_user_id"]),
         json={"home_team": "France", "away_team": "Argentina"},
     )
-    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: PassingOrchestrator())
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True, **kw: PassingOrchestrator())
     retry = client.post(
         "/api/predictions/match",
         headers=_auth_header(user["clerk_user_id"]),
@@ -1247,7 +1247,7 @@ def test_paid_prediction_passes_video_entitlement(client, user, monkeypatch, tie
         def predict_match(self, *args, **kwargs):
             return FakeResult()
 
-    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True: FakeOrchestrator(include_video_analysis=include_video_analysis))
+    monkeypatch.setattr("app.api.predictions._get_orchestrator", lambda include_video_analysis=True, **kw: FakeOrchestrator(include_video_analysis=include_video_analysis))
 
     response = client.post(
         "/api/predictions/match",

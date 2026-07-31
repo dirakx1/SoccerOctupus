@@ -1,4 +1,4 @@
-const capabilities = Object.freeze(['groups', 'predictions', 'bracket', 'markets'])
+const capabilities = Object.freeze(['groups', 'predictions', 'bracket', 'markets', 'swarm'])
 
 export const worldCup2026 = Object.freeze({
   id: 'fifa-world-cup-2026',

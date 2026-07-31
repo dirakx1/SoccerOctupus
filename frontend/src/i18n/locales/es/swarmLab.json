@@ -1,0 +1,48 @@
+{
+  "page": {
+    "eyebrow": "Inteligencia Swarm · {competition}",
+    "title": "Laboratorio Swarm",
+    "description": "Ajusta la influencia relativa de cada agente de IA en el conjunto de predicciones y explora el grafo de conocimiento que los impulsa."
+  },
+  "tabs": {
+    "label": "Secciones del Laboratorio Swarm",
+    "weights": "Pesos de agentes",
+    "graph": "Grafo de conocimiento"
+  },
+  "graph": {
+    "heading": "Grafo de conocimiento",
+    "description": "Explora el grafo de conocimiento de fútbol que informa las predicciones del enjambre. Los nodos representan equipos, grupos y partidos; los arcos representan relaciones.",
+    "search": "Filtrar por nombre de equipo…",
+    "searchButton": "Filtrar",
+    "clearFilter": "Mostrar todo",
+    "modeLive": "En vivo · Zep",
+    "modeStatic": "Datos estáticos",
+    "nodes": "{count} nodos",
+    "edges": "{count} arcos",
+    "legend": "Tipos de nodo",
+    "dragHint": "Arrastra nodos · Rueda para zoom · Clic en el fondo para mover",
+    "loading": "Cargando grafo de conocimiento…",
+    "noResults": "Ningún nodo coincide con ese nombre de equipo.",
+    "errorLoad": "No se pudo cargar el grafo de conocimiento.",
+    "retry": "Reintentar"
+  },
+  "weights": {
+    "heading": "Influencia de los agentes",
+    "description": "Arrastra un control deslizante para cambiar el peso de ese agente en el conjunto. Reinicia para restaurar los valores predeterminados.",
+    "defaultBadge": "predeterminado",
+    "customizedBadge": "personalizado",
+    "influenceLabel": "Influencia",
+    "minLabel": "0×",
+    "maxLabel": "3×",
+    "save": "Guardar pesos",
+    "saving": "Guardando…",
+    "reset": "Restablecer valores",
+    "resetting": "Restableciendo…",
+    "savedNotice": "Tus pesos se han guardado.",
+    "resetNotice": "Pesos restablecidos a los valores predeterminados.",
+    "unsavedNotice": "Tienes cambios sin guardar.",
+    "errorLoad": "No se pudo cargar la configuración de los agentes.",
+    "errorSave": "No se pudieron guardar los pesos. Inténtalo de nuevo.",
+    "retry": "Reintentar"
+  }
+}
