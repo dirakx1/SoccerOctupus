@@ -3,7 +3,7 @@ import { getCompetitionEdition } from '../competition/index.js'
 import { applyLocale } from '../i18n/index.js'
 import { useAuthState } from '../lib/auth'
 import { setPostAuthRedirect } from '../lib/postAuthRedirect.js'
-import { WORKSPACE_ROUTE_NAMES, workspaceLocation } from './workspace.js'
+import { LEAGUE_ROUTE_NAMES, WORKSPACE_ROUTE_NAMES, workspaceLocation } from './workspace.js'
 
 function workspaceRedirect(area) {
   return (to) => workspaceLocation(area, { query: to.query, hash: to.hash })
@@ -46,6 +46,48 @@ const router = createRouter({
       name: WORKSPACE_ROUTE_NAMES.overview,
       component: () => import('../views/Home.vue'),
       meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)',
+      name: LEAGUE_ROUTE_NAMES.overview,
+      component: () => import('../views/LeagueOverviewView.vue'),
+      meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)/table',
+      name: LEAGUE_ROUTE_NAMES.table,
+      component: () => import('../views/LeagueTableView.vue'),
+      meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)/fixtures',
+      name: LEAGUE_ROUTE_NAMES.fixtures,
+      component: () => import('../views/LeagueFixturesView.vue'),
+      meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)/predict',
+      name: LEAGUE_ROUTE_NAMES.predict,
+      component: () => import('../views/LeaguePredictView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)/markets',
+      name: LEAGUE_ROUTE_NAMES.markets,
+      component: () => import('../views/LeagueMarketsView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)/performance',
+      name: LEAGUE_ROUTE_NAMES.performance,
+      component: () => import('../views/LeaguePerformanceView.vue'),
+      meta: { requiresAuth: true, admin: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league-[0-9]{4}-[0-9]{2}|premier-league)/swarm',
+      name: LEAGUE_ROUTE_NAMES.swarm,
+      component: () => import('../views/LeagueSwarmView.vue'),
+      meta: { requiresAuth: true, admin: true, competitionWorkspace: true },
     },
     {
       path: '/:locale(en|es)/competitions/:competitionEditionSlug/groups',

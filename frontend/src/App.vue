@@ -82,7 +82,7 @@ import {
   hasPostAuthCompletion,
 } from './lib/postAuthCompletion'
 import { useThemePreference } from './ui/themePreference.js'
-import { workspaceLocaleLocation, workspaceLocation } from './router/workspace.js'
+import { workspaceLocaleLocation, workspaceLocation, workspaceSwitchLocation } from './router/workspace.js'
 
 function getBrowserStorage() {
   try {
@@ -161,8 +161,8 @@ const competitionNavigation = computed(() => getCompetitionNavigation(activeEdit
   locale: currentLocale.value,
 }))
 
-installAuthInterceptor(async () => {
-  return await getToken.value?.()
+installAuthInterceptor(async (options) => {
+  return await getToken.value?.(options)
 })
 
 const canRenderRoute = computed(() => {
@@ -202,13 +202,8 @@ async function changeLocale(value) {
 
 async function changeEdition(edition) {
   if (!isWorkspaceRoute.value || !route.name || !edition?.slug) return
-
-  await router.push({
-    name: route.name,
-    params: { ...route.params, competitionEditionSlug: edition.slug },
-    query: route.query,
-    hash: route.hash,
-  })
+  const target = workspaceSwitchLocation(route, edition)
+  if (target) await router.push(target)
 }
 
 watch(() => route.fullPath, closeMenus)

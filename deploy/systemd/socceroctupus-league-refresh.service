@@ -1,0 +1,12 @@
+[Unit]
+Description=SoccerOctupus active league snapshot refresh
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/SoccerOctupus/backend
+EnvironmentFile=-/var/www/SoccerOctupus/backend/.env
+ExecStart=/var/www/SoccerOctupus/backend/venv/bin/flask --app run.py league-refresh-active

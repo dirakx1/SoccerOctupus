@@ -101,8 +101,6 @@ TEAM_STATIC_DATA: Dict[str, Dict[str, Any]] = {
 }
 
 # Apply actual WC 2026 results to adjust ELO, form and goal averages
-from .live_results import apply_results as _apply_live_results  # noqa: E402
-_apply_live_results(TEAM_STATIC_DATA)
 
 
 class SofaScoreCollector:

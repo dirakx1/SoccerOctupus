@@ -8,12 +8,12 @@ import {
 
 describe('Competition Edition registry', () => {
   it('lists the registered World Cup 2026 edition', () => {
-    expect(listCompetitionEditions()).toEqual([
+    expect(listCompetitionEditions()).toEqual(expect.arrayContaining([
       expect.objectContaining({
         id: 'fifa-world-cup-2026',
         slug: 'world-cup-2026',
       }),
-    ])
+    ]))
   })
 
   it('describes the World Cup edition using stable domain identifiers and current capabilities', () => {
@@ -23,18 +23,19 @@ describe('Competition Edition registry', () => {
       slug: 'world-cup-2026',
       format: 'group-and-knockout',
       displayNameKey: 'competitions.editions.worldCup2026.name',
-      capabilities: ['groups', 'predictions', 'bracket', 'markets'],
+      capabilities: ['groups', 'predictions', 'bracket', 'markets', 'swarm'],
     })
   })
 
   it('resolves a Competition Edition by stable slug', () => {
     expect(getCompetitionEdition('world-cup-2026')).toEqual(listCompetitionEditions()[0])
+    expect(getCompetitionEdition('premier-league')).toEqual(listCompetitionEditions()[1])
   })
 
   it('returns null for blank and unknown Competition Edition slugs', () => {
     expect(getCompetitionEdition('')).toBeNull()
     expect(getCompetitionEdition('   ')).toBeNull()
-    expect(getCompetitionEdition('premier-league-2026-27')).toBeNull()
+    expect(getCompetitionEdition('unknown-edition')).toBeNull()
     expect(getCompetitionEdition()).toBeNull()
   })
 
@@ -71,8 +72,9 @@ describe('Competition Edition registry', () => {
       'predictions',
       'bracket',
       'markets',
+      'swarm',
     ])
-    expect(listCompetitionEditions()).toHaveLength(1)
+    expect(listCompetitionEditions()).toHaveLength(2)
     expect(supportsCapability(resolvedEdition, 'table')).toBe(false)
   })
 })

@@ -20,7 +20,7 @@
             :title="t('navigation.controls.competitionMenu')"
             @click="toggleMenu('competition')"
           >
-            <strong>{{ t(edition.displayNameKey) }}</strong>
+            <strong>{{ edition.displayName || t(edition.displayNameKey) }}</strong>
             <ChevronDown :size="15" aria-hidden="true" />
           </button>
           <div v-if="competitionMenuOpen" data-testid="competition-menu" class="header-menu competition-menu" role="menu">

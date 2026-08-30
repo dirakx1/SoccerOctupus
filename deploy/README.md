@@ -277,6 +277,57 @@ Useful backend log command:
 sudo journalctl -u socceroctupus-backend -f
 ```
 
+## 8A. Schedule Active League Refresh
+
+The repository includes a short systemd service/timer pair for the active
+league snapshot:
+
+```text
+deploy/systemd/socceroctupus-league-refresh.service
+deploy/systemd/socceroctupus-league-refresh.timer
+```
+
+These files are templates; they do not install themselves. Copy them into
+systemd's unit directory on the Ubuntu host:
+
+```bash
+sudo cp /var/www/SoccerOctupus/deploy/systemd/socceroctupus-league-refresh.service /etc/systemd/system/
+sudo cp /var/www/SoccerOctupus/deploy/systemd/socceroctupus-league-refresh.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now socceroctupus-league-refresh.timer
+```
+
+The timer wakes every five minutes. The command refreshes only the active
+season's current ESPN fixtures and standings (not historical seasons) when
+the current time is from 30 minutes before through 3 hours after a
+non-cancelled/non-postponed fixture kickoff. Outside those windows it runs
+when the active snapshot is missing, invalid, or more than 6 hours old.
+
+For each fixture first seen no more than 35 minutes before kickoff (normally
+within the timer's 30-minute match window), the same run also writes one
+immutable forecast record to the edition's `forecasts.json`. For
+Premier League fixtures it includes the ESPN forecast, every configured
+provider's pre-kickoff evidence/availability, and the swarm contributions.
+When ESPN later marks the fixture complete, the command adds the official score
+and outcome to that record without changing its original probabilities. Keep
+this timer enabled: those records are the only valid dataset for future
+provider-weight calibration. Already-finished matches are intentionally never
+backfilled with live-provider evidence.
+
+Check, follow, or force a run with:
+
+```bash
+sudo systemctl status socceroctupus-league-refresh.timer
+sudo systemctl status socceroctupus-league-refresh.service
+sudo journalctl -u socceroctupus-league-refresh.service -f
+cd /var/www/SoccerOctupus/backend
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --force
+```
+
+The service uses the same `www-data` account, backend working directory,
+virtualenv, and optional backend `.env` file as the Flask deployment. Its
+atomic snapshot writes leave valid existing data untouched if ESPN fails.
+
 ## 9. Build The Frontend
 
 ```bash

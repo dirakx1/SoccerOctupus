@@ -52,6 +52,10 @@ class SwarmOrchestrator:
     ):
         self.settings = settings
         self.llm_client = llm_client
+        # Preserve the World Cup model's result-adjusted ratings without
+        # performing network work during Flask startup. The loader is cached.
+        from .data_collectors.live_results import load_results
+        load_results()
         # Sparse {agent_key: weight} overrides forwarded to the aggregator
         self.agent_weights = agent_weights
 

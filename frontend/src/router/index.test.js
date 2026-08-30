@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import router from './index.js'
-import { WORKSPACE_ROUTE_NAMES } from './workspace.js'
+import { LEAGUE_ROUTE_NAMES, WORKSPACE_ROUTE_NAMES, workspaceSwitchLocation } from './workspace.js'
 import { clearAuthState, setAuthState } from '../lib/auth'
 import { applyLocale, i18n, LOCALE_STORAGE_KEY } from '../i18n/index.js'
 import { consumePostAuthRedirect } from '../lib/postAuthRedirect.js'
@@ -68,6 +68,38 @@ describe('router', () => {
       expect(router.currentRoute.value.name).toBe(name)
       expect(router.currentRoute.value.meta.requiresAuth).toBe(true)
     }
+  })
+
+  it('retains the league edition parameter on league workspace routes', async () => {
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    for (const [area, path] of [
+      ['overview', '/es/competitions/premier-league-2026-27'],
+      ['table', '/es/competitions/premier-league-2026-27/table'],
+      ['fixtures', '/es/competitions/premier-league-2026-27/fixtures'],
+      ['predict', '/es/competitions/premier-league-2026-27/predict'],
+      ['markets', '/es/competitions/premier-league-2026-27/markets'],
+    ]) {
+      await router.push(path)
+      expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES[area])
+      expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league-2026-27')
+    }
+  })
+
+  it('accepts the stable active-league identity and future catalog editions', async () => {
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    await router.push('/en/competitions/premier-league/table')
+    expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.table)
+    await router.push('/en/competitions/premier-league-2027-28')
+    expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league-2027-28')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.overview)
+  })
+
+  it('guards the league prediction route when signed out', async () => {
+    clearAuthState()
+    await router.push('/en/competitions/premier-league-2026-27/predict')
+    expect(router.currentRoute.value.path).toBe('/sign-in')
+    expect(consumePostAuthRedirect()).toBe('/en/competitions/premier-league-2026-27/predict')
   })
 
   it('redirects legacy workspace paths while preserving query and hash', async () => {

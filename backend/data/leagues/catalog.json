@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "championship-2025-26",
+    "competition": "championship",
+    "season": "2025-26",
+    "displayName": "Championship 2025-26",
+    "active": false
+  },
+  {
+    "slug": "premier-league-2024-25",
+    "competition": "premier-league",
+    "season": "2024-25",
+    "displayName": "Premier League 2024-25",
+    "active": false
+  },
+  {
+    "slug": "premier-league-2025-26",
+    "competition": "premier-league",
+    "season": "2025-26",
+    "displayName": "Premier League 2025-26",
+    "active": false
+  },
+  {
+    "slug": "premier-league-2026-27",
+    "competition": "premier-league",
+    "season": "2026-27",
+    "displayName": "Premier League 2026-27",
+    "active": true
+  }
+]

@@ -254,7 +254,7 @@ def require_user(db_session) -> Callable:
         def wrapped(*args, **kwargs):
             try:
                 user = load_current_user(db_session)
-            except Exception as exc:
+            except (PermissionError, jwt.InvalidTokenError) as exc:
                 return jsonify({"error": str(exc)}), 401
             if not user.is_active:
                 return jsonify({"error": "User account is inactive"}), 403
@@ -271,7 +271,7 @@ def require_admin(db_session) -> Callable:
         def wrapped(*args, **kwargs):
             try:
                 user = load_current_user(db_session)
-            except Exception as exc:
+            except (PermissionError, jwt.InvalidTokenError) as exc:
                 return jsonify({"error": str(exc)}), 401
             if not user.is_active:
                 return jsonify({"error": "User account is inactive"}), 403

@@ -191,11 +191,28 @@ def _fetch_all_results() -> List[Dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# Module-level population (runs once on import)
+# Keep application startup network-free. Load current results only when the
+# live-results or tournament-simulation functionality is actually requested.
 # ---------------------------------------------------------------------------
-WC2026_RESULTS: List[Dict[str, Any]] = _fetch_all_results()
+WC2026_RESULTS: List[Dict[str, Any]] = list(_SEED_RESULTS)
+_RESULTS_LOADED = False
 _LAST_FETCH: float = time.time()
 _REFRESH_TTL = 3600  # seconds
+
+
+def load_results() -> None:
+    """Load current ESPN results once, preserving the shared list object."""
+    global _RESULTS_LOADED, _LAST_FETCH
+    if _RESULTS_LOADED:
+        return
+    WC2026_RESULTS[:] = _fetch_all_results()
+    # Apply the complete official result set only after the first real load.
+    # Importing the collector itself must remain network-free and must not
+    # apply the seed and live results twice.
+    from .sofascore_collector import TEAM_STATIC_DATA
+    apply_results(TEAM_STATIC_DATA)
+    _RESULTS_LOADED = True
+    _LAST_FETCH = time.time()
 
 
 def refresh_results() -> None:
@@ -204,6 +221,7 @@ def refresh_results() -> None:
     Mutates WC2026_RESULTS in place so existing imports stay valid.
     """
     global _LAST_FETCH
+    load_results()
     if time.time() - _LAST_FETCH < _REFRESH_TTL:
         return
 

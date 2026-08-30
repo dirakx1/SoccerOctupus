@@ -1,6 +1,7 @@
 import { worldCup2026 } from './editions/worldCup2026.js'
+import { premierLeague202627 } from './editions/premierLeague202627.js'
 
-const editions = Object.freeze([worldCup2026])
+const editions = Object.freeze([worldCup2026, premierLeague202627])
 
 function copyEdition(edition) {
   return {
@@ -15,7 +16,19 @@ export function listCompetitionEditions() {
 
 export function getCompetitionEdition(slug) {
   const edition = editions.find((entry) => entry.slug === slug)
-  return edition ? copyEdition(edition) : null
+  if (edition) return copyEdition(edition)
+  if (typeof slug === 'string' && /^premier-league(?:-\d{4}-\d{2})?$/.test(slug)) {
+    return {
+      id: slug,
+      competitionId: 'premier-league',
+      slug,
+      format: 'league',
+      displayName: slug === 'premier-league' ? 'Premier League' : slug.replace('premier-league-', 'Premier League '),
+      displayNameKey: 'competitions.premierLeague.name',
+      capabilities: ['table', 'fixtures', 'predictions', 'markets'],
+    }
+  }
+  return null
 }
 
 export function supportsCapability(edition, capability) {
@@ -25,5 +38,6 @@ export function supportsCapability(edition, capability) {
     entry.id === edition.id && entry.slug === edition.slug
   ))
 
-  return registeredEdition?.capabilities.includes(capability) ?? false
+  if (registeredEdition) return registeredEdition.capabilities.includes(capability)
+  return /^premier-league(?:-\d{4}-\d{2})?$/.test(edition.slug) && ['table', 'fixtures', 'predictions', 'markets'].includes(capability)
 }

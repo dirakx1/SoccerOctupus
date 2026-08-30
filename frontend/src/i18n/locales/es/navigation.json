@@ -6,9 +6,12 @@
   "workspace": {
     "overview": "Resumen",
     "groups": "Grupos",
+    "table": "Tabla",
+    "fixtures": "Partidos",
     "predict": "Predecir",
     "bracket": "Cuadro",
     "markets": "Mercados",
+    "performance": "Rendimiento del modelo",
     "swarm": "Laboratorio Swarm"
   },
   "public": {

@@ -5,9 +5,11 @@ import json
 from datetime import datetime, timezone
 
 import jwt
+import pytest
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import OperationalError
 
 from app.auth import ClerkIdentity, sync_user, verify_session_token
 from app import _sqlalchemy_engine_options
@@ -149,6 +151,19 @@ def test_config_strips_wrapping_quotes_from_public_key(monkeypatch):
 def test_protected_route_requires_auth(client):
     response = client.get("/api/me")
     assert response.status_code == 401
+
+
+def test_me_does_not_mislabel_database_failure_as_auth_failure(client, monkeypatch):
+    monkeypatch.setattr("app.auth.verify_session_token", lambda token: {"sub": "user_db_error"})
+    monkeypatch.setattr(
+        "app.auth.sync_user",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            OperationalError("SELECT users", {}, RuntimeError("missing users table"))
+        ),
+    )
+
+    with pytest.raises(OperationalError):
+        client.get("/api/me", headers=_auth_header("token"))
 
 
 def test_signed_in_user_can_access_me(client, user, monkeypatch):
