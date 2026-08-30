@@ -1,60 +1,152 @@
 <template>
-  <main class="league-view">
-    <header class="page-heading">
-      <p class="eyebrow">{{ t('competitions.league.predictionEyebrow') }}</p>
-      <h1>{{ t('competitions.league.predictionTitle') }}</h1>
-      <p>{{ t('competitions.league.predictionDescription') }}</p>
-    </header>
+  <main class="prediction-page league-prediction-page">
+    <AtlasPageHeader
+      :eyebrow="t('competitions.league.predictionEyebrow', { competition: t(edition.displayNameKey) })"
+      :title="t('competitions.league.predictionTitle')"
+      :description="t('competitions.league.predictionDescription')"
+    />
 
-    <section v-if="loadingFixtures" class="fixture-form fixture-form-skeleton" aria-busy="true">
-      <span class="skeleton-label" aria-hidden="true" />
-      <span class="skeleton-select" aria-hidden="true" />
-      <span class="skeleton-action" aria-hidden="true" />
+    <section v-if="loadingFixtures" class="prediction-form prediction-form-skeleton" aria-busy="true">
+      <div class="selector-skeletons" aria-hidden="true">
+        <div class="skeleton-field"><span class="skeleton-line skeleton-label" /><span class="skeleton-line skeleton-select" /></div>
+      </div>
+      <div class="form-footer" aria-hidden="true"><span class="skeleton-line skeleton-footer-copy" /><span class="skeleton-line skeleton-action" /></div>
     </section>
-    <section v-else-if="loadError" class="state-panel state-error" role="alert"><p>{{ loadError }}</p><button type="button" @click="loadFixtures">{{ t('competitions.league.retry') }}</button></section>
-    <section v-else-if="!fixtureGroups.length" class="state-panel"><p>{{ t('competitions.league.noUpcoming') }}</p></section>
-    <form v-else class="fixture-form" @submit.prevent="submit">
-      <label for="league-fixture">{{ t('competitions.league.fixtureLabel') }}</label>
-      <span class="select-field"><select id="league-fixture" v-model="fixtureId">
-        <optgroup v-for="group in fixtureGroups" :key="group.label" :label="group.label">
-          <option v-for="fixture in group.fixtures" :key="fixture.id" :value="fixture.id">{{ fixture.homeTeam.name }} {{ t('competitions.league.versus') }} {{ fixture.awayTeam.name }} · {{ formatKickoff(fixture.kickoff) }}</option>
-        </optgroup>
-      </select><ChevronDown :size="18" aria-hidden="true" /></span>
-      <button type="submit" :disabled="loading || !fixtureId">{{ loading ? t('competitions.league.predicting') : t('competitions.league.runPrediction') }}</button>
+
+    <section v-else-if="loadError" class="page-state state-error" role="alert">
+      <AlertTriangle :size="22" aria-hidden="true" />
+      <div>
+        <h2>{{ t('competitions.league.loadFailed') }}</h2>
+        <p>{{ loadError }}</p>
+        <button type="button" @click="loadFixtures"><RotateCcw :size="16" aria-hidden="true" />{{ t('competitions.league.retry') }}</button>
+      </div>
+    </section>
+
+    <section v-else-if="!fixtureGroups.length" class="page-state" aria-live="polite">
+      <Inbox :size="22" aria-hidden="true" />
+      <div><h2>{{ t('competitions.league.noUpcomingTitle') }}</h2><p>{{ t('competitions.league.noUpcoming') }}</p></div>
+    </section>
+
+    <form v-else class="prediction-form" @submit.prevent="submit">
+      <div class="match-selectors">
+        <label for="league-fixture">
+          <span>{{ t('competitions.league.fixtureLabel') }}</span>
+          <span class="select-field">
+            <select id="league-fixture" v-model="fixtureId">
+              <optgroup v-for="group in fixtureGroups" :key="group.label" :label="group.label">
+                <option v-for="fixture in group.fixtures" :key="fixture.id" :value="fixture.id">
+                  {{ fixture.homeTeam.name }} {{ t('competitions.league.versus') }} {{ fixture.awayTeam.name }} · {{ formatKickoff(fixture.kickoff) }}
+                </option>
+              </optgroup>
+            </select>
+            <ChevronDown :size="18" aria-hidden="true" />
+          </span>
+        </label>
+      </div>
+      <div class="form-footer">
+        <p>{{ t('competitions.league.predictionFormHint') }}</p>
+        <button class="run-button" type="submit" :disabled="loading || !fixtureId">
+          <LoaderCircle v-if="loading" :size="18" class="spin" aria-hidden="true" />
+          <Sparkles v-else :size="18" aria-hidden="true" />
+          {{ loading ? t('competitions.league.predicting') : t('competitions.league.runPrediction') }}
+        </button>
+      </div>
     </form>
 
-    <article v-if="loading" class="prediction-result prediction-result-skeleton" aria-busy="true" aria-hidden="true">
-      <header class="result-heading"><span class="skeleton-line skeleton-eyebrow" /><span class="skeleton-line skeleton-title" /></header>
-      <section class="scoreboard"><div><span class="skeleton-line skeleton-label" /><strong class="skeleton-line skeleton-score" /></div><div><span class="skeleton-line skeleton-label" /><strong class="skeleton-line skeleton-goals" /><small class="skeleton-line skeleton-caption" /></div></section>
-      <section class="probability-section"><div v-for="row in 3" :key="row" class="skeleton-probability"><span class="skeleton-line" /><span class="skeleton-line" /></div></section>
-      <section class="analysis-grid"><div class="result-card skeleton-panel"><span class="skeleton-line skeleton-panel-title" /><span v-for="row in 4" :key="row" class="skeleton-line skeleton-panel-row" /></div><div class="result-card skeleton-panel"><span class="skeleton-line skeleton-panel-title" /><span v-for="row in 3" :key="row" class="skeleton-line skeleton-panel-row" /></div></section>
-    </article>
+    <section v-if="loading" class="prediction-loading" aria-busy="true">
+      <div><h2>{{ t('competitions.league.predictionLoadingTitle') }}</h2><p>{{ t('competitions.league.predictionLoadingDescription') }}</p></div>
+      <div class="result-skeleton" aria-hidden="true"><span /><span /><span /></div>
+    </section>
 
-    <section v-if="error" class="state-panel state-error" role="alert"><p>{{ error }}</p></section>
-    <article v-if="result" class="prediction-result" aria-live="polite">
-      <header class="result-heading">
-        <p class="eyebrow">{{ t('competitions.league.predictionResult') }}</p>
-        <h2>{{ result.homeTeam.name }} <span>{{ t('competitions.league.versus') }}</span> {{ result.awayTeam.name }}</h2>
+    <section v-if="error" class="run-error" role="alert">
+      <AlertTriangle :size="22" aria-hidden="true" />
+      <div>
+        <h2>{{ t('competitions.league.predictionFailedTitle') }}</h2>
+        <p>{{ error }}</p>
+        <BillingPlansLink v-if="limitReached" />
+      </div>
+    </section>
+
+    <article v-if="result" class="prediction-result" :aria-label="t('competitions.league.predictionResult')">
+      <header class="result-scoreboard">
+        <div class="result-team" :class="{ winner: result.outcome === 'home_win' }">{{ result.homeTeam.name }}</div>
+        <div class="score-block">
+          <strong>{{ result.likelyScore.home }}–{{ result.likelyScore.away }}</strong>
+          <span>{{ t('competitions.league.likelyScore') }}</span>
+        </div>
+        <div class="result-team result-team-away" :class="{ winner: result.outcome === 'away_win' }">{{ result.awayTeam.name }}</div>
       </header>
 
-      <section class="scoreboard">
-        <div><span>{{ t('competitions.league.likelyScore') }}</span><strong>{{ result.likelyScore.home }}–{{ result.likelyScore.away }}</strong></div>
-        <div><span>{{ t('competitions.league.expectedGoals') }}</span><strong>{{ result.expectedGoals.home }} / {{ result.expectedGoals.away }}</strong><small>{{ result.homeTeam.name }} / {{ result.awayTeam.name }}</small></div>
+      <section class="result-section probability-section">
+        <ProbMeter
+          :home-team="result.homeTeam.name"
+          :away-team="result.awayTeam.name"
+          :home-pct="result.probabilities.home"
+          :draw-pct="result.probabilities.draw"
+          :away-pct="result.probabilities.away"
+          :outcome="result.outcome"
+          :agent-count="modelSignals.length"
+        />
       </section>
 
-      <section class="probability-section" :aria-label="t('competitions.league.outcomeProbabilities')">
-        <div v-for="outcome in outcomes" :key="outcome.key" class="probability-row">
-          <div><span>{{ outcome.label }}</span><strong>{{ percent(result.probabilities[outcome.key]) }}</strong></div>
-          <div class="probability-track" role="meter" :aria-label="outcome.label" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="result.probabilities[outcome.key] * 100"><span :style="{ width: `${result.probabilities[outcome.key] * 100}%` }" /></div>
+      <section class="evidence-strip" :aria-label="t('competitions.league.predictionEvidence')">
+        <div>
+          <span>{{ t('competitions.league.forecastConfidence') }}</span>
+          <strong>{{ percent(result.confidence) }}</strong>
+          <i aria-hidden="true"><b :style="{ width: percent(result.confidence) }" /></i>
+        </div>
+        <div>
+          <span>{{ t('competitions.league.expectedGoals') }}</span>
+          <strong>{{ decimal(result.expectedGoals.home) }} / {{ decimal(result.expectedGoals.away) }}</strong>
+          <small>{{ result.homeTeam.name }} / {{ result.awayTeam.name }}</small>
+        </div>
+        <div v-if="topScoreProbability">
+          <span>{{ t('competitions.league.likelyScore') }}</span>
+          <strong>{{ topScoreProbability.score }} / {{ percent(topScoreProbability.probability) }}</strong>
+          <small>{{ t('competitions.league.topScorelines') }}</small>
+        </div>
+        <div>
+          <span>{{ t('competitions.league.completedEvidence') }}</span>
+          <strong>{{ integer(result.evidence?.completedMatches || 0) }}</strong>
+          <small>{{ t('competitions.league.completedEvidenceCaption') }}</small>
         </div>
       </section>
 
-      <section class="analysis-grid">
-        <div class="result-card"><h3>{{ t('competitions.league.topScorelines') }}</h3><ol><li v-for="row in result.scoreProbabilities" :key="row.score"><span>{{ row.score }}</span><strong>{{ percent(row.probability) }}</strong></li></ol></div>
-        <div class="result-card"><h3>{{ t('competitions.league.marketSignals') }}</h3><dl><div><dt>{{ t('competitions.league.btts') }}</dt><dd>{{ percent(result.markets.bothTeamsToScoreYes) }}</dd></div><div><dt>{{ t('competitions.league.over25') }}</dt><dd>{{ percent(result.markets.over2_5) }}</dd></div><div><dt>{{ t('competitions.league.cleanSheets') }}</dt><dd>{{ result.homeTeam.name }} {{ percent(result.markets.homeCleanSheet) }} · {{ result.awayTeam.name }} {{ percent(result.markets.awayCleanSheet) }}</dd></div></dl></div>
+      <section v-if="result.scoreProbabilities?.length" class="result-section score-probabilities">
+        <header><Target :size="19" aria-hidden="true" /><h2>{{ t('competitions.league.topScorelines') }}</h2></header>
+        <div class="score-probability-list">
+          <div v-for="(score, index) in result.scoreProbabilities" :key="score.score" :class="{ top: index === 0 }">
+            <strong>{{ score.score }}</strong>
+            <i aria-hidden="true"><b :style="{ width: scoreBarWidth(score.probability) }" /></i>
+            <span>{{ percent(score.probability) }}</span>
+            <small v-if="index === 0">{{ t('competitions.league.mostLikely') }}</small>
+          </div>
+        </div>
       </section>
 
-      <section v-if="result.analysis" class="result-card analysis-card"><h3>{{ t('competitions.league.analysis') }}</h3><p>{{ result.analysis.summary }}</p><ul><li v-for="factor in result.analysis.keyFactors" :key="factor">{{ factor }}</li></ul></section>
+      <div v-if="result.analysis" class="analysis-layout">
+        <section class="result-section narrative-section">
+          <header><BrainCircuit :size="19" aria-hidden="true" /><h2>{{ t('competitions.league.forecastSummary') }}</h2></header>
+          <p>{{ result.analysis.summary }}</p>
+        </section>
+        <section v-if="result.analysis.keyFactors?.length" class="result-section factors-section">
+          <header><ListChecks :size="19" aria-hidden="true" /><h2>{{ t('competitions.league.keyFactors') }}</h2></header>
+          <ul><li v-for="factor in result.analysis.keyFactors" :key="factor">{{ factor }}</li></ul>
+        </section>
+      </div>
+
+      <section v-if="modelSignals.length" class="result-section signals-section">
+        <header><Users :size="19" aria-hidden="true" /><h2>{{ t('competitions.league.modelBreakdown') }}</h2></header>
+        <div class="signal-list">
+          <article v-for="signal in modelSignals" :key="signal.name" class="signal-row">
+            <div class="signal-heading">
+              <h3>{{ signal.name }}</h3>
+              <span>{{ signalDirection(signal.direction) }}</span>
+            </div>
+            <p>{{ signal.reason }}</p>
+          </article>
+        </div>
+      </section>
     </article>
   </main>
 </template>
@@ -63,9 +155,14 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { ChevronDown } from '@lucide/vue'
-import { api } from '../lib/api'
+import { AlertTriangle, BrainCircuit, ChevronDown, Inbox, ListChecks, LoaderCircle, RotateCcw, Sparkles, Target, Users } from '@lucide/vue'
+
+import AtlasPageHeader from '../ui/patterns/AtlasPageHeader.vue'
+import BillingPlansLink from '../components/BillingPlansLink.vue'
+import ProbMeter from '../components/ProbMeter.vue'
+import { getCompetitionEdition } from '../competition/index.js'
 import { leagueApiBase } from '../competition/leagueApi.js'
+import { api } from '../lib/api'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -76,7 +173,9 @@ const error = ref('')
 const loadError = ref('')
 const loadingFixtures = ref(true)
 const loading = ref(false)
+const limitReached = ref(false)
 
+const edition = computed(() => getCompetitionEdition(route.params.competitionEditionSlug))
 const futureFixtures = computed(() => fixtures.value.filter((fixture) => fixture.status === 'scheduled' && new Date(fixture.kickoff).getTime() > Date.now()))
 const fixtureGroups = computed(() => {
   const groups = new Map()
@@ -87,11 +186,9 @@ const fixtureGroups = computed(() => {
   }
   return [...groups].map(([label, grouped]) => ({ label, fixtures: grouped }))
 })
-const outcomes = computed(() => [
-  { key: 'home', label: t('competitions.league.home') },
-  { key: 'draw', label: t('competitions.league.draw') },
-  { key: 'away', label: t('competitions.league.away') },
-])
+const modelSignals = computed(() => result.value?.analysis?.signals || [])
+const topScoreProbability = computed(() => result.value?.scoreProbabilities?.[0] || null)
+
 async function loadFixtures() {
   loadingFixtures.value = true
   loadError.value = ''
@@ -100,82 +197,112 @@ async function loadFixtures() {
     fixtureId.value = futureFixtures.value[0]?.id || ''
   } catch (cause) {
     loadError.value = cause.response?.data?.error || t('competitions.league.loadFailed')
-  } finally { loadingFixtures.value = false }
+  } finally {
+    loadingFixtures.value = false
+  }
 }
+
 async function submit() {
-  loading.value = true; error.value = ''; result.value = null
-  try { result.value = (await api.post(`${leagueApiBase(route.params.competitionEditionSlug)}/predict`, { fixtureId: fixtureId.value })).data.prediction }
-  catch (cause) { error.value = cause.response?.data?.error || t('competitions.league.predictionFailed') }
-  finally { loading.value = false }
+  loading.value = true
+  error.value = ''
+  result.value = null
+  limitReached.value = false
+  try {
+    result.value = (await api.post(`${leagueApiBase(route.params.competitionEditionSlug)}/predict`, { fixtureId: fixtureId.value })).data.prediction
+  } catch (cause) {
+    error.value = cause.response?.data?.error || t('competitions.league.predictionFailed')
+    limitReached.value = cause.response?.data?.code === 'feature_limit_reached'
+  } finally {
+    loading.value = false
+  }
 }
+
 function formatKickoff(value) { return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) }
-function percent(value) { return new Intl.NumberFormat(locale.value, { style: 'percent', maximumFractionDigits: 1 }).format(Number(value) || 0) }
+function numberFormatter(options) { return new Intl.NumberFormat(locale.value, options) }
+function integer(value) { return numberFormatter({ maximumFractionDigits: 0, useGrouping: true }).format(Number(value) || 0) }
+function decimal(value) { return numberFormatter({ minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(value) || 0) }
+function percent(value) { return numberFormatter({ style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(Number(value) || 0) }
+function scoreBarWidth(probability) { return topScoreProbability.value?.probability ? `${(probability / topScoreProbability.value.probability) * 100}%` : '0%' }
+function signalDirection(direction) { return t(`competitions.league.signalDirection.${['home', 'away', 'neutral'].includes(direction) ? direction : 'neutral'}`) }
+
 onMounted(loadFixtures)
 </script>
 
 <style scoped>
-.league-view { display: grid; gap: var(--space-6); min-width: 0; }
-.page-heading, .result-heading { display: grid; gap: var(--space-2); }
-.page-heading h1, .result-heading h2 { font-family: var(--font-family-display); margin: 0; }
-.page-heading p:last-child, .result-heading p:last-child { color: var(--color-text-muted); margin: 0; }
-.eyebrow { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / 1.2 var(--font-family-data); letter-spacing: .08em; margin: 0; text-transform: uppercase; }
-.fixture-form { align-items: end; display: grid; gap: var(--space-3); grid-template-columns: minmax(0, 1fr) auto; max-width: 56rem; }
-.fixture-form label { grid-column: 1 / -1; font-weight: var(--font-weight-semibold); }
-select, button { min-height: var(--control-height-lg); padding: 0 var(--space-3); }
-.select-field { display: block; position: relative; }
-.select-field select { appearance: none; padding-right: calc(var(--space-4) + 1.5rem); width: 100%; }
+.prediction-page { display: flex; flex-direction: column; gap: var(--space-8); }
+.prediction-form { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); padding: var(--space-6); }
+.prediction-form-skeleton { pointer-events: none; }
+.match-selectors { display: grid; grid-template-columns: minmax(0, 1fr); }
+.match-selectors label { color: var(--color-text-muted); display: flex; flex-direction: column; font-size: var(--font-size-sm); gap: var(--space-2); }
+.match-selectors label > span { font-weight: var(--font-weight-semibold); }
+.select-field { display: block; position: relative; width: 100%; }
 .select-field svg { color: var(--color-text-muted); pointer-events: none; position: absolute; right: var(--space-4); top: 50%; transform: translateY(-50%); }
-.fixture-form-skeleton { align-items: end; }
-.fixture-form-skeleton span { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
-.fixture-form-skeleton .skeleton-label { grid-column: 1 / -1; height: .9rem; width: 16%; }
-.fixture-form-skeleton .skeleton-select { height: var(--control-height-lg); }
-.fixture-form-skeleton .skeleton-action { height: var(--control-height-lg); width: 10rem; }
+.match-selectors select { appearance: none; background: var(--color-surface-raised); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font: var(--font-weight-medium) var(--font-size-sm) / var(--line-height-normal) var(--font-family-body); min-height: var(--control-height-lg); padding: 0 calc(var(--space-4) + 1.5rem) 0 var(--space-3); width: 100%; }
+.match-selectors select:hover { border-color: var(--color-border-strong); }
+.match-selectors select:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 2px; }
+.form-footer { align-items: center; border-top: var(--border-width-thin) solid var(--color-border); display: flex; gap: var(--space-4); justify-content: space-between; margin-top: var(--space-5); padding-top: var(--space-5); }
+.form-footer p { color: var(--color-text-muted); font-size: var(--font-size-sm); margin: 0; }
+.run-button, .page-state button { align-items: center; background: var(--color-accent); border: 0; border-radius: var(--radius-md); color: var(--color-accent-contrast); cursor: pointer; display: inline-flex; font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); gap: var(--space-2); justify-content: center; min-height: var(--control-height-lg); padding: 0 var(--space-5); }
+.run-button:hover:not(:disabled), .page-state button:hover { background: var(--color-accent-hover); }
+.run-button:focus-visible, .page-state button:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
+.run-button:disabled { cursor: not-allowed; opacity: .55; }
+.page-state, .prediction-loading, .run-error { align-items: flex-start; background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); display: flex; gap: var(--space-4); padding: var(--space-6); }
+.page-state > svg, .run-error > svg { color: var(--color-accent); flex: 0 0 auto; }
+.page-state h2, .prediction-loading h2, .run-error h2 { font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
+.page-state p, .prediction-loading p, .run-error p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; }
+.page-state button { margin-top: var(--space-4); }
+.state-error, .run-error { background: var(--color-danger-surface); border-color: var(--color-danger); }
+.state-error > svg, .run-error > svg { color: var(--color-danger); }
+.prediction-loading { display: grid; grid-template-columns: minmax(14rem, .8fr) minmax(0, 1.2fr); }
+.selector-skeletons, .result-skeleton { display: grid; gap: var(--space-3); }
+.skeleton-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeleton-line, .result-skeleton span { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
+.skeleton-label { height: 1rem; width: 20%; }
+.skeleton-select { height: var(--control-height-lg); width: 100%; }
+.skeleton-footer-copy { height: 1rem; width: 16rem; }
+.skeleton-action { height: var(--control-height-lg); width: 12rem; }
+.result-skeleton span { min-height: var(--control-height-lg); }
+.result-skeleton span:first-child { height: 4rem; }
+.prediction-result { border-top: var(--border-width-strong) solid var(--color-accent); display: flex; flex-direction: column; }
+.result-scoreboard { align-items: center; border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-5); grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); min-height: 10rem; padding: var(--space-8) var(--space-4); }
+.result-team { font-family: var(--font-family-display); font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); text-align: right; }
+.result-team-away { text-align: left; }
+.result-team.winner { color: var(--color-accent); }
+.score-block { align-items: center; display: flex; flex-direction: column; min-width: 10rem; text-align: center; }
+.score-block strong { color: var(--color-accent); font: var(--font-weight-heavy) var(--font-size-4xl) / var(--line-height-tight) var(--font-family-data); }
+.score-block span { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.result-section { border-bottom: var(--border-width-thin) solid var(--color-border); padding: var(--space-6) 0; }
+.probability-section { padding-left: var(--space-4); padding-right: var(--space-4); }
+.result-section > header { align-items: center; color: var(--color-accent); display: flex; gap: var(--space-2); margin-bottom: var(--space-4); }
+.result-section h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
+.evidence-strip { border-bottom: var(--border-width-thin) solid var(--color-border); border-top: var(--border-width-thin) solid var(--color-border); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.evidence-strip > div { border-right: var(--border-width-thin) solid var(--color-border); display: flex; flex-direction: column; gap: var(--space-2); min-height: 8rem; padding: var(--space-5); }
+.evidence-strip > div:last-child { border-right: 0; }
+.evidence-strip span, .evidence-strip small { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.evidence-strip strong { color: var(--color-accent); font: var(--font-weight-heavy) var(--font-size-lg) / var(--line-height-tight) var(--font-family-data); }
+.evidence-strip i, .score-probability-list i { background: var(--color-surface-inset); display: block; height: var(--space-1); margin-top: auto; overflow: hidden; }
+.evidence-strip i b, .score-probability-list i b { background: var(--color-accent); display: block; height: 100%; }
+.score-probability-list { display: flex; flex-direction: column; }
+.score-probability-list > div { align-items: center; border-top: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); grid-template-columns: 4rem minmax(4rem, 1fr) 5rem 6rem; min-height: var(--control-height-lg); }
+.score-probability-list strong, .score-probability-list span { font-family: var(--font-family-data); font-variant-numeric: tabular-nums; }
+.score-probability-list span { color: var(--color-text-muted); text-align: right; }
+.score-probability-list small { color: var(--color-accent); font-size: var(--font-size-xs); text-align: right; text-transform: uppercase; }
+.score-probability-list .top strong, .score-probability-list .top span { color: var(--color-accent); }
+.analysis-layout { border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-8); grid-template-columns: 1.15fr .85fr; }
+.analysis-layout .result-section { border-bottom: 0; }
+.narrative-section p { color: var(--color-text-muted); line-height: var(--line-height-relaxed); margin: 0; }
+.factors-section ul { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; margin: 0; padding: 0; }
+.factors-section li { border-top: var(--border-width-thin) solid var(--color-border); color: var(--color-text-muted); padding-top: var(--space-3); }
+.signal-list { border-top: var(--border-width-thin) solid var(--color-border); }
+.signal-row { border-bottom: var(--border-width-thin) solid var(--color-border); display: grid; gap: var(--space-3); padding: var(--space-5) 0; }
+.signal-heading { align-items: baseline; display: flex; gap: var(--space-4); justify-content: space-between; }
+.signal-heading h3 { font-family: var(--font-family-display); font-size: var(--font-size-md); margin: 0; }
+.signal-heading span { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data); text-transform: uppercase; }
+.signal-row p { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: 0; }
+.spin { animation: prediction-spin .85s linear infinite; }
+@keyframes prediction-spin { to { transform: rotate(360deg); } }
 @keyframes skeleton-pulse { 50% { opacity: .45; } }
-@media (prefers-reduced-motion: reduce) { .fixture-form-skeleton span { animation: none; } }
-button { background: var(--color-accent); border: 0; color: var(--color-accent-contrast); cursor: pointer; font-weight: var(--font-weight-semibold); }
-button:disabled { cursor: wait; opacity: .6; }
-.state-panel, .result-card, .scoreboard { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border); padding: var(--space-5); }
-.state-panel { align-items: center; display: flex; gap: var(--space-4); justify-content: space-between; }
-.state-panel p { margin: 0; }
-.state-error { background: var(--color-danger-surface); color: var(--color-danger); }
-.prediction-result { display: grid; gap: var(--space-5); max-width: 64rem; }
-.scoreboard { display: flex; flex-wrap: wrap; gap: var(--space-8); }
-.scoreboard div { display: grid; gap: var(--space-1); }
-.scoreboard span, .scoreboard small, dt { color: var(--color-text-muted); font-size: var(--font-size-xs); }
-.scoreboard strong { font: var(--font-weight-heavy) var(--font-size-3xl) / 1 var(--font-family-data); }
-.probability-section { display: grid; gap: var(--space-3); }
-.probability-row > div:first-child { align-items: baseline; display: flex; justify-content: space-between; }
-.probability-row strong { font-family: var(--font-family-data); }
-.probability-track { background: var(--color-surface-inset); height: .55rem; margin-top: var(--space-2); }
-.probability-track span { background: var(--color-accent); display: block; height: 100%; }
-.analysis-grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.result-card { display: grid; gap: var(--space-4); }
-.result-card h3 { font-family: var(--font-family-display); margin: 0; }
-.result-card ol, .result-card ul { display: grid; gap: var(--space-2); margin: 0; padding-left: 1.2rem; }
-.result-card ol li { display: flex; justify-content: space-between; }
-.result-card dl { display: grid; gap: var(--space-3); margin: 0; }
-.result-card dl div { display: flex; gap: var(--space-3); justify-content: space-between; }
-.result-card dd { font-family: var(--font-family-data); margin: 0; text-align: right; }
-.analysis-card p { margin: 0; }
-.skeleton-line { animation: skeleton-pulse 1.4s ease-in-out infinite; background: var(--color-surface-inset); display: block; }
-.prediction-result-skeleton { pointer-events: none; }
-.prediction-result-skeleton .result-heading { gap: var(--space-2); }
-.skeleton-eyebrow { height: .75rem; width: 7rem; }
-.skeleton-title { height: 2rem; width: 18rem; }
-.prediction-result-skeleton .scoreboard div { min-width: 12rem; }
-.prediction-result-skeleton .skeleton-label { height: .75rem; width: 7rem; }
-.skeleton-score { height: 2.5rem; margin-top: var(--space-1); width: 5rem; }
-.skeleton-goals { height: 2rem; margin-top: var(--space-1); width: 8rem; }
-.skeleton-caption { height: .7rem; margin-top: var(--space-1); width: 9rem; }
-.skeleton-probability { display: grid; gap: var(--space-2); }
-.skeleton-probability span:first-child { height: .85rem; width: 30%; }
-.skeleton-probability span:last-child { height: .55rem; width: 100%; }
-.skeleton-panel { gap: var(--space-3); }
-.skeleton-panel-title { height: 1.25rem; width: 45%; }
-.skeleton-panel-row { height: 1rem; width: 85%; }
-.skeleton-panel-row:nth-child(3) { width: 68%; }
-.skeleton-panel-row:nth-child(4) { width: 76%; }
-@keyframes skeleton-pulse { 50% { opacity: .45; } }
-@media (prefers-reduced-motion: reduce) { .skeleton-line { animation: none; } }
-@media (max-width: 720px) { .analysis-grid { grid-template-columns: 1fr; } .fixture-form { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .evidence-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }.evidence-strip > div:nth-child(2) { border-right: 0; }.evidence-strip > div:nth-child(-n + 2) { border-bottom: var(--border-width-thin) solid var(--color-border); } }
+@media (max-width: 640px) { .prediction-form { padding: var(--space-4); }.form-footer { align-items: stretch; flex-direction: column; }.run-button { width: 100%; }.prediction-loading { grid-template-columns: 1fr; }.skeleton-footer-copy, .skeleton-action { width: 100%; }.result-scoreboard { grid-template-columns: 1fr; }.result-team, .result-team-away { text-align: center; }.evidence-strip, .analysis-layout { grid-template-columns: 1fr; }.evidence-strip > div { border-bottom: var(--border-width-thin) solid var(--color-border); border-right: 0; }.score-probability-list > div { grid-template-columns: 3rem minmax(3rem, 1fr) 4.5rem; }.score-probability-list small { display: none; }.signal-heading { align-items: flex-start; flex-direction: column; gap: var(--space-2); } }
+@media (prefers-reduced-motion: reduce) { .spin, .skeleton-line, .result-skeleton span { animation: none; } }
 </style>

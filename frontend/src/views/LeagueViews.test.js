@@ -29,7 +29,7 @@ describe('League views', () => {
     api.get.mockResolvedValue({ data: { fixtures: [fixture] } }); api.post.mockResolvedValue({ data: { prediction } })
     const wrapper = mount(LeaguePredictView, { global: { plugins: [i18n] } }); await flushPromises(); await wrapper.find('form').trigger('submit'); await flushPromises()
     expect(api.post).toHaveBeenCalledWith('/api/leagues/active/predict', { fixtureId: 'f1' })
-    expect(wrapper.text()).toContain('Top scorelines'); expect(wrapper.text()).toContain('Why this pick'); expect(wrapper.text()).toContain('Expected goals favor Arsenal.'); expect(wrapper.text()).not.toContain('FotMob')
+    expect(wrapper.text()).toContain('Read the match before it starts.'); expect(wrapper.text()).toContain('Forecast confidence'); expect(wrapper.text()).toContain('Top scorelines'); expect(wrapper.text()).toContain('Forecast summary'); expect(wrapper.text()).toContain('Model breakdown'); expect(wrapper.text()).toContain('Expected goals favor Arsenal.'); expect(wrapper.text()).not.toContain('FotMob')
   })
 
   it('selects an upcoming fixture and renders its league market cards', async () => {
@@ -59,7 +59,7 @@ describe('League views', () => {
   it('shows the current league state on the overview', async () => {
     api.get.mockResolvedValue({ data: { teams: [], fixtures: [], standings: [], evidence: { completedMatches: 14, forecast: { sampleSize: 42, status: 'available' } } } })
     const wrapper = mount(LeagueOverviewView, { global: { plugins: [i18n] } }); await flushPromises()
-    expect(wrapper.text()).toContain('Current table'); expect(wrapper.text()).toContain('Next fixtures'); expect(wrapper.text()).not.toContain('Resolved forecast sample available')
+    expect(wrapper.text()).toContain('Premier League 2026–27'); expect(wrapper.text()).toContain('Follow the table'); expect(wrapper.text()).toContain('Current table'); expect(wrapper.text()).toContain('Next fixtures'); expect(wrapper.text()).toContain('Five signals, one league forecast.'); expect(wrapper.text()).not.toContain('Resolved forecast sample available')
   })
 
   it('shows the provider calibration status from immutable forecast snapshots', async () => {

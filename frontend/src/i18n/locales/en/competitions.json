@@ -11,11 +11,38 @@
     "name": "Premier League"
   },
   "league": {
+    "overviewHero": {
+      "eyebrow": "Premier League / Season centre",
+      "description": "Follow the title race, every fixture and our latest match and season forecasts in one place.",
+      "scopeLabel": "Competition details",
+      "competition": "England · Premier League",
+      "format": "20 clubs · 38 matchdays"
+    },
+    "overviewActions": {
+      "label": "Premier League destinations",
+      "table": { "eyebrow": "Standings", "title": "Follow the table", "description": "See every club's live position, form and points." },
+      "fixtures": { "eyebrow": "Matchdays", "title": "Browse fixtures", "description": "Find upcoming matches and completed results." },
+      "predict": { "eyebrow": "Match forecast", "title": "Predict a match", "description": "Compare result chances, likely scores and the reasons behind the pick." },
+      "markets": { "eyebrow": "Season outlook", "title": "Explore markets", "description": "Turn our forecasts into match questions and season futures." }
+    },
+    "overviewModel": {
+      "eyebrow": "Premier League / Forecast model",
+      "title": "Five signals, one league forecast.",
+      "description": "The model combines what teams have done, the context of the next match and thousands of possible season outcomes. Each step has a clear job.",
+      "signals": {
+        "form": { "name": "Results and recent form", "description": "Completed league matches establish each club's attacking and defensive strength, with recent results carrying more relevance." },
+        "context": { "name": "Match context", "description": "Home advantage, time between matches and a cautious starting adjustment for newly promoted clubs shape the baseline." },
+        "score": { "name": "Score probability", "description": "Expected goals are converted into chances for each scoreline, a home win, a draw and an away win." },
+        "evidence": { "name": "Evidence checks", "description": "Additional sources can support the forecast, but only proven, pre-match signals are allowed to change its probabilities." },
+        "season": { "name": "Season simulation", "description": "The remaining fixtures are played out repeatedly to estimate the title race, top four and relegation chances." }
+      }
+    },
     "seasonFuturesDescription": "Project the complete Premier League season and generate futures for title, top-four, and relegation outcomes.", "seasonAction": "Generate futures markets", "seasonLoading": "Generating futures markets…",
     "marketsEyebrow": "Premier League / Market intelligence", "marketsHeroTitle": "Price the prediction.", "marketsHeroDescription": "Turn Premier League probabilities into fair-value contract questions for upcoming matches and the season ahead. No bookmaker margin is applied.",
     "overviewTitle": "Premier League", "overviewDescription": "Follow the table, upcoming matches, predictions and season outlook.",
-    "predictionEyebrow": "Premier League prediction", "predictionTitle": "Who has the edge?", "predictionDescription": "Choose an upcoming match to see the likely score, result chances and key reasons.", "predictionResult": "Match prediction",
-    "loading": "Loading the league snapshot…", "retry": "Retry league data", "loadFailed": "League data is unavailable.", "predictionFailed": "Prediction failed. Try again.", "fixtureLabel": "Scheduled fixture", "versus": "v", "matchweek": "Matchweek {week}", "upcoming": "Upcoming", "noUpcoming": "No future scheduled fixtures are available.", "runPrediction": "Run prediction", "predicting": "Predicting…",
+    "predictionEyebrow": "Match prediction / {competition}", "predictionTitle": "Read the match before it starts.", "predictionDescription": "Choose an upcoming fixture. The league model combines results, form and match context into one clear forecast.", "predictionResult": "Prediction result",
+    "loading": "Loading the league snapshot…", "retry": "Retry league data", "loadFailed": "League data is unavailable.", "predictionFailed": "Prediction failed. Try again.", "predictionFailedTitle": "We couldn't run this prediction.", "fixtureLabel": "Upcoming fixture", "versus": "v", "matchweek": "Matchweek {week}", "upcoming": "Upcoming", "noUpcomingTitle": "No upcoming fixtures", "noUpcoming": "No future scheduled fixtures are available.", "runPrediction": "Run league prediction", "predicting": "League analysis running", "predictionFormHint": "Select a fixture to generate its latest pre-match forecast.", "predictionLoadingTitle": "The league model is analysing this match.", "predictionLoadingDescription": "Current form, scoring strength and available pre-match evidence are being combined.",
+    "predictionEvidence": "Forecast evidence", "forecastConfidence": "Forecast confidence", "completedEvidence": "Completed results", "completedEvidenceCaption": "Available before kickoff", "mostLikely": "Most likely", "forecastSummary": "Forecast summary", "keyFactors": "Key factors", "modelBreakdown": "Model breakdown", "signalDirection": { "home": "Leans home", "away": "Leans away", "neutral": "Context" },
     "home": "Home", "draw": "Draw", "away": "Away", "outcomeProbabilities": "Outcome probabilities", "likelyScore": "Most likely score", "expectedGoals": "Expected goals", "topScorelines": "Top scorelines", "marketSignals": "Match outlook", "btts": "Both teams score", "over25": "Over 2.5 goals", "cleanSheets": "Clean sheets", "analysis": "Why this pick",
     "tableTitle": "Premier League table", "currentTable": "Current table", "club": "Club", "played": "P", "won": "W", "drawn": "D", "lost": "L", "goalsFor": "GF", "goalsAgainst": "GA", "goalDifference": "GD", "points": "Pts", "projection": "Projected finish", "projectionUnavailable": "Projection is unavailable", "projectionSignIn": "Sign in to view the current season projection.", "expectedPoints": "Expected points", "expectedPosition": "Expected position", "likelyPosition": "Most likely position", "range": "Central range", "champion": "Title", "topFour": "Top four", "relegation": "Relegation", "selectClub": "Inspect a club", "positionDistribution": "Position distribution", "noProjection": "No projection is available yet.",
     "fixturesTitle": "Premier League fixtures", "noFixtures": "No fixtures are available.", "statusFilter": "Status", "clubFilter": "Club", "upcomingFilter": "Upcoming", "resultsFilter": "Results", "allFilter": "All", "allClubs": "All clubs", "showMore": "Show more", "statusScheduled": "Scheduled", "statusCompleted": "Completed", "statusPostponed": "Postponed", "statusCancelled": "Cancelled",

@@ -11,11 +11,38 @@
     "name": "Premier League"
   },
   "league": {
+    "overviewHero": {
+      "eyebrow": "Premier League / Centro de temporada",
+      "description": "Sigue la lucha por el título, todos los partidos y nuestros últimos pronósticos de cada encuentro y de la temporada en un solo lugar.",
+      "scopeLabel": "Detalles de la competición",
+      "competition": "Inglaterra · Premier League",
+      "format": "20 clubes · 38 jornadas"
+    },
+    "overviewActions": {
+      "label": "Destinos de la Premier League",
+      "table": { "eyebrow": "Clasificación", "title": "Sigue la tabla", "description": "Consulta la posición, la forma y los puntos de cada club." },
+      "fixtures": { "eyebrow": "Jornadas", "title": "Explora los partidos", "description": "Encuentra próximos encuentros y resultados finalizados." },
+      "predict": { "eyebrow": "Pronóstico del partido", "title": "Predice un partido", "description": "Compara probabilidades, marcadores posibles y las razones de la predicción." },
+      "markets": { "eyebrow": "Panorama de temporada", "title": "Explora mercados", "description": "Convierte nuestros pronósticos en preguntas de partidos y futuros de temporada." }
+    },
+    "overviewModel": {
+      "eyebrow": "Premier League / Modelo de pronóstico",
+      "title": "Cinco señales, un pronóstico de liga.",
+      "description": "El modelo combina lo que han hecho los equipos, el contexto del próximo partido y miles de posibles desenlaces de temporada. Cada paso tiene una función clara.",
+      "signals": {
+        "form": { "name": "Resultados y forma reciente", "description": "Los partidos de liga finalizados establecen la fuerza ofensiva y defensiva de cada club, dando más relevancia a los resultados recientes." },
+        "context": { "name": "Contexto del partido", "description": "La ventaja de jugar en casa, el descanso entre partidos y un ajuste inicial prudente para los recién ascendidos forman la base." },
+        "score": { "name": "Probabilidad del marcador", "description": "Los goles esperados se convierten en probabilidades para cada marcador, victoria local, empate y victoria visitante." },
+        "evidence": { "name": "Comprobaciones de evidencia", "description": "Las fuentes adicionales pueden apoyar el pronóstico, pero solo las señales previas al partido ya validadas pueden cambiar sus probabilidades." },
+        "season": { "name": "Simulación de temporada", "description": "Los partidos restantes se simulan repetidamente para estimar las opciones de título, top cuatro y descenso." }
+      }
+    },
     "seasonFuturesDescription": "Proyecta la temporada completa de la Premier League y genera futuros para el título, el top cuatro y el descenso.", "seasonAction": "Generar mercados futuros", "seasonLoading": "Generando mercados futuros…",
     "marketsEyebrow": "Premier League / Inteligencia de mercados", "marketsHeroTitle": "Pon precio al pronóstico.", "marketsHeroDescription": "Convierte las probabilidades de la Premier League en preguntas de contratos de valor razonable para los próximos partidos y la temporada. No se aplica margen de la casa.",
     "overviewTitle": "Premier League", "overviewDescription": "Sigue la tabla, los próximos partidos, los pronósticos y la perspectiva de la temporada.",
-    "predictionEyebrow": "Pronóstico de la Premier League", "predictionTitle": "¿Quién tiene ventaja?", "predictionDescription": "Elige un próximo partido para ver el marcador probable, las probabilidades y las razones clave.", "predictionResult": "Pronóstico del partido",
-    "loading": "Cargando la instantánea de la liga…", "retry": "Reintentar datos", "loadFailed": "Los datos de la liga no están disponibles.", "predictionFailed": "El pronóstico falló. Inténtalo de nuevo.", "fixtureLabel": "Partido programado", "versus": "vs", "matchweek": "Jornada {week}", "upcoming": "Próximo", "noUpcoming": "No hay partidos futuros programados.", "runPrediction": "Ejecutar pronóstico", "predicting": "Pronosticando…",
+    "predictionEyebrow": "Pronóstico del partido / {competition}", "predictionTitle": "Lee el partido antes de que empiece.", "predictionDescription": "Elige un próximo partido. El modelo de liga combina resultados, forma y contexto en un pronóstico claro.", "predictionResult": "Resultado del pronóstico",
+    "loading": "Cargando la instantánea de la liga…", "retry": "Reintentar datos", "loadFailed": "Los datos de la liga no están disponibles.", "predictionFailed": "El pronóstico falló. Inténtalo de nuevo.", "predictionFailedTitle": "No pudimos ejecutar este pronóstico.", "fixtureLabel": "Próximo partido", "versus": "vs", "matchweek": "Jornada {week}", "upcoming": "Próximo", "noUpcomingTitle": "No hay próximos partidos", "noUpcoming": "No hay partidos futuros programados.", "runPrediction": "Ejecutar pronóstico de liga", "predicting": "Análisis de liga en curso", "predictionFormHint": "Selecciona un partido para generar su pronóstico previo más reciente.", "predictionLoadingTitle": "El modelo de liga está analizando este partido.", "predictionLoadingDescription": "Se están combinando la forma actual, la fuerza goleadora y la evidencia disponible antes del partido.",
+    "predictionEvidence": "Evidencia del pronóstico", "forecastConfidence": "Confianza del pronóstico", "completedEvidence": "Resultados finalizados", "completedEvidenceCaption": "Disponibles antes del inicio", "mostLikely": "Más probable", "forecastSummary": "Resumen del pronóstico", "keyFactors": "Factores clave", "modelBreakdown": "Desglose del modelo", "signalDirection": { "home": "Ventaja local", "away": "Ventaja visitante", "neutral": "Contexto" },
     "home": "Local", "draw": "Empate", "away": "Visitante", "outcomeProbabilities": "Probabilidades del resultado", "likelyScore": "Marcador más probable", "expectedGoals": "Goles esperados", "topScorelines": "Marcadores principales", "marketSignals": "Panorama del partido", "btts": "Ambos marcan", "over25": "Más de 2,5 goles", "cleanSheets": "Porterías a cero", "analysis": "Por qué esta predicción",
     "tableTitle": "Tabla de la Premier League", "currentTable": "Tabla actual", "club": "Club", "played": "PJ", "won": "G", "drawn": "E", "lost": "P", "goalsFor": "GF", "goalsAgainst": "GC", "goalDifference": "DG", "points": "Pts", "projection": "Proyección final", "projectionUnavailable": "La proyección no está disponible", "projectionSignIn": "Inicia sesión para ver la proyección de la temporada.", "expectedPoints": "Puntos esperados", "expectedPosition": "Posición esperada", "likelyPosition": "Posición más probable", "range": "Rango central", "champion": "Título", "topFour": "Top cuatro", "relegation": "Descenso", "selectClub": "Inspeccionar un club", "positionDistribution": "Distribución de posiciones", "noProjection": "Aún no hay proyección.",
     "fixturesTitle": "Partidos de la Premier League", "noFixtures": "No hay partidos disponibles.", "statusFilter": "Estado", "clubFilter": "Club", "upcomingFilter": "Próximos", "resultsFilter": "Resultados", "allFilter": "Todos", "allClubs": "Todos los clubes", "showMore": "Mostrar más", "statusScheduled": "Programado", "statusCompleted": "Finalizado", "statusPostponed": "Aplazado", "statusCancelled": "Cancelado",
