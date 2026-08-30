@@ -152,6 +152,15 @@ def active_match_markets():
         return _error(exc)
 
 
+@bp.post("/active/markets/season")
+def active_season_markets():
+    try:
+        competition, season = _active_identity()
+        return season_market_generation(competition, season)
+    except SeasonDataError as exc:
+        return _error(exc)
+
+
 @bp.get("/<competition>/<season>")
 def season_overview(competition: str, season: str):
     try:
@@ -272,9 +281,6 @@ def match_markets(competition: str, season: str):
 @bp.get("/<competition>/<season>/markets")
 @require_user(db)
 def markets(competition: str, season: str):
-    reservation = reserve_feature_usage(g.current_user, FEATURE_TOURNAMENT_SIMULATION, db)
-    if not reservation.allowed:
-        return reservation.response
     try:
         data = _load(competition, season)
         upcoming = []
@@ -292,18 +298,31 @@ def markets(competition: str, season: str):
                 "homeTeam": _team(teams[str(fixture["homeTeamId"])]),
                 "awayTeam": _team(teams[str(fixture["awayTeamId"])]),
             })
+        return {
+            "fixtureMarkets": upcoming,
+            "seasonMarkets": [],
+            "seasonQuestions": [],
+            "evidence": {"provider": "ESPN", "model": "league-poisson-2026.1", "simulationCount": 0},
+        }
+    except (SeasonDataError, ValueError) as exc:
+        return {"error": str(exc)}, 400
+
+
+@bp.post("/<competition>/<season>/markets/season")
+@require_user(db)
+def season_market_generation(competition: str, season: str):
+    reservation = reserve_feature_usage(g.current_user, FEATURE_TOURNAMENT_SIMULATION, db)
+    if not reservation.allowed:
+        return reservation.response
+    try:
+        data = _load(competition, season)
         projected = project_table(data, simulations=500)
+        competition_name, competition_tag = _market_metadata(data, competition, season)
         season_markets = [
-            {
-                "team": row["team"],
-                "championProbability": row["championProbability"],
-                "topFourProbability": row["topFourProbability"],
-                "relegationProbability": row["relegationProbability"],
-            }
+            {"team": row["team"], "championProbability": row["championProbability"], "topFourProbability": row["topFourProbability"], "relegationProbability": row["relegationProbability"]}
             for row in projected
         ]
         return {
-            "fixtureMarkets": upcoming,
             "seasonMarkets": season_markets,
             "seasonQuestions": season_questions(competition=competition, season=season, end_date=data.edition.get("endsOn", ""), projected=projected, competition_name=competition_name, competition_tag=competition_tag),
             "evidence": {"provider": "ESPN", "model": "league-poisson-2026.1", "simulationCount": 500},

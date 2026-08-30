@@ -36,9 +36,16 @@ describe('League views', () => {
     const question = { question_id: 'premier-league-2026-27-f1-home-win', prop_type: 'match_winner', question: 'Will Arsenal beat Chelsea?', yes_probability: .6, no_probability: .4, tags: ['premier-league', '2026-27', 'f1'], pricing: { kalshi_yes_cents: 60, kalshi_no_cents: 40, polymarket_yes_usdc: .6, polymarket_no_usdc: .4 }, resolution: { date: '2099-08-30', criteria: 'ESPN result' } }
     const seasonQuestion = { question_id: 'premier-league-2026-27-1-tournament-winner', prop_type: 'tournament_winner', question: 'Will Arsenal win the Premier League in 2026-27?', yes_probability: .4, no_probability: .6, tags: ['premier-league', '2026-27', '1'], pricing: { kalshi_yes_cents: 40, kalshi_no_cents: 60, polymarket_yes_usdc: .4, polymarket_no_usdc: .6 }, resolution: { date: '2027-05-31', criteria: 'ESPN table' } }
     api.get.mockResolvedValue({ data: { seasonMarkets: [{ team: fixture.homeTeam, championProbability: .4, topFourProbability: .8, relegationProbability: .01 }], seasonQuestions: [seasonQuestion], fixtureMarkets: [{ fixture: 'f1', kickoff: fixture.kickoff, homeTeam: fixture.homeTeam, awayTeam: fixture.awayTeam }] } })
-    api.post.mockResolvedValue({ data: { fixture, questions: [question] } })
+    api.post.mockImplementation((url) => url.endsWith('/season')
+      ? Promise.resolve({ data: { seasonMarkets: [{ team: fixture.homeTeam, championProbability: .4, topFourProbability: .8, relegationProbability: .01 }], seasonQuestions: [seasonQuestion] } })
+      : Promise.resolve({ data: { fixture, questions: [question] } }))
     const wrapper = mount(LeagueMarketsView, { global: { plugins: [i18n] } }); await flushPromises()
-    expect(api.post).toHaveBeenCalledWith('/api/leagues/active/markets/match', { fixtureId: 'f1' }); expect(wrapper.text()).toContain('Will Arsenal beat Chelsea?'); expect(wrapper.text()).toContain('Will Arsenal win the Premier League in 2026-27?'); expect(wrapper.text()).toContain('Our forecast · not live betting odds')
+    expect(api.post).not.toHaveBeenCalled(); expect(wrapper.text()).toContain('Choose a fixture, then generate its market questions.'); expect(wrapper.text()).toContain('Prices are reference values for listing formats, not live offers.')
+    await wrapper.find('#league-match-panel button').trigger('click')
+    expect(api.post).toHaveBeenCalledWith('/api/leagues/active/markets/match', { fixtureId: 'f1' }); await flushPromises(); expect(wrapper.text()).toContain('Will Arsenal beat Chelsea?')
+    await wrapper.find('#league-season-tab').trigger('click'); await wrapper.find('#league-season-panel button').trigger('click'); await flushPromises(); expect(api.post).toHaveBeenCalledWith('/api/leagues/active/markets/season'); expect(wrapper.text()).toContain('Will Arsenal win the Premier League in 2026-27?')
+    await wrapper.find('#league-season-tab').trigger('click')
+    expect(wrapper.find('#league-season-tab').attributes('aria-selected')).toBe('true'); expect(wrapper.find('#league-season-panel').isVisible()).toBe(true); expect(wrapper.find('#league-match-panel').isVisible()).toBe(false)
   })
 
   it('renders the full standings and selected projection distribution', async () => {
