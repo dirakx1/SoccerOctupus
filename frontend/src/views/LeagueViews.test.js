@@ -48,12 +48,12 @@ describe('League views', () => {
     expect(wrapper.find('#league-season-tab').attributes('aria-selected')).toBe('true'); expect(wrapper.find('#league-season-panel').isVisible()).toBe(true); expect(wrapper.find('#league-match-panel').isVisible()).toBe(false)
   })
 
-  it('renders the full standings and selected projection distribution', async () => {
+  it('renders the current standings without generating a projection', async () => {
     api.get.mockImplementation((url) => url.endsWith('/table')
       ? Promise.resolve({ data: { standings: [{ teamId: '1', position: 1, played: 10, won: 8, drawn: 1, lost: 1, goalsFor: 20, goalsAgainst: 5, goalDifference: 15, points: 25, team: fixture.homeTeam }] } })
       : Promise.resolve({ data: { projection: [{ team: fixture.homeTeam, expectedPoints: 80, expectedPosition: 1.2, likelyPosition: 1, centralFinishingRange: { low: 1, high: 3 }, championProbability: .5, topFourProbability: .8, relegationProbability: .01, positionDistribution: { '1': .5, '2': .3 } }] } }))
     const wrapper = mount(LeagueTableView, { global: { plugins: [i18n] } }); await flushPromises()
-    expect(wrapper.text()).toContain('Arsenal'); expect(wrapper.text()).toContain('20'); expect(wrapper.text()).toContain('Position distribution'); expect(wrapper.text()).toContain('80'); expect(wrapper.text()).toContain('50%')
+    expect(wrapper.text()).toContain('Arsenal'); expect(wrapper.text()).toContain('20'); expect(wrapper.text()).not.toContain('Position distribution'); expect(api.get).toHaveBeenCalledTimes(1)
   })
 
   it('shows the current league state on the overview', async () => {

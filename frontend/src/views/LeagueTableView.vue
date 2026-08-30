@@ -8,32 +8,25 @@
     <section v-else-if="error" class="state-panel state-error" role="alert"><p>{{ error }}</p><button type="button" @click="loadTable">{{ t('competitions.league.retry') }}</button></section>
     <section v-else class="table-card"><table><thead><tr><th scope="col">#</th><th scope="col">{{ t('competitions.league.club') }}</th><th scope="col">{{ t('competitions.league.played') }}</th><th scope="col">{{ t('competitions.league.won') }}</th><th scope="col">{{ t('competitions.league.drawn') }}</th><th scope="col">{{ t('competitions.league.lost') }}</th><th scope="col">{{ t('competitions.league.goalsFor') }}</th><th scope="col">{{ t('competitions.league.goalsAgainst') }}</th><th scope="col">{{ t('competitions.league.goalDifference') }}</th><th scope="col">{{ t('competitions.league.points') }}</th></tr></thead><tbody><tr v-for="row in rows" :key="row.teamId"><td>{{ row.position }}</td><th scope="row">{{ row.team.name }}</th><td>{{ row.played }}</td><td>{{ row.won }}</td><td>{{ row.drawn }}</td><td>{{ row.lost }}</td><td>{{ row.goalsFor }}</td><td>{{ row.goalsAgainst }}</td><td>{{ row.goalDifference }}</td><td><strong>{{ row.points }}</strong></td></tr></tbody></table></section>
 
-    <section class="projection-card" :class="{ 'projection-skeleton': projectionLoading && !selectedProjection }" :aria-busy="projectionLoading && !selectedProjection ? 'true' : undefined"><header><div><p class="eyebrow">{{ t('competitions.league.projection') }}</p><h2>{{ t('competitions.league.projection') }}</h2></div><span v-if="projectionLoading">{{ t('competitions.league.loading') }}</span></header><p v-if="projectionError" class="projection-error">{{ projectionError }}</p><div v-else-if="projectionLoading && !selectedProjection" class="projection-placeholder" aria-hidden="true"><span /><span /><span /></div><template v-else-if="selectedProjection"><label for="projected-team">{{ t('competitions.league.selectClub') }}</label><select id="projected-team" v-model="selectedTeamId"><option v-for="row in projectionRows" :key="row.team.id" :value="row.team.id">{{ row.team.name }}</option></select><dl class="projection-summary"><div><dt>{{ t('competitions.league.expectedPoints') }}</dt><dd>{{ selectedProjection.expectedPoints }}</dd></div><div><dt>{{ t('competitions.league.expectedPosition') }}</dt><dd>{{ selectedProjection.expectedPosition }}</dd></div><div><dt>{{ t('competitions.league.likelyPosition') }}</dt><dd>{{ selectedProjection.likelyPosition }}</dd></div><div><dt>{{ t('competitions.league.range') }}</dt><dd>{{ selectedProjection.centralFinishingRange.low }}–{{ selectedProjection.centralFinishingRange.high }}</dd></div><div><dt>{{ t('competitions.league.champion') }}</dt><dd>{{ percent(selectedProjection.championProbability) }}</dd></div><div><dt>{{ t('competitions.league.topFour') }}</dt><dd>{{ percent(selectedProjection.topFourProbability) }}</dd></div><div><dt>{{ t('competitions.league.relegation') }}</dt><dd>{{ percent(selectedProjection.relegationProbability) }}</dd></div></dl><h3>{{ t('competitions.league.positionDistribution') }}</h3><ul class="position-distribution"><li v-for="(probability, position) in selectedProjection.positionDistribution" :key="position"><span>{{ position }}</span><i><b :style="{ width: `${probability * 100}%` }" /></i><strong>{{ percent(probability) }}</strong></li></ul></template><p v-else>{{ t('competitions.league.noProjection') }}</p></section>
   </main>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { api } from '../lib/api'
 import { leagueApiBase } from '../competition/leagueApi.js'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const route = useRoute()
-const rows = ref([]); const projectionRows = ref([]); const loading = ref(true); const projectionLoading = ref(true); const error = ref(''); const projectionError = ref(''); const selectedTeamId = ref('')
-const selectedProjection = computed(() => projectionRows.value.find((row) => String(row.team.id) === String(selectedTeamId.value)) || projectionRows.value[0])
+const rows = ref([]); const loading = ref(true); const error = ref('')
 async function loadTable() {
   loading.value = true; error.value = ''
   try { rows.value = (await api.get(`${leagueApiBase(route.params.competitionEditionSlug)}/table`)).data.standings || [] }
   catch (cause) { error.value = cause.response?.data?.error || t('competitions.league.loadFailed') }
   finally { loading.value = false }
-  projectionLoading.value = true; projectionError.value = ''
-  try { projectionRows.value = (await api.get(`${leagueApiBase(route.params.competitionEditionSlug)}/projection`)).data.projection || []; selectedTeamId.value = projectionRows.value[0]?.team?.id || '' }
-  catch (cause) { projectionError.value = cause.response?.status === 401 ? t('competitions.league.projectionSignIn') : cause.response?.data?.error || t('competitions.league.projectionUnavailable') }
-  finally { projectionLoading.value = false }
 }
-function percent(value) { return new Intl.NumberFormat(locale.value, { style: 'percent', maximumFractionDigits: 1 }).format(Number(value) || 0) }
 onMounted(loadTable)
 </script>
 
