@@ -82,15 +82,20 @@ def register_cli(app: Flask) -> None:
             raise click.ClickException(str(exc)) from exc
 
     @app.cli.command("league-refresh-active")
+    @click.option("--competition", help="Refresh the active season for one competition.")
     @click.option("--force", is_flag=True, help="Refresh even when the snapshot is fresh and no match is near kickoff.")
     @click.option("--now", "now_value", help="UTC ISO timestamp for deterministic operator testing.")
-    def league_refresh_active(force: bool, now_value: str | None) -> None:
+    def league_refresh_active(competition: str | None, force: bool, now_value: str | None) -> None:
         """Refresh only the active league season around matchday windows."""
         try:
             store = LeagueSeasonStore(Config.DATA_DIR + "/leagues")
-            active = next((item for item in store.catalog() if item.get("active")), None)
+            active = next((
+                item for item in store.catalog()
+                if item.get("active") and (competition is None or item.get("competition") == competition)
+            ), None)
             if not active:
-                raise click.ClickException("no active league season")
+                suffix = f" for {competition}" if competition else ""
+                raise click.ClickException(f"no active league season{suffix}")
             data = store.load(active["competition"], active["season"])
             edition = data.edition
             provider = edition.get("provider")
@@ -211,7 +216,7 @@ def register_cli(app: Flask) -> None:
     @click.option("--home", help="Club name; defaults to the first scheduled fixture.")
     @click.option("--away", help="Club name; defaults to the first scheduled fixture.")
     def probe_league_providers(competition: str, season_name: str, home: str | None, away: str | None) -> None:
-        """Probe EPL provider capability without printing keys or raw payloads."""
+        """Probe league provider capability without printing keys or raw payloads."""
         try:
             data = LeagueSeasonStore(Config.DATA_DIR + "/leagues").load(competition, season_name)
         except SeasonDataError as exc:
@@ -231,11 +236,12 @@ def register_cli(app: Flask) -> None:
                 home=home,
                 away=away,
                 kickoff=kickoff,
+                competition=competition,
                 season=season_name,
                 graph_id=str(data.edition.get("leagueGraph", {}).get("graphId", "")),
                 settings=RuntimeSettingsService.current(db),
             )
-        click.echo(f"EPL provider probe: {home} vs {away}")
+        click.echo(f"{competition} provider probe: {home} vs {away}")
         for row in evidence:
             summary = ", ".join(sorted(row.get("evidence", {}).keys())) or "none"
             click.echo(f"{row['provider']}: {row['status']} | {row['reason']} | evidence fields: {summary}")

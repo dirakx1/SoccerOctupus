@@ -103,6 +103,17 @@ def test_league_overview_completed_matches_counts_current_edition_only(client):
     assert response.get_json()["evidence"]["completedMatches"] == current_count
 
 
+def test_each_supported_league_resolves_its_own_active_season(client):
+    for competition, expected_teams in (("la-liga", 20), ("bundesliga", 18)):
+        response = client.get(f"/api/leagues/{competition}/active")
+
+        assert response.status_code == 200
+        payload = response.get_json()
+        assert payload["edition"]["competition"] == competition
+        assert payload["edition"]["season"] == "2026-27"
+        assert len(payload["teams"]) == expected_teams
+
+
 def test_provider_probe_excludes_live_context_after_kickoff():
     result = collect_league_evidence(
         home="Arsenal",
@@ -114,6 +125,20 @@ def test_provider_probe_excludes_live_context_after_kickoff():
 
     assert {row["status"] for row in result} == {"excluded"}
     assert all("leakage-safe" in row["reason"] for row in result)
+
+
+def test_unverified_league_providers_abstain_without_using_epl_adapters():
+    result = collect_league_evidence(
+        home="Real Madrid",
+        away="Barcelona",
+        kickoff=datetime.now(timezone.utc) + timedelta(days=1),
+        competition="la-liga",
+        settings=_settings(),
+        get=lambda *_args, **_kwargs: pytest.fail("unverified league adapters must not fetch"),
+    )
+
+    assert {row["provider"] for row in result} == {"SofaScore", "FotMob", "365Scores", "YouTube", "Zep", "Opta"}
+    assert {row["status"] for row in result} == {"unavailable"}
 
 
 def test_youtube_uses_separate_team_queries_and_admits_only_relevant_pre_kickoff_videos():

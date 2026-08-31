@@ -1,4 +1,4 @@
-import { listCompetitionEditions, supportsCapability } from '../competition/index.js'
+import { leagueIdentity, listCompetitionEditions, supportsCapability } from '../competition/index.js'
 import { DEFAULT_LOCALE, normalizeLocale } from '../i18n/index.js'
 
 const [defaultCompetitionEdition] = listCompetitionEditions()
@@ -46,7 +46,7 @@ export function workspaceLocation(area = 'overview', {
 } = {}) {
   const names = (historic || competitionEditionSlug === 'world-cup-2026')
     ? HISTORIC_WORKSPACE_ROUTE_NAMES
-    : /^premier-league(?:-\d{4}-\d{2})?$/.test(competitionEditionSlug)
+    : leagueIdentity(competitionEditionSlug)
     ? LEAGUE_ROUTE_NAMES
     : WORKSPACE_ROUTE_NAMES
   const name = names[area]

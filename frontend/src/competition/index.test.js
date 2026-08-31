@@ -8,10 +8,11 @@ import {
 
 describe('Competition Edition registry', () => {
   it('lists only active editions for the visible competition switcher', () => {
-    expect(listCompetitionEditions()).toEqual([expect.objectContaining({
-      id: 'premier-league',
-      slug: 'premier-league',
-    })])
+    expect(listCompetitionEditions().map(({ id, slug }) => ({ id, slug }))).toEqual([
+      { id: 'premier-league', slug: 'premier-league' },
+      { id: 'la-liga', slug: 'la-liga' },
+      { id: 'bundesliga', slug: 'bundesliga' },
+    ])
   })
 
   it('keeps the World Cup registered for historical routes', () => {
@@ -23,6 +24,8 @@ describe('Competition Edition registry', () => {
   it('resolves a Competition Edition by stable slug', () => {
     expect(getCompetitionEdition('world-cup-2026').slug).toBe('world-cup-2026')
     expect(getCompetitionEdition('premier-league')).toEqual(listCompetitionEditions()[0])
+    expect(getCompetitionEdition('la-liga-2027-28').competitionId).toBe('la-liga')
+    expect(getCompetitionEdition('bundesliga').clubCount).toBe(18)
   })
 
   it('returns null for blank and unknown Competition Edition slugs', () => {
@@ -67,7 +70,7 @@ describe('Competition Edition registry', () => {
       'markets',
       'swarm',
     ])
-    expect(listCompetitionEditions()).toHaveLength(1)
+    expect(listCompetitionEditions()).toHaveLength(3)
     expect(supportsCapability(resolvedEdition, 'table')).toBe(false)
   })
 })

@@ -277,7 +277,25 @@ Useful backend log command:
 sudo journalctl -u socceroctupus-backend -f
 ```
 
-## 8A. Schedule Active League Refresh
+## 8A. Prepare and Activate League Seasons
+
+League data is stored by competition and season under
+`backend/data/leagues/<competition>/<season>`. The configured 2026–27 editions
+can be rebuilt from ESPN and activated independently with:
+
+```bash
+cd /var/www/SoccerOctupus/backend
+sudo -u www-data ./venv/bin/flask --app run.py league-season --competition premier-league --season 2026-27 --action refresh --action activate
+sudo -u www-data ./venv/bin/flask --app run.py league-season --competition la-liga --season 2026-27 --action refresh --action activate
+sudo -u www-data ./venv/bin/flask --app run.py league-season --competition bundesliga --season 2026-27 --action refresh --action activate
+```
+
+Activation is competition-scoped: activating a new La Liga season does not
+deactivate Premier League or Bundesliga. Each configured current season also
+fetches two prior top-flight seasons and the previous promotion-league season
+so the model can derive promoted clubs from ESPN IDs.
+
+## 8B. Schedule Active League Refresh
 
 The repository includes a short systemd service/timer pair for the active
 league snapshot:
@@ -297,8 +315,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now socceroctupus-league-refresh.timer
 ```
 
-The timer wakes every 30 minutes. The command refreshes only the active
-season's current ESPN fixtures and standings (not historical seasons) when
+The timer wakes every 30 minutes. The service checks the active Premier League,
+La Liga, and Bundesliga seasons. Each command refreshes only that competition's
+current ESPN fixtures and standings (not historical seasons) when
 the current time is from 30 minutes before through 3 hours after a
 non-cancelled/non-postponed fixture kickoff. Outside those windows it runs
 when the active snapshot is missing, invalid, or more than 6 hours old.
@@ -321,7 +340,9 @@ sudo systemctl status socceroctupus-league-refresh.timer
 sudo systemctl status socceroctupus-league-refresh.service
 sudo journalctl -u socceroctupus-league-refresh.service -f
 cd /var/www/SoccerOctupus/backend
-sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --force
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --competition premier-league --force
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --competition la-liga --force
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --competition bundesliga --force
 ```
 
 The service uses the same `www-data` account, backend working directory,

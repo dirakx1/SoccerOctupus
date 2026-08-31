@@ -1,0 +1,39 @@
+{
+  "competition": "la-liga",
+  "season": "2026-27",
+  "displayName": "La Liga 2026-27",
+  "provider": {
+    "name": "espn",
+    "competition": "esp.1",
+    "season": 2026
+  },
+  "startsOn": "2026-08-01",
+  "endsOn": "2027-05-31",
+  "promotedTeamIds": [
+    "87",
+    "90",
+    "99"
+  ],
+  "history": [
+    {
+      "competition": "la-liga",
+      "season": "2024-25",
+      "providerCompetition": "esp.1",
+      "file": "history-la-liga-2024-25.json"
+    },
+    {
+      "competition": "la-liga",
+      "season": "2025-26",
+      "providerCompetition": "esp.1",
+      "file": "history-la-liga-2025-26.json"
+    },
+    {
+      "competition": "segunda-division",
+      "season": "2025-26",
+      "providerCompetition": "esp.2",
+      "file": "history-segunda-division-2025-26.json"
+    }
+  ],
+  "active": true,
+  "promotedTeamIdsSource": "derived: current la-liga minus its most recent prior season, verified in segunda-division"
+}

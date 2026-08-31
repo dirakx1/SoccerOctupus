@@ -1,0 +1,362 @@
+[
+  {
+    "teamId": "83",
+    "team": {
+      "id": "83",
+      "name": "Barcelona",
+      "abbreviation": "BAR",
+      "provider": "espn"
+    },
+    "position": 1,
+    "played": 38,
+    "won": 28,
+    "drawn": 4,
+    "lost": 6,
+    "goalsFor": 102,
+    "goalsAgainst": 39,
+    "goalDifference": 63,
+    "points": 88
+  },
+  {
+    "teamId": "86",
+    "team": {
+      "id": "86",
+      "name": "Real Madrid",
+      "abbreviation": "RMA",
+      "provider": "espn"
+    },
+    "position": 2,
+    "played": 38,
+    "won": 26,
+    "drawn": 6,
+    "lost": 6,
+    "goalsFor": 78,
+    "goalsAgainst": 38,
+    "goalDifference": 40,
+    "points": 84
+  },
+  {
+    "teamId": "1068",
+    "team": {
+      "id": "1068",
+      "name": "Atlético Madrid",
+      "abbreviation": "ATM",
+      "provider": "espn"
+    },
+    "position": 3,
+    "played": 38,
+    "won": 22,
+    "drawn": 10,
+    "lost": 6,
+    "goalsFor": 68,
+    "goalsAgainst": 30,
+    "goalDifference": 38,
+    "points": 76
+  },
+  {
+    "teamId": "93",
+    "team": {
+      "id": "93",
+      "name": "Athletic Club",
+      "abbreviation": "ATH",
+      "provider": "espn"
+    },
+    "position": 4,
+    "played": 38,
+    "won": 19,
+    "drawn": 13,
+    "lost": 6,
+    "goalsFor": 54,
+    "goalsAgainst": 29,
+    "goalDifference": 25,
+    "points": 70
+  },
+  {
+    "teamId": "102",
+    "team": {
+      "id": "102",
+      "name": "Villarreal",
+      "abbreviation": "VIL",
+      "provider": "espn"
+    },
+    "position": 5,
+    "played": 38,
+    "won": 20,
+    "drawn": 10,
+    "lost": 8,
+    "goalsFor": 71,
+    "goalsAgainst": 51,
+    "goalDifference": 20,
+    "points": 70
+  },
+  {
+    "teamId": "244",
+    "team": {
+      "id": "244",
+      "name": "Real Betis",
+      "abbreviation": "BET",
+      "provider": "espn"
+    },
+    "position": 6,
+    "played": 38,
+    "won": 16,
+    "drawn": 12,
+    "lost": 10,
+    "goalsFor": 57,
+    "goalsAgainst": 50,
+    "goalDifference": 7,
+    "points": 60
+  },
+  {
+    "teamId": "85",
+    "team": {
+      "id": "85",
+      "name": "Celta Vigo",
+      "abbreviation": "CEL",
+      "provider": "espn"
+    },
+    "position": 7,
+    "played": 38,
+    "won": 16,
+    "drawn": 7,
+    "lost": 15,
+    "goalsFor": 59,
+    "goalsAgainst": 57,
+    "goalDifference": 2,
+    "points": 55
+  },
+  {
+    "teamId": "101",
+    "team": {
+      "id": "101",
+      "name": "Rayo Vallecano",
+      "abbreviation": "RAY",
+      "provider": "espn"
+    },
+    "position": 8,
+    "played": 38,
+    "won": 13,
+    "drawn": 13,
+    "lost": 12,
+    "goalsFor": 41,
+    "goalsAgainst": 45,
+    "goalDifference": -4,
+    "points": 52
+  },
+  {
+    "teamId": "97",
+    "team": {
+      "id": "97",
+      "name": "Osasuna",
+      "abbreviation": "OSA",
+      "provider": "espn"
+    },
+    "position": 9,
+    "played": 38,
+    "won": 12,
+    "drawn": 16,
+    "lost": 10,
+    "goalsFor": 48,
+    "goalsAgainst": 52,
+    "goalDifference": -4,
+    "points": 52
+  },
+  {
+    "teamId": "84",
+    "team": {
+      "id": "84",
+      "name": "Mallorca",
+      "abbreviation": "MLL",
+      "provider": "espn"
+    },
+    "position": 10,
+    "played": 38,
+    "won": 13,
+    "drawn": 9,
+    "lost": 16,
+    "goalsFor": 35,
+    "goalsAgainst": 44,
+    "goalDifference": -9,
+    "points": 48
+  },
+  {
+    "teamId": "89",
+    "team": {
+      "id": "89",
+      "name": "Real Sociedad",
+      "abbreviation": "RSO",
+      "provider": "espn"
+    },
+    "position": 11,
+    "played": 38,
+    "won": 13,
+    "drawn": 7,
+    "lost": 18,
+    "goalsFor": 35,
+    "goalsAgainst": 46,
+    "goalDifference": -11,
+    "points": 46
+  },
+  {
+    "teamId": "94",
+    "team": {
+      "id": "94",
+      "name": "Valencia",
+      "abbreviation": "VAL",
+      "provider": "espn"
+    },
+    "position": 12,
+    "played": 38,
+    "won": 11,
+    "drawn": 13,
+    "lost": 14,
+    "goalsFor": 44,
+    "goalsAgainst": 54,
+    "goalDifference": -10,
+    "points": 46
+  },
+  {
+    "teamId": "2922",
+    "team": {
+      "id": "2922",
+      "name": "Getafe",
+      "abbreviation": "GET",
+      "provider": "espn"
+    },
+    "position": 13,
+    "played": 38,
+    "won": 11,
+    "drawn": 9,
+    "lost": 18,
+    "goalsFor": 34,
+    "goalsAgainst": 39,
+    "goalDifference": -5,
+    "points": 42
+  },
+  {
+    "teamId": "88",
+    "team": {
+      "id": "88",
+      "name": "Espanyol",
+      "abbreviation": "ESP",
+      "provider": "espn"
+    },
+    "position": 14,
+    "played": 38,
+    "won": 11,
+    "drawn": 9,
+    "lost": 18,
+    "goalsFor": 40,
+    "goalsAgainst": 51,
+    "goalDifference": -11,
+    "points": 42
+  },
+  {
+    "teamId": "96",
+    "team": {
+      "id": "96",
+      "name": "Alavés",
+      "abbreviation": "ALA",
+      "provider": "espn"
+    },
+    "position": 15,
+    "played": 38,
+    "won": 10,
+    "drawn": 12,
+    "lost": 16,
+    "goalsFor": 38,
+    "goalsAgainst": 48,
+    "goalDifference": -10,
+    "points": 42
+  },
+  {
+    "teamId": "9812",
+    "team": {
+      "id": "9812",
+      "name": "Girona",
+      "abbreviation": "GIR",
+      "provider": "espn"
+    },
+    "position": 16,
+    "played": 38,
+    "won": 11,
+    "drawn": 8,
+    "lost": 19,
+    "goalsFor": 44,
+    "goalsAgainst": 60,
+    "goalDifference": -16,
+    "points": 41
+  },
+  {
+    "teamId": "243",
+    "team": {
+      "id": "243",
+      "name": "Sevilla",
+      "abbreviation": "SEV",
+      "provider": "espn"
+    },
+    "position": 17,
+    "played": 38,
+    "won": 10,
+    "drawn": 11,
+    "lost": 17,
+    "goalsFor": 42,
+    "goalsAgainst": 55,
+    "goalDifference": -13,
+    "points": 41
+  },
+  {
+    "teamId": "17534",
+    "team": {
+      "id": "17534",
+      "name": "Leganés",
+      "abbreviation": "LEG",
+      "provider": "espn"
+    },
+    "position": 18,
+    "played": 38,
+    "won": 9,
+    "drawn": 13,
+    "lost": 16,
+    "goalsFor": 39,
+    "goalsAgainst": 56,
+    "goalDifference": -17,
+    "points": 40
+  },
+  {
+    "teamId": "98",
+    "team": {
+      "id": "98",
+      "name": "Las Palmas",
+      "abbreviation": "LPA",
+      "provider": "espn"
+    },
+    "position": 19,
+    "played": 38,
+    "won": 8,
+    "drawn": 8,
+    "lost": 22,
+    "goalsFor": 40,
+    "goalsAgainst": 61,
+    "goalDifference": -21,
+    "points": 32
+  },
+  {
+    "teamId": "95",
+    "team": {
+      "id": "95",
+      "name": "Real Valladolid",
+      "abbreviation": "VLL",
+      "provider": "espn"
+    },
+    "position": 20,
+    "played": 38,
+    "won": 4,
+    "drawn": 4,
+    "lost": 30,
+    "goalsFor": 26,
+    "goalsAgainst": 90,
+    "goalDifference": -64,
+    "points": 16
+  }
+]

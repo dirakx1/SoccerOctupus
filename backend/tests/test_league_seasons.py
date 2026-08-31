@@ -127,6 +127,12 @@ def test_custom_premier_league_rollover_derives_promoted_ids_and_activates(tmp_p
             {"competition": "championship", "season": "2026-27", "providerCompetition": "eng.2", "providerSeason": 2026, "startsOn": "2026-08-01", "endsOn": "2027-05-31", "file": "championship.json"},
         ),
     )
+    _write_json(tmp_path / "bundesliga" / "2026-27" / "edition.json", {
+        "competition": "bundesliga", "season": "2026-27", "active": True,
+    })
+    _write_json(tmp_path / "catalog.json", [{
+        "slug": "bundesliga-2026-27", "competition": "bundesliga", "season": "2026-27", "displayName": "Bundesliga 2026-27", "active": True,
+    }])
     manager = SeasonManager(tmp_path, client=EspnLeagueClient(get=get))
     manager.refresh(spec)
     manager.activate(spec)
@@ -134,7 +140,7 @@ def test_custom_premier_league_rollover_derives_promoted_ids_and_activates(tmp_p
     catalog = json.loads((tmp_path / "catalog.json").read_text())
     assert edition["promotedTeamIds"] == ["3"]
     assert edition["promotedTeamIdsSource"].startswith("derived:")
-    assert next(item for item in catalog if item["active"])["slug"] == "premier-league-2027-28"
+    assert {item["slug"] for item in catalog if item["active"]} == {"bundesliga-2026-27", "premier-league-2027-28"}
 
 
 def test_league_projection_uses_goal_tiebreak_and_seed_is_deterministic(tmp_path, monkeypatch):

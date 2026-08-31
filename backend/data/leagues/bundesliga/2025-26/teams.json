@@ -1,0 +1,110 @@
+[
+  {
+    "id": "6418",
+    "name": "1. FC Heidenheim 1846",
+    "abbreviation": "HDH",
+    "provider": "espn"
+  },
+  {
+    "id": "598",
+    "name": "1. FC Union Berlin",
+    "abbreviation": "FCU",
+    "provider": "espn"
+  },
+  {
+    "id": "131",
+    "name": "Bayer Leverkusen",
+    "abbreviation": "B04",
+    "provider": "espn"
+  },
+  {
+    "id": "132",
+    "name": "Bayern Munich",
+    "abbreviation": "MUN",
+    "provider": "espn"
+  },
+  {
+    "id": "124",
+    "name": "Borussia Dortmund",
+    "abbreviation": "DOR",
+    "provider": "espn"
+  },
+  {
+    "id": "268",
+    "name": "Borussia Mönchengladbach",
+    "abbreviation": "BMG",
+    "provider": "espn"
+  },
+  {
+    "id": "125",
+    "name": "Eintracht Frankfurt",
+    "abbreviation": "SGE",
+    "provider": "espn"
+  },
+  {
+    "id": "3841",
+    "name": "FC Augsburg",
+    "abbreviation": "FCA",
+    "provider": "espn"
+  },
+  {
+    "id": "122",
+    "name": "FC Cologne",
+    "abbreviation": "KOE",
+    "provider": "espn"
+  },
+  {
+    "id": "127",
+    "name": "Hamburg SV",
+    "abbreviation": "HSV",
+    "provider": "espn"
+  },
+  {
+    "id": "2950",
+    "name": "Mainz",
+    "abbreviation": "M05",
+    "provider": "espn"
+  },
+  {
+    "id": "11420",
+    "name": "RB Leipzig",
+    "abbreviation": "RBL",
+    "provider": "espn"
+  },
+  {
+    "id": "126",
+    "name": "SC Freiburg",
+    "abbreviation": "SCF",
+    "provider": "espn"
+  },
+  {
+    "id": "270",
+    "name": "St. Pauli",
+    "abbreviation": "STP",
+    "provider": "espn"
+  },
+  {
+    "id": "7911",
+    "name": "TSG Hoffenheim",
+    "abbreviation": "TSG",
+    "provider": "espn"
+  },
+  {
+    "id": "134",
+    "name": "VfB Stuttgart",
+    "abbreviation": "VFB",
+    "provider": "espn"
+  },
+  {
+    "id": "138",
+    "name": "VfL Wolfsburg",
+    "abbreviation": "WOB",
+    "provider": "espn"
+  },
+  {
+    "id": "137",
+    "name": "Werder Bremen",
+    "abbreviation": "SVW",
+    "provider": "espn"
+  }
+]

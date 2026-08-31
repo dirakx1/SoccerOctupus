@@ -4,7 +4,16 @@
       "name": "FIFA World Cup 2026"
     },
     "premierLeague2026_27": {
-      "name": "Premier League 2026–27"
+      "name": "Premier League 2026–27",
+      "country": "England"
+    },
+    "laLiga2026_27": {
+      "name": "La Liga 2026–27",
+      "country": "Spain"
+    },
+    "bundesliga2026_27": {
+      "name": "Bundesliga 2026–27",
+      "country": "Germany"
     }
   },
   "premierLeague": {
@@ -12,21 +21,21 @@
   },
   "league": {
     "overviewHero": {
-      "eyebrow": "Premier League / Season centre",
+      "eyebrow": "{competition} / Season centre",
       "description": "Follow the title race, every fixture and our latest match and season forecasts in one place.",
       "scopeLabel": "Competition details",
-      "competition": "England · Premier League",
-      "format": "20 clubs · 38 matchdays"
+      "competition": "{country} · {competition}",
+      "format": "{clubs} clubs · {matchdays} matchdays"
     },
     "overviewActions": {
-      "label": "Premier League destinations",
+      "label": "{competition} destinations",
       "table": { "eyebrow": "Standings", "title": "Follow the table", "description": "See every club's live position, form and points." },
       "fixtures": { "eyebrow": "Matchdays", "title": "Browse fixtures", "description": "Find upcoming matches and completed results." },
       "predict": { "eyebrow": "Match forecast", "title": "Predict a match", "description": "Compare result chances, likely scores and the reasons behind the pick." },
       "markets": { "eyebrow": "Season outlook", "title": "Explore markets", "description": "Turn our forecasts into match questions and season futures." }
     },
     "overviewModel": {
-      "eyebrow": "Premier League / Forecast model",
+      "eyebrow": "{competition} / Forecast model",
       "title": "Five signals, one league forecast.",
       "description": "The model combines what teams have done, the context of the next match and thousands of possible season outcomes. Each step has a clear job.",
       "signals": {
@@ -37,13 +46,14 @@
         "season": { "name": "Season simulation", "description": "The remaining fixtures are played out repeatedly to estimate the title race, top four and relegation chances." }
       }
     },
-    "seasonFuturesDescription": "Project the complete Premier League season and generate futures for title, top-four, and relegation outcomes.", "seasonAction": "Generate futures markets", "seasonLoading": "Generating futures markets…",
-    "marketsEyebrow": "Premier League / Market intelligence", "marketsHeroTitle": "Price the prediction.", "marketsHeroDescription": "Turn Premier League probabilities into fair-value contract questions for upcoming matches and the season ahead. No bookmaker margin is applied.",
+    "seasonFuturesDescription": "Project the complete {competition} season and generate futures for title, top-four, and relegation outcomes.", "seasonAction": "Generate futures markets", "seasonLoading": "Generating futures markets…",
+    "marketsEyebrow": "{competition} / Market intelligence", "marketsHeroTitle": "Price the prediction.", "marketsHeroDescription": "Turn {competition} probabilities into fair-value contract questions for upcoming matches and the season ahead. No bookmaker margin is applied.",
     "overviewTitle": "Premier League", "overviewDescription": "Follow the table, upcoming matches, predictions and season outlook.",
     "predictionEyebrow": "Match prediction / {competition}", "predictionTitle": "Read the match before it starts.", "predictionDescription": "Choose an upcoming fixture. The league model combines results, form and match context into one clear forecast.", "predictionResult": "Prediction result",
     "loading": "Loading the league snapshot…", "retry": "Retry league data", "loadFailed": "League data is unavailable.", "predictionFailed": "Prediction failed. Try again.", "predictionFailedTitle": "We couldn't run this prediction.", "fixtureLabel": "Upcoming fixture", "versus": "v", "matchweek": "Matchweek {week}", "upcoming": "Upcoming", "noUpcomingTitle": "No upcoming fixtures", "noUpcoming": "No future scheduled fixtures are available.", "runPrediction": "Run league prediction", "predicting": "League analysis running", "predictionFormHint": "Select a fixture to generate its latest pre-match forecast.", "predictionLoadingTitle": "The league model is analysing this match.", "predictionLoadingDescription": "Current form, scoring strength and available pre-match evidence are being combined.",
     "predictionEvidence": "Forecast evidence", "forecastConfidence": "Forecast confidence", "completedEvidence": "Completed results", "completedEvidenceCaption": "Available before kickoff", "mostLikely": "Most likely", "forecastSummary": "Forecast summary", "keyFactors": "Key factors", "modelBreakdown": "Model breakdown", "signalDirection": { "home": "Leans home", "away": "Leans away", "neutral": "Context" },
     "home": "Home", "draw": "Draw", "away": "Away", "outcomeProbabilities": "Outcome probabilities", "likelyScore": "Most likely score", "expectedGoals": "Expected goals", "topScorelines": "Top scorelines", "marketSignals": "Match outlook", "btts": "Both teams score", "over25": "Over 2.5 goals", "cleanSheets": "Clean sheets", "analysis": "Why this pick",
+    "tableDescriptionGeneric": "Follow the current {competition} standings as completed results reshape the table.",
     "tableEyebrow": "Standings / {competition}", "tableTitle": "The season, position by position.", "tableDescription": "Follow the current Premier League standings as completed results reshape the table.", "tableErrorTitle": "We couldn't load the table.", "tableEmptyTitle": "The table is not available yet.", "tableEmptyDescription": "Standings will appear when the season feed contains completed matches.", "clubCountLabel": "clubs", "completedCountLabel": "matches played", "tableUpdatedFromResults": "Updated from completed league results.", "viewResults": "View fixtures and results", "currentTable": "Current table", "club": "Club", "played": "P", "won": "W", "drawn": "D", "lost": "L", "goalsFor": "GF", "goalsAgainst": "GA", "goalDifference": "GD", "points": "Pts", "projection": "Projected finish", "projectionUnavailable": "Projection is unavailable", "projectionSignIn": "Sign in to view the current season projection.", "expectedPoints": "Expected points", "expectedPosition": "Expected position", "likelyPosition": "Most likely position", "range": "Central range", "champion": "Title", "topFour": "Top four", "relegation": "Relegation", "selectClub": "Inspect a club", "positionDistribution": "Position distribution", "noProjection": "No projection is available yet.",
     "fixturesEyebrow": "Fixtures / {competition}", "fixturesTitle": "Every matchday, in order.", "fixturesDescription": "Browse upcoming fixtures and completed results, then narrow the schedule by status or club.", "fixturesErrorTitle": "We couldn't load the fixtures.", "noFixturesTitle": "No matches found.", "noFixtures": "Try another status or club to see the available schedule.", "fixtureFiltersLabel": "Fixture filters", "fixtureCountLabel": "fixtures", "resultCountLabel": "results", "matchdayLabel": "Schedule", "statusFilter": "Status", "clubFilter": "Club", "upcomingFilter": "Upcoming", "resultsFilter": "Results", "allFilter": "All", "allClubs": "All clubs", "showMore": "Show more", "statusScheduled": "Scheduled", "statusCompleted": "Completed", "statusPostponed": "Postponed", "statusCancelled": "Cancelled",
     "marketsTitle": "Premier League markets", "marketsDescription": "See our current forecast for upcoming matches and the season ahead.", "marketsErrorTitle": "We couldn't load the markets.", "marketGenerationFailedTitle": "We couldn't generate these markets.", "upcomingFixture": "Upcoming fixture", "selectUpcoming": "Select a fixture", "noMarketFixtures": "No upcoming fixture markets are available.", "matchMarkets": "Match questions", "seasonFutures": "Season futures", "generateMarkets": "Generate markets", "selectFixtureToGenerate": "Choose a fixture, then generate its market questions.", "selectSeasonToGenerate": "Generate a season forecast when you are ready.", "modelImplied": "Our forecast · not live betting odds", "resolution": "Settled using the official result.", "all": "All", "marketLoadFailed": "Market data is unavailable.",

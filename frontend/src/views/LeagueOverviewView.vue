@@ -2,18 +2,18 @@
   <main class="league-view league-overview">
     <section class="league-hero" aria-labelledby="league-overview-title">
       <div class="league-hero-copy">
-        <p class="league-eyebrow">{{ t('competitions.league.overviewHero.eyebrow') }}</p>
+        <p class="league-eyebrow">{{ t('competitions.league.overviewHero.eyebrow', { competition: editionName }) }}</p>
         <h1 id="league-overview-title">{{ t(edition.displayNameKey) }}</h1>
         <p class="league-intro">{{ t('competitions.league.overviewHero.description') }}</p>
         <div class="league-scope" :aria-label="t('competitions.league.overviewHero.scopeLabel')">
-          <span>{{ t('competitions.league.overviewHero.competition') }}</span>
-          <span>{{ t('competitions.league.overviewHero.format') }}</span>
+          <span>{{ t('competitions.league.overviewHero.competition', { country: t(edition.countryKey), competition: editionName }) }}</span>
+          <span>{{ t('competitions.league.overviewHero.format', { clubs: edition.clubCount, matchdays: edition.matchdayCount }) }}</span>
         </div>
       </div>
       <div class="league-edition-mark" aria-hidden="true">27</div>
     </section>
 
-    <nav class="workflow-grid" :aria-label="t('competitions.league.overviewActions.label')">
+    <nav class="workflow-grid" :aria-label="t('competitions.league.overviewActions.label', { competition: editionName })">
       <router-link
         v-for="action in actions"
         :key="action.key"
@@ -72,7 +72,7 @@
     <section class="model-section" aria-labelledby="league-model-title">
       <header class="model-heading">
         <div>
-          <p class="league-eyebrow">{{ t('competitions.league.overviewModel.eyebrow') }}</p>
+          <p class="league-eyebrow">{{ t('competitions.league.overviewModel.eyebrow', { competition: editionName }) }}</p>
           <h2 id="league-model-title">{{ t('competitions.league.overviewModel.title') }}</h2>
         </div>
         <p>{{ t('competitions.league.overviewModel.description') }}</p>
@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ArrowUpRight } from '@lucide/vue'
@@ -107,6 +107,7 @@ const loading = ref(true)
 const error = ref('')
 const data = ref({ teams: [], fixtures: [], standings: [], evidence: { completedMatches: 0 } })
 const edition = computed(() => getCompetitionEdition(route.params.competitionEditionSlug))
+const editionName = computed(() => t(edition.value.displayNameKey))
 const nextFixtures = computed(() => data.value.fixtures
   .filter((fixture) => fixture.status === 'scheduled' && new Date(fixture.kickoff).getTime() > Date.now())
   .slice(0, 5))
@@ -151,7 +152,7 @@ function formatTime(value) {
   return new Intl.DateTimeFormat(locale.value, { timeStyle: 'short' }).format(new Date(value))
 }
 
-onMounted(loadOverview)
+watch(() => route.params.competitionEditionSlug, loadOverview, { immediate: true })
 </script>
 
 <style scoped>

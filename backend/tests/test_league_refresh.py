@@ -61,7 +61,7 @@ def test_active_refresh_uses_current_snapshot_only_during_match_window(app, tmp_
     monkeypatch.setattr("app.config.Config.DATA_DIR", str(tmp_path))
     monkeypatch.setattr("app.leagues.season.EspnLeagueClient", lambda: FakeClient())
     monkeypatch.setattr("app.leagues.forecast.collect_league_evidence", lambda **_kwargs: [])
-    result = app.test_cli_runner().invoke(args=["league-refresh-active", "--now", "2027-08-30T11:45:00Z"])
+    result = app.test_cli_runner().invoke(args=["league-refresh-active", "--competition", "premier-league", "--now", "2027-08-30T11:45:00Z"])
 
     assert result.exit_code == 0, result.output
     assert "reason=match-window,snapshot-stale" in result.output

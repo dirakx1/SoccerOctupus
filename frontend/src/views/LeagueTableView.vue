@@ -3,7 +3,7 @@
     <AtlasPageHeader
       :eyebrow="t('competitions.league.tableEyebrow', { competition: t(edition.displayNameKey) })"
       :title="t('competitions.league.tableTitle')"
-      :description="t('competitions.league.tableDescription')"
+      :description="t('competitions.league.tableDescriptionGeneric', { competition: t(edition.displayNameKey) })"
     >
       <template #actions>
         <div class="table-stat"><strong>{{ rows.length }}</strong><span>{{ t('competitions.league.clubCountLabel') }}</span></div>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { AlertTriangle, Inbox, RotateCcw } from '@lucide/vue'
@@ -77,7 +77,7 @@ async function loadTable() {
 
 function signed(value) { return Number(value) > 0 ? `+${value}` : value }
 
-onMounted(loadTable)
+watch(() => route.params.competitionEditionSlug, loadTable, { immediate: true })
 </script>
 
 <style scoped>

@@ -45,6 +45,28 @@ SEASON_SPECS = (
     SeasonSpec("premier-league", "2025-26", "eng.1", 2025, "2025-08-01", "2026-05-31", "Premier League 2025-26"),
     SeasonSpec("premier-league", "2024-25", "eng.1", 2024, "2024-08-01", "2025-05-31", "Premier League 2024-25"),
     SeasonSpec("championship", "2025-26", "eng.2", 2025, "2025-08-01", "2026-05-31", "Championship 2025-26"),
+    SeasonSpec(
+        "la-liga", "2026-27", "esp.1", 2026, "2026-08-01", "2027-05-31", "La Liga 2026-27",
+        history=(
+            {"competition": "la-liga", "season": "2024-25", "providerCompetition": "esp.1", "file": "history-la-liga-2024-25.json"},
+            {"competition": "la-liga", "season": "2025-26", "providerCompetition": "esp.1", "file": "history-la-liga-2025-26.json"},
+            {"competition": "segunda-division", "season": "2025-26", "providerCompetition": "esp.2", "file": "history-segunda-division-2025-26.json"},
+        ),
+    ),
+    SeasonSpec("la-liga", "2025-26", "esp.1", 2025, "2025-08-01", "2026-05-31", "La Liga 2025-26"),
+    SeasonSpec("la-liga", "2024-25", "esp.1", 2024, "2024-08-01", "2025-05-31", "La Liga 2024-25"),
+    SeasonSpec("segunda-division", "2025-26", "esp.2", 2025, "2025-08-01", "2026-05-31", "Segunda Division 2025-26"),
+    SeasonSpec(
+        "bundesliga", "2026-27", "ger.1", 2026, "2026-08-01", "2027-05-31", "Bundesliga 2026-27",
+        history=(
+            {"competition": "bundesliga", "season": "2024-25", "providerCompetition": "ger.1", "file": "history-bundesliga-2024-25.json"},
+            {"competition": "bundesliga", "season": "2025-26", "providerCompetition": "ger.1", "file": "history-bundesliga-2025-26.json"},
+            {"competition": "2-bundesliga", "season": "2025-26", "providerCompetition": "ger.2", "file": "history-2-bundesliga-2025-26.json"},
+        ),
+    ),
+    SeasonSpec("bundesliga", "2025-26", "ger.1", 2025, "2025-08-01", "2026-05-31", "Bundesliga 2025-26"),
+    SeasonSpec("bundesliga", "2024-25", "ger.1", 2024, "2024-08-01", "2025-05-31", "Bundesliga 2024-25"),
+    SeasonSpec("2-bundesliga", "2025-26", "ger.2", 2025, "2025-08-01", "2026-05-31", "2. Bundesliga 2025-26"),
 )
 
 
@@ -111,8 +133,8 @@ class SeasonManager:
         self._write(directory / "standings.json", snapshot["standings"])
         self._write(directory / "snapshot.json", snapshot)
         if include_history:
-            # Keep prior Premier League and Championship results alongside the
-            # active edition so promoted clubs can start with a real prior.  They
+            # Keep prior top-flight and promotion-league results alongside the
+            # active edition so promoted clubs can start with a real prior. They
             # are fetched from the same canonical provider, never synthesized.
             history_snapshots: dict[tuple[str, str], dict[str, Any]] = {}
             for history in spec.history:
@@ -134,36 +156,36 @@ class SeasonManager:
                         "fetchedAt": historical_snapshot["fetchedAt"],
                     },
                 )
-            if spec.competition == "premier-league":
+            if spec.history:
                 edition = self._read(directory / "edition.json")
                 prior_entries = [
                     (season, snapshot)
                     for (competition, season), snapshot in history_snapshots.items()
-                    if competition == "premier-league" and season != spec.season
+                    if competition == spec.competition and season != spec.season
                 ]
-                championship_entries = [
-                    (season, snapshot)
+                promotion_entries = [
+                    (competition, season, snapshot)
                     for (competition, season), snapshot in history_snapshots.items()
-                    if competition == "championship"
+                    if competition != spec.competition
                 ]
-                if prior_entries and championship_entries:
+                if prior_entries and promotion_entries:
                     _, prior = max(prior_entries, key=lambda item: item[0])
-                    _, championship = max(championship_entries, key=lambda item: item[0])
+                    promotion_competition, _, promotion_snapshot = max(promotion_entries, key=lambda item: item[1])
                     current_ids = set(teams)
                     prior_ids = {str(row["teamId"]) for row in prior.get("standings", ())}
-                    championship_ids = {
+                    promotion_ids = {
                         str(row["team"]["id"])
-                        for row in championship.get("standings", ())
+                        for row in promotion_snapshot.get("standings", ())
                         if isinstance(row.get("team"), dict) and row["team"].get("id")
                     }
-                    promoted = sorted((current_ids - prior_ids) & championship_ids)
+                    promoted = sorted((current_ids - prior_ids) & promotion_ids)
                     if promoted:
                         edition["promotedTeamIds"] = promoted
-                        edition["promotedTeamIdsSource"] = "derived: current EPL minus most recent prior EPL, verified in Championship"
+                        edition["promotedTeamIdsSource"] = f"derived: current {spec.competition} minus its most recent prior season, verified in {promotion_competition}"
                     else:
-                        edition["promotedTeamIdsSource"] = "derived: no current EPL entrants verified in supplied Championship snapshot"
+                        edition["promotedTeamIdsSource"] = f"derived: no current entrants verified in supplied {promotion_competition} snapshot"
                 else:
-                    edition["promotedTeamIdsSource"] = "unavailable: requires prior Premier League and Championship history snapshots"
+                    edition["promotedTeamIdsSource"] = "unavailable: requires prior top-flight and promotion-league history snapshots"
                 self._write(directory / "edition.json", edition)
         self._update_catalog()
         return directory
@@ -172,7 +194,8 @@ class SeasonManager:
         directory = self.prepare(spec, fetch=False)
         catalog = []
         for item in self._read_catalog():
-            item["active"] = item["slug"] == f"{spec.competition}-{spec.season}"
+            if item["competition"] == spec.competition:
+                item["active"] = item["slug"] == f"{spec.competition}-{spec.season}"
             edition_path = self.root / item["competition"] / item["season"] / "edition.json"
             if edition_path.exists():
                 edition = self._read(edition_path)

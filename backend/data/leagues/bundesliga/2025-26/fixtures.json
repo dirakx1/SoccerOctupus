@@ -1,0 +1,7346 @@
+[
+  {
+    "id": "746718",
+    "kickoff": "2025-08-22T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 6,
+    "awayScore": 0
+  },
+  {
+    "id": "746719",
+    "kickoff": "2025-08-23T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746720",
+    "kickoff": "2025-08-23T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746722",
+    "kickoff": "2025-08-23T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746724",
+    "kickoff": "2025-08-23T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "746726",
+    "kickoff": "2025-08-23T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746725",
+    "kickoff": "2025-08-23T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746721",
+    "kickoff": "2025-08-24T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746723",
+    "kickoff": "2025-08-24T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746730",
+    "kickoff": "2025-08-29T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746731",
+    "kickoff": "2025-08-30T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746733",
+    "kickoff": "2025-08-30T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746734",
+    "kickoff": "2025-08-30T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746732",
+    "kickoff": "2025-08-30T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746729",
+    "kickoff": "2025-08-30T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 3
+  },
+  {
+    "id": "746735",
+    "kickoff": "2025-08-31T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746728",
+    "kickoff": "2025-08-31T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "SIGNAL IDUNA PARK",
+    "homeScore": 3,
+    "awayScore": 0
+  },
+  {
+    "id": "746727",
+    "kickoff": "2025-08-31T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "746739",
+    "kickoff": "2025-09-12T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746736",
+    "kickoff": "2025-09-13T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746737",
+    "kickoff": "2025-09-13T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 2,
+    "awayScore": 4
+  },
+  {
+    "id": "746738",
+    "kickoff": "2025-09-13T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746743",
+    "kickoff": "2025-09-13T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746744",
+    "kickoff": "2025-09-13T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746741",
+    "kickoff": "2025-09-13T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 5,
+    "awayScore": 0
+  },
+  {
+    "id": "746742",
+    "kickoff": "2025-09-14T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746740",
+    "kickoff": "2025-09-14T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 0,
+    "awayScore": 4
+  },
+  {
+    "id": "746753",
+    "kickoff": "2025-09-19T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746748",
+    "kickoff": "2025-09-20T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 1,
+    "awayScore": 4
+  },
+  {
+    "id": "746749",
+    "kickoff": "2025-09-20T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746752",
+    "kickoff": "2025-09-20T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 1,
+    "awayScore": 4
+  },
+  {
+    "id": "746751",
+    "kickoff": "2025-09-20T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746750",
+    "kickoff": "2025-09-20T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746747",
+    "kickoff": "2025-09-21T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 3,
+    "awayScore": 4
+  },
+  {
+    "id": "746745",
+    "kickoff": "2025-09-21T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746746",
+    "kickoff": "2025-09-21T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "SIGNAL IDUNA PARK",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746759",
+    "kickoff": "2025-09-26T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746754",
+    "kickoff": "2025-09-27T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746757",
+    "kickoff": "2025-09-27T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746760",
+    "kickoff": "2025-09-27T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746761",
+    "kickoff": "2025-09-27T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746762",
+    "kickoff": "2025-09-27T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 4,
+    "awayScore": 6
+  },
+  {
+    "id": "746758",
+    "kickoff": "2025-09-28T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746755",
+    "kickoff": "2025-09-28T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746756",
+    "kickoff": "2025-09-28T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746771",
+    "kickoff": "2025-10-03T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746766",
+    "kickoff": "2025-10-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746765",
+    "kickoff": "2025-10-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "SIGNAL IDUNA PARK",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746767",
+    "kickoff": "2025-10-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746769",
+    "kickoff": "2025-10-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746763",
+    "kickoff": "2025-10-04T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746770",
+    "kickoff": "2025-10-05T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746768",
+    "kickoff": "2025-10-05T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746764",
+    "kickoff": "2025-10-05T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746779",
+    "kickoff": "2025-10-17T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746777",
+    "kickoff": "2025-10-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746780",
+    "kickoff": "2025-10-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746778",
+    "kickoff": "2025-10-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 3,
+    "awayScore": 4
+  },
+  {
+    "id": "746773",
+    "kickoff": "2025-10-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746775",
+    "kickoff": "2025-10-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746776",
+    "kickoff": "2025-10-18T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746774",
+    "kickoff": "2025-10-19T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746772",
+    "kickoff": "2025-10-19T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746781",
+    "kickoff": "2025-10-24T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746784",
+    "kickoff": "2025-10-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746783",
+    "kickoff": "2025-10-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 0,
+    "awayScore": 6
+  },
+  {
+    "id": "746782",
+    "kickoff": "2025-10-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746789",
+    "kickoff": "2025-10-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746785",
+    "kickoff": "2025-10-25T13:45:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746787",
+    "kickoff": "2025-10-25T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "SIGNAL IDUNA PARK",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746786",
+    "kickoff": "2025-10-26T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746788",
+    "kickoff": "2025-10-26T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746791",
+    "kickoff": "2025-10-31T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746797",
+    "kickoff": "2025-11-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746794",
+    "kickoff": "2025-11-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746790",
+    "kickoff": "2025-11-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746798",
+    "kickoff": "2025-11-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746793",
+    "kickoff": "2025-11-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 0,
+    "awayScore": 4
+  },
+  {
+    "id": "746792",
+    "kickoff": "2025-11-01T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 3,
+    "awayScore": 0
+  },
+  {
+    "id": "746796",
+    "kickoff": "2025-11-02T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "746795",
+    "kickoff": "2025-11-02T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 2,
+    "awayScore": 3
+  },
+  {
+    "id": "746804",
+    "kickoff": "2025-11-07T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746806",
+    "kickoff": "2025-11-08T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746799",
+    "kickoff": "2025-11-08T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 6,
+    "awayScore": 0
+  },
+  {
+    "id": "746807",
+    "kickoff": "2025-11-08T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746805",
+    "kickoff": "2025-11-08T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746800",
+    "kickoff": "2025-11-08T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746803",
+    "kickoff": "2025-11-09T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746802",
+    "kickoff": "2025-11-09T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746801",
+    "kickoff": "2025-11-09T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746816",
+    "kickoff": "2025-11-21T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746808",
+    "kickoff": "2025-11-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746813",
+    "kickoff": "2025-11-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 6,
+    "awayScore": 2
+  },
+  {
+    "id": "746815",
+    "kickoff": "2025-11-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746814",
+    "kickoff": "2025-11-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746810",
+    "kickoff": "2025-11-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746809",
+    "kickoff": "2025-11-22T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 3,
+    "awayScore": 4
+  },
+  {
+    "id": "746811",
+    "kickoff": "2025-11-23T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746812",
+    "kickoff": "2025-11-23T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746817",
+    "kickoff": "2025-11-28T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746823",
+    "kickoff": "2025-11-29T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746818",
+    "kickoff": "2025-11-29T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746821",
+    "kickoff": "2025-11-29T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 3,
+    "awayScore": 0
+  },
+  {
+    "id": "746820",
+    "kickoff": "2025-11-29T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746824",
+    "kickoff": "2025-11-29T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746825",
+    "kickoff": "2025-11-30T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746822",
+    "kickoff": "2025-11-30T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746819",
+    "kickoff": "2025-11-30T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746832",
+    "kickoff": "2025-12-05T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746830",
+    "kickoff": "2025-12-06T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746834",
+    "kickoff": "2025-12-06T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746833",
+    "kickoff": "2025-12-06T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746828",
+    "kickoff": "2025-12-06T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 0,
+    "awayScore": 5
+  },
+  {
+    "id": "746827",
+    "kickoff": "2025-12-06T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746829",
+    "kickoff": "2025-12-06T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 6,
+    "awayScore": 0
+  },
+  {
+    "id": "746826",
+    "kickoff": "2025-12-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746831",
+    "kickoff": "2025-12-07T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746838",
+    "kickoff": "2025-12-12T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746836",
+    "kickoff": "2025-12-13T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746841",
+    "kickoff": "2025-12-13T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746835",
+    "kickoff": "2025-12-13T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746839",
+    "kickoff": "2025-12-13T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "746837",
+    "kickoff": "2025-12-13T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746842",
+    "kickoff": "2025-12-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746840",
+    "kickoff": "2025-12-14T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746843",
+    "kickoff": "2025-12-14T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 0,
+    "awayScore": 4
+  },
+  {
+    "id": "746848",
+    "kickoff": "2025-12-19T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746851",
+    "kickoff": "2025-12-20T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746847",
+    "kickoff": "2025-12-20T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746852",
+    "kickoff": "2025-12-20T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746844",
+    "kickoff": "2025-12-20T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746850",
+    "kickoff": "2025-12-20T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 3,
+    "awayScore": 4
+  },
+  {
+    "id": "746845",
+    "kickoff": "2025-12-20T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746849",
+    "kickoff": "2025-12-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746846",
+    "kickoff": "2025-12-21T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 0,
+    "awayScore": 4
+  },
+  {
+    "id": "746859",
+    "kickoff": "2026-01-09T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746853",
+    "kickoff": "2026-01-10T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746856",
+    "kickoff": "2026-01-10T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746854",
+    "kickoff": "2026-01-10T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746861",
+    "kickoff": "2026-01-10T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 4
+  },
+  {
+    "id": "746860",
+    "kickoff": "2026-01-11T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746858",
+    "kickoff": "2026-01-11T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 8,
+    "awayScore": 1
+  },
+  {
+    "id": "746863",
+    "kickoff": "2026-01-13T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746868",
+    "kickoff": "2026-01-13T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 3,
+    "awayScore": 0
+  },
+  {
+    "id": "746869",
+    "kickoff": "2026-01-13T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746870",
+    "kickoff": "2026-01-14T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746864",
+    "kickoff": "2026-01-14T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746865",
+    "kickoff": "2026-01-14T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746862",
+    "kickoff": "2026-01-14T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 5,
+    "awayScore": 1
+  },
+  {
+    "id": "746867",
+    "kickoff": "2026-01-15T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746872",
+    "kickoff": "2026-01-16T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746878",
+    "kickoff": "2026-01-17T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746879",
+    "kickoff": "2026-01-17T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746876",
+    "kickoff": "2026-01-17T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746873",
+    "kickoff": "2026-01-17T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746871",
+    "kickoff": "2026-01-17T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746875",
+    "kickoff": "2026-01-17T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 1,
+    "awayScore": 5
+  },
+  {
+    "id": "746874",
+    "kickoff": "2026-01-18T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746877",
+    "kickoff": "2026-01-18T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746884",
+    "kickoff": "2026-01-23T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746885",
+    "kickoff": "2026-01-24T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746883",
+    "kickoff": "2026-01-24T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746880",
+    "kickoff": "2026-01-24T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746881",
+    "kickoff": "2026-01-24T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746888",
+    "kickoff": "2026-01-24T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746886",
+    "kickoff": "2026-01-24T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746882",
+    "kickoff": "2026-01-25T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746887",
+    "kickoff": "2026-01-25T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746857",
+    "kickoff": "2026-01-27T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746855",
+    "kickoff": "2026-01-27T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746894",
+    "kickoff": "2026-01-30T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746890",
+    "kickoff": "2026-01-31T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746891",
+    "kickoff": "2026-01-31T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746893",
+    "kickoff": "2026-01-31T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746897",
+    "kickoff": "2026-01-31T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746896",
+    "kickoff": "2026-01-31T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746895",
+    "kickoff": "2026-01-31T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746892",
+    "kickoff": "2026-02-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746889",
+    "kickoff": "2026-02-01T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746900",
+    "kickoff": "2026-02-06T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746898",
+    "kickoff": "2026-02-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746902",
+    "kickoff": "2026-02-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746905",
+    "kickoff": "2026-02-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746904",
+    "kickoff": "2026-02-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746901",
+    "kickoff": "2026-02-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746906",
+    "kickoff": "2026-02-07T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746899",
+    "kickoff": "2026-02-08T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746903",
+    "kickoff": "2026-02-08T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 5,
+    "awayScore": 1
+  },
+  {
+    "id": "746908",
+    "kickoff": "2026-02-13T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746907",
+    "kickoff": "2026-02-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746909",
+    "kickoff": "2026-02-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 3,
+    "awayScore": 0
+  },
+  {
+    "id": "746911",
+    "kickoff": "2026-02-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746914",
+    "kickoff": "2026-02-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 3,
+    "awayScore": 0
+  },
+  {
+    "id": "746913",
+    "kickoff": "2026-02-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 0,
+    "awayScore": 3
+  },
+  {
+    "id": "746915",
+    "kickoff": "2026-02-14T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746910",
+    "kickoff": "2026-02-15T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746912",
+    "kickoff": "2026-02-15T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746919",
+    "kickoff": "2026-02-20T19:40:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746918",
+    "kickoff": "2026-02-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746920",
+    "kickoff": "2026-02-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746917",
+    "kickoff": "2026-02-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746924",
+    "kickoff": "2026-02-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 2,
+    "awayScore": 3
+  },
+  {
+    "id": "746922",
+    "kickoff": "2026-02-21T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746923",
+    "kickoff": "2026-02-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746921",
+    "kickoff": "2026-02-22T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746916",
+    "kickoff": "2026-02-22T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746929",
+    "kickoff": "2026-02-27T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746925",
+    "kickoff": "2026-02-28T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746927",
+    "kickoff": "2026-02-28T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746932",
+    "kickoff": "2026-02-28T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746931",
+    "kickoff": "2026-02-28T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746926",
+    "kickoff": "2026-02-28T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 2,
+    "awayScore": 3
+  },
+  {
+    "id": "746933",
+    "kickoff": "2026-03-01T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746928",
+    "kickoff": "2026-03-01T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746930",
+    "kickoff": "2026-03-01T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746866",
+    "kickoff": "2026-03-04T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746935",
+    "kickoff": "2026-03-06T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "746939",
+    "kickoff": "2026-03-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 2,
+    "awayScore": 4
+  },
+  {
+    "id": "746936",
+    "kickoff": "2026-03-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746942",
+    "kickoff": "2026-03-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746934",
+    "kickoff": "2026-03-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746940",
+    "kickoff": "2026-03-07T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746938",
+    "kickoff": "2026-03-07T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746941",
+    "kickoff": "2026-03-08T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746937",
+    "kickoff": "2026-03-08T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 1,
+    "awayScore": 4
+  },
+  {
+    "id": "746944",
+    "kickoff": "2026-03-13T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746950",
+    "kickoff": "2026-03-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746951",
+    "kickoff": "2026-03-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746943",
+    "kickoff": "2026-03-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746947",
+    "kickoff": "2026-03-14T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746949",
+    "kickoff": "2026-03-14T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746946",
+    "kickoff": "2026-03-15T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746945",
+    "kickoff": "2026-03-15T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746948",
+    "kickoff": "2026-03-15T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746956",
+    "kickoff": "2026-03-20T19:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 5,
+    "awayScore": 0
+  },
+  {
+    "id": "746952",
+    "kickoff": "2026-03-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746954",
+    "kickoff": "2026-03-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746959",
+    "kickoff": "2026-03-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "746960",
+    "kickoff": "2026-03-21T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746957",
+    "kickoff": "2026-03-21T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "746958",
+    "kickoff": "2026-03-22T14:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746955",
+    "kickoff": "2026-03-22T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746953",
+    "kickoff": "2026-03-22T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 5
+  },
+  {
+    "id": "746962",
+    "kickoff": "2026-04-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 6,
+    "awayScore": 3
+  },
+  {
+    "id": "746963",
+    "kickoff": "2026-04-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746969",
+    "kickoff": "2026-04-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746966",
+    "kickoff": "2026-04-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 3
+  },
+  {
+    "id": "746968",
+    "kickoff": "2026-04-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746967",
+    "kickoff": "2026-04-04T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746964",
+    "kickoff": "2026-04-04T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "746961",
+    "kickoff": "2026-04-05T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746965",
+    "kickoff": "2026-04-05T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746974",
+    "kickoff": "2026-04-10T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "746970",
+    "kickoff": "2026-04-11T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746973",
+    "kickoff": "2026-04-11T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746976",
+    "kickoff": "2026-04-11T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "746978",
+    "kickoff": "2026-04-11T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746975",
+    "kickoff": "2026-04-11T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 0,
+    "awayScore": 5
+  },
+  {
+    "id": "746971",
+    "kickoff": "2026-04-12T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746977",
+    "kickoff": "2026-04-12T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746972",
+    "kickoff": "2026-04-12T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "746984",
+    "kickoff": "2026-04-17T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746979",
+    "kickoff": "2026-04-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746980",
+    "kickoff": "2026-04-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746987",
+    "kickoff": "2026-04-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746986",
+    "kickoff": "2026-04-18T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746982",
+    "kickoff": "2026-04-18T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746985",
+    "kickoff": "2026-04-19T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "746983",
+    "kickoff": "2026-04-19T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 4,
+    "awayScore": 2
+  },
+  {
+    "id": "746981",
+    "kickoff": "2026-04-19T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746994",
+    "kickoff": "2026-04-24T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "746988",
+    "kickoff": "2026-04-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 2,
+    "awayScore": 0
+  },
+  {
+    "id": "746992",
+    "kickoff": "2026-04-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746989",
+    "kickoff": "2026-04-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746990",
+    "kickoff": "2026-04-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 3,
+    "awayScore": 4
+  },
+  {
+    "id": "746996",
+    "kickoff": "2026-04-25T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  {
+    "id": "746993",
+    "kickoff": "2026-04-25T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746995",
+    "kickoff": "2026-04-26T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "746991",
+    "kickoff": "2026-04-26T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "746997",
+    "kickoff": "2026-05-02T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "747001",
+    "kickoff": "2026-05-02T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "747000",
+    "kickoff": "2026-05-02T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "747005",
+    "kickoff": "2026-05-02T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 3,
+    "awayScore": 3
+  },
+  {
+    "id": "747004",
+    "kickoff": "2026-05-02T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "746998",
+    "kickoff": "2026-05-02T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "747002",
+    "kickoff": "2026-05-03T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 1,
+    "awayScore": 2
+  },
+  {
+    "id": "746999",
+    "kickoff": "2026-05-03T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "747003",
+    "kickoff": "2026-05-03T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "747008",
+    "kickoff": "2026-05-08T18:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "124",
+    "awayTeamId": "125",
+    "homeTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "venue": "Signal Iduna Park",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "747009",
+    "kickoff": "2026-05-09T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "3841",
+    "awayTeamId": "268",
+    "homeTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "venue": "WWK Arena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "747011",
+    "kickoff": "2026-05-09T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "11420",
+    "awayTeamId": "270",
+    "homeTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "venue": "Red Bull Arena",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "747012",
+    "kickoff": "2026-05-09T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "7911",
+    "awayTeamId": "137",
+    "homeTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "venue": "PreZero Arena",
+    "homeScore": 1,
+    "awayScore": 0
+  },
+  {
+    "id": "747013",
+    "kickoff": "2026-05-09T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "134",
+    "awayTeamId": "131",
+    "homeTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "venue": "MHPArena",
+    "homeScore": 3,
+    "awayScore": 1
+  },
+  {
+    "id": "747014",
+    "kickoff": "2026-05-09T16:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "138",
+    "awayTeamId": "132",
+    "homeTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "venue": "Volkswagen Arena",
+    "homeScore": 0,
+    "awayScore": 1
+  },
+  {
+    "id": "747010",
+    "kickoff": "2026-05-10T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "127",
+    "awayTeamId": "126",
+    "homeTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "venue": "Volksparkstadion",
+    "homeScore": 3,
+    "awayScore": 2
+  },
+  {
+    "id": "747006",
+    "kickoff": "2026-05-10T15:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "122",
+    "awayTeamId": "6418",
+    "homeTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "venue": "RheinEnergieStadion",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "747007",
+    "kickoff": "2026-05-10T17:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "2950",
+    "awayTeamId": "598",
+    "homeTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "venue": "MEWA ARENA",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "747015",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "6418",
+    "awayTeamId": "2950",
+    "homeTeam": {
+      "id": "6418",
+      "name": "1. FC Heidenheim 1846",
+      "abbreviation": "HDH",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "2950",
+      "name": "Mainz",
+      "abbreviation": "M05",
+      "provider": "espn"
+    },
+    "venue": "Voith-Arena",
+    "homeScore": 0,
+    "awayScore": 2
+  },
+  {
+    "id": "747016",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "598",
+    "awayTeamId": "3841",
+    "homeTeam": {
+      "id": "598",
+      "name": "1. FC Union Berlin",
+      "abbreviation": "FCU",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "3841",
+      "name": "FC Augsburg",
+      "abbreviation": "FCA",
+      "provider": "espn"
+    },
+    "venue": "Stadion An der Alten Försterei",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "747017",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "131",
+    "awayTeamId": "127",
+    "homeTeam": {
+      "id": "131",
+      "name": "Bayer Leverkusen",
+      "abbreviation": "B04",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "venue": "BayArena",
+    "homeScore": 1,
+    "awayScore": 1
+  },
+  {
+    "id": "747020",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "132",
+    "awayTeamId": "122",
+    "homeTeam": {
+      "id": "132",
+      "name": "Bayern Munich",
+      "abbreviation": "MUN",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "venue": "Allianz Arena",
+    "homeScore": 5,
+    "awayScore": 1
+  },
+  {
+    "id": "747018",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "268",
+    "awayTeamId": "7911",
+    "homeTeam": {
+      "id": "268",
+      "name": "Borussia Mönchengladbach",
+      "abbreviation": "BMG",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "7911",
+      "name": "TSG Hoffenheim",
+      "abbreviation": "TSG",
+      "provider": "espn"
+    },
+    "venue": "BORUSSIA-PARK",
+    "homeScore": 4,
+    "awayScore": 0
+  },
+  {
+    "id": "747023",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "125",
+    "awayTeamId": "134",
+    "homeTeam": {
+      "id": "125",
+      "name": "Eintracht Frankfurt",
+      "abbreviation": "SGE",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "134",
+      "name": "VfB Stuttgart",
+      "abbreviation": "VFB",
+      "provider": "espn"
+    },
+    "venue": "Deutsche Bank Park",
+    "homeScore": 2,
+    "awayScore": 2
+  },
+  {
+    "id": "747019",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "126",
+    "awayTeamId": "11420",
+    "homeTeam": {
+      "id": "126",
+      "name": "SC Freiburg",
+      "abbreviation": "SCF",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "11420",
+      "name": "RB Leipzig",
+      "abbreviation": "RBL",
+      "provider": "espn"
+    },
+    "venue": "Europa-Park Stadion",
+    "homeScore": 4,
+    "awayScore": 1
+  },
+  {
+    "id": "747021",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "270",
+    "awayTeamId": "138",
+    "homeTeam": {
+      "id": "270",
+      "name": "St. Pauli",
+      "abbreviation": "STP",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "138",
+      "name": "VfL Wolfsburg",
+      "abbreviation": "WOB",
+      "provider": "espn"
+    },
+    "venue": "Millerntor-Stadion",
+    "homeScore": 1,
+    "awayScore": 3
+  },
+  {
+    "id": "747022",
+    "kickoff": "2026-05-16T13:30:00+00:00",
+    "matchweek": null,
+    "status": "completed",
+    "providerStatus": "STATUS_FULL_TIME",
+    "homeTeamId": "137",
+    "awayTeamId": "124",
+    "homeTeam": {
+      "id": "137",
+      "name": "Werder Bremen",
+      "abbreviation": "SVW",
+      "provider": "espn"
+    },
+    "awayTeam": {
+      "id": "124",
+      "name": "Borussia Dortmund",
+      "abbreviation": "DOR",
+      "provider": "espn"
+    },
+    "venue": "Weserstadion",
+    "homeScore": 0,
+    "awayScore": 2
+  }
+]

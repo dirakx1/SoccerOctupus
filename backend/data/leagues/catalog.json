@@ -1,10 +1,52 @@
 [
   {
+    "slug": "bundesliga-2024-25",
+    "competition": "bundesliga",
+    "season": "2024-25",
+    "displayName": "Bundesliga 2024-25",
+    "active": false
+  },
+  {
+    "slug": "bundesliga-2025-26",
+    "competition": "bundesliga",
+    "season": "2025-26",
+    "displayName": "Bundesliga 2025-26",
+    "active": false
+  },
+  {
+    "slug": "bundesliga-2026-27",
+    "competition": "bundesliga",
+    "season": "2026-27",
+    "displayName": "Bundesliga 2026-27",
+    "active": true
+  },
+  {
     "slug": "championship-2025-26",
     "competition": "championship",
     "season": "2025-26",
     "displayName": "Championship 2025-26",
     "active": false
+  },
+  {
+    "slug": "la-liga-2024-25",
+    "competition": "la-liga",
+    "season": "2024-25",
+    "displayName": "La Liga 2024-25",
+    "active": false
+  },
+  {
+    "slug": "la-liga-2025-26",
+    "competition": "la-liga",
+    "season": "2025-26",
+    "displayName": "La Liga 2025-26",
+    "active": false
+  },
+  {
+    "slug": "la-liga-2026-27",
+    "competition": "la-liga",
+    "season": "2026-27",
+    "displayName": "La Liga 2026-27",
+    "active": true
   },
   {
     "slug": "premier-league-2024-25",

@@ -28,7 +28,7 @@ describe('League views', () => {
   it('renders the fixture-bound forecast in plain language', async () => {
     api.get.mockResolvedValue({ data: { fixtures: [fixture] } }); api.post.mockResolvedValue({ data: { prediction } })
     const wrapper = mount(LeaguePredictView, { global: { plugins: [i18n] } }); await flushPromises(); await wrapper.find('form').trigger('submit'); await flushPromises()
-    expect(api.post).toHaveBeenCalledWith('/api/leagues/active/predict', { fixtureId: 'f1' })
+    expect(api.post).toHaveBeenCalledWith('/api/leagues/premier-league/active/predict', { fixtureId: 'f1' })
     expect(wrapper.text()).toContain('Read the match before it starts.'); expect(wrapper.text()).toContain('Forecast confidence'); expect(wrapper.text()).toContain('Top scorelines'); expect(wrapper.text()).toContain('Forecast summary'); expect(wrapper.text()).toContain('Model breakdown'); expect(wrapper.text()).toContain('Expected goals favor Arsenal.'); expect(wrapper.text()).not.toContain('FotMob')
   })
 
@@ -42,8 +42,8 @@ describe('League views', () => {
     const wrapper = mount(LeagueMarketsView, { global: { plugins: [i18n] } }); await flushPromises()
     expect(api.post).not.toHaveBeenCalled(); expect(wrapper.text()).toContain('Choose a fixture, then generate its market questions.'); expect(wrapper.text()).toContain('Prices are reference values for listing formats, not live offers.')
     await wrapper.find('#league-match-panel button').trigger('click')
-    expect(api.post).toHaveBeenCalledWith('/api/leagues/active/markets/match', { fixtureId: 'f1' }); await flushPromises(); expect(wrapper.text()).toContain('Will Arsenal beat Chelsea?')
-    await wrapper.find('#league-season-tab').trigger('click'); await wrapper.find('#league-season-panel button').trigger('click'); await flushPromises(); expect(api.post).toHaveBeenCalledWith('/api/leagues/active/markets/season'); expect(wrapper.text()).toContain('Will Arsenal win the Premier League in 2026-27?')
+    expect(api.post).toHaveBeenCalledWith('/api/leagues/premier-league/active/markets/match', { fixtureId: 'f1' }); await flushPromises(); expect(wrapper.text()).toContain('Will Arsenal beat Chelsea?')
+    await wrapper.find('#league-season-tab').trigger('click'); await wrapper.find('#league-season-panel button').trigger('click'); await flushPromises(); expect(api.post).toHaveBeenCalledWith('/api/leagues/premier-league/active/markets/season'); expect(wrapper.text()).toContain('Will Arsenal win the Premier League in 2026-27?')
     await wrapper.find('#league-season-tab').trigger('click')
     expect(wrapper.find('#league-season-tab').attributes('aria-selected')).toBe('true'); expect(wrapper.find('#league-season-panel').isVisible()).toBe(true); expect(wrapper.find('#league-match-panel').isVisible()).toBe(false)
   })
@@ -72,7 +72,7 @@ describe('League views', () => {
   it('shows the provider calibration status from immutable forecast snapshots', async () => {
     api.get.mockResolvedValue({ data: { performance: { snapshots: 12, resolvedSnapshots: 4, accuracy: { correctOutcomeRate: .5, status: 'insufficient' }, baseline: { provider: 'ESPN baseline', weight: 1 }, providers: [{ provider: 'FotMob', snapshots: 4, resolvedSnapshots: 2, statuses: { admitted: 3, unavailable: 1 }, admission: 'collecting', weight: 0 }] } } })
     const wrapper = mount(LeaguePerformanceView, { global: { plugins: [i18n] } }); await flushPromises()
-    expect(api.get).toHaveBeenCalledWith('/api/leagues/active/performance'); expect(wrapper.text()).toContain('Model performance'); expect(wrapper.text()).toContain('FotMob'); expect(wrapper.text()).toContain('Collecting evidence')
+    expect(api.get).toHaveBeenCalledWith('/api/leagues/premier-league/active/performance'); expect(wrapper.text()).toContain('Model performance'); expect(wrapper.text()).toContain('FotMob'); expect(wrapper.text()).toContain('Collecting evidence')
   })
 
   it('filters fixtures, groups missing matchweeks by month, and bounds the initial list', async () => {

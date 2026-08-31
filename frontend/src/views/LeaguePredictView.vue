@@ -152,7 +152,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { AlertTriangle, BrainCircuit, ChevronDown, Inbox, ListChecks, LoaderCircle, RotateCcw, Sparkles, Target, Users } from '@lucide/vue'
@@ -192,6 +192,8 @@ const topScoreProbability = computed(() => result.value?.scoreProbabilities?.[0]
 async function loadFixtures() {
   loadingFixtures.value = true
   loadError.value = ''
+  error.value = ''
+  result.value = null
   try {
     fixtures.value = (await api.get(leagueApiBase(route.params.competitionEditionSlug))).data.fixtures || []
     fixtureId.value = futureFixtures.value[0]?.id || ''
@@ -225,7 +227,7 @@ function percent(value) { return numberFormatter({ style: 'percent', minimumFrac
 function scoreBarWidth(probability) { return topScoreProbability.value?.probability ? `${(probability / topScoreProbability.value.probability) * 100}%` : '0%' }
 function signalDirection(direction) { return t(`competitions.league.signalDirection.${['home', 'away', 'neutral'].includes(direction) ? direction : 'neutral'}`) }
 
-onMounted(loadFixtures)
+watch(() => route.params.competitionEditionSlug, loadFixtures, { immediate: true })
 </script>
 
 <style scoped>

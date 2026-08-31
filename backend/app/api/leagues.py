@@ -96,25 +96,36 @@ def catalog():
 @bp.get("/active")
 def active_season():
     try:
-        active = next((item for item in _store().catalog() if item.get("active")), None)
-        if not active:
-            return {"error": "No active league season"}, 404
-        return season_overview(active["competition"], active["season"])
+        competition, season = _active_identity("premier-league")
+        return season_overview(competition, season)
     except (SeasonDataError, KeyError) as exc:
         return _error(exc)
 
 
-def _active_identity():
-    active = next((item for item in _store().catalog() if item.get("active")), None)
+def _active_identity(competition: str | None = None):
+    active = next((
+        item for item in _store().catalog()
+        if item.get("active") and (competition is None or item.get("competition") == competition)
+    ), None)
     if not active:
-        raise SeasonDataError("No active league season")
+        suffix = f" for {competition}" if competition else ""
+        raise SeasonDataError(f"No active league season{suffix}")
     return active["competition"], active["season"]
+
+
+@bp.get("/<competition>/active")
+def competition_active_season(competition: str):
+    try:
+        active_competition, season = _active_identity(competition)
+        return season_overview(active_competition, season)
+    except (SeasonDataError, KeyError) as exc:
+        return _error(exc)
 
 
 @bp.get("/active/<area>")
 def active_area(area: str):
     try:
-        competition, season = _active_identity()
+        competition, season = _active_identity("premier-league")
         if area == "table":
             return table(competition, season)
         if area == "fixtures":
@@ -134,11 +145,43 @@ def active_area(area: str):
         return _error(exc)
 
 
+@bp.get("/<competition>/active/<area>")
+def competition_active_area(competition: str, area: str):
+    try:
+        active_competition, season = _active_identity(competition)
+        if area == "table":
+            return table(active_competition, season)
+        if area == "fixtures":
+            return fixtures(active_competition, season)
+        if area == "markets":
+            return markets(active_competition, season)
+        if area == "projection":
+            return projection(active_competition, season)
+        if area == "accuracy":
+            return accuracy(active_competition, season)
+        if area == "performance":
+            return performance(active_competition, season)
+        if area == "graph":
+            return graph(active_competition, season)
+        return {"error": "Unknown active league area"}, 404
+    except SeasonDataError as exc:
+        return _error(exc)
+
+
 @bp.post("/active/predict")
 def active_predict():
     try:
-        competition, season = _active_identity()
+        competition, season = _active_identity("premier-league")
         return predict(competition, season)
+    except SeasonDataError as exc:
+        return _error(exc)
+
+
+@bp.post("/<competition>/active/predict")
+def competition_active_predict(competition: str):
+    try:
+        active_competition, season = _active_identity(competition)
+        return predict(active_competition, season)
     except SeasonDataError as exc:
         return _error(exc)
 
@@ -146,8 +189,17 @@ def active_predict():
 @bp.post("/active/markets/match")
 def active_match_markets():
     try:
-        competition, season = _active_identity()
+        competition, season = _active_identity("premier-league")
         return match_markets(competition, season)
+    except SeasonDataError as exc:
+        return _error(exc)
+
+
+@bp.post("/<competition>/active/markets/match")
+def competition_active_match_markets(competition: str):
+    try:
+        active_competition, season = _active_identity(competition)
+        return match_markets(active_competition, season)
     except SeasonDataError as exc:
         return _error(exc)
 
@@ -155,8 +207,17 @@ def active_match_markets():
 @bp.post("/active/markets/season")
 def active_season_markets():
     try:
-        competition, season = _active_identity()
+        competition, season = _active_identity("premier-league")
         return season_market_generation(competition, season)
+    except SeasonDataError as exc:
+        return _error(exc)
+
+
+@bp.post("/<competition>/active/markets/season")
+def competition_active_season_markets(competition: str):
+    try:
+        active_competition, season = _active_identity(competition)
+        return season_market_generation(active_competition, season)
     except SeasonDataError as exc:
         return _error(exc)
 
@@ -227,7 +288,7 @@ def predict(competition: str, season: str):
             data,
             fixture,
             kickoff,
-            settings=RuntimeSettingsService.current(db) if competition == "premier-league" else None,
+            settings=RuntimeSettingsService.current(db),
         )
         return {"prediction": result, "provider": "ESPN"}
     except (SeasonDataError, KeyError, TypeError, ValueError) as exc:
@@ -265,7 +326,7 @@ def match_markets(competition: str, season: str):
             data,
             fixture,
             kickoff,
-            settings=RuntimeSettingsService.current(db) if competition == "premier-league" else None,
+            settings=RuntimeSettingsService.current(db),
         )
         competition_name, competition_tag = _market_metadata(data, competition, season)
         return {

@@ -1,0 +1,15 @@
+{
+  "competition": "la-liga",
+  "season": "2024-25",
+  "displayName": "La Liga 2024-25",
+  "provider": {
+    "name": "espn",
+    "competition": "esp.1",
+    "season": 2024
+  },
+  "startsOn": "2024-08-01",
+  "endsOn": "2025-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

@@ -427,7 +427,7 @@ class OptaLeagueAdapter(_Adapter):
         return ProviderEvidence(self.provider, ADMITTED, f"{self.base_url}/squads", _now(), "verified EPL club identities from configured Opta feed", {"verifiedTeams": [home, away]})
 
 
-def collect_league_evidence(*, home: str, away: str, kickoff: datetime, settings: RuntimeSettings, season: str = "2026-27", graph_id: str = "", get: Callable[..., Any] = requests.get) -> list[dict[str, Any]]:
+def collect_league_evidence(*, home: str, away: str, kickoff: datetime, settings: RuntimeSettings, competition: str = "premier-league", season: str = "2026-27", graph_id: str = "", get: Callable[..., Any] = requests.get) -> list[dict[str, Any]]:
     """Collect provider health concurrently; evidence never alters probabilities."""
     # A request for a completed/past kickoff cannot safely use current live
     # provider context.  Return an explicit exclusion instead of leaking it
@@ -435,6 +435,11 @@ def collect_league_evidence(*, home: str, away: str, kickoff: datetime, settings
     if kickoff <= datetime.now(timezone.utc):
         return [
             _excluded(provider, "requested kickoff has passed; live context is not leakage-safe", provider).as_dict()
+            for provider in ("SofaScore", "FotMob", "365Scores", "YouTube", "Zep", "Opta")
+        ]
+    if competition != "premier-league":
+        return [
+            _unavailable(provider, f"{provider} adapter is not yet verified for {competition}", provider).as_dict()
             for provider in ("SofaScore", "FotMob", "365Scores", "YouTube", "Zep", "Opta")
         ]
     adapters: Iterable[_Adapter] = (

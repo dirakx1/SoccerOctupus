@@ -93,6 +93,11 @@ describe('router', () => {
     await router.push('/en/competitions/premier-league-2027-28')
     expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league-2027-28')
     expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.overview)
+
+    await router.push('/en/competitions/la-liga/table')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.table)
+    await router.push('/en/competitions/bundesliga-2027-28/fixtures')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.fixtures)
   })
 
   it('guards the league prediction route when signed out', async () => {

@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { api } from '../lib/api'
@@ -23,7 +23,7 @@ const percent = (value) => value == null ? '—' : new Intl.NumberFormat(route.p
 const admission = (value) => t(`competitions.league.performanceAdmission${String(value || 'not-collected').replace(/(^|-)([a-z])/g, (_, __, letter) => letter.toUpperCase())}`)
 const availability = (statuses = {}) => Object.entries(statuses).map(([status, count]) => `${status}: ${count}`).join(' · ') || '—'
 async function loadPerformance() { loading.value = true; error.value = ''; try { data.value = (await api.get(`${leagueApiBase(route.params.competitionEditionSlug)}/performance`)).data.performance } catch (cause) { error.value = cause.response?.data?.error || t('competitions.league.loadFailed') } finally { loading.value = false } }
-onMounted(loadPerformance)
+watch(() => route.params.competitionEditionSlug, loadPerformance, { immediate: true })
 </script>
 
 <style scoped>

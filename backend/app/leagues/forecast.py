@@ -48,12 +48,13 @@ def _write(path: Path, value: dict[str, Any]) -> None:
 
 def _provider_snapshot(forecast: dict[str, Any], *, season, kickoff: datetime, settings: Any) -> None:
     """Attach the one pre-kickoff provider snapshot used for later calibration."""
-    if season.competition != "premier-league" or settings is None:
+    if settings is None:
         return
     evidence = collect_league_evidence(
         home=forecast["homeTeam"]["name"],
         away=forecast["awayTeam"]["name"],
         kickoff=kickoff,
+        competition=season.competition,
         season=season.season,
         graph_id=str(season.edition.get("leagueGraph", {}).get("graphId", "")),
         settings=settings,
