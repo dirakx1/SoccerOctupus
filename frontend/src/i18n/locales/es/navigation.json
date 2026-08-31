@@ -5,6 +5,8 @@
   },
   "workspace": {
     "overview": "Resumen",
+    "explore": "Explorar",
+    "predictions": "Predicciones",
     "groups": "Grupos",
     "table": "Tabla",
     "fixtures": "Partidos",

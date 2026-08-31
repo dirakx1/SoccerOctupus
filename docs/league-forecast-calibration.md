@@ -5,7 +5,7 @@ World Cup prediction pipeline.
 
 ## What is captured
 
-The active-league systemd timer runs `league-refresh-active` every five
+The active-league systemd timer runs `league-refresh-active` every 30
 minutes. When it observes a scheduled fixture no more than 35 minutes before
 kickoff (normally inside the 30-minute match window), it saves exactly one
 record in:

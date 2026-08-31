@@ -297,7 +297,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now socceroctupus-league-refresh.timer
 ```
 
-The timer wakes every five minutes. The command refreshes only the active
+The timer wakes every 30 minutes. The command refreshes only the active
 season's current ESPN fixtures and standings (not historical seasons) when
 the current time is from 30 minutes before through 3 hours after a
 non-cancelled/non-postponed fixture kickoff. Outside those windows it runs

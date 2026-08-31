@@ -5,6 +5,8 @@
   },
   "workspace": {
     "overview": "Overview",
+    "explore": "Explore",
+    "predictions": "Predictions",
     "groups": "Groups",
     "table": "Table",
     "fixtures": "Fixtures",

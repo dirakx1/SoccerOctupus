@@ -4,6 +4,7 @@
       :edition="edition"
       :editions="editions"
       :navigation="navigation"
+      :active-navigation-key="activeNavigationKey"
       :home-location="homeLocation"
       :locale="locale"
       :theme-preference="themePreference"
@@ -56,6 +57,7 @@ defineProps({
   edition: { type: Object, required: true },
   editions: { type: Array, default: () => [] },
   navigation: { type: Array, default: () => [] },
+  activeNavigationKey: { type: String, default: '' },
   homeLocation: { type: [String, Object], required: true },
   locale: { type: String, default: 'en' },
   themePreference: { type: String, default: 'system' },

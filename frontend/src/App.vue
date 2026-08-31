@@ -3,6 +3,7 @@
     :edition="activeEdition"
     :editions="competitionEditions"
     :navigation="competitionNavigation"
+    :active-navigation-key="activeNavigationKey"
     :home-location="homeLocation"
     :locale="currentLocale"
     :theme-preference="themePreference"
@@ -160,6 +161,9 @@ const homeLocation = computed(() => workspaceLocation('overview', {
 const competitionNavigation = computed(() => getCompetitionNavigation(activeEdition.value, {
   locale: currentLocale.value,
 }))
+const activeNavigationKey = computed(() => (
+  competitionNavigation.value.find((item) => item.route.name === route.name)?.key || ''
+))
 
 installAuthInterceptor(async (options) => {
   return await getToken.value?.(options)

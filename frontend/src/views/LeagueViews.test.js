@@ -48,6 +48,13 @@ describe('League views', () => {
     expect(wrapper.find('#league-season-tab').attributes('aria-selected')).toBe('true'); expect(wrapper.find('#league-season-panel').isVisible()).toBe(true); expect(wrapper.find('#league-match-panel').isVisible()).toBe(false)
   })
 
+  it('offers pricing recovery when a league market limit is exhausted', async () => {
+    api.get.mockResolvedValue({ data: { fixtureMarkets: [{ fixture: 'f1', kickoff: fixture.kickoff, homeTeam: fixture.homeTeam, awayTeam: fixture.awayTeam }] } })
+    api.post.mockRejectedValue({ response: { data: { error: 'Match market limit reached', code: 'feature_limit_reached' } } })
+    const wrapper = mount(LeagueMarketsView, { global: { plugins: [i18n] } }); await flushPromises(); await wrapper.find('#league-match-panel button').trigger('click'); await flushPromises()
+    expect(wrapper.text()).toContain('Match market limit reached'); expect(wrapper.text()).toContain('View pricing')
+  })
+
   it('renders the current standings without generating a projection', async () => {
     api.get.mockImplementation((url) => url.endsWith('/table')
       ? Promise.resolve({ data: { standings: [{ teamId: '1', position: 1, played: 10, won: 8, drawn: 1, lost: 1, goalsFor: 20, goalsAgainst: 5, goalDifference: 15, points: 25, team: fixture.homeTeam }] } })
