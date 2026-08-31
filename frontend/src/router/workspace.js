@@ -18,6 +18,15 @@ export const WORKSPACE_ROUTE_NAMES = Object.freeze({
   swarm: 'competition-workspace-swarm',
 })
 
+export const HISTORIC_WORKSPACE_ROUTE_NAMES = Object.freeze({
+  overview: 'historic-competition-workspace-overview',
+  groups: 'historic-competition-workspace-groups',
+  predict: 'historic-competition-workspace-predict',
+  bracket: 'historic-competition-workspace-bracket',
+  markets: 'historic-competition-workspace-markets',
+  swarm: 'historic-competition-workspace-swarm',
+})
+
 export const LEAGUE_ROUTE_NAMES = Object.freeze({
   overview: 'league-workspace-overview',
   table: 'league-workspace-table',
@@ -33,8 +42,11 @@ export function workspaceLocation(area = 'overview', {
   competitionEditionSlug = DEFAULT_COMPETITION_EDITION_SLUG,
   query,
   hash,
+  historic = false,
 } = {}) {
-  const names = /^premier-league(?:-\d{4}-\d{2})?$/.test(competitionEditionSlug)
+  const names = (historic || competitionEditionSlug === 'world-cup-2026')
+    ? HISTORIC_WORKSPACE_ROUTE_NAMES
+    : /^premier-league(?:-\d{4}-\d{2})?$/.test(competitionEditionSlug)
     ? LEAGUE_ROUTE_NAMES
     : WORKSPACE_ROUTE_NAMES
   const name = names[area]
@@ -65,6 +77,7 @@ const AREA_CAPABILITIES = Object.freeze({ groups: 'groups', table: 'table', fixt
 export function workspaceSwitchLocation(route, edition) {
   if (!route?.meta?.competitionWorkspace || !edition?.slug) return null
   const area = Object.entries(WORKSPACE_ROUTE_NAMES).find(([, name]) => name === route.name)?.[0]
+    || Object.entries(HISTORIC_WORKSPACE_ROUTE_NAMES).find(([, name]) => name === route.name)?.[0]
     || Object.entries(LEAGUE_ROUTE_NAMES).find(([, name]) => name === route.name)?.[0]
     || 'overview'
   const selectedArea = area === 'overview' || supportsCapability(edition, AREA_CAPABILITIES[area]) ? area : 'overview'
@@ -73,5 +86,6 @@ export function workspaceSwitchLocation(route, edition) {
     competitionEditionSlug: edition.slug,
     query: route.query,
     hash: route.hash,
+    historic: Boolean(route.meta.historicWorkspace && edition.competitionId === 'fifa-world-cup'),
   })
 }

@@ -17,6 +17,7 @@ export function getCompetitionNavigation(edition, {
   locale,
   query,
   hash,
+  historic = false,
 } = {}) {
   if (!edition || typeof edition.slug !== 'string') return []
 
@@ -31,6 +32,7 @@ export function getCompetitionNavigation(edition, {
         competitionEditionSlug: edition.slug,
         query,
         hash,
+        historic,
       }),
     }))
 }

@@ -2,6 +2,10 @@ import { worldCup2026 } from './editions/worldCup2026.js'
 import { premierLeague202627 } from './editions/premierLeague202627.js'
 
 const editions = Object.freeze([worldCup2026, premierLeague202627])
+const visibleEditions = Object.freeze([
+  // worldCup2026 remains registered for historical routes, but is intentionally hidden from the active switcher.
+  premierLeague202627,
+])
 
 function copyEdition(edition) {
   return {
@@ -11,7 +15,7 @@ function copyEdition(edition) {
 }
 
 export function listCompetitionEditions() {
-  return editions.map(copyEdition)
+  return visibleEditions.map(copyEdition)
 }
 
 export function getCompetitionEdition(slug) {

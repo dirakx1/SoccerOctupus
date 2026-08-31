@@ -12,7 +12,7 @@ describe('Competition Workspace navigation', () => {
         capability: null,
         labelKey: 'navigation.workspace.overview',
         route: {
-          name: 'competition-workspace-overview',
+          name: 'historic-competition-workspace-overview',
           params: { locale: 'es', competitionEditionSlug: 'world-cup-2026' },
         },
       },
@@ -21,7 +21,7 @@ describe('Competition Workspace navigation', () => {
         capability: 'groups',
         labelKey: 'navigation.workspace.groups',
         route: {
-          name: 'competition-workspace-groups',
+          name: 'historic-competition-workspace-groups',
           params: { locale: 'es', competitionEditionSlug: 'world-cup-2026' },
         },
       },
@@ -30,7 +30,7 @@ describe('Competition Workspace navigation', () => {
         capability: 'predictions',
         labelKey: 'navigation.workspace.predict',
         route: {
-          name: 'competition-workspace-predict',
+          name: 'historic-competition-workspace-predict',
           params: { locale: 'es', competitionEditionSlug: 'world-cup-2026' },
         },
       },
@@ -39,7 +39,7 @@ describe('Competition Workspace navigation', () => {
         capability: 'bracket',
         labelKey: 'navigation.workspace.bracket',
         route: {
-          name: 'competition-workspace-bracket',
+          name: 'historic-competition-workspace-bracket',
           params: { locale: 'es', competitionEditionSlug: 'world-cup-2026' },
         },
       },
@@ -48,7 +48,7 @@ describe('Competition Workspace navigation', () => {
         capability: 'markets',
         labelKey: 'navigation.workspace.markets',
         route: {
-          name: 'competition-workspace-markets',
+          name: 'historic-competition-workspace-markets',
           params: { locale: 'es', competitionEditionSlug: 'world-cup-2026' },
         },
       },
@@ -57,7 +57,7 @@ describe('Competition Workspace navigation', () => {
         capability: 'swarm',
         labelKey: 'navigation.workspace.swarm',
         route: {
-          name: 'competition-workspace-swarm',
+          name: 'historic-competition-workspace-swarm',
           params: { locale: 'es', competitionEditionSlug: 'world-cup-2026' },
         },
       },

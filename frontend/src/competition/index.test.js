@@ -7,29 +7,22 @@ import {
 } from './index.js'
 
 describe('Competition Edition registry', () => {
-  it('lists the registered World Cup 2026 edition', () => {
-    expect(listCompetitionEditions()).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        id: 'fifa-world-cup-2026',
-        slug: 'world-cup-2026',
-      }),
-    ]))
+  it('lists only active editions for the visible competition switcher', () => {
+    expect(listCompetitionEditions()).toEqual([expect.objectContaining({
+      id: 'premier-league',
+      slug: 'premier-league',
+    })])
   })
 
-  it('describes the World Cup edition using stable domain identifiers and current capabilities', () => {
-    expect(listCompetitionEditions()[0]).toEqual({
-      id: 'fifa-world-cup-2026',
-      competitionId: 'fifa-world-cup',
-      slug: 'world-cup-2026',
-      format: 'group-and-knockout',
-      displayNameKey: 'competitions.editions.worldCup2026.name',
-      capabilities: ['groups', 'predictions', 'bracket', 'markets', 'swarm'],
+  it('keeps the World Cup registered for historical routes', () => {
+    expect(getCompetitionEdition('world-cup-2026')).toEqual({
+      id: 'fifa-world-cup-2026', competitionId: 'fifa-world-cup', slug: 'world-cup-2026', format: 'group-and-knockout', displayNameKey: 'competitions.editions.worldCup2026.name', capabilities: ['groups', 'predictions', 'bracket', 'markets', 'swarm'],
     })
   })
 
   it('resolves a Competition Edition by stable slug', () => {
-    expect(getCompetitionEdition('world-cup-2026')).toEqual(listCompetitionEditions()[0])
-    expect(getCompetitionEdition('premier-league')).toEqual(listCompetitionEditions()[1])
+    expect(getCompetitionEdition('world-cup-2026').slug).toBe('world-cup-2026')
+    expect(getCompetitionEdition('premier-league')).toEqual(listCompetitionEditions()[0])
   })
 
   it('returns null for blank and unknown Competition Edition slugs', () => {
@@ -74,7 +67,7 @@ describe('Competition Edition registry', () => {
       'markets',
       'swarm',
     ])
-    expect(listCompetitionEditions()).toHaveLength(2)
+    expect(listCompetitionEditions()).toHaveLength(1)
     expect(supportsCapability(resolvedEdition, 'table')).toBe(false)
   })
 })

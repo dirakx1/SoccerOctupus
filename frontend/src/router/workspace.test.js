@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { workspaceLocaleLocation, workspaceLocation, workspaceSwitchLocation } from './workspace.js'
+import { HISTORIC_WORKSPACE_ROUTE_NAMES, workspaceLocaleLocation, workspaceLocation, workspaceSwitchLocation } from './workspace.js'
 
 describe('Competition Workspace locale location', () => {
   it('preserves the named route, Competition Edition, query, and hash', () => {
@@ -43,7 +43,7 @@ describe('Competition Workspace locale location', () => {
       params: { locale: 'en', competitionEditionSlug: 'premier-league-2026-27' },
       query: {}, hash: '', meta: { competitionWorkspace: true },
     }, { id: 'fifa-world-cup-2026', slug: 'world-cup-2026', capabilities: ['groups', 'predictions', 'bracket', 'markets', 'swarm'] })
-    expect(target.name).toBe('competition-workspace-overview')
+    expect(target.name).toBe(HISTORIC_WORKSPACE_ROUTE_NAMES.overview)
   })
 
   it('routes the registered Premier League identity through the active alias', () => {
