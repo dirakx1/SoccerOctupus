@@ -1,0 +1,110 @@
+[
+  {
+    "id": "10382",
+    "name": "1. FC Magdeburg",
+    "abbreviation": "FCM",
+    "provider": "espn"
+  },
+  {
+    "id": "269",
+    "name": "1. FC Nürnberg",
+    "abbreviation": "FCN",
+    "provider": "espn"
+  },
+  {
+    "id": "122",
+    "name": "FC Cologne",
+    "abbreviation": "KOE",
+    "provider": "espn"
+  },
+  {
+    "id": "9707",
+    "name": "Fortuna Düsseldorf",
+    "abbreviation": "F95",
+    "provider": "espn"
+  },
+  {
+    "id": "127",
+    "name": "Hamburg SV",
+    "abbreviation": "HSV",
+    "provider": "espn"
+  },
+  {
+    "id": "2428",
+    "name": "Hannover 96",
+    "abbreviation": "H96",
+    "provider": "espn"
+  },
+  {
+    "id": "129",
+    "name": "Hertha Berlin",
+    "abbreviation": "BSC",
+    "provider": "espn"
+  },
+  {
+    "id": "130",
+    "name": "Kaiserslautern",
+    "abbreviation": "FCK",
+    "provider": "espn"
+  },
+  {
+    "id": "4471",
+    "name": "Karlsruher SC",
+    "abbreviation": "KSC",
+    "provider": "espn"
+  },
+  {
+    "id": "9867",
+    "name": "Preußen Münster",
+    "abbreviation": "PRM",
+    "provider": "espn"
+  },
+  {
+    "id": "3307",
+    "name": "SC Paderborn 07",
+    "abbreviation": "SCP",
+    "provider": "espn"
+  },
+  {
+    "id": "11017",
+    "name": "SSV Jahn Regensburg",
+    "abbreviation": "REG",
+    "provider": "espn"
+  },
+  {
+    "id": "15710",
+    "name": "SSV Ulm 1846",
+    "abbreviation": "ULM",
+    "provider": "espn"
+  },
+  {
+    "id": "3812",
+    "name": "SV Darmstadt 98",
+    "abbreviation": "SVD",
+    "provider": "espn"
+  },
+  {
+    "id": "10388",
+    "name": "SV Elversberg",
+    "abbreviation": "ELV",
+    "provider": "espn"
+  },
+  {
+    "id": "133",
+    "name": "Schalke 04",
+    "abbreviation": "S04",
+    "provider": "espn"
+  },
+  {
+    "id": "3070",
+    "name": "SpVgg Greuther Fürth",
+    "abbreviation": "SGF",
+    "provider": "espn"
+  },
+  {
+    "id": "3067",
+    "name": "TSV Eintracht Braunschweig",
+    "abbreviation": "EBS",
+    "provider": "espn"
+  }
+]

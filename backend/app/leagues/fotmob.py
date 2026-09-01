@@ -9,6 +9,7 @@ import random
 import re
 import tempfile
 import time
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -25,12 +26,41 @@ FOTMOB_HEADERS = {
     "Referer": "https://www.fotmob.com/",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36",
 }
-SEASON_IDS = {"2024-25": "2024/2025", "2025-26": "2025/2026"}
-MATCH_TOLERANCE = timedelta(minutes=5)
+SEASON_IDS = {"2023-24": "2023/2024", "2024-25": "2024/2025", "2025-26": "2025/2026"}
+FOTMOB_COMPETITIONS = {
+    "premier-league": {"id": 47, "name": "Premier League"},
+    "la-liga": {"id": 87, "name": "LaLiga"},
+    "bundesliga": {"id": 54, "name": "Bundesliga"},
+}
+TEAM_NAME_ALIASES = {
+    "la-liga": {
+        "deportivo alaves": "alaves",
+    },
+    "bundesliga": {
+        "1 fc koln": "fc cologne",
+        "augsburg": "fc augsburg",
+        "bayern munchen": "bayern munich",
+        "bochum": "vfl bochum",
+        "fc heidenheim": "1 fc heidenheim 1846",
+        "freiburg": "sc freiburg",
+        "hamburger sv": "hamburg sv",
+        "hoffenheim": "tsg hoffenheim",
+        "mainz 05": "mainz",
+        "union berlin": "1 fc union berlin",
+        "wolfsburg": "vfl wolfsburg",
+    },
+}
+MATCH_TOLERANCE = timedelta(minutes=15)
 
 
 def _name(value: Any) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", str(value or "").lower()).strip()
+    ascii_value = unicodedata.normalize("NFKD", str(value or "")).encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"[^a-z0-9]+", " ", ascii_value.lower()).strip()
+
+
+def _team_name(competition: str, value: Any) -> str:
+    normalized = _name(value)
+    return TEAM_NAME_ALIASES.get(competition, {}).get(normalized, normalized)
 
 
 def _dt(value: Any) -> datetime | None:
@@ -119,13 +149,17 @@ class FotMobHistoricalAuditor:
     def run(self, season, *, refresh: bool = False) -> dict[str, Any]:
         if season.season not in SEASON_IDS:
             raise ValueError(f"FotMob historical audit supports {', '.join(SEASON_IDS)}")
+        competition = getattr(season, "competition", "premier-league")
+        provider = FOTMOB_COMPETITIONS.get(competition)
+        if provider is None:
+            raise ValueError(f"FotMob historical audit does not support {competition}")
         path = season.directory / "fotmob.json"
         existing = {} if refresh or not path.exists() else json.loads(path.read_text(encoding="utf-8"))
         fetched_at = datetime.now(timezone.utc).isoformat()
-        payload = self._json(FOTMOB_LEAGUE_URL, params={"id": 47, "season": SEASON_IDS[season.season]})
+        payload = self._json(FOTMOB_LEAGUE_URL, params={"id": provider["id"], "season": SEASON_IDS[season.season]})
         details = payload.get("details", {}) if isinstance(payload, dict) else {}
-        if details.get("id") != 47 or details.get("name") != "Premier League" or details.get("selectedSeason") != SEASON_IDS[season.season]:
-            raise ValueError("FotMob response did not verify the requested Premier League season")
+        if details.get("id") != provider["id"] or details.get("name") != provider["name"] or details.get("selectedSeason") != SEASON_IDS[season.season]:
+            raise ValueError(f"FotMob response did not verify the requested {competition} season")
         matches = payload.get("fixtures", {}).get("allMatches", []) if isinstance(payload, dict) else []
         canonical = {_name(team["name"]): team for team in season.teams}
         provider_names: dict[str, str] = {}
@@ -139,7 +173,7 @@ class FotMobHistoricalAuditor:
         for item in matches if isinstance(matches, list) else []:
             home, away = item.get("home", {}), item.get("away", {})
             provider_id = str(item.get("id", ""))
-            home_name, away_name = _name(home.get("name")), _name(away.get("name"))
+            home_name, away_name = _team_name(competition, home.get("name")), _team_name(competition, away.get("name"))
             reason = None
             if not provider_id or home_name not in canonical or away_name not in canonical:
                 reason = "provider club identity did not uniquely match committed ESPN clubs"
@@ -160,7 +194,7 @@ class FotMobHistoricalAuditor:
                 home_id, away_id = canonical[home_name]["id"], canonical[away_name]["id"]
                 candidates = [fixture for fixture in by_pair.get((str(home_id), str(away_id)), ()) if abs(_dt(fixture["kickoff"]) - kickoff) <= MATCH_TOLERANCE]
                 if len(candidates) != 1:
-                    reason = "no unique ESPN fixture within five-minute kickoff tolerance"
+                    reason = "no unique ESPN fixture within fifteen-minute kickoff tolerance"
             if not reason and (candidates[0]["homeScore"], candidates[0]["awayScore"]) != score:
                 reason = "FotMob score conflicts with ESPN canonical score"
             if candidates:
@@ -212,7 +246,7 @@ class FotMobHistoricalAuditor:
         records.sort(key=lambda item: item["kickoff"])
         result = {
             "provider": "fotmob",
-            "competition": "premier-league",
+            "competition": competition,
             "season": season.season,
             "providerSeason": SEASON_IDS[season.season],
             "fetchedAt": fetched_at,
@@ -300,22 +334,55 @@ def _candidate_prediction(model: LeaguePredictionModel, fixture: dict[str, Any],
     expected = baseline["expectedGoals"]
     home_xg = min(4.0, max(0.2, expected["home"] * (1 + 0.2 * (factors[0] - 1))))
     away_xg = min(4.0, max(0.2, expected["away"] * (1 + 0.2 * (factors[1] - 1))))
-    return _outcomes(home_xg, away_xg)[0], True
+    rho = 0.0 if baseline.get("modelVersion") == "league-online-poisson-2026.1" else model._fit(kickoff)[4]
+    return _outcomes(home_xg, away_xg, rho)[0], True
 
 
-def admission_report(seasons: dict[str, Any]) -> dict[str, Any]:
+def admission_report(seasons: dict[str, Any], lower_seasons: dict[str, Any] | None = None) -> dict[str, Any]:
     """Evaluate a fixed xG/shots candidate, tuning nothing on the holdout."""
+    lower_seasons = lower_seasons or {}
     reports = {}
     holdout_baseline_rows: list[tuple[dict[str, float], str]] = []
     holdout_candidate_rows: list[tuple[dict[str, float], str]] = []
     for season_name, season in seasons.items():
-        audit = json.loads((season.directory / "fotmob.json").read_text(encoding="utf-8"))
+        audit_path = season.directory / "fotmob.json"
+        if not audit_path.exists():
+            continue
+        audit = json.loads(audit_path.read_text(encoding="utf-8"))
         records = {str(item["espnFixtureId"]): item for item in audit.get("fixtures", []) if item.get("stats")}
         promoted_ids = set(season.promoted_team_ids)
-        if season_name == "2025-26" and not promoted_ids and "2024-25" in seasons:
-            previous_ids = {str(team["id"]) for team in seasons["2024-25"].teams}
-            promoted_ids = {str(team["id"]) for team in season.teams} - previous_ids
-        model = LeaguePredictionModel(teams=season.teams, completed_fixtures=season.completed_fixtures, promoted_team_ids=promoted_ids)
+        previous_names = sorted(name for name in seasons if name < season_name)
+        lower_name = previous_names[-1] if previous_names else None
+        lower = lower_seasons.get(lower_name) if lower_name else None
+        if not promoted_ids and previous_names:
+            previous_ids = {str(team["id"]) for team in seasons[previous_names[-1]].teams}
+            lower_ids = {str(team["id"]) for team in lower.teams} if lower else set()
+            promoted_ids = ({str(team["id"]) for team in season.teams} - previous_ids) & lower_ids
+        competition = season.competition
+        historical = [
+            {**fixture, "_competition": competition, "_season": prior_name}
+            for prior_name, prior in seasons.items()
+            if prior_name < season_name
+            for fixture in prior.fixtures
+            if fixture.get("status") == "completed"
+        ]
+        if lower is not None:
+            historical.extend(
+                {**fixture, "_competition": lower.competition, "_season": lower.season}
+                for fixture in lower.fixtures
+                if fixture.get("status") == "completed"
+            )
+        current = [
+            {**fixture, "_competition": competition, "_season": season_name}
+            for fixture in season.fixtures
+            if fixture.get("status") == "completed"
+        ]
+        model = LeaguePredictionModel(
+            teams=season.teams,
+            completed_fixtures=historical + current,
+            promoted_team_ids=promoted_ids,
+            competition=competition,
+        )
         baseline_rows: list[tuple[dict[str, float], str]] = []
         candidate_rows: list[tuple[dict[str, float], str]] = []
         promoted_baseline_rows: list[tuple[dict[str, float], str]] = []
@@ -365,7 +432,8 @@ def admission_report(seasons: dict[str, Any]) -> dict[str, Any]:
         and holdout_bootstrap["brierCI95"][0] > 0
     )
     return {
-        "version": "fotmob-admission-2026.1",
+        "version": "fotmob-admission-2026.2",
+        "competition": next(iter(seasons.values())).competition if seasons else None,
         "provider": "FotMob",
         "featureSet": "rolling five-match xG/shots, 20% bounded blend",
         "developmentSeason": "2024-25",

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "392",
+    "name": "Birmingham City",
+    "abbreviation": "BIR",
+    "provider": "espn"
+  },
+  {
+    "id": "365",
+    "name": "Blackburn Rovers",
+    "abbreviation": "BLK",
+    "provider": "espn"
+  },
+  {
+    "id": "333",
+    "name": "Bristol City",
+    "abbreviation": "BRC",
+    "provider": "espn"
+  },
+  {
+    "id": "347",
+    "name": "Cardiff City",
+    "abbreviation": "CAR",
+    "provider": "espn"
+  },
+  {
+    "id": "388",
+    "name": "Coventry City",
+    "abbreviation": "COV",
+    "provider": "espn"
+  },
+  {
+    "id": "335",
+    "name": "Huddersfield Town",
+    "abbreviation": "HUD",
+    "provider": "espn"
+  },
+  {
+    "id": "306",
+    "name": "Hull City",
+    "abbreviation": "HUL",
+    "provider": "espn"
+  },
+  {
+    "id": "373",
+    "name": "Ipswich Town",
+    "abbreviation": "IPS",
+    "provider": "espn"
+  },
+  {
+    "id": "357",
+    "name": "Leeds United",
+    "abbreviation": "LEE",
+    "provider": "espn"
+  },
+  {
+    "id": "375",
+    "name": "Leicester City",
+    "abbreviation": "LEI",
+    "provider": "espn"
+  },
+  {
+    "id": "369",
+    "name": "Middlesbrough",
+    "abbreviation": "MID",
+    "provider": "espn"
+  },
+  {
+    "id": "391",
+    "name": "Millwall",
+    "abbreviation": "MIL",
+    "provider": "espn"
+  },
+  {
+    "id": "381",
+    "name": "Norwich City",
+    "abbreviation": "NOR",
+    "provider": "espn"
+  },
+  {
+    "id": "307",
+    "name": "Plymouth Argyle",
+    "abbreviation": "PLY",
+    "provider": "espn"
+  },
+  {
+    "id": "394",
+    "name": "Preston North End",
+    "abbreviation": "PNE",
+    "provider": "espn"
+  },
+  {
+    "id": "334",
+    "name": "Queens Park Rangers",
+    "abbreviation": "QPR",
+    "provider": "espn"
+  },
+  {
+    "id": "402",
+    "name": "Rotherham United",
+    "abbreviation": "ROT",
+    "provider": "espn"
+  },
+  {
+    "id": "399",
+    "name": "Sheffield Wednesday",
+    "abbreviation": "SHW",
+    "provider": "espn"
+  },
+  {
+    "id": "376",
+    "name": "Southampton",
+    "abbreviation": "SOU",
+    "provider": "espn"
+  },
+  {
+    "id": "336",
+    "name": "Stoke City",
+    "abbreviation": "STK",
+    "provider": "espn"
+  },
+  {
+    "id": "366",
+    "name": "Sunderland",
+    "abbreviation": "SUN",
+    "provider": "espn"
+  },
+  {
+    "id": "318",
+    "name": "Swansea City",
+    "abbreviation": "SWA",
+    "provider": "espn"
+  },
+  {
+    "id": "395",
+    "name": "Watford",
+    "abbreviation": "WAT",
+    "provider": "espn"
+  },
+  {
+    "id": "383",
+    "name": "West Bromwich Albion",
+    "abbreviation": "WBA",
+    "provider": "espn"
+  }
+]

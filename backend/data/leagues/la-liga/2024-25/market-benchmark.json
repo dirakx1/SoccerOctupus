@@ -1,0 +1,7233 @@
+{
+  "competition": "la-liga",
+  "fixtureCount": 380,
+  "fixtures": [
+    {
+      "actual": "draw",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.137086,
+        "draw": 0.262842,
+        "home": 0.600073,
+        "margin": 0.048091
+      },
+      "fixtureId": "704660",
+      "homeTeamId": "93",
+      "kickoff": "2024-08-15T17:00:00+00:00",
+      "opening": {
+        "away": 0.126208,
+        "draw": 0.237734,
+        "home": 0.636057,
+        "margin": 0.041182
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.308734,
+        "draw": 0.283999,
+        "home": 0.407267,
+        "margin": 0.044848
+      },
+      "fixtureId": "704665",
+      "homeTeamId": "244",
+      "kickoff": "2024-08-15T19:30:00+00:00",
+      "opening": {
+        "away": 0.317277,
+        "draw": 0.283484,
+        "home": 0.39924,
+        "margin": 0.04365
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.248173,
+        "draw": 0.295662,
+        "home": 0.456165,
+        "margin": 0.0439
+      },
+      "fixtureId": "704661",
+      "homeTeamId": "85",
+      "kickoff": "2024-08-16T17:00:00+00:00",
+      "opening": {
+        "away": 0.238599,
+        "draw": 0.288906,
+        "home": 0.472496,
+        "margin": 0.042572
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.338862,
+        "draw": 0.30062,
+        "home": 0.360518,
+        "margin": 0.042776
+      },
+      "fixtureId": "704662",
+      "homeTeamId": "98",
+      "kickoff": "2024-08-16T19:30:00+00:00",
+      "opening": {
+        "away": 0.362064,
+        "draw": 0.2989,
+        "home": 0.339035,
+        "margin": 0.042242
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.194544,
+        "draw": 0.293607,
+        "home": 0.511849,
+        "margin": 0.04476
+      },
+      "fixtureId": "704664",
+      "homeTeamId": "97",
+      "kickoff": "2024-08-17T17:00:00+00:00",
+      "opening": {
+        "away": 0.213433,
+        "draw": 0.27796,
+        "home": 0.508607,
+        "margin": 0.045827
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.520864,
+        "draw": 0.256254,
+        "home": 0.222881,
+        "margin": 0.043416
+      },
+      "fixtureId": "704668",
+      "homeTeamId": "94",
+      "kickoff": "2024-08-17T19:30:00+00:00",
+      "opening": {
+        "away": 0.550916,
+        "draw": 0.247699,
+        "home": 0.201385,
+        "margin": 0.043195
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.177852,
+        "draw": 0.282564,
+        "home": 0.539585,
+        "margin": 0.047049
+      },
+      "fixtureId": "704666",
+      "homeTeamId": "89",
+      "kickoff": "2024-08-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.14404,
+        "draw": 0.255343,
+        "home": 0.600618,
+        "margin": 0.04714
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.692397,
+        "draw": 0.197012,
+        "home": 0.110591,
+        "margin": 0.046564
+      },
+      "fixtureId": "704663",
+      "homeTeamId": "84",
+      "kickoff": "2024-08-18T19:30:00+00:00",
+      "opening": {
+        "away": 0.649665,
+        "draw": 0.220048,
+        "home": 0.130287,
+        "margin": 0.047113
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.256914,
+        "draw": 0.328673,
+        "home": 0.414413,
+        "margin": 0.049152
+      },
+      "fixtureId": "704667",
+      "homeTeamId": "95",
+      "kickoff": "2024-08-19T17:00:00+00:00",
+      "opening": {
+        "away": 0.286314,
+        "draw": 0.30848,
+        "home": 0.405207,
+        "margin": 0.045711
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.458645,
+        "draw": 0.267222,
+        "home": 0.274133,
+        "margin": 0.048238
+      },
+      "fixtureId": "704669",
+      "homeTeamId": "102",
+      "kickoff": "2024-08-19T19:30:00+00:00",
+      "opening": {
+        "away": 0.451611,
+        "draw": 0.260876,
+        "home": 0.287512,
+        "margin": 0.044478
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.271705,
+        "draw": 0.286304,
+        "home": 0.44199,
+        "margin": 0.042623
+      },
+      "fixtureId": "704673",
+      "homeTeamId": "85",
+      "kickoff": "2024-08-23T17:00:00+00:00",
+      "opening": {
+        "away": 0.262381,
+        "draw": 0.285878,
+        "home": 0.451741,
+        "margin": 0.044178
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.297417,
+        "draw": 0.265286,
+        "home": 0.437298,
+        "margin": 0.044188
+      },
+      "fixtureId": "704678",
+      "homeTeamId": "243",
+      "kickoff": "2024-08-23T19:30:00+00:00",
+      "opening": {
+        "away": 0.332086,
+        "draw": 0.269411,
+        "home": 0.398503,
+        "margin": 0.045579
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.287703,
+        "draw": 0.308055,
+        "home": 0.404241,
+        "margin": 0.043785
+      },
+      "fixtureId": "704676",
+      "homeTeamId": "97",
+      "kickoff": "2024-08-24T15:00:00+00:00",
+      "opening": {
+        "away": 0.296436,
+        "draw": 0.317117,
+        "home": 0.386447,
+        "margin": 0.047643
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.175407,
+        "draw": 0.223357,
+        "home": 0.601237,
+        "margin": 0.046062
+      },
+      "fixtureId": "704672",
+      "homeTeamId": "83",
+      "kickoff": "2024-08-24T17:00:00+00:00",
+      "opening": {
+        "away": 0.189129,
+        "draw": 0.228493,
+        "home": 0.582378,
+        "margin": 0.04701
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.443632,
+        "draw": 0.308118,
+        "home": 0.24825,
+        "margin": 0.043574
+      },
+      "fixtureId": "704679",
+      "homeTeamId": "88",
+      "kickoff": "2024-08-24T19:30:00+00:00",
+      "opening": {
+        "away": 0.455389,
+        "draw": 0.305532,
+        "home": 0.239079,
+        "margin": 0.045679
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.297572,
+        "draw": 0.342208,
+        "home": 0.360219,
+        "margin": 0.043642
+      },
+      "fixtureId": "704674",
+      "homeTeamId": "2922",
+      "kickoff": "2024-08-24T19:30:00+00:00",
+      "opening": {
+        "away": 0.292053,
+        "draw": 0.325943,
+        "home": 0.382005,
+        "margin": 0.047107
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.050734,
+        "draw": 0.105474,
+        "home": 0.843792,
+        "margin": 0.039585
+      },
+      "fixtureId": "704677",
+      "homeTeamId": "86",
+      "kickoff": "2024-08-25T15:00:00+00:00",
+      "opening": {
+        "away": 0.063006,
+        "draw": 0.120075,
+        "home": 0.816919,
+        "margin": 0.046249
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.283674,
+        "draw": 0.321751,
+        "home": 0.394575,
+        "margin": 0.042951
+      },
+      "fixtureId": "704675",
+      "homeTeamId": "17534",
+      "kickoff": "2024-08-25T17:00:00+00:00",
+      "opening": {
+        "away": 0.26268,
+        "draw": 0.319785,
+        "home": 0.417535,
+        "margin": 0.045855
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.28918,
+        "draw": 0.321311,
+        "home": 0.389508,
+        "margin": 0.047894
+      },
+      "fixtureId": "704670",
+      "homeTeamId": "96",
+      "kickoff": "2024-08-25T17:15:00+00:00",
+      "opening": {
+        "away": 0.297058,
+        "draw": 0.305627,
+        "home": 0.397315,
+        "margin": 0.048706
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.148449,
+        "draw": 0.205595,
+        "home": 0.645956,
+        "margin": 0.046009
+      },
+      "fixtureId": "704671",
+      "homeTeamId": "1068",
+      "kickoff": "2024-08-25T19:30:00+00:00",
+      "opening": {
+        "away": 0.179781,
+        "draw": 0.223569,
+        "home": 0.59665,
+        "margin": 0.047516
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.19505,
+        "draw": 0.228023,
+        "home": 0.576926,
+        "margin": 0.044171
+      },
+      "fixtureId": "704688",
+      "homeTeamId": "102",
+      "kickoff": "2024-08-26T19:30:00+00:00",
+      "opening": {
+        "away": 0.248632,
+        "draw": 0.26679,
+        "home": 0.484578,
+        "margin": 0.052883
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.284711,
+        "draw": 0.301722,
+        "home": 0.413567,
+        "margin": 0.042236
+      },
+      "fixtureId": "704689",
+      "homeTeamId": "84",
+      "kickoff": "2024-08-27T17:00:00+00:00",
+      "opening": {
+        "away": 0.294037,
+        "draw": 0.308219,
+        "home": 0.397743,
+        "margin": 0.04323
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.575676,
+        "draw": 0.241552,
+        "home": 0.182772,
+        "margin": 0.040173
+      },
+      "fixtureId": "704685",
+      "homeTeamId": "101",
+      "kickoff": "2024-08-27T19:30:00+00:00",
+      "opening": {
+        "away": 0.577468,
+        "draw": 0.242683,
+        "home": 0.179849,
+        "margin": 0.043191
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.186426,
+        "draw": 0.259683,
+        "home": 0.553891,
+        "margin": 0.04359
+      },
+      "fixtureId": "704680",
+      "homeTeamId": "93",
+      "kickoff": "2024-08-28T17:00:00+00:00",
+      "opening": {
+        "away": 0.162142,
+        "draw": 0.246339,
+        "home": 0.591519,
+        "margin": 0.043558
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.247238,
+        "draw": 0.318698,
+        "home": 0.434064,
+        "margin": 0.042447
+      },
+      "fixtureId": "704684",
+      "homeTeamId": "95",
+      "kickoff": "2024-08-28T17:00:00+00:00",
+      "opening": {
+        "away": 0.267919,
+        "draw": 0.318654,
+        "home": 0.413427,
+        "margin": 0.04259
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.073053,
+        "draw": 0.166851,
+        "home": 0.760097,
+        "margin": 0.044144
+      },
+      "fixtureId": "704681",
+      "homeTeamId": "1068",
+      "kickoff": "2024-08-28T19:30:00+00:00",
+      "opening": {
+        "away": 0.085325,
+        "draw": 0.176946,
+        "home": 0.737729,
+        "margin": 0.042701
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.145252,
+        "draw": 0.254673,
+        "home": 0.600074,
+        "margin": 0.041538
+      },
+      "fixtureId": "704687",
+      "homeTeamId": "89",
+      "kickoff": "2024-08-28T19:30:00+00:00",
+      "opening": {
+        "away": 0.170124,
+        "draw": 0.268767,
+        "home": 0.56111,
+        "margin": 0.042212
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.191483,
+        "draw": 0.24313,
+        "home": 0.565386,
+        "margin": 0.04657
+      },
+      "fixtureId": "704682",
+      "homeTeamId": "9812",
+      "kickoff": "2024-08-29T17:00:00+00:00",
+      "opening": {
+        "away": 0.209721,
+        "draw": 0.241126,
+        "home": 0.549153,
+        "margin": 0.052592
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.719996,
+        "draw": 0.174425,
+        "home": 0.105578,
+        "margin": 0.044283
+      },
+      "fixtureId": "704683",
+      "homeTeamId": "98",
+      "kickoff": "2024-08-29T19:30:00+00:00",
+      "opening": {
+        "away": 0.692806,
+        "draw": 0.187834,
+        "home": 0.11936,
+        "margin": 0.045945
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.072738,
+        "draw": 0.131995,
+        "home": 0.795268,
+        "margin": 0.047865
+      },
+      "fixtureId": "704692",
+      "homeTeamId": "83",
+      "kickoff": "2024-08-31T15:00:00+00:00",
+      "opening": {
+        "away": 0.082014,
+        "draw": 0.149024,
+        "home": 0.768962,
+        "margin": 0.040363
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.362955,
+        "draw": 0.294831,
+        "home": 0.342214,
+        "margin": 0.043623
+      },
+      "fixtureId": "704691",
+      "homeTeamId": "93",
+      "kickoff": "2024-08-31T17:00:00+00:00",
+      "opening": {
+        "away": 0.3945,
+        "draw": 0.287017,
+        "home": 0.318483,
+        "margin": 0.04315
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.327865,
+        "draw": 0.328992,
+        "home": 0.343142,
+        "margin": 0.044531
+      },
+      "fixtureId": "704698",
+      "homeTeamId": "88",
+      "kickoff": "2024-08-31T17:15:00+00:00",
+      "opening": {
+        "away": 0.337966,
+        "draw": 0.316774,
+        "home": 0.34526,
+        "margin": 0.041858
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.314783,
+        "draw": 0.349375,
+        "home": 0.335842,
+        "margin": 0.048446
+      },
+      "fixtureId": "704696",
+      "homeTeamId": "17534",
+      "kickoff": "2024-08-31T19:30:00+00:00",
+      "opening": {
+        "away": 0.293692,
+        "draw": 0.331163,
+        "home": 0.375145,
+        "margin": 0.041263
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.347336,
+        "draw": 0.29227,
+        "home": 0.360394,
+        "margin": 0.043137
+      },
+      "fixtureId": "704694",
+      "homeTeamId": "94",
+      "kickoff": "2024-08-31T19:30:00+00:00",
+      "opening": {
+        "away": 0.384837,
+        "draw": 0.277752,
+        "home": 0.33741,
+        "margin": 0.043574
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.183514,
+        "draw": 0.268054,
+        "home": 0.548432,
+        "margin": 0.047919
+      },
+      "fixtureId": "704690",
+      "homeTeamId": "96",
+      "kickoff": "2024-09-01T15:00:00+00:00",
+      "opening": {
+        "away": 0.225376,
+        "draw": 0.285925,
+        "home": 0.488699,
+        "margin": 0.044006
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.324654,
+        "draw": 0.293782,
+        "home": 0.381565,
+        "margin": 0.044138
+      },
+      "fixtureId": "704695",
+      "homeTeamId": "97",
+      "kickoff": "2024-09-01T15:00:00+00:00",
+      "opening": {
+        "away": 0.320639,
+        "draw": 0.289641,
+        "home": 0.38972,
+        "margin": 0.043067
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.397245,
+        "draw": 0.264464,
+        "home": 0.33829,
+        "margin": 0.044538
+      },
+      "fixtureId": "704697",
+      "homeTeamId": "243",
+      "kickoff": "2024-09-01T17:00:00+00:00",
+      "opening": {
+        "away": 0.339454,
+        "draw": 0.256638,
+        "home": 0.403908,
+        "margin": 0.044647
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.344282,
+        "draw": 0.351876,
+        "home": 0.303842,
+        "margin": 0.04482
+      },
+      "fixtureId": "704693",
+      "homeTeamId": "2922",
+      "kickoff": "2024-09-01T17:15:00+00:00",
+      "opening": {
+        "away": 0.394162,
+        "draw": 0.333733,
+        "home": 0.272106,
+        "margin": 0.044046
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.080096,
+        "draw": 0.15291,
+        "home": 0.766995,
+        "margin": 0.043032
+      },
+      "fixtureId": "704699",
+      "homeTeamId": "86",
+      "kickoff": "2024-09-01T19:30:00+00:00",
+      "opening": {
+        "away": 0.094299,
+        "draw": 0.162271,
+        "home": 0.743429,
+        "margin": 0.042727
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.159863,
+        "draw": 0.266735,
+        "home": 0.573401,
+        "margin": 0.044299
+      },
+      "fixtureId": "704707",
+      "homeTeamId": "244",
+      "kickoff": "2024-09-13T19:00:00+00:00",
+      "opening": {
+        "away": 0.158686,
+        "draw": 0.258504,
+        "home": 0.58281,
+        "margin": 0.039894
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.298426,
+        "draw": 0.295663,
+        "home": 0.40591,
+        "margin": 0.043897
+      },
+      "fixtureId": "704709",
+      "homeTeamId": "84",
+      "kickoff": "2024-09-14T12:00:00+00:00",
+      "opening": {
+        "away": 0.323709,
+        "draw": 0.293021,
+        "home": 0.383271,
+        "margin": 0.043648
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.353576,
+        "draw": 0.319397,
+        "home": 0.327027,
+        "margin": 0.043634
+      },
+      "fixtureId": "704701",
+      "homeTeamId": "88",
+      "kickoff": "2024-09-14T14:15:00+00:00",
+      "opening": {
+        "away": 0.334448,
+        "draw": 0.31266,
+        "home": 0.352892,
+        "margin": 0.041812
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.260242,
+        "draw": 0.31485,
+        "home": 0.424908,
+        "margin": 0.041349
+      },
+      "fixtureId": "704702",
+      "homeTeamId": "243",
+      "kickoff": "2024-09-14T16:30:00+00:00",
+      "opening": {
+        "away": 0.26189,
+        "draw": 0.3102,
+        "home": 0.42791,
+        "margin": 0.043277
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.54369,
+        "draw": 0.25654,
+        "home": 0.199769,
+        "margin": 0.045047
+      },
+      "fixtureId": "704704",
+      "homeTeamId": "89",
+      "kickoff": "2024-09-14T19:00:00+00:00",
+      "opening": {
+        "away": 0.563513,
+        "draw": 0.247538,
+        "home": 0.188949,
+        "margin": 0.043872
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.178398,
+        "draw": 0.242079,
+        "home": 0.579523,
+        "margin": 0.045792
+      },
+      "fixtureId": "704706",
+      "homeTeamId": "85",
+      "kickoff": "2024-09-15T12:00:00+00:00",
+      "opening": {
+        "away": 0.189162,
+        "draw": 0.241099,
+        "home": 0.569739,
+        "margin": 0.044756
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.550069,
+        "draw": 0.227345,
+        "home": 0.222586,
+        "margin": 0.0448
+      },
+      "fixtureId": "704703",
+      "homeTeamId": "9812",
+      "kickoff": "2024-09-15T14:15:00+00:00",
+      "opening": {
+        "away": 0.521432,
+        "draw": 0.241671,
+        "home": 0.236897,
+        "margin": 0.042281
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.477551,
+        "draw": 0.280666,
+        "home": 0.241783,
+        "margin": 0.041799
+      },
+      "fixtureId": "704700",
+      "homeTeamId": "98",
+      "kickoff": "2024-09-15T16:30:00+00:00",
+      "opening": {
+        "away": 0.469132,
+        "draw": 0.279018,
+        "home": 0.25185,
+        "margin": 0.044899
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.097078,
+        "draw": 0.193177,
+        "home": 0.709746,
+        "margin": 0.043671
+      },
+      "fixtureId": "704705",
+      "homeTeamId": "1068",
+      "kickoff": "2024-09-15T19:00:00+00:00",
+      "opening": {
+        "away": 0.09751,
+        "draw": 0.192474,
+        "home": 0.710016,
+        "margin": 0.043273
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.241672,
+        "draw": 0.303619,
+        "home": 0.454709,
+        "margin": 0.042279
+      },
+      "fixtureId": "704708",
+      "homeTeamId": "101",
+      "kickoff": "2024-09-16T19:00:00+00:00",
+      "opening": {
+        "away": 0.242306,
+        "draw": 0.301927,
+        "home": 0.455766,
+        "margin": 0.044812
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.319616,
+        "draw": 0.36183,
+        "home": 0.318554,
+        "margin": 0.042918
+      },
+      "fixtureId": "704723",
+      "homeTeamId": "84",
+      "kickoff": "2024-09-17T17:00:00+00:00",
+      "opening": {
+        "away": 0.32679,
+        "draw": 0.340746,
+        "home": 0.332464,
+        "margin": 0.044391
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.18952,
+        "draw": 0.306755,
+        "home": 0.503725,
+        "margin": 0.044848
+      },
+      "fixtureId": "704686",
+      "homeTeamId": "244",
+      "kickoff": "2024-09-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.206189,
+        "draw": 0.310622,
+        "home": 0.48319,
+        "margin": 0.045243
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.454556,
+        "draw": 0.316539,
+        "home": 0.228905,
+        "margin": 0.04263
+      },
+      "fixtureId": "704726",
+      "homeTeamId": "17534",
+      "kickoff": "2024-09-19T17:00:00+00:00",
+      "opening": {
+        "away": 0.461543,
+        "draw": 0.301386,
+        "home": 0.237071,
+        "margin": 0.046688
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.261843,
+        "draw": 0.29855,
+        "home": 0.439608,
+        "margin": 0.043466
+      },
+      "fixtureId": "704710",
+      "homeTeamId": "96",
+      "kickoff": "2024-09-20T19:00:00+00:00",
+      "opening": {
+        "away": 0.264646,
+        "draw": 0.294682,
+        "home": 0.440672,
+        "margin": 0.040946
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.443805,
+        "draw": 0.315335,
+        "home": 0.240859,
+        "margin": 0.043167
+      },
+      "fixtureId": "704716",
+      "homeTeamId": "95",
+      "kickoff": "2024-09-21T12:00:00+00:00",
+      "opening": {
+        "away": 0.436454,
+        "draw": 0.311347,
+        "home": 0.252199,
+        "margin": 0.046206
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.213834,
+        "draw": 0.268341,
+        "home": 0.517825,
+        "margin": 0.043867
+      },
+      "fixtureId": "704712",
+      "homeTeamId": "97",
+      "kickoff": "2024-09-21T14:15:00+00:00",
+      "opening": {
+        "away": 0.221536,
+        "draw": 0.278853,
+        "home": 0.499611,
+        "margin": 0.042478
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.322931,
+        "draw": 0.302621,
+        "home": 0.374449,
+        "margin": 0.039141
+      },
+      "fixtureId": "704715",
+      "homeTeamId": "94",
+      "kickoff": "2024-09-21T16:30:00+00:00",
+      "opening": {
+        "away": 0.382005,
+        "draw": 0.286219,
+        "home": 0.331776,
+        "margin": 0.042935
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.047053,
+        "draw": 0.102625,
+        "home": 0.850322,
+        "margin": 0.050023
+      },
+      "fixtureId": "704717",
+      "homeTeamId": "86",
+      "kickoff": "2024-09-21T19:00:00+00:00",
+      "opening": {
+        "away": 0.056965,
+        "draw": 0.118518,
+        "home": 0.824517,
+        "margin": 0.045544
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.188488,
+        "draw": 0.344431,
+        "home": 0.467082,
+        "margin": 0.044368
+      },
+      "fixtureId": "704713",
+      "homeTeamId": "2922",
+      "kickoff": "2024-09-22T12:00:00+00:00",
+      "opening": {
+        "away": 0.200679,
+        "draw": 0.332375,
+        "home": 0.466946,
+        "margin": 0.044671
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.20202,
+        "draw": 0.265993,
+        "home": 0.531987,
+        "margin": 0.044304
+      },
+      "fixtureId": "704719",
+      "homeTeamId": "93",
+      "kickoff": "2024-09-22T14:15:00+00:00",
+      "opening": {
+        "away": 0.198245,
+        "draw": 0.241799,
+        "home": 0.559956,
+        "margin": 0.04436
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.505271,
+        "draw": 0.239405,
+        "home": 0.255323,
+        "margin": 0.04165
+      },
+      "fixtureId": "704711",
+      "homeTeamId": "102",
+      "kickoff": "2024-09-22T16:30:00+00:00",
+      "opening": {
+        "away": 0.510931,
+        "draw": 0.233604,
+        "home": 0.255465,
+        "margin": 0.046638
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.549876,
+        "draw": 0.270278,
+        "home": 0.179847,
+        "margin": 0.045168
+      },
+      "fixtureId": "704714",
+      "homeTeamId": "101",
+      "kickoff": "2024-09-22T19:00:00+00:00",
+      "opening": {
+        "away": 0.52852,
+        "draw": 0.271768,
+        "home": 0.199712,
+        "margin": 0.045345
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.185294,
+        "draw": 0.300665,
+        "home": 0.514041,
+        "margin": 0.045898
+      },
+      "fixtureId": "704718",
+      "homeTeamId": "244",
+      "kickoff": "2024-09-23T19:00:00+00:00",
+      "opening": {
+        "away": 0.202415,
+        "draw": 0.291011,
+        "home": 0.506574,
+        "margin": 0.044468
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.159389,
+        "draw": 0.245623,
+        "home": 0.594988,
+        "margin": 0.043918
+      },
+      "fixtureId": "704727",
+      "homeTeamId": "243",
+      "kickoff": "2024-09-24T17:00:00+00:00",
+      "opening": {
+        "away": 0.176459,
+        "draw": 0.251098,
+        "home": 0.572443,
+        "margin": 0.039821
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.216178,
+        "draw": 0.304989,
+        "home": 0.478833,
+        "margin": 0.044205
+      },
+      "fixtureId": "704729",
+      "homeTeamId": "94",
+      "kickoff": "2024-09-24T17:00:00+00:00",
+      "opening": {
+        "away": 0.235146,
+        "draw": 0.303606,
+        "home": 0.461248,
+        "margin": 0.042323
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.053029,
+        "draw": 0.120448,
+        "home": 0.826523,
+        "margin": 0.043007
+      },
+      "fixtureId": "704724",
+      "homeTeamId": "86",
+      "kickoff": "2024-09-24T19:00:00+00:00",
+      "opening": {
+        "away": 0.060182,
+        "draw": 0.130652,
+        "home": 0.809166,
+        "margin": 0.038521
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.185527,
+        "draw": 0.248011,
+        "home": 0.566462,
+        "margin": 0.044582
+      },
+      "fixtureId": "704722",
+      "homeTeamId": "9812",
+      "kickoff": "2024-09-25T17:00:00+00:00",
+      "opening": {
+        "away": 0.205304,
+        "draw": 0.251107,
+        "home": 0.543589,
+        "margin": 0.045241
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.080617,
+        "draw": 0.153846,
+        "home": 0.765537,
+        "margin": 0.045018
+      },
+      "fixtureId": "704720",
+      "homeTeamId": "83",
+      "kickoff": "2024-09-25T19:00:00+00:00",
+      "opening": {
+        "away": 0.07455,
+        "draw": 0.147832,
+        "home": 0.777619,
+        "margin": 0.04551
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.454778,
+        "draw": 0.271836,
+        "home": 0.273385,
+        "margin": 0.04212
+      },
+      "fixtureId": "704728",
+      "homeTeamId": "88",
+      "kickoff": "2024-09-26T17:00:00+00:00",
+      "opening": {
+        "away": 0.439555,
+        "draw": 0.276945,
+        "home": 0.2835,
+        "margin": 0.043591
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.449539,
+        "draw": 0.286682,
+        "home": 0.263779,
+        "margin": 0.044367
+      },
+      "fixtureId": "704725",
+      "homeTeamId": "98",
+      "kickoff": "2024-09-26T17:00:00+00:00",
+      "opening": {
+        "away": 0.396593,
+        "draw": 0.294089,
+        "home": 0.309317,
+        "margin": 0.046255
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.502031,
+        "draw": 0.266355,
+        "home": 0.231613,
+        "margin": 0.042884
+      },
+      "fixtureId": "704721",
+      "homeTeamId": "85",
+      "kickoff": "2024-09-26T19:00:00+00:00",
+      "opening": {
+        "away": 0.493445,
+        "draw": 0.255958,
+        "home": 0.250598,
+        "margin": 0.044624
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.380082,
+        "draw": 0.331421,
+        "home": 0.288496,
+        "margin": 0.044051
+      },
+      "fixtureId": "704738",
+      "homeTeamId": "95",
+      "kickoff": "2024-09-27T19:00:00+00:00",
+      "opening": {
+        "away": 0.352656,
+        "draw": 0.330767,
+        "home": 0.316576,
+        "margin": 0.042508
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.2726,
+        "draw": 0.349207,
+        "home": 0.378193,
+        "margin": 0.045121
+      },
+      "fixtureId": "704733",
+      "homeTeamId": "2922",
+      "kickoff": "2024-09-28T12:00:00+00:00",
+      "opening": {
+        "away": 0.293152,
+        "draw": 0.342359,
+        "home": 0.364489,
+        "margin": 0.043181
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.179901,
+        "draw": 0.307332,
+        "home": 0.512767,
+        "margin": 0.042889
+      },
+      "fixtureId": "704735",
+      "homeTeamId": "101",
+      "kickoff": "2024-09-28T14:15:00+00:00",
+      "opening": {
+        "away": 0.200218,
+        "draw": 0.305428,
+        "home": 0.494353,
+        "margin": 0.042704
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.188098,
+        "draw": 0.293363,
+        "home": 0.518539,
+        "margin": 0.042429
+      },
+      "fixtureId": "704737",
+      "homeTeamId": "89",
+      "kickoff": "2024-09-28T16:30:00+00:00",
+      "opening": {
+        "away": 0.207335,
+        "draw": 0.291152,
+        "home": 0.501513,
+        "margin": 0.043962
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.542203,
+        "draw": 0.243578,
+        "home": 0.214219,
+        "margin": 0.041993
+      },
+      "fixtureId": "704739",
+      "homeTeamId": "97",
+      "kickoff": "2024-09-28T19:00:00+00:00",
+      "opening": {
+        "away": 0.649675,
+        "draw": 0.200635,
+        "home": 0.14969,
+        "margin": 0.047096
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.349762,
+        "draw": 0.280219,
+        "home": 0.370019,
+        "margin": 0.043462
+      },
+      "fixtureId": "704732",
+      "homeTeamId": "85",
+      "kickoff": "2024-09-29T12:00:00+00:00",
+      "opening": {
+        "away": 0.293909,
+        "draw": 0.262505,
+        "home": 0.443585,
+        "margin": 0.043684
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.188137,
+        "draw": 0.257239,
+        "home": 0.554624,
+        "margin": 0.04221
+      },
+      "fixtureId": "704730",
+      "homeTeamId": "93",
+      "kickoff": "2024-09-29T14:15:00+00:00",
+      "opening": {
+        "away": 0.195,
+        "draw": 0.249478,
+        "home": 0.555523,
+        "margin": 0.046574
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.139118,
+        "draw": 0.228861,
+        "home": 0.632021,
+        "margin": 0.047832
+      },
+      "fixtureId": "704736",
+      "homeTeamId": "244",
+      "kickoff": "2024-09-29T16:30:00+00:00",
+      "opening": {
+        "away": 0.171779,
+        "draw": 0.254252,
+        "home": 0.573969,
+        "margin": 0.043266
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.365653,
+        "draw": 0.299378,
+        "home": 0.334969,
+        "margin": 0.04383
+      },
+      "fixtureId": "704734",
+      "homeTeamId": "1068",
+      "kickoff": "2024-09-29T19:00:00+00:00",
+      "opening": {
+        "away": 0.379394,
+        "draw": 0.277928,
+        "home": 0.342678,
+        "margin": 0.045946
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.161541,
+        "draw": 0.200909,
+        "home": 0.63755,
+        "margin": 0.04567
+      },
+      "fixtureId": "704731",
+      "homeTeamId": "102",
+      "kickoff": "2024-09-30T19:00:00+00:00",
+      "opening": {
+        "away": 0.150229,
+        "draw": 0.203176,
+        "home": 0.646595,
+        "margin": 0.044976
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.329568,
+        "draw": 0.347544,
+        "home": 0.322888,
+        "margin": 0.046302
+      },
+      "fixtureId": "704744",
+      "homeTeamId": "17534",
+      "kickoff": "2024-10-04T19:00:00+00:00",
+      "opening": {
+        "away": 0.339342,
+        "draw": 0.340545,
+        "home": 0.320113,
+        "margin": 0.0413
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.411234,
+        "draw": 0.324805,
+        "home": 0.26396,
+        "margin": 0.04365
+      },
+      "fixtureId": "704749",
+      "homeTeamId": "88",
+      "kickoff": "2024-10-05T12:00:00+00:00",
+      "opening": {
+        "away": 0.371773,
+        "draw": 0.328485,
+        "home": 0.299742,
+        "margin": 0.042563
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.239905,
+        "draw": 0.314876,
+        "home": 0.445219,
+        "margin": 0.04469
+      },
+      "fixtureId": "704741",
+      "homeTeamId": "2922",
+      "kickoff": "2024-10-05T14:15:00+00:00",
+      "opening": {
+        "away": 0.247079,
+        "draw": 0.324134,
+        "home": 0.428787,
+        "margin": 0.045811
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.482225,
+        "draw": 0.266563,
+        "home": 0.251212,
+        "margin": 0.04207
+      },
+      "fixtureId": "704743",
+      "homeTeamId": "98",
+      "kickoff": "2024-10-05T16:30:00+00:00",
+      "opening": {
+        "away": 0.424512,
+        "draw": 0.267988,
+        "home": 0.307499,
+        "margin": 0.04232
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.398064,
+        "draw": 0.319778,
+        "home": 0.282157,
+        "margin": 0.042389
+      },
+      "fixtureId": "704747",
+      "homeTeamId": "95",
+      "kickoff": "2024-10-05T16:30:00+00:00",
+      "opening": {
+        "away": 0.374758,
+        "draw": 0.318731,
+        "home": 0.306511,
+        "margin": 0.04234
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.095218,
+        "draw": 0.149037,
+        "home": 0.755745,
+        "margin": 0.041887
+      },
+      "fixtureId": "704745",
+      "homeTeamId": "86",
+      "kickoff": "2024-10-05T19:00:00+00:00",
+      "opening": {
+        "away": 0.099028,
+        "draw": 0.145392,
+        "home": 0.75558,
+        "margin": 0.042116
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.306547,
+        "draw": 0.291593,
+        "home": 0.40186,
+        "margin": 0.045559
+      },
+      "fixtureId": "704742",
+      "homeTeamId": "9812",
+      "kickoff": "2024-10-06T12:00:00+00:00",
+      "opening": {
+        "away": 0.309693,
+        "draw": 0.293593,
+        "home": 0.396714,
+        "margin": 0.041614
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.56362,
+        "draw": 0.230325,
+        "home": 0.206055,
+        "margin": 0.043674
+      },
+      "fixtureId": "704740",
+      "homeTeamId": "96",
+      "kickoff": "2024-10-06T14:15:00+00:00",
+      "opening": {
+        "away": 0.608912,
+        "draw": 0.217271,
+        "home": 0.173817,
+        "margin": 0.046034
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.347233,
+        "draw": 0.300427,
+        "home": 0.352339,
+        "margin": 0.043446
+      },
+      "fixtureId": "704748",
+      "homeTeamId": "243",
+      "kickoff": "2024-10-06T16:30:00+00:00",
+      "opening": {
+        "away": 0.322185,
+        "draw": 0.298097,
+        "home": 0.379718,
+        "margin": 0.045052
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.348736,
+        "draw": 0.312386,
+        "home": 0.338878,
+        "margin": 0.042726
+      },
+      "fixtureId": "704746",
+      "homeTeamId": "89",
+      "kickoff": "2024-10-06T19:00:00+00:00",
+      "opening": {
+        "away": 0.407558,
+        "draw": 0.303089,
+        "home": 0.289354,
+        "margin": 0.044102
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.160796,
+        "draw": 0.247634,
+        "home": 0.59157,
+        "margin": 0.043467
+      },
+      "fixtureId": "704750",
+      "homeTeamId": "96",
+      "kickoff": "2024-10-18T19:00:00+00:00",
+      "opening": {
+        "away": 0.165267,
+        "draw": 0.251793,
+        "home": 0.58294,
+        "margin": 0.039662
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.113759,
+        "draw": 0.213299,
+        "home": 0.672942,
+        "margin": 0.046487
+      },
+      "fixtureId": "704751",
+      "homeTeamId": "93",
+      "kickoff": "2024-10-19T12:00:00+00:00",
+      "opening": {
+        "away": 0.120294,
+        "draw": 0.22221,
+        "home": 0.657497,
+        "margin": 0.041726
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.298497,
+        "draw": 0.302263,
+        "home": 0.39924,
+        "margin": 0.043651
+      },
+      "fixtureId": "704757",
+      "homeTeamId": "97",
+      "kickoff": "2024-10-19T14:15:00+00:00",
+      "opening": {
+        "away": 0.33847,
+        "draw": 0.290263,
+        "home": 0.371267,
+        "margin": 0.043984
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.343561,
+        "draw": 0.301426,
+        "home": 0.355013,
+        "margin": 0.043259
+      },
+      "fixtureId": "704754",
+      "homeTeamId": "9812",
+      "kickoff": "2024-10-19T16:30:00+00:00",
+      "opening": {
+        "away": 0.327021,
+        "draw": 0.291237,
+        "home": 0.381742,
+        "margin": 0.043655
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.611742,
+        "draw": 0.215828,
+        "home": 0.17243,
+        "margin": 0.041195
+      },
+      "fixtureId": "704759",
+      "homeTeamId": "85",
+      "kickoff": "2024-10-19T19:00:00+00:00",
+      "opening": {
+        "away": 0.596775,
+        "draw": 0.219865,
+        "home": 0.18336,
+        "margin": 0.040791
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.227632,
+        "draw": 0.307158,
+        "home": 0.46521,
+        "margin": 0.043479
+      },
+      "fixtureId": "704756",
+      "homeTeamId": "84",
+      "kickoff": "2024-10-20T12:00:00+00:00",
+      "opening": {
+        "away": 0.234091,
+        "draw": 0.311104,
+        "home": 0.454805,
+        "margin": 0.047021
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.108123,
+        "draw": 0.21649,
+        "home": 0.675387,
+        "margin": 0.042699
+      },
+      "fixtureId": "704752",
+      "homeTeamId": "1068",
+      "kickoff": "2024-10-20T14:15:00+00:00",
+      "opening": {
+        "away": 0.090813,
+        "draw": 0.192245,
+        "home": 0.716943,
+        "margin": 0.048731
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.207451,
+        "draw": 0.275605,
+        "home": 0.516945,
+        "margin": 0.045645
+      },
+      "fixtureId": "704755",
+      "homeTeamId": "102",
+      "kickoff": "2024-10-20T16:30:00+00:00",
+      "opening": {
+        "away": 0.194852,
+        "draw": 0.253256,
+        "home": 0.551892,
+        "margin": 0.047368
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.09784,
+        "draw": 0.156897,
+        "home": 0.745263,
+        "margin": 0.048288
+      },
+      "fixtureId": "704753",
+      "homeTeamId": "83",
+      "kickoff": "2024-10-20T19:00:00+00:00",
+      "opening": {
+        "away": 0.106589,
+        "draw": 0.164378,
+        "home": 0.729034,
+        "margin": 0.047083
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.210192,
+        "draw": 0.28379,
+        "home": 0.506018,
+        "margin": 0.045617
+      },
+      "fixtureId": "704758",
+      "homeTeamId": "94",
+      "kickoff": "2024-10-21T19:00:00+00:00",
+      "opening": {
+        "away": 0.163338,
+        "draw": 0.257555,
+        "home": 0.579107,
+        "margin": 0.046543
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.384227,
+        "draw": 0.298977,
+        "home": 0.316796,
+        "margin": 0.045232
+      },
+      "fixtureId": "704769",
+      "homeTeamId": "88",
+      "kickoff": "2024-10-25T19:00:00+00:00",
+      "opening": {
+        "away": 0.397251,
+        "draw": 0.299485,
+        "home": 0.303264,
+        "margin": 0.040207
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.4811,
+        "draw": 0.268929,
+        "home": 0.249971,
+        "margin": 0.044508
+      },
+      "fixtureId": "704768",
+      "homeTeamId": "95",
+      "kickoff": "2024-10-26T12:00:00+00:00",
+      "opening": {
+        "away": 0.474278,
+        "draw": 0.260337,
+        "home": 0.265385,
+        "margin": 0.043797
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.220584,
+        "draw": 0.307824,
+        "home": 0.471592,
+        "margin": 0.044569
+      },
+      "fixtureId": "704764",
+      "homeTeamId": "101",
+      "kickoff": "2024-10-26T14:15:00+00:00",
+      "opening": {
+        "away": 0.266101,
+        "draw": 0.310021,
+        "home": 0.423878,
+        "margin": 0.04388
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.334487,
+        "draw": 0.29629,
+        "home": 0.369223,
+        "margin": 0.041689
+      },
+      "fixtureId": "704761",
+      "homeTeamId": "98",
+      "kickoff": "2024-10-26T16:30:00+00:00",
+      "opening": {
+        "away": 0.385258,
+        "draw": 0.280495,
+        "home": 0.334248,
+        "margin": 0.042436
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.279555,
+        "draw": 0.232287,
+        "home": 0.488157,
+        "margin": 0.039858
+      },
+      "fixtureId": "704766",
+      "homeTeamId": "86",
+      "kickoff": "2024-10-26T19:00:00+00:00",
+      "opening": {
+        "away": 0.291792,
+        "draw": 0.237623,
+        "home": 0.470586,
+        "margin": 0.041672
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.449765,
+        "draw": 0.294769,
+        "home": 0.255466,
+        "margin": 0.043843
+      },
+      "fixtureId": "704762",
+      "homeTeamId": "17534",
+      "kickoff": "2024-10-27T13:00:00+00:00",
+      "opening": {
+        "away": 0.406232,
+        "draw": 0.30148,
+        "home": 0.292289,
+        "margin": 0.043072
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.204908,
+        "draw": 0.331823,
+        "home": 0.46327,
+        "margin": 0.042788
+      },
+      "fixtureId": "704760",
+      "homeTeamId": "2922",
+      "kickoff": "2024-10-27T15:15:00+00:00",
+      "opening": {
+        "away": 0.237663,
+        "draw": 0.326078,
+        "home": 0.436259,
+        "margin": 0.046674
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.434139,
+        "draw": 0.292514,
+        "home": 0.273347,
+        "margin": 0.042267
+      },
+      "fixtureId": "704765",
+      "homeTeamId": "244",
+      "kickoff": "2024-10-27T17:30:00+00:00",
+      "opening": {
+        "away": 0.403393,
+        "draw": 0.296907,
+        "home": 0.2997,
+        "margin": 0.04598
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.16204,
+        "draw": 0.254021,
+        "home": 0.583939,
+        "margin": 0.044213
+      },
+      "fixtureId": "704767",
+      "homeTeamId": "89",
+      "kickoff": "2024-10-27T20:00:00+00:00",
+      "opening": {
+        "away": 0.203578,
+        "draw": 0.263025,
+        "home": 0.533397,
+        "margin": 0.047361
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.302015,
+        "draw": 0.318069,
+        "home": 0.379916,
+        "margin": 0.044509
+      },
+      "fixtureId": "704763",
+      "homeTeamId": "84",
+      "kickoff": "2024-10-28T20:00:00+00:00",
+      "opening": {
+        "away": 0.361545,
+        "draw": 0.320295,
+        "home": 0.31816,
+        "margin": 0.047692
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.266078,
+        "draw": 0.328041,
+        "home": 0.405881,
+        "margin": 0.043972
+      },
+      "fixtureId": "704770",
+      "homeTeamId": "96",
+      "kickoff": "2024-11-01T20:00:00+00:00",
+      "opening": {
+        "away": 0.274045,
+        "draw": 0.322948,
+        "home": 0.403007,
+        "margin": 0.042583
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.174538,
+        "draw": 0.261807,
+        "home": 0.563655,
+        "margin": 0.043609
+      },
+      "fixtureId": "704776",
+      "homeTeamId": "97",
+      "kickoff": "2024-11-02T13:00:00+00:00",
+      "opening": {
+        "away": 0.159194,
+        "draw": 0.252862,
+        "home": 0.587944,
+        "margin": 0.043462
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.167597,
+        "draw": 0.267502,
+        "home": 0.564901,
+        "margin": 0.041307
+      },
+      "fixtureId": "704775",
+      "homeTeamId": "9812",
+      "kickoff": "2024-11-02T15:15:00+00:00",
+      "opening": {
+        "away": 0.176454,
+        "draw": 0.263227,
+        "home": 0.560319,
+        "margin": 0.043683
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.103416,
+        "draw": 0.181224,
+        "home": 0.715359,
+        "margin": 0.051052
+      },
+      "fixtureId": "704777",
+      "homeTeamId": "1068",
+      "kickoff": "2024-11-03T13:00:00+00:00",
+      "opening": {
+        "away": 0.086094,
+        "draw": 0.161427,
+        "home": 0.752479,
+        "margin": 0.046411
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.053345,
+        "draw": 0.10437,
+        "home": 0.842285,
+        "margin": 0.041444
+      },
+      "fixtureId": "704773",
+      "homeTeamId": "83",
+      "kickoff": "2024-11-03T15:15:00+00:00",
+      "opening": {
+        "away": 0.053518,
+        "draw": 0.089231,
+        "home": 0.857251,
+        "margin": 0.041535
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.415149,
+        "draw": 0.304443,
+        "home": 0.280408,
+        "margin": 0.042758
+      },
+      "fixtureId": "704772",
+      "homeTeamId": "243",
+      "kickoff": "2024-11-03T17:30:00+00:00",
+      "opening": {
+        "away": 0.361856,
+        "draw": 0.313213,
+        "home": 0.324932,
+        "margin": 0.046793
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.2201,
+        "draw": 0.26908,
+        "home": 0.51082,
+        "margin": 0.046864
+      },
+      "fixtureId": "704771",
+      "homeTeamId": "93",
+      "kickoff": "2024-11-03T20:00:00+00:00",
+      "opening": {
+        "away": 0.233223,
+        "draw": 0.272538,
+        "home": 0.494239,
+        "margin": 0.048348
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.22976,
+        "draw": 0.318306,
+        "home": 0.451934,
+        "margin": 0.043732
+      },
+      "fixtureId": "704779",
+      "homeTeamId": "85",
+      "kickoff": "2024-11-04T20:00:00+00:00",
+      "opening": {
+        "away": 0.219403,
+        "draw": 0.292537,
+        "home": 0.48806,
+        "margin": 0.045372
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.209614,
+        "draw": 0.281959,
+        "home": 0.508426,
+        "margin": 0.046198
+      },
+      "fixtureId": "704783",
+      "homeTeamId": "101",
+      "kickoff": "2024-11-08T20:00:00+00:00",
+      "opening": {
+        "away": 0.210306,
+        "draw": 0.27959,
+        "home": 0.510104,
+        "margin": 0.042758
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.089525,
+        "draw": 0.15235,
+        "home": 0.758124,
+        "margin": 0.046861
+      },
+      "fixtureId": "704785",
+      "homeTeamId": "86",
+      "kickoff": "2024-11-09T13:00:00+00:00",
+      "opening": {
+        "away": 0.068543,
+        "draw": 0.130251,
+        "home": 0.801206,
+        "margin": 0.048839
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.154925,
+        "draw": 0.235242,
+        "home": 0.609832,
+        "margin": 0.044455
+      },
+      "fixtureId": "704787",
+      "homeTeamId": "102",
+      "kickoff": "2024-11-09T15:15:00+00:00",
+      "opening": {
+        "away": 0.181618,
+        "draw": 0.231189,
+        "home": 0.587193,
+        "margin": 0.044796
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.368442,
+        "draw": 0.322542,
+        "home": 0.309016,
+        "margin": 0.043896
+      },
+      "fixtureId": "704781",
+      "homeTeamId": "17534",
+      "kickoff": "2024-11-09T20:00:00+00:00",
+      "opening": {
+        "away": 0.359681,
+        "draw": 0.312664,
+        "home": 0.327655,
+        "margin": 0.045203
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.265241,
+        "draw": 0.295531,
+        "home": 0.439229,
+        "margin": 0.044366
+      },
+      "fixtureId": "704784",
+      "homeTeamId": "244",
+      "kickoff": "2024-11-10T13:00:00+00:00",
+      "opening": {
+        "away": 0.253166,
+        "draw": 0.269615,
+        "home": 0.477219,
+        "margin": 0.047738
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.398851,
+        "draw": 0.324489,
+        "home": 0.27666,
+        "margin": 0.044667
+      },
+      "fixtureId": "704780",
+      "homeTeamId": "84",
+      "kickoff": "2024-11-10T15:15:00+00:00",
+      "opening": {
+        "away": 0.427231,
+        "draw": 0.316887,
+        "home": 0.255882,
+        "margin": 0.044934
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.290505,
+        "draw": 0.330575,
+        "home": 0.37892,
+        "margin": 0.043115
+      },
+      "fixtureId": "704782",
+      "homeTeamId": "2922",
+      "kickoff": "2024-11-10T17:30:00+00:00",
+      "opening": {
+        "away": 0.303341,
+        "draw": 0.308234,
+        "home": 0.388425,
+        "margin": 0.046545
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.492172,
+        "draw": 0.288209,
+        "home": 0.219619,
+        "margin": 0.041954
+      },
+      "fixtureId": "704789",
+      "homeTeamId": "95",
+      "kickoff": "2024-11-10T17:30:00+00:00",
+      "opening": {
+        "away": 0.510312,
+        "draw": 0.27903,
+        "home": 0.210658,
+        "margin": 0.047908
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.504883,
+        "draw": 0.256491,
+        "home": 0.238626,
+        "margin": 0.042452
+      },
+      "fixtureId": "704786",
+      "homeTeamId": "89",
+      "kickoff": "2024-11-10T20:00:00+00:00",
+      "opening": {
+        "away": 0.567073,
+        "draw": 0.232362,
+        "home": 0.200565,
+        "margin": 0.049667
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.147999,
+        "draw": 0.27516,
+        "home": 0.576841,
+        "margin": 0.044325
+      },
+      "fixtureId": "704793",
+      "homeTeamId": "2922",
+      "kickoff": "2024-11-22T20:00:00+00:00",
+      "opening": {
+        "away": 0.147842,
+        "draw": 0.278494,
+        "home": 0.573664,
+        "margin": 0.043821
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.306985,
+        "draw": 0.320332,
+        "home": 0.372682,
+        "margin": 0.044066
+      },
+      "fixtureId": "704799",
+      "homeTeamId": "94",
+      "kickoff": "2024-11-23T13:00:00+00:00",
+      "opening": {
+        "away": 0.364299,
+        "draw": 0.313107,
+        "home": 0.322595,
+        "margin": 0.043726
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.12289,
+        "draw": 0.223098,
+        "home": 0.654012,
+        "margin": 0.047276
+      },
+      "fixtureId": "704791",
+      "homeTeamId": "1068",
+      "kickoff": "2024-11-23T15:15:00+00:00",
+      "opening": {
+        "away": 0.096933,
+        "draw": 0.197455,
+        "home": 0.705612,
+        "margin": 0.042066
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.1747,
+        "draw": 0.254404,
+        "home": 0.570895,
+        "margin": 0.042639
+      },
+      "fixtureId": "704794",
+      "homeTeamId": "9812",
+      "kickoff": "2024-11-23T17:30:00+00:00",
+      "opening": {
+        "away": 0.18086,
+        "draw": 0.245155,
+        "home": 0.573985,
+        "margin": 0.043236
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.337529,
+        "draw": 0.324943,
+        "home": 0.337529,
+        "margin": 0.043208
+      },
+      "fixtureId": "704795",
+      "homeTeamId": "98",
+      "kickoff": "2024-11-23T17:30:00+00:00",
+      "opening": {
+        "away": 0.351606,
+        "draw": 0.325296,
+        "home": 0.323098,
+        "margin": 0.045621
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.554336,
+        "draw": 0.226714,
+        "home": 0.21895,
+        "margin": 0.042752
+      },
+      "fixtureId": "704792",
+      "homeTeamId": "85",
+      "kickoff": "2024-11-23T20:00:00+00:00",
+      "opening": {
+        "away": 0.574463,
+        "draw": 0.216071,
+        "home": 0.209466,
+        "margin": 0.042368
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.348653,
+        "draw": 0.289488,
+        "home": 0.361859,
+        "margin": 0.046782
+      },
+      "fixtureId": "704797",
+      "homeTeamId": "97",
+      "kickoff": "2024-11-24T13:00:00+00:00",
+      "opening": {
+        "away": 0.353972,
+        "draw": 0.277022,
+        "home": 0.369006,
+        "margin": 0.046326
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.24391,
+        "draw": 0.294193,
+        "home": 0.461897,
+        "margin": 0.045886
+      },
+      "fixtureId": "704798",
+      "homeTeamId": "243",
+      "kickoff": "2024-11-24T15:15:00+00:00",
+      "opening": {
+        "away": 0.291607,
+        "draw": 0.296121,
+        "home": 0.412272,
+        "margin": 0.04551
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.701762,
+        "draw": 0.193589,
+        "home": 0.104649,
+        "margin": 0.047783
+      },
+      "fixtureId": "704796",
+      "homeTeamId": "17534",
+      "kickoff": "2024-11-24T17:30:00+00:00",
+      "opening": {
+        "away": 0.680309,
+        "draw": 0.204385,
+        "home": 0.115307,
+        "margin": 0.049943
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.270999,
+        "draw": 0.328738,
+        "home": 0.400263,
+        "margin": 0.045339
+      },
+      "fixtureId": "704790",
+      "homeTeamId": "93",
+      "kickoff": "2024-11-24T20:00:00+00:00",
+      "opening": {
+        "away": 0.261583,
+        "draw": 0.314072,
+        "home": 0.424346,
+        "margin": 0.047364
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.215036,
+        "draw": 0.33889,
+        "home": 0.446074,
+        "margin": 0.042688
+      },
+      "fixtureId": "704802",
+      "homeTeamId": "84",
+      "kickoff": "2024-11-29T20:00:00+00:00",
+      "opening": {
+        "away": 0.205017,
+        "draw": 0.325656,
+        "home": 0.469327,
+        "margin": 0.044465
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.054666,
+        "draw": 0.104731,
+        "home": 0.840603,
+        "margin": 0.043528
+      },
+      "fixtureId": "704801",
+      "homeTeamId": "83",
+      "kickoff": "2024-11-30T13:00:00+00:00",
+      "opening": {
+        "away": 0.064656,
+        "draw": 0.107639,
+        "home": 0.827705,
+        "margin": 0.041517
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.16988,
+        "draw": 0.30171,
+        "home": 0.52841,
+        "margin": 0.045563
+      },
+      "fixtureId": "704800",
+      "homeTeamId": "96",
+      "kickoff": "2024-11-30T15:15:00+00:00",
+      "opening": {
+        "away": 0.184392,
+        "draw": 0.292659,
+        "home": 0.522949,
+        "margin": 0.044937
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.433365,
+        "draw": 0.298361,
+        "home": 0.268274,
+        "margin": 0.044127
+      },
+      "fixtureId": "704808",
+      "homeTeamId": "88",
+      "kickoff": "2024-11-30T17:30:00+00:00",
+      "opening": {
+        "away": 0.423467,
+        "draw": 0.287398,
+        "home": 0.289135,
+        "margin": 0.044893
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.659086,
+        "draw": 0.21332,
+        "home": 0.127593,
+        "margin": 0.046381
+      },
+      "fixtureId": "704806",
+      "homeTeamId": "95",
+      "kickoff": "2024-11-30T20:00:00+00:00",
+      "opening": {
+        "away": 0.613596,
+        "draw": 0.235187,
+        "home": 0.151218,
+        "margin": 0.044704
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.214031,
+        "draw": 0.246661,
+        "home": 0.539309,
+        "margin": 0.047585
+      },
+      "fixtureId": "704809",
+      "homeTeamId": "102",
+      "kickoff": "2024-12-01T13:00:00+00:00",
+      "opening": {
+        "away": 0.238538,
+        "draw": 0.248477,
+        "home": 0.512985,
+        "margin": 0.048051
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.092323,
+        "draw": 0.185183,
+        "home": 0.722494,
+        "margin": 0.048556
+      },
+      "fixtureId": "704804",
+      "homeTeamId": "86",
+      "kickoff": "2024-12-01T15:15:00+00:00",
+      "opening": {
+        "away": 0.100147,
+        "draw": 0.200295,
+        "home": 0.699558,
+        "margin": 0.051084
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.388554,
+        "draw": 0.318846,
+        "home": 0.2926,
+        "margin": 0.041962
+      },
+      "fixtureId": "704803",
+      "homeTeamId": "101",
+      "kickoff": "2024-12-01T17:30:00+00:00",
+      "opening": {
+        "away": 0.35454,
+        "draw": 0.309647,
+        "home": 0.335814,
+        "margin": 0.048535
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.175894,
+        "draw": 0.257915,
+        "home": 0.566191,
+        "margin": 0.045081
+      },
+      "fixtureId": "704805",
+      "homeTeamId": "89",
+      "kickoff": "2024-12-01T20:00:00+00:00",
+      "opening": {
+        "away": 0.199777,
+        "draw": 0.266741,
+        "home": 0.533482,
+        "margin": 0.047194
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.239608,
+        "draw": 0.28356,
+        "home": 0.476832,
+        "margin": 0.04337
+      },
+      "fixtureId": "704807",
+      "homeTeamId": "243",
+      "kickoff": "2024-12-02T20:00:00+00:00",
+      "opening": {
+        "away": 0.270821,
+        "draw": 0.283717,
+        "home": 0.445462,
+        "margin": 0.049
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.590779,
+        "draw": 0.234574,
+        "home": 0.174646,
+        "margin": 0.044864
+      },
+      "fixtureId": "704844",
+      "homeTeamId": "84",
+      "kickoff": "2024-12-03T18:00:00+00:00",
+      "opening": {
+        "away": 0.625108,
+        "draw": 0.21836,
+        "home": 0.156533,
+        "margin": 0.045571
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.428196,
+        "draw": 0.28419,
+        "home": 0.287614,
+        "margin": 0.047254
+      },
+      "fixtureId": "704841",
+      "homeTeamId": "93",
+      "kickoff": "2024-12-04T20:00:00+00:00",
+      "opening": {
+        "away": 0.420602,
+        "draw": 0.273992,
+        "home": 0.305405,
+        "margin": 0.042782
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.202957,
+        "draw": 0.291789,
+        "home": 0.505255,
+        "margin": 0.041684
+      },
+      "fixtureId": "704812",
+      "homeTeamId": "85",
+      "kickoff": "2024-12-06T20:00:00+00:00",
+      "opening": {
+        "away": 0.207493,
+        "draw": 0.285303,
+        "home": 0.507205,
+        "margin": 0.04317
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.165191,
+        "draw": 0.254139,
+        "home": 0.58067,
+        "margin": 0.043726
+      },
+      "fixtureId": "704815",
+      "homeTeamId": "98",
+      "kickoff": "2024-12-07T13:00:00+00:00",
+      "opening": {
+        "away": 0.206228,
+        "draw": 0.262163,
+        "home": 0.531609,
+        "margin": 0.045045
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.629733,
+        "draw": 0.20025,
+        "home": 0.170017,
+        "margin": 0.04472
+      },
+      "fixtureId": "704818",
+      "homeTeamId": "244",
+      "kickoff": "2024-12-07T15:15:00+00:00",
+      "opening": {
+        "away": 0.599281,
+        "draw": 0.213078,
+        "home": 0.187642,
+        "margin": 0.042917
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.251389,
+        "draw": 0.317982,
+        "home": 0.43063,
+        "margin": 0.041336
+      },
+      "fixtureId": "704819",
+      "homeTeamId": "94",
+      "kickoff": "2024-12-07T17:30:00+00:00",
+      "opening": {
+        "away": 0.251771,
+        "draw": 0.321896,
+        "home": 0.426333,
+        "margin": 0.042482
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.534735,
+        "draw": 0.241102,
+        "home": 0.224163,
+        "margin": 0.04474
+      },
+      "fixtureId": "704814",
+      "homeTeamId": "9812",
+      "kickoff": "2024-12-07T20:00:00+00:00",
+      "opening": {
+        "away": 0.55224,
+        "draw": 0.238248,
+        "home": 0.209512,
+        "margin": 0.046709
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.52453,
+        "draw": 0.307657,
+        "home": 0.167813,
+        "margin": 0.041786
+      },
+      "fixtureId": "704816",
+      "homeTeamId": "17534",
+      "kickoff": "2024-12-08T13:00:00+00:00",
+      "opening": {
+        "away": 0.490991,
+        "draw": 0.302388,
+        "home": 0.206621,
+        "margin": 0.049844
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.215946,
+        "draw": 0.268571,
+        "home": 0.515483,
+        "margin": 0.042972
+      },
+      "fixtureId": "704810",
+      "homeTeamId": "93",
+      "kickoff": "2024-12-08T15:15:00+00:00",
+      "opening": {
+        "away": 0.256189,
+        "draw": 0.257574,
+        "home": 0.486237,
+        "margin": 0.049292
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.262086,
+        "draw": 0.313475,
+        "home": 0.424439,
+        "margin": 0.042499
+      },
+      "fixtureId": "704817",
+      "homeTeamId": "97",
+      "kickoff": "2024-12-08T17:30:00+00:00",
+      "opening": {
+        "away": 0.256482,
+        "draw": 0.28481,
+        "home": 0.458708,
+        "margin": 0.048094
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.106392,
+        "draw": 0.200517,
+        "home": 0.693091,
+        "margin": 0.045516
+      },
+      "fixtureId": "704811",
+      "homeTeamId": "1068",
+      "kickoff": "2024-12-08T20:00:00+00:00",
+      "opening": {
+        "away": 0.111349,
+        "draw": 0.197161,
+        "home": 0.691491,
+        "margin": 0.047935
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.160632,
+        "draw": 0.311323,
+        "home": 0.528045,
+        "margin": 0.046286
+      },
+      "fixtureId": "704813",
+      "homeTeamId": "2922",
+      "kickoff": "2024-12-09T20:00:00+00:00",
+      "opening": {
+        "away": 0.169884,
+        "draw": 0.300646,
+        "home": 0.529471,
+        "margin": 0.049266
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.396031,
+        "draw": 0.310613,
+        "home": 0.293356,
+        "margin": 0.052106
+      },
+      "fixtureId": "704826",
+      "homeTeamId": "95",
+      "kickoff": "2024-12-13T20:00:00+00:00",
+      "opening": {
+        "away": 0.391325,
+        "draw": 0.31306,
+        "home": 0.295614,
+        "margin": 0.047302
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.350662,
+        "draw": 0.303758,
+        "home": 0.34558,
+        "margin": 0.048437
+      },
+      "fixtureId": "704828",
+      "homeTeamId": "88",
+      "kickoff": "2024-12-14T13:00:00+00:00",
+      "opening": {
+        "away": 0.358372,
+        "draw": 0.303589,
+        "home": 0.338039,
+        "margin": 0.049021
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.328946,
+        "draw": 0.319045,
+        "home": 0.352009,
+        "margin": 0.048279
+      },
+      "fixtureId": "704823",
+      "homeTeamId": "84",
+      "kickoff": "2024-12-14T15:15:00+00:00",
+      "opening": {
+        "away": 0.283055,
+        "draw": 0.312752,
+        "home": 0.404193,
+        "margin": 0.048334
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.327518,
+        "draw": 0.304498,
+        "home": 0.367984,
+        "margin": 0.049232
+      },
+      "fixtureId": "704827",
+      "homeTeamId": "243",
+      "kickoff": "2024-12-14T17:30:00+00:00",
+      "opening": {
+        "away": 0.291047,
+        "draw": 0.288409,
+        "home": 0.420544,
+        "margin": 0.047521
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.621773,
+        "draw": 0.226503,
+        "home": 0.151724,
+        "margin": 0.05118
+      },
+      "fixtureId": "704824",
+      "homeTeamId": "101",
+      "kickoff": "2024-12-14T20:00:00+00:00",
+      "opening": {
+        "away": 0.596893,
+        "draw": 0.238162,
+        "home": 0.164945,
+        "margin": 0.047088
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.085022,
+        "draw": 0.192935,
+        "home": 0.722043,
+        "margin": 0.049211
+      },
+      "fixtureId": "704821",
+      "homeTeamId": "1068",
+      "kickoff": "2024-12-15T13:00:00+00:00",
+      "opening": {
+        "away": 0.099018,
+        "draw": 0.221294,
+        "home": 0.679688,
+        "margin": 0.050902
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.449881,
+        "draw": 0.311682,
+        "home": 0.238437,
+        "margin": 0.048495
+      },
+      "fixtureId": "704820",
+      "homeTeamId": "96",
+      "kickoff": "2024-12-15T15:15:00+00:00",
+      "opening": {
+        "away": 0.438253,
+        "draw": 0.301908,
+        "home": 0.259839,
+        "margin": 0.051514
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.090036,
+        "draw": 0.195723,
+        "home": 0.714241,
+        "margin": 0.044841
+      },
+      "fixtureId": "704825",
+      "homeTeamId": "89",
+      "kickoff": "2024-12-15T17:30:00+00:00",
+      "opening": {
+        "away": 0.111051,
+        "draw": 0.220298,
+        "home": 0.668651,
+        "margin": 0.053203
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.251735,
+        "draw": 0.256472,
+        "home": 0.491792,
+        "margin": 0.048133
+      },
+      "fixtureId": "704829",
+      "homeTeamId": "102",
+      "kickoff": "2024-12-15T17:30:00+00:00",
+      "opening": {
+        "away": 0.221846,
+        "draw": 0.245228,
+        "home": 0.532926,
+        "margin": 0.048287
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.046556,
+        "draw": 0.097969,
+        "home": 0.855475,
+        "margin": 0.043697
+      },
+      "fixtureId": "704822",
+      "homeTeamId": "83",
+      "kickoff": "2024-12-15T20:00:00+00:00",
+      "opening": {
+        "away": 0.0517,
+        "draw": 0.107373,
+        "home": 0.840927,
+        "margin": 0.052357
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.30019,
+        "draw": 0.326919,
+        "home": 0.372892,
+        "margin": 0.047556
+      },
+      "fixtureId": "704788",
+      "homeTeamId": "88",
+      "kickoff": "2024-12-18T20:30:00+00:00",
+      "opening": {
+        "away": 0.31612,
+        "draw": 0.323622,
+        "home": 0.360258,
+        "margin": 0.047467
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.209362,
+        "draw": 0.253118,
+        "home": 0.53752,
+        "margin": 0.045166
+      },
+      "fixtureId": "704774",
+      "homeTeamId": "102",
+      "kickoff": "2024-12-18T20:30:00+00:00",
+      "opening": {
+        "away": 0.216927,
+        "draw": 0.261501,
+        "home": 0.521573,
+        "margin": 0.047693
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.104331,
+        "draw": 0.191625,
+        "home": 0.704044,
+        "margin": 0.052123
+      },
+      "fixtureId": "704833",
+      "homeTeamId": "9812",
+      "kickoff": "2024-12-20T20:00:00+00:00",
+      "opening": {
+        "away": 0.115572,
+        "draw": 0.197645,
+        "home": 0.686782,
+        "margin": 0.047529
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.237408,
+        "draw": 0.367569,
+        "home": 0.395023,
+        "margin": 0.050415
+      },
+      "fixtureId": "704832",
+      "homeTeamId": "2922",
+      "kickoff": "2024-12-21T13:00:00+00:00",
+      "opening": {
+        "away": 0.242412,
+        "draw": 0.345173,
+        "home": 0.412415,
+        "margin": 0.049672
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.342256,
+        "draw": 0.321513,
+        "home": 0.336231,
+        "margin": 0.047236
+      },
+      "fixtureId": "704831",
+      "homeTeamId": "85",
+      "kickoff": "2024-12-21T15:15:00+00:00",
+      "opening": {
+        "away": 0.366781,
+        "draw": 0.306633,
+        "home": 0.326586,
+        "margin": 0.048625
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.469363,
+        "draw": 0.305387,
+        "home": 0.22525,
+        "margin": 0.04953
+      },
+      "fixtureId": "704836",
+      "homeTeamId": "97",
+      "kickoff": "2024-12-21T17:30:00+00:00",
+      "opening": {
+        "away": 0.44917,
+        "draw": 0.297575,
+        "home": 0.253255,
+        "margin": 0.050156
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.26577,
+        "draw": 0.257173,
+        "home": 0.477057,
+        "margin": 0.048093
+      },
+      "fixtureId": "704830",
+      "homeTeamId": "83",
+      "kickoff": "2024-12-21T20:00:00+00:00",
+      "opening": {
+        "away": 0.248182,
+        "draw": 0.246263,
+        "home": 0.505555,
+        "margin": 0.046573
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.244996,
+        "draw": 0.30546,
+        "home": 0.449544,
+        "margin": 0.04928
+      },
+      "fixtureId": "704835",
+      "homeTeamId": "94",
+      "kickoff": "2024-12-22T13:00:00+00:00",
+      "opening": {
+        "away": 0.270142,
+        "draw": 0.312796,
+        "home": 0.417062,
+        "margin": 0.051635
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.08951,
+        "draw": 0.148579,
+        "home": 0.761911,
+        "margin": 0.049991
+      },
+      "fixtureId": "704838",
+      "homeTeamId": "86",
+      "kickoff": "2024-12-22T15:15:00+00:00",
+      "opening": {
+        "away": 0.116124,
+        "draw": 0.172401,
+        "home": 0.711475,
+        "margin": 0.048903
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.246383,
+        "draw": 0.295202,
+        "home": 0.458415,
+        "margin": 0.048765
+      },
+      "fixtureId": "704839",
+      "homeTeamId": "98",
+      "kickoff": "2024-12-22T17:30:00+00:00",
+      "opening": {
+        "away": 0.213879,
+        "draw": 0.268859,
+        "home": 0.517262,
+        "margin": 0.050683
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.501853,
+        "draw": 0.271658,
+        "home": 0.226489,
+        "margin": 0.048746
+      },
+      "fixtureId": "704834",
+      "homeTeamId": "17534",
+      "kickoff": "2024-12-22T17:30:00+00:00",
+      "opening": {
+        "away": 0.492066,
+        "draw": 0.275103,
+        "home": 0.232831,
+        "margin": 0.047551
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.187442,
+        "draw": 0.25786,
+        "home": 0.554698,
+        "margin": 0.048129
+      },
+      "fixtureId": "704837",
+      "homeTeamId": "244",
+      "kickoff": "2024-12-22T20:00:00+00:00",
+      "opening": {
+        "away": 0.202823,
+        "draw": 0.268711,
+        "home": 0.528466,
+        "margin": 0.051261
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.671459,
+        "draw": 0.19864,
+        "home": 0.129901,
+        "margin": 0.048798
+      },
+      "fixtureId": "704778",
+      "homeTeamId": "94",
+      "kickoff": "2025-01-03T20:00:00+00:00",
+      "opening": {
+        "away": 0.661865,
+        "draw": 0.204087,
+        "home": 0.134049,
+        "margin": 0.049224
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.361392,
+        "draw": 0.303845,
+        "home": 0.334763,
+        "margin": 0.048136
+      },
+      "fixtureId": "704845",
+      "homeTeamId": "101",
+      "kickoff": "2025-01-10T20:00:00+00:00",
+      "opening": {
+        "away": 0.348724,
+        "draw": 0.311239,
+        "home": 0.340037,
+        "margin": 0.046568
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.391068,
+        "draw": 0.309807,
+        "home": 0.299124,
+        "margin": 0.047991
+      },
+      "fixtureId": "704840",
+      "homeTeamId": "96",
+      "kickoff": "2025-01-11T13:00:00+00:00",
+      "opening": {
+        "away": 0.352442,
+        "draw": 0.304023,
+        "home": 0.343535,
+        "margin": 0.05087
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.540753,
+        "draw": 0.26659,
+        "home": 0.192657,
+        "margin": 0.050723
+      },
+      "fixtureId": "704847",
+      "homeTeamId": "95",
+      "kickoff": "2025-01-11T15:15:00+00:00",
+      "opening": {
+        "away": 0.513851,
+        "draw": 0.273955,
+        "home": 0.212193,
+        "margin": 0.051939
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.232953,
+        "draw": 0.324867,
+        "home": 0.44218,
+        "margin": 0.047001
+      },
+      "fixtureId": "704849",
+      "homeTeamId": "88",
+      "kickoff": "2025-01-11T17:30:00+00:00",
+      "opening": {
+        "away": 0.233067,
+        "draw": 0.313064,
+        "home": 0.453868,
+        "margin": 0.054202
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.247259,
+        "draw": 0.298256,
+        "home": 0.454485,
+        "margin": 0.047758
+      },
+      "fixtureId": "704848",
+      "homeTeamId": "243",
+      "kickoff": "2025-01-11T20:00:00+00:00",
+      "opening": {
+        "away": 0.246869,
+        "draw": 0.277908,
+        "home": 0.475223,
+        "margin": 0.052138
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.273187,
+        "draw": 0.345443,
+        "home": 0.381369,
+        "margin": 0.048852
+      },
+      "fixtureId": "704843",
+      "homeTeamId": "98",
+      "kickoff": "2025-01-12T13:00:00+00:00",
+      "opening": {
+        "away": 0.293513,
+        "draw": 0.324567,
+        "home": 0.38192,
+        "margin": 0.051545
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.087184,
+        "draw": 0.185394,
+        "home": 0.727422,
+        "margin": 0.049403
+      },
+      "fixtureId": "704842",
+      "homeTeamId": "1068",
+      "kickoff": "2025-01-12T15:15:00+00:00",
+      "opening": {
+        "away": 0.092623,
+        "draw": 0.179828,
+        "home": 0.727549,
+        "margin": 0.04922
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.239494,
+        "draw": 0.282716,
+        "home": 0.47779,
+        "margin": 0.046485
+      },
+      "fixtureId": "704846",
+      "homeTeamId": "89",
+      "kickoff": "2025-01-13T20:00:00+00:00",
+      "opening": {
+        "away": 0.237457,
+        "draw": 0.27294,
+        "home": 0.489603,
+        "margin": 0.05282
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.184721,
+        "draw": 0.287652,
+        "home": 0.527627,
+        "margin": 0.047115
+      },
+      "fixtureId": "704857",
+      "homeTeamId": "88",
+      "kickoff": "2025-01-17T20:00:00+00:00",
+      "opening": {
+        "away": 0.186827,
+        "draw": 0.284689,
+        "home": 0.528484,
+        "margin": 0.045418
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.223996,
+        "draw": 0.279013,
+        "home": 0.496991,
+        "margin": 0.047973
+      },
+      "fixtureId": "704852",
+      "homeTeamId": "9812",
+      "kickoff": "2025-01-18T13:00:00+00:00",
+      "opening": {
+        "away": 0.240574,
+        "draw": 0.268358,
+        "home": 0.491068,
+        "margin": 0.049679
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.625052,
+        "draw": 0.239682,
+        "home": 0.135266,
+        "margin": 0.045664
+      },
+      "fixtureId": "704853",
+      "homeTeamId": "17534",
+      "kickoff": "2025-01-18T15:15:00+00:00",
+      "opening": {
+        "away": 0.634994,
+        "draw": 0.229516,
+        "home": 0.13549,
+        "margin": 0.049878
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.207553,
+        "draw": 0.273565,
+        "home": 0.518882,
+        "margin": 0.047403
+      },
+      "fixtureId": "704855",
+      "homeTeamId": "244",
+      "kickoff": "2025-01-18T17:30:00+00:00",
+      "opening": {
+        "away": 0.197799,
+        "draw": 0.258536,
+        "home": 0.543665,
+        "margin": 0.051068
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.647375,
+        "draw": 0.215303,
+        "home": 0.137322,
+        "margin": 0.050817
+      },
+      "fixtureId": "704851",
+      "homeTeamId": "2922",
+      "kickoff": "2025-01-18T20:00:00+00:00",
+      "opening": {
+        "away": 0.634823,
+        "draw": 0.218904,
+        "home": 0.146273,
+        "margin": 0.050162
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.4179,
+        "draw": 0.296826,
+        "home": 0.285273,
+        "margin": 0.049524
+      },
+      "fixtureId": "704850",
+      "homeTeamId": "85",
+      "kickoff": "2025-01-19T13:00:00+00:00",
+      "opening": {
+        "away": 0.360539,
+        "draw": 0.303128,
+        "home": 0.336333,
+        "margin": 0.050616
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.056491,
+        "draw": 0.120008,
+        "home": 0.823501,
+        "margin": 0.046834
+      },
+      "fixtureId": "704856",
+      "homeTeamId": "86",
+      "kickoff": "2025-01-19T15:15:00+00:00",
+      "opening": {
+        "away": 0.058093,
+        "draw": 0.11295,
+        "home": 0.828957,
+        "margin": 0.048987
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.27651,
+        "draw": 0.308725,
+        "home": 0.414765,
+        "margin": 0.048262
+      },
+      "fixtureId": "704854",
+      "homeTeamId": "97",
+      "kickoff": "2025-01-19T17:30:00+00:00",
+      "opening": {
+        "away": 0.258308,
+        "draw": 0.30565,
+        "home": 0.436042,
+        "margin": 0.051998
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.360966,
+        "draw": 0.335546,
+        "home": 0.303488,
+        "margin": 0.049372
+      },
+      "fixtureId": "704858",
+      "homeTeamId": "94",
+      "kickoff": "2025-01-19T20:00:00+00:00",
+      "opening": {
+        "away": 0.379849,
+        "draw": 0.312597,
+        "home": 0.307555,
+        "margin": 0.048856
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.173988,
+        "draw": 0.254041,
+        "home": 0.571972,
+        "margin": 0.046909
+      },
+      "fixtureId": "704859",
+      "homeTeamId": "102",
+      "kickoff": "2025-01-20T20:00:00+00:00",
+      "opening": {
+        "away": 0.189291,
+        "draw": 0.259247,
+        "home": 0.551462,
+        "margin": 0.048187
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.314289,
+        "draw": 0.300453,
+        "home": 0.385258,
+        "margin": 0.046639
+      },
+      "fixtureId": "704869",
+      "homeTeamId": "98",
+      "kickoff": "2025-01-24T20:00:00+00:00",
+      "opening": {
+        "away": 0.314703,
+        "draw": 0.305654,
+        "home": 0.379642,
+        "margin": 0.045262
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.241408,
+        "draw": 0.324059,
+        "home": 0.434534,
+        "margin": 0.046054
+      },
+      "fixtureId": "704864",
+      "homeTeamId": "84",
+      "kickoff": "2025-01-25T13:00:00+00:00",
+      "opening": {
+        "away": 0.273671,
+        "draw": 0.312254,
+        "home": 0.414076,
+        "margin": 0.050008
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.242433,
+        "draw": 0.268991,
+        "home": 0.488576,
+        "margin": 0.044268
+      },
+      "fixtureId": "704862",
+      "homeTeamId": "1068",
+      "kickoff": "2025-01-25T15:15:00+00:00",
+      "opening": {
+        "away": 0.206658,
+        "draw": 0.232933,
+        "home": 0.560409,
+        "margin": 0.049654
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.190467,
+        "draw": 0.269337,
+        "home": 0.540196,
+        "margin": 0.045865
+      },
+      "fixtureId": "704865",
+      "homeTeamId": "243",
+      "kickoff": "2025-01-25T17:30:00+00:00",
+      "opening": {
+        "away": 0.188381,
+        "draw": 0.254188,
+        "home": 0.557431,
+        "margin": 0.04909
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.781152,
+        "draw": 0.144395,
+        "home": 0.074454,
+        "margin": 0.049312
+      },
+      "fixtureId": "704868",
+      "homeTeamId": "95",
+      "kickoff": "2025-01-25T20:00:00+00:00",
+      "opening": {
+        "away": 0.760121,
+        "draw": 0.150579,
+        "home": 0.0893,
+        "margin": 0.052464
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.311292,
+        "draw": 0.315401,
+        "home": 0.373307,
+        "margin": 0.046391
+      },
+      "fixtureId": "704866",
+      "homeTeamId": "101",
+      "kickoff": "2025-01-26T13:00:00+00:00",
+      "opening": {
+        "away": 0.338028,
+        "draw": 0.311516,
+        "home": 0.350456,
+        "margin": 0.049054
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.178845,
+        "draw": 0.323741,
+        "home": 0.497414,
+        "margin": 0.047082
+      },
+      "fixtureId": "704867",
+      "homeTeamId": "89",
+      "kickoff": "2025-01-26T15:15:00+00:00",
+      "opening": {
+        "away": 0.163637,
+        "draw": 0.296177,
+        "home": 0.540186,
+        "margin": 0.051825
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.095871,
+        "draw": 0.206443,
+        "home": 0.697686,
+        "margin": 0.046211
+      },
+      "fixtureId": "704861",
+      "homeTeamId": "93",
+      "kickoff": "2025-01-26T17:30:00+00:00",
+      "opening": {
+        "away": 0.10438,
+        "draw": 0.20429,
+        "home": 0.69133,
+        "margin": 0.04818
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.080177,
+        "draw": 0.144125,
+        "home": 0.775698,
+        "margin": 0.048099
+      },
+      "fixtureId": "704863",
+      "homeTeamId": "83",
+      "kickoff": "2025-01-26T20:00:00+00:00",
+      "opening": {
+        "away": 0.074563,
+        "draw": 0.134446,
+        "home": 0.790991,
+        "margin": 0.053531
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.282445,
+        "draw": 0.309039,
+        "home": 0.408515,
+        "margin": 0.050596
+      },
+      "fixtureId": "704860",
+      "homeTeamId": "96",
+      "kickoff": "2025-01-27T20:00:00+00:00",
+      "opening": {
+        "away": 0.334361,
+        "draw": 0.307396,
+        "home": 0.358243,
+        "margin": 0.049398
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.392222,
+        "draw": 0.319832,
+        "home": 0.287946,
+        "margin": 0.049208
+      },
+      "fixtureId": "704874",
+      "homeTeamId": "17534",
+      "kickoff": "2025-01-31T20:00:00+00:00",
+      "opening": {
+        "away": 0.385025,
+        "draw": 0.319352,
+        "home": 0.295623,
+        "margin": 0.047271
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.311855,
+        "draw": 0.336013,
+        "home": 0.352132,
+        "margin": 0.047914
+      },
+      "fixtureId": "704872",
+      "homeTeamId": "2922",
+      "kickoff": "2025-02-01T13:00:00+00:00",
+      "opening": {
+        "away": 0.289399,
+        "draw": 0.32706,
+        "home": 0.383541,
+        "margin": 0.047102
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.070585,
+        "draw": 0.133569,
+        "home": 0.795846,
+        "margin": 0.047103
+      },
+      "fixtureId": "704879",
+      "homeTeamId": "102",
+      "kickoff": "2025-02-01T15:15:00+00:00",
+      "opening": {
+        "away": 0.079693,
+        "draw": 0.144754,
+        "home": 0.775553,
+        "margin": 0.048295
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.127998,
+        "draw": 0.232015,
+        "home": 0.639988,
+        "margin": 0.048678
+      },
+      "fixtureId": "704870",
+      "homeTeamId": "1068",
+      "kickoff": "2025-02-01T17:30:00+00:00",
+      "opening": {
+        "away": 0.106806,
+        "draw": 0.219027,
+        "home": 0.674167,
+        "margin": 0.051994
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.732472,
+        "draw": 0.168236,
+        "home": 0.099292,
+        "margin": 0.050185
+      },
+      "fixtureId": "704877",
+      "homeTeamId": "88",
+      "kickoff": "2025-02-01T20:00:00+00:00",
+      "opening": {
+        "away": 0.727007,
+        "draw": 0.173475,
+        "home": 0.099517,
+        "margin": 0.050001
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.060983,
+        "draw": 0.113111,
+        "home": 0.825906,
+        "margin": 0.043786
+      },
+      "fixtureId": "704871",
+      "homeTeamId": "83",
+      "kickoff": "2025-02-02T13:00:00+00:00",
+      "opening": {
+        "away": 0.068874,
+        "draw": 0.127215,
+        "home": 0.803912,
+        "margin": 0.045309
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.268572,
+        "draw": 0.309556,
+        "home": 0.421872,
+        "margin": 0.048843
+      },
+      "fixtureId": "704878",
+      "homeTeamId": "94",
+      "kickoff": "2025-02-02T15:15:00+00:00",
+      "opening": {
+        "away": 0.293925,
+        "draw": 0.304254,
+        "home": 0.401821,
+        "margin": 0.050072
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.380525,
+        "draw": 0.316264,
+        "home": 0.303212,
+        "margin": 0.046993
+      },
+      "fixtureId": "704875",
+      "homeTeamId": "97",
+      "kickoff": "2025-02-02T17:30:00+00:00",
+      "opening": {
+        "away": 0.365451,
+        "draw": 0.319923,
+        "home": 0.314626,
+        "margin": 0.052442
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.401619,
+        "draw": 0.296849,
+        "home": 0.301531,
+        "margin": 0.046184
+      },
+      "fixtureId": "704876",
+      "homeTeamId": "244",
+      "kickoff": "2025-02-02T20:00:00+00:00",
+      "opening": {
+        "away": 0.387581,
+        "draw": 0.292469,
+        "home": 0.31995,
+        "margin": 0.048823
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.146947,
+        "draw": 0.213981,
+        "home": 0.639072,
+        "margin": 0.050181
+      },
+      "fixtureId": "704873",
+      "homeTeamId": "9812",
+      "kickoff": "2025-02-03T20:00:00+00:00",
+      "opening": {
+        "away": 0.179996,
+        "draw": 0.232239,
+        "home": 0.587765,
+        "margin": 0.050222
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.10782,
+        "draw": 0.214671,
+        "home": 0.677509,
+        "margin": 0.046806
+      },
+      "fixtureId": "704885",
+      "homeTeamId": "101",
+      "kickoff": "2025-02-07T20:00:00+00:00",
+      "opening": {
+        "away": 0.131286,
+        "draw": 0.225502,
+        "home": 0.643212,
+        "margin": 0.043421
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.269894,
+        "draw": 0.287779,
+        "home": 0.442327,
+        "margin": 0.046654
+      },
+      "fixtureId": "704882",
+      "homeTeamId": "85",
+      "kickoff": "2025-02-08T13:00:00+00:00",
+      "opening": {
+        "away": 0.302001,
+        "draw": 0.284872,
+        "home": 0.413127,
+        "margin": 0.047864
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.190253,
+        "draw": 0.262905,
+        "home": 0.546842,
+        "margin": 0.044961
+      },
+      "fixtureId": "704881",
+      "homeTeamId": "93",
+      "kickoff": "2025-02-08T15:15:00+00:00",
+      "opening": {
+        "away": 0.180334,
+        "draw": 0.248429,
+        "home": 0.571237,
+        "margin": 0.048255
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.593476,
+        "draw": 0.232481,
+        "home": 0.174043,
+        "margin": 0.046576
+      },
+      "fixtureId": "704883",
+      "homeTeamId": "98",
+      "kickoff": "2025-02-08T17:30:00+00:00",
+      "opening": {
+        "away": 0.551934,
+        "draw": 0.236348,
+        "home": 0.211718,
+        "margin": 0.047289
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.260244,
+        "draw": 0.256069,
+        "home": 0.483686,
+        "margin": 0.044169
+      },
+      "fixtureId": "704886",
+      "homeTeamId": "86",
+      "kickoff": "2025-02-08T20:00:00+00:00",
+      "opening": {
+        "away": 0.23153,
+        "draw": 0.259842,
+        "home": 0.508627,
+        "margin": 0.045785
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.244519,
+        "draw": 0.345151,
+        "home": 0.41033,
+        "margin": 0.04595
+      },
+      "fixtureId": "704880",
+      "homeTeamId": "96",
+      "kickoff": "2025-02-09T13:00:00+00:00",
+      "opening": {
+        "away": 0.262028,
+        "draw": 0.327987,
+        "home": 0.409984,
+        "margin": 0.051344
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.18305,
+        "draw": 0.279111,
+        "home": 0.537838,
+        "margin": 0.044548
+      },
+      "fixtureId": "704889",
+      "homeTeamId": "94",
+      "kickoff": "2025-02-09T15:15:00+00:00",
+      "opening": {
+        "away": 0.176394,
+        "draw": 0.27719,
+        "home": 0.546416,
+        "margin": 0.051787
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.152563,
+        "draw": 0.259647,
+        "home": 0.58779,
+        "margin": 0.043735
+      },
+      "fixtureId": "704887",
+      "homeTeamId": "89",
+      "kickoff": "2025-02-09T17:30:00+00:00",
+      "opening": {
+        "away": 0.151357,
+        "draw": 0.249878,
+        "home": 0.598765,
+        "margin": 0.050381
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.658573,
+        "draw": 0.192915,
+        "home": 0.148512,
+        "margin": 0.047196
+      },
+      "fixtureId": "704888",
+      "homeTeamId": "243",
+      "kickoff": "2025-02-09T20:00:00+00:00",
+      "opening": {
+        "away": 0.619521,
+        "draw": 0.206061,
+        "home": 0.174417,
+        "margin": 0.048149
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.265404,
+        "draw": 0.316208,
+        "home": 0.418388,
+        "margin": 0.043723
+      },
+      "fixtureId": "704884",
+      "homeTeamId": "84",
+      "kickoff": "2025-02-10T20:00:00+00:00",
+      "opening": {
+        "away": 0.225795,
+        "draw": 0.302494,
+        "home": 0.471711,
+        "margin": 0.049477
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.201904,
+        "draw": 0.304785,
+        "home": 0.493311,
+        "margin": 0.044906
+      },
+      "fixtureId": "704892",
+      "homeTeamId": "9812",
+      "kickoff": "2025-02-14T20:00:00+00:00",
+      "opening": {
+        "away": 0.216389,
+        "draw": 0.298375,
+        "home": 0.485236,
+        "margin": 0.040835
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.418198,
+        "draw": 0.325739,
+        "home": 0.256062,
+        "margin": 0.044197
+      },
+      "fixtureId": "704893",
+      "homeTeamId": "17534",
+      "kickoff": "2025-02-15T13:00:00+00:00",
+      "opening": {
+        "away": 0.372331,
+        "draw": 0.327703,
+        "home": 0.299966,
+        "margin": 0.04505
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.652482,
+        "draw": 0.198582,
+        "home": 0.148936,
+        "margin": 0.042591
+      },
+      "fixtureId": "704895",
+      "homeTeamId": "97",
+      "kickoff": "2025-02-15T15:15:00+00:00",
+      "opening": {
+        "away": 0.607981,
+        "draw": 0.220956,
+        "home": 0.171063,
+        "margin": 0.047636
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.113686,
+        "draw": 0.201763,
+        "home": 0.684552,
+        "margin": 0.043436
+      },
+      "fixtureId": "704890",
+      "homeTeamId": "1068",
+      "kickoff": "2025-02-15T17:30:00+00:00",
+      "opening": {
+        "away": 0.123591,
+        "draw": 0.205363,
+        "home": 0.671046,
+        "margin": 0.049444
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.19318,
+        "draw": 0.243191,
+        "home": 0.56363,
+        "margin": 0.043655
+      },
+      "fixtureId": "704899",
+      "homeTeamId": "102",
+      "kickoff": "2025-02-15T20:00:00+00:00",
+      "opening": {
+        "away": 0.160236,
+        "draw": 0.215577,
+        "home": 0.624187,
+        "margin": 0.047114
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.545309,
+        "draw": 0.271882,
+        "home": 0.182808,
+        "margin": 0.041944
+      },
+      "fixtureId": "704898",
+      "homeTeamId": "88",
+      "kickoff": "2025-02-16T13:00:00+00:00",
+      "opening": {
+        "away": 0.54573,
+        "draw": 0.271315,
+        "home": 0.182955,
+        "margin": 0.04709
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.484855,
+        "draw": 0.286571,
+        "home": 0.228574,
+        "margin": 0.041653
+      },
+      "fixtureId": "704897",
+      "homeTeamId": "95",
+      "kickoff": "2025-02-16T15:15:00+00:00",
+      "opening": {
+        "away": 0.479612,
+        "draw": 0.282375,
+        "home": 0.238012,
+        "margin": 0.047747
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.192186,
+        "draw": 0.277974,
+        "home": 0.52984,
+        "margin": 0.042742
+      },
+      "fixtureId": "704894",
+      "homeTeamId": "84",
+      "kickoff": "2025-02-16T17:30:00+00:00",
+      "opening": {
+        "away": 0.179973,
+        "draw": 0.269705,
+        "home": 0.550322,
+        "margin": 0.050357
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.294521,
+        "draw": 0.308727,
+        "home": 0.396752,
+        "margin": 0.041515
+      },
+      "fixtureId": "704896",
+      "homeTeamId": "244",
+      "kickoff": "2025-02-16T20:00:00+00:00",
+      "opening": {
+        "away": 0.317577,
+        "draw": 0.307332,
+        "home": 0.375091,
+        "margin": 0.049615
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.075673,
+        "draw": 0.129449,
+        "home": 0.794878,
+        "margin": 0.039714
+      },
+      "fixtureId": "704891",
+      "homeTeamId": "83",
+      "kickoff": "2025-02-17T20:00:00+00:00",
+      "opening": {
+        "away": 0.077082,
+        "draw": 0.128332,
+        "home": 0.794586,
+        "margin": 0.048764
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.186178,
+        "draw": 0.256369,
+        "home": 0.557453,
+        "margin": 0.04295
+      },
+      "fixtureId": "704902",
+      "homeTeamId": "85",
+      "kickoff": "2025-02-21T20:00:00+00:00",
+      "opening": {
+        "away": 0.184256,
+        "draw": 0.252139,
+        "home": 0.563605,
+        "margin": 0.043701
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.184281,
+        "draw": 0.307726,
+        "home": 0.507992,
+        "margin": 0.041552
+      },
+      "fixtureId": "704900",
+      "homeTeamId": "96",
+      "kickoff": "2025-02-22T13:00:00+00:00",
+      "opening": {
+        "away": 0.183676,
+        "draw": 0.283665,
+        "home": 0.532659,
+        "margin": 0.042984
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.361964,
+        "draw": 0.294235,
+        "home": 0.343801,
+        "margin": 0.04253
+      },
+      "fixtureId": "704904",
+      "homeTeamId": "101",
+      "kickoff": "2025-02-22T15:15:00+00:00",
+      "opening": {
+        "away": 0.399865,
+        "draw": 0.279438,
+        "home": 0.320697,
+        "margin": 0.046378
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.466198,
+        "draw": 0.295498,
+        "home": 0.238305,
+        "margin": 0.041268
+      },
+      "fixtureId": "704905",
+      "homeTeamId": "94",
+      "kickoff": "2025-02-22T17:30:00+00:00",
+      "opening": {
+        "away": 0.500611,
+        "draw": 0.279581,
+        "home": 0.219808,
+        "margin": 0.045843
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.778786,
+        "draw": 0.134916,
+        "home": 0.086298,
+        "margin": 0.043943
+      },
+      "fixtureId": "704909",
+      "homeTeamId": "98",
+      "kickoff": "2025-02-22T20:00:00+00:00",
+      "opening": {
+        "away": 0.76766,
+        "draw": 0.140191,
+        "home": 0.092149,
+        "margin": 0.050532
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.057614,
+        "draw": 0.136761,
+        "home": 0.805625,
+        "margin": 0.043086
+      },
+      "fixtureId": "704901",
+      "homeTeamId": "93",
+      "kickoff": "2025-02-23T13:00:00+00:00",
+      "opening": {
+        "away": 0.051233,
+        "draw": 0.129479,
+        "home": 0.819288,
+        "margin": 0.052217
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.098934,
+        "draw": 0.149014,
+        "home": 0.752053,
+        "margin": 0.038824
+      },
+      "fixtureId": "704906",
+      "homeTeamId": "86",
+      "kickoff": "2025-02-23T15:15:00+00:00",
+      "opening": {
+        "away": 0.102353,
+        "draw": 0.152386,
+        "home": 0.745261,
+        "margin": 0.048291
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.34472,
+        "draw": 0.32932,
+        "home": 0.32596,
+        "margin": 0.043491
+      },
+      "fixtureId": "704903",
+      "homeTeamId": "2922",
+      "kickoff": "2025-02-23T17:30:00+00:00",
+      "opening": {
+        "away": 0.323173,
+        "draw": 0.311555,
+        "home": 0.365272,
+        "margin": 0.048922
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.147109,
+        "draw": 0.257145,
+        "home": 0.595746,
+        "margin": 0.042589
+      },
+      "fixtureId": "704907",
+      "homeTeamId": "89",
+      "kickoff": "2025-02-23T20:00:00+00:00",
+      "opening": {
+        "away": 0.135311,
+        "draw": 0.250986,
+        "home": 0.613702,
+        "margin": 0.051261
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.219794,
+        "draw": 0.291277,
+        "home": 0.488929,
+        "margin": 0.043513
+      },
+      "fixtureId": "704908",
+      "homeTeamId": "243",
+      "kickoff": "2025-02-24T20:00:00+00:00",
+      "opening": {
+        "away": 0.242711,
+        "draw": 0.3009,
+        "home": 0.456389,
+        "margin": 0.048379
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.377441,
+        "draw": 0.309258,
+        "home": 0.313301,
+        "margin": 0.043079
+      },
+      "fixtureId": "704918",
+      "homeTeamId": "95",
+      "kickoff": "2025-02-28T20:00:00+00:00",
+      "opening": {
+        "away": 0.395117,
+        "draw": 0.299107,
+        "home": 0.305775,
+        "margin": 0.04152
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.271705,
+        "draw": 0.286304,
+        "home": 0.44199,
+        "margin": 0.042623
+      },
+      "fixtureId": "704912",
+      "homeTeamId": "9812",
+      "kickoff": "2025-03-01T13:00:00+00:00",
+      "opening": {
+        "away": 0.28832,
+        "draw": 0.271892,
+        "home": 0.439788,
+        "margin": 0.047845
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.313345,
+        "draw": 0.316448,
+        "home": 0.370207,
+        "margin": 0.042931
+      },
+      "fixtureId": "704916",
+      "homeTeamId": "101",
+      "kickoff": "2025-03-01T15:15:00+00:00",
+      "opening": {
+        "away": 0.288692,
+        "draw": 0.295842,
+        "home": 0.415466,
+        "margin": 0.046495
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.49151,
+        "draw": 0.256268,
+        "home": 0.252222,
+        "margin": 0.043358
+      },
+      "fixtureId": "704917",
+      "homeTeamId": "244",
+      "kickoff": "2025-03-01T17:30:00+00:00",
+      "opening": {
+        "away": 0.548824,
+        "draw": 0.234633,
+        "home": 0.216543,
+        "margin": 0.04717
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.258518,
+        "draw": 0.293303,
+        "home": 0.448179,
+        "margin": 0.042642
+      },
+      "fixtureId": "704910",
+      "homeTeamId": "1068",
+      "kickoff": "2025-03-01T20:00:00+00:00",
+      "opening": {
+        "away": 0.253051,
+        "draw": 0.278061,
+        "home": 0.468888,
+        "margin": 0.045444
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.337706,
+        "draw": 0.353906,
+        "home": 0.308388,
+        "margin": 0.04266
+      },
+      "fixtureId": "704913",
+      "homeTeamId": "17534",
+      "kickoff": "2025-03-02T13:00:00+00:00",
+      "opening": {
+        "away": 0.35635,
+        "draw": 0.347246,
+        "home": 0.296403,
+        "margin": 0.051022
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.081073,
+        "draw": 0.157103,
+        "home": 0.761825,
+        "margin": 0.041776
+      },
+      "fixtureId": "704911",
+      "homeTeamId": "83",
+      "kickoff": "2025-03-02T15:15:00+00:00",
+      "opening": {
+        "away": 0.083364,
+        "draw": 0.159746,
+        "home": 0.75689,
+        "margin": 0.048568
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.280599,
+        "draw": 0.335541,
+        "home": 0.383859,
+        "margin": 0.042048
+      },
+      "fixtureId": "704914",
+      "homeTeamId": "84",
+      "kickoff": "2025-03-02T17:30:00+00:00",
+      "opening": {
+        "away": 0.267153,
+        "draw": 0.3127,
+        "home": 0.420147,
+        "margin": 0.04851
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.267211,
+        "draw": 0.302615,
+        "home": 0.430174,
+        "margin": 0.042439
+      },
+      "fixtureId": "704915",
+      "homeTeamId": "97",
+      "kickoff": "2025-03-02T20:00:00+00:00",
+      "opening": {
+        "away": 0.286709,
+        "draw": 0.301225,
+        "home": 0.412066,
+        "margin": 0.050561
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.146047,
+        "draw": 0.236785,
+        "home": 0.617168,
+        "margin": 0.045358
+      },
+      "fixtureId": "704923",
+      "homeTeamId": "85",
+      "kickoff": "2025-03-08T13:00:00+00:00",
+      "opening": {
+        "away": 0.150149,
+        "draw": 0.236744,
+        "home": 0.613107,
+        "margin": 0.045536
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.378685,
+        "draw": 0.305119,
+        "home": 0.316196,
+        "margin": 0.043761
+      },
+      "fixtureId": "704920",
+      "homeTeamId": "96",
+      "kickoff": "2025-03-08T15:15:00+00:00",
+      "opening": {
+        "away": 0.399257,
+        "draw": 0.28862,
+        "home": 0.312123,
+        "margin": 0.043604
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.114028,
+        "draw": 0.211442,
+        "home": 0.67453,
+        "margin": 0.044024
+      },
+      "fixtureId": "704929",
+      "homeTeamId": "94",
+      "kickoff": "2025-03-08T17:30:00+00:00",
+      "opening": {
+        "away": 0.102785,
+        "draw": 0.211737,
+        "home": 0.685479,
+        "margin": 0.049522
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.517314,
+        "draw": 0.297215,
+        "home": 0.185471,
+        "margin": 0.044898
+      },
+      "fixtureId": "704924",
+      "homeTeamId": "2922",
+      "kickoff": "2025-03-09T13:00:00+00:00",
+      "opening": {
+        "away": 0.480614,
+        "draw": 0.306972,
+        "home": 0.212414,
+        "margin": 0.050845
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.093524,
+        "draw": 0.162636,
+        "home": 0.74384,
+        "margin": 0.042151
+      },
+      "fixtureId": "704926",
+      "homeTeamId": "86",
+      "kickoff": "2025-03-09T15:15:00+00:00",
+      "opening": {
+        "away": 0.093408,
+        "draw": 0.16006,
+        "home": 0.746532,
+        "margin": 0.046506
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.169267,
+        "draw": 0.273728,
+        "home": 0.557005,
+        "margin": 0.043788
+      },
+      "fixtureId": "704921",
+      "homeTeamId": "93",
+      "kickoff": "2025-03-09T17:30:00+00:00",
+      "opening": {
+        "away": 0.158771,
+        "draw": 0.255821,
+        "home": 0.585407,
+        "margin": 0.047983
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.098439,
+        "draw": 0.181403,
+        "home": 0.720158,
+        "margin": 0.044049
+      },
+      "fixtureId": "704925",
+      "homeTeamId": "244",
+      "kickoff": "2025-03-09T17:30:00+00:00",
+      "opening": {
+        "away": 0.135793,
+        "draw": 0.206782,
+        "home": 0.657425,
+        "margin": 0.049025
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.294816,
+        "draw": 0.317269,
+        "home": 0.387916,
+        "margin": 0.043676
+      },
+      "fixtureId": "704927",
+      "homeTeamId": "89",
+      "kickoff": "2025-03-09T20:00:00+00:00",
+      "opening": {
+        "away": 0.265146,
+        "draw": 0.302183,
+        "home": 0.432671,
+        "margin": 0.050557
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.413295,
+        "draw": 0.30634,
+        "home": 0.280364,
+        "margin": 0.042921
+      },
+      "fixtureId": "704928",
+      "homeTeamId": "88",
+      "kickoff": "2025-03-10T20:00:00+00:00",
+      "opening": {
+        "away": 0.399072,
+        "draw": 0.296206,
+        "home": 0.304723,
+        "margin": 0.048458
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.343872,
+        "draw": 0.321874,
+        "home": 0.334254,
+        "margin": 0.046063
+      },
+      "fixtureId": "704932",
+      "homeTeamId": "98",
+      "kickoff": "2025-03-14T20:00:00+00:00",
+      "opening": {
+        "away": 0.354374,
+        "draw": 0.316825,
+        "home": 0.328801,
+        "margin": 0.045139
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.554796,
+        "draw": 0.250459,
+        "home": 0.194745,
+        "margin": 0.047944
+      },
+      "fixtureId": "704937",
+      "homeTeamId": "95",
+      "kickoff": "2025-03-15T13:00:00+00:00",
+      "opening": {
+        "away": 0.565323,
+        "draw": 0.246236,
+        "home": 0.188441,
+        "margin": 0.046687
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.194455,
+        "draw": 0.285588,
+        "home": 0.519957,
+        "margin": 0.045238
+      },
+      "fixtureId": "704934",
+      "homeTeamId": "84",
+      "kickoff": "2025-03-15T15:15:00+00:00",
+      "opening": {
+        "away": 0.193995,
+        "draw": 0.282645,
+        "home": 0.52336,
+        "margin": 0.049852
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.432003,
+        "draw": 0.26061,
+        "home": 0.307387,
+        "margin": 0.042702
+      },
+      "fixtureId": "704939",
+      "homeTeamId": "102",
+      "kickoff": "2025-03-15T17:30:00+00:00",
+      "opening": {
+        "away": 0.442078,
+        "draw": 0.244843,
+        "home": 0.313078,
+        "margin": 0.047242
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.237567,
+        "draw": 0.268931,
+        "home": 0.493502,
+        "margin": 0.044502
+      },
+      "fixtureId": "704931",
+      "homeTeamId": "9812",
+      "kickoff": "2025-03-15T20:00:00+00:00",
+      "opening": {
+        "away": 0.246861,
+        "draw": 0.270638,
+        "home": 0.482501,
+        "margin": 0.046735
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.468007,
+        "draw": 0.288439,
+        "home": 0.243554,
+        "margin": 0.047413
+      },
+      "fixtureId": "704933",
+      "homeTeamId": "17534",
+      "kickoff": "2025-03-16T13:00:00+00:00",
+      "opening": {
+        "away": 0.461886,
+        "draw": 0.285731,
+        "home": 0.252383,
+        "margin": 0.050989
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.324737,
+        "draw": 0.315123,
+        "home": 0.36014,
+        "margin": 0.04387
+      },
+      "fixtureId": "704938",
+      "homeTeamId": "243",
+      "kickoff": "2025-03-16T15:15:00+00:00",
+      "opening": {
+        "away": 0.375311,
+        "draw": 0.302632,
+        "home": 0.322057,
+        "margin": 0.048999
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.262342,
+        "draw": 0.33019,
+        "home": 0.407468,
+        "margin": 0.044332
+      },
+      "fixtureId": "704935",
+      "homeTeamId": "97",
+      "kickoff": "2025-03-16T17:30:00+00:00",
+      "opening": {
+        "away": 0.264816,
+        "draw": 0.324264,
+        "home": 0.410921,
+        "margin": 0.048948
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.272734,
+        "draw": 0.326723,
+        "home": 0.400543,
+        "margin": 0.044607
+      },
+      "fixtureId": "704936",
+      "homeTeamId": "101",
+      "kickoff": "2025-03-16T17:30:00+00:00",
+      "opening": {
+        "away": 0.306185,
+        "draw": 0.310161,
+        "home": 0.383654,
+        "margin": 0.046795
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.429778,
+        "draw": 0.264023,
+        "home": 0.306199,
+        "margin": 0.043401
+      },
+      "fixtureId": "704930",
+      "homeTeamId": "1068",
+      "kickoff": "2025-03-16T20:00:00+00:00",
+      "opening": {
+        "away": 0.423602,
+        "draw": 0.261842,
+        "home": 0.314556,
+        "margin": 0.049203
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.066632,
+        "draw": 0.129302,
+        "home": 0.804065,
+        "margin": 0.045109
+      },
+      "fixtureId": "704922",
+      "homeTeamId": "83",
+      "kickoff": "2025-03-27T20:00:00+00:00",
+      "opening": {
+        "away": 0.107738,
+        "draw": 0.149881,
+        "home": 0.742381,
+        "margin": 0.052357
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.098086,
+        "draw": 0.204573,
+        "home": 0.697341,
+        "margin": 0.046729
+      },
+      "fixtureId": "704947",
+      "homeTeamId": "89",
+      "kickoff": "2025-03-29T13:00:00+00:00",
+      "opening": {
+        "away": 0.090833,
+        "draw": 0.198095,
+        "home": 0.711072,
+        "margin": 0.049498
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.568975,
+        "draw": 0.263327,
+        "home": 0.167698,
+        "margin": 0.046159
+      },
+      "fixtureId": "704948",
+      "homeTeamId": "88",
+      "kickoff": "2025-03-29T15:15:00+00:00",
+      "opening": {
+        "away": 0.587829,
+        "draw": 0.249943,
+        "home": 0.162229,
+        "margin": 0.050109
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.233258,
+        "draw": 0.31563,
+        "home": 0.451112,
+        "margin": 0.045634
+      },
+      "fixtureId": "704940",
+      "homeTeamId": "96",
+      "kickoff": "2025-03-29T17:30:00+00:00",
+      "opening": {
+        "away": 0.245263,
+        "draw": 0.319088,
+        "home": 0.435649,
+        "margin": 0.048139
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.068038,
+        "draw": 0.13266,
+        "home": 0.799302,
+        "margin": 0.051337
+      },
+      "fixtureId": "704946",
+      "homeTeamId": "86",
+      "kickoff": "2025-03-29T20:00:00+00:00",
+      "opening": {
+        "away": 0.055217,
+        "draw": 0.114128,
+        "home": 0.830655,
+        "margin": 0.046843
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.397548,
+        "draw": 0.309778,
+        "home": 0.292674,
+        "margin": 0.04809
+      },
+      "fixtureId": "704949",
+      "homeTeamId": "2922",
+      "kickoff": "2025-03-30T12:00:00+00:00",
+      "opening": {
+        "away": 0.405701,
+        "draw": 0.30363,
+        "home": 0.29067,
+        "margin": 0.048881
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.101868,
+        "draw": 0.157417,
+        "home": 0.740715,
+        "margin": 0.046548
+      },
+      "fixtureId": "704942",
+      "homeTeamId": "83",
+      "kickoff": "2025-03-30T14:15:00+00:00",
+      "opening": {
+        "away": 0.089192,
+        "draw": 0.141885,
+        "home": 0.768923,
+        "margin": 0.048807
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.132242,
+        "draw": 0.225313,
+        "home": 0.642445,
+        "margin": 0.051725
+      },
+      "fixtureId": "704941",
+      "homeTeamId": "93",
+      "kickoff": "2025-03-30T16:30:00+00:00",
+      "opening": {
+        "away": 0.129645,
+        "draw": 0.219468,
+        "home": 0.650887,
+        "margin": 0.052304
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.224152,
+        "draw": 0.298403,
+        "home": 0.477445,
+        "margin": 0.047242
+      },
+      "fixtureId": "704945",
+      "homeTeamId": "94",
+      "kickoff": "2025-03-30T16:30:00+00:00",
+      "opening": {
+        "away": 0.258272,
+        "draw": 0.302547,
+        "home": 0.439181,
+        "margin": 0.049293
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.188365,
+        "draw": 0.272082,
+        "home": 0.539553,
+        "margin": 0.047111
+      },
+      "fixtureId": "704944",
+      "homeTeamId": "244",
+      "kickoff": "2025-03-30T19:00:00+00:00",
+      "opening": {
+        "away": 0.224005,
+        "draw": 0.271096,
+        "home": 0.504899,
+        "margin": 0.047933
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.161849,
+        "draw": 0.234801,
+        "home": 0.60335,
+        "margin": 0.048996
+      },
+      "fixtureId": "704943",
+      "homeTeamId": "85",
+      "kickoff": "2025-03-31T19:00:00+00:00",
+      "opening": {
+        "away": 0.168212,
+        "draw": 0.22751,
+        "home": 0.604278,
+        "margin": 0.054056
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.161636,
+        "draw": 0.268788,
+        "home": 0.569575,
+        "margin": 0.045056
+      },
+      "fixtureId": "704952",
+      "homeTeamId": "101",
+      "kickoff": "2025-04-04T19:00:00+00:00",
+      "opening": {
+        "away": 0.162983,
+        "draw": 0.269954,
+        "home": 0.567063,
+        "margin": 0.043474
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.251355,
+        "draw": 0.289439,
+        "home": 0.459206,
+        "margin": 0.046957
+      },
+      "fixtureId": "704957",
+      "homeTeamId": "9812",
+      "kickoff": "2025-04-05T12:00:00+00:00",
+      "opening": {
+        "away": 0.258248,
+        "draw": 0.283611,
+        "home": 0.458141,
+        "margin": 0.049391
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.098345,
+        "draw": 0.156385,
+        "home": 0.74527,
+        "margin": 0.048277
+      },
+      "fixtureId": "704953",
+      "homeTeamId": "86",
+      "kickoff": "2025-04-05T14:15:00+00:00",
+      "opening": {
+        "away": 0.100771,
+        "draw": 0.167478,
+        "home": 0.731751,
+        "margin": 0.051219
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.35026,
+        "draw": 0.309453,
+        "home": 0.340288,
+        "margin": 0.045797
+      },
+      "fixtureId": "704954",
+      "homeTeamId": "84",
+      "kickoff": "2025-04-05T16:30:00+00:00",
+      "opening": {
+        "away": 0.334923,
+        "draw": 0.308909,
+        "home": 0.356168,
+        "margin": 0.047636
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.124882,
+        "draw": 0.17174,
+        "home": 0.703378,
+        "margin": 0.045376
+      },
+      "fixtureId": "704958",
+      "homeTeamId": "83",
+      "kickoff": "2025-04-05T19:00:00+00:00",
+      "opening": {
+        "away": 0.129848,
+        "draw": 0.173524,
+        "home": 0.696628,
+        "margin": 0.0478
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.400192,
+        "draw": 0.295203,
+        "home": 0.304605,
+        "margin": 0.045523
+      },
+      "fixtureId": "704956",
+      "homeTeamId": "98",
+      "kickoff": "2025-04-06T12:00:00+00:00",
+      "opening": {
+        "away": 0.400504,
+        "draw": 0.299748,
+        "home": 0.299748,
+        "margin": 0.049099
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.430213,
+        "draw": 0.29846,
+        "home": 0.271327,
+        "margin": 0.047041
+      },
+      "fixtureId": "704955",
+      "homeTeamId": "243",
+      "kickoff": "2025-04-06T14:15:00+00:00",
+      "opening": {
+        "away": 0.431067,
+        "draw": 0.289562,
+        "home": 0.279372,
+        "margin": 0.049695
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.475928,
+        "draw": 0.309584,
+        "home": 0.214488,
+        "margin": 0.045352
+      },
+      "fixtureId": "704959",
+      "homeTeamId": "95",
+      "kickoff": "2025-04-06T16:30:00+00:00",
+      "opening": {
+        "away": 0.493908,
+        "draw": 0.299762,
+        "home": 0.20633,
+        "margin": 0.04905
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.30658,
+        "draw": 0.288111,
+        "home": 0.405309,
+        "margin": 0.045446
+      },
+      "fixtureId": "704951",
+      "homeTeamId": "102",
+      "kickoff": "2025-04-06T19:00:00+00:00",
+      "opening": {
+        "away": 0.290032,
+        "draw": 0.281451,
+        "home": 0.428516,
+        "margin": 0.051186
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.323862,
+        "draw": 0.326081,
+        "home": 0.350057,
+        "margin": 0.050249
+      },
+      "fixtureId": "704950",
+      "homeTeamId": "17534",
+      "kickoff": "2025-04-07T19:00:00+00:00",
+      "opening": {
+        "away": 0.341353,
+        "draw": 0.307218,
+        "home": 0.35143,
+        "margin": 0.050007
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.283055,
+        "draw": 0.312752,
+        "home": 0.404193,
+        "margin": 0.048334
+      },
+      "fixtureId": "704967",
+      "homeTeamId": "94",
+      "kickoff": "2025-04-11T19:00:00+00:00",
+      "opening": {
+        "away": 0.284672,
+        "draw": 0.306569,
+        "home": 0.408759,
+        "margin": 0.045482
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.222322,
+        "draw": 0.308941,
+        "home": 0.468738,
+        "margin": 0.050931
+      },
+      "fixtureId": "704965",
+      "homeTeamId": "89",
+      "kickoff": "2025-04-12T12:00:00+00:00",
+      "opening": {
+        "away": 0.176889,
+        "draw": 0.282393,
+        "home": 0.540718,
+        "margin": 0.050791
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.176155,
+        "draw": 0.263259,
+        "home": 0.560586,
+        "margin": 0.049321
+      },
+      "fixtureId": "704961",
+      "homeTeamId": "2922",
+      "kickoff": "2025-04-12T14:15:00+00:00",
+      "opening": {
+        "away": 0.186995,
+        "draw": 0.277231,
+        "home": 0.535773,
+        "margin": 0.048574
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.167213,
+        "draw": 0.2506,
+        "home": 0.582187,
+        "margin": 0.047355
+      },
+      "fixtureId": "704960",
+      "homeTeamId": "85",
+      "kickoff": "2025-04-12T16:30:00+00:00",
+      "opening": {
+        "away": 0.167702,
+        "draw": 0.250453,
+        "home": 0.581845,
+        "margin": 0.04797
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.761265,
+        "draw": 0.147761,
+        "home": 0.090973,
+        "margin": 0.050882
+      },
+      "fixtureId": "704962",
+      "homeTeamId": "17534",
+      "kickoff": "2025-04-12T19:00:00+00:00",
+      "opening": {
+        "away": 0.726583,
+        "draw": 0.16024,
+        "home": 0.113178,
+        "margin": 0.050615
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.313775,
+        "draw": 0.307702,
+        "home": 0.378523,
+        "margin": 0.048353
+      },
+      "fixtureId": "704963",
+      "homeTeamId": "97",
+      "kickoff": "2025-04-13T12:00:00+00:00",
+      "opening": {
+        "away": 0.315319,
+        "draw": 0.297582,
+        "home": 0.387099,
+        "margin": 0.05013
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.559431,
+        "draw": 0.248475,
+        "home": 0.192094,
+        "margin": 0.045339
+      },
+      "fixtureId": "704966",
+      "homeTeamId": "96",
+      "kickoff": "2025-04-13T14:15:00+00:00",
+      "opening": {
+        "away": 0.587543,
+        "draw": 0.230465,
+        "home": 0.181992,
+        "margin": 0.050619
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.286152,
+        "draw": 0.275432,
+        "home": 0.438416,
+        "margin": 0.046301
+      },
+      "fixtureId": "704964",
+      "homeTeamId": "244",
+      "kickoff": "2025-04-13T16:30:00+00:00",
+      "opening": {
+        "away": 0.319379,
+        "draw": 0.270384,
+        "home": 0.410237,
+        "margin": 0.050696
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.188188,
+        "draw": 0.29506,
+        "home": 0.516753,
+        "margin": 0.046033
+      },
+      "fixtureId": "704968",
+      "homeTeamId": "93",
+      "kickoff": "2025-04-13T19:00:00+00:00",
+      "opening": {
+        "away": 0.1841,
+        "draw": 0.276151,
+        "home": 0.539749,
+        "margin": 0.052678
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.033663,
+        "draw": 0.10028,
+        "home": 0.866057,
+        "margin": 0.04969
+      },
+      "fixtureId": "704969",
+      "homeTeamId": "1068",
+      "kickoff": "2025-04-14T19:00:00+00:00",
+      "opening": {
+        "away": 0.04772,
+        "draw": 0.11105,
+        "home": 0.841229,
+        "margin": 0.051979
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.29872,
+        "draw": 0.360953,
+        "home": 0.340327,
+        "margin": 0.04941
+      },
+      "fixtureId": "704977",
+      "homeTeamId": "88",
+      "kickoff": "2025-04-18T19:00:00+00:00",
+      "opening": {
+        "away": 0.312263,
+        "draw": 0.347592,
+        "home": 0.340144,
+        "margin": 0.049975
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.296493,
+        "draw": 0.304047,
+        "home": 0.39946,
+        "margin": 0.04744
+      },
+      "fixtureId": "704973",
+      "homeTeamId": "101",
+      "kickoff": "2025-04-19T12:00:00+00:00",
+      "opening": {
+        "away": 0.281826,
+        "draw": 0.303435,
+        "home": 0.414739,
+        "margin": 0.052906
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.09383,
+        "draw": 0.137366,
+        "home": 0.768804,
+        "margin": 0.048969
+      },
+      "fixtureId": "704970",
+      "homeTeamId": "83",
+      "kickoff": "2025-04-19T14:15:00+00:00",
+      "opening": {
+        "away": 0.110686,
+        "draw": 0.156231,
+        "home": 0.733083,
+        "margin": 0.049309
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.173078,
+        "draw": 0.308628,
+        "home": 0.518294,
+        "margin": 0.048591
+      },
+      "fixtureId": "704972",
+      "homeTeamId": "84",
+      "kickoff": "2025-04-19T16:30:00+00:00",
+      "opening": {
+        "away": 0.192774,
+        "draw": 0.301707,
+        "home": 0.505519,
+        "margin": 0.052215
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.587354,
+        "draw": 0.242733,
+        "home": 0.169913,
+        "margin": 0.050957
+      },
+      "fixtureId": "704971",
+      "homeTeamId": "98",
+      "kickoff": "2025-04-19T19:00:00+00:00",
+      "opening": {
+        "away": 0.609437,
+        "draw": 0.226362,
+        "home": 0.164201,
+        "margin": 0.051832
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.544238,
+        "draw": 0.266038,
+        "home": 0.189724,
+        "margin": 0.049961
+      },
+      "fixtureId": "704975",
+      "homeTeamId": "95",
+      "kickoff": "2025-04-20T12:00:00+00:00",
+      "opening": {
+        "away": 0.5165,
+        "draw": 0.272309,
+        "home": 0.211191,
+        "margin": 0.052233
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.189543,
+        "draw": 0.233786,
+        "home": 0.576671,
+        "margin": 0.050964
+      },
+      "fixtureId": "704978",
+      "homeTeamId": "102",
+      "kickoff": "2025-04-20T14:15:00+00:00",
+      "opening": {
+        "away": 0.192715,
+        "draw": 0.247276,
+        "home": 0.560008,
+        "margin": 0.050405
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.228097,
+        "draw": 0.31571,
+        "home": 0.456193,
+        "margin": 0.048829
+      },
+      "fixtureId": "704976",
+      "homeTeamId": "243",
+      "kickoff": "2025-04-20T16:30:00+00:00",
+      "opening": {
+        "away": 0.229963,
+        "draw": 0.310112,
+        "home": 0.459925,
+        "margin": 0.050371
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.126719,
+        "draw": 0.207786,
+        "home": 0.665495,
+        "margin": 0.050797
+      },
+      "fixtureId": "704974",
+      "homeTeamId": "86",
+      "kickoff": "2025-04-20T19:00:00+00:00",
+      "opening": {
+        "away": 0.188781,
+        "draw": 0.241486,
+        "home": 0.569733,
+        "margin": 0.051022
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.351404,
+        "draw": 0.285121,
+        "home": 0.363475,
+        "margin": 0.050084
+      },
+      "fixtureId": "704979",
+      "homeTeamId": "9812",
+      "kickoff": "2025-04-21T19:00:00+00:00",
+      "opening": {
+        "away": 0.382501,
+        "draw": 0.280952,
+        "home": 0.336547,
+        "margin": 0.049949
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.234009,
+        "draw": 0.292152,
+        "home": 0.473839,
+        "margin": 0.049961
+      },
+      "fixtureId": "704982",
+      "homeTeamId": "94",
+      "kickoff": "2025-04-22T17:00:00+00:00",
+      "opening": {
+        "away": 0.231354,
+        "draw": 0.286075,
+        "home": 0.482571,
+        "margin": 0.046582
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.096771,
+        "draw": 0.167027,
+        "home": 0.736202,
+        "margin": 0.044863
+      },
+      "fixtureId": "704988",
+      "homeTeamId": "83",
+      "kickoff": "2025-04-22T19:30:00+00:00",
+      "opening": {
+        "away": 0.07912,
+        "draw": 0.144475,
+        "home": 0.776405,
+        "margin": 0.047144
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.112568,
+        "draw": 0.194082,
+        "home": 0.693351,
+        "margin": 0.045124
+      },
+      "fixtureId": "704984",
+      "homeTeamId": "93",
+      "kickoff": "2025-04-23T17:00:00+00:00",
+      "opening": {
+        "away": 0.111966,
+        "draw": 0.189894,
+        "home": 0.69814,
+        "margin": 0.053219
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.330333,
+        "draw": 0.273542,
+        "home": 0.396125,
+        "margin": 0.047491
+      },
+      "fixtureId": "704987",
+      "homeTeamId": "85",
+      "kickoff": "2025-04-23T17:00:00+00:00",
+      "opening": {
+        "away": 0.343463,
+        "draw": 0.279001,
+        "home": 0.377537,
+        "margin": 0.051091
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.280386,
+        "draw": 0.315667,
+        "home": 0.403947,
+        "margin": 0.048972
+      },
+      "fixtureId": "704986",
+      "homeTeamId": "96",
+      "kickoff": "2025-04-23T19:30:00+00:00",
+      "opening": {
+        "away": 0.286291,
+        "draw": 0.31266,
+        "home": 0.401049,
+        "margin": 0.052093
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.590854,
+        "draw": 0.250336,
+        "home": 0.158811,
+        "margin": 0.051221
+      },
+      "fixtureId": "704981",
+      "homeTeamId": "2922",
+      "kickoff": "2025-04-23T19:30:00+00:00",
+      "opening": {
+        "away": 0.536809,
+        "draw": 0.261031,
+        "home": 0.20216,
+        "margin": 0.052463
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.388908,
+        "draw": 0.312401,
+        "home": 0.298691,
+        "margin": 0.049512
+      },
+      "fixtureId": "704983",
+      "homeTeamId": "17534",
+      "kickoff": "2025-04-24T17:00:00+00:00",
+      "opening": {
+        "away": 0.343428,
+        "draw": 0.3119,
+        "home": 0.344672,
+        "margin": 0.051199
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.269556,
+        "draw": 0.31914,
+        "home": 0.411305,
+        "margin": 0.047969
+      },
+      "fixtureId": "704989",
+      "homeTeamId": "97",
+      "kickoff": "2025-04-24T17:00:00+00:00",
+      "opening": {
+        "away": 0.302603,
+        "draw": 0.314587,
+        "home": 0.382811,
+        "margin": 0.0491
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.13995,
+        "draw": 0.222811,
+        "home": 0.637239,
+        "margin": 0.04618
+      },
+      "fixtureId": "704980",
+      "homeTeamId": "1068",
+      "kickoff": "2025-04-24T19:30:00+00:00",
+      "opening": {
+        "away": 0.151288,
+        "draw": 0.235753,
+        "home": 0.612959,
+        "margin": 0.052536
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.061426,
+        "draw": 0.118859,
+        "home": 0.819716,
+        "margin": 0.051668
+      },
+      "fixtureId": "704985",
+      "homeTeamId": "244",
+      "kickoff": "2025-04-24T19:30:00+00:00",
+      "opening": {
+        "away": 0.064029,
+        "draw": 0.135335,
+        "home": 0.800636,
+        "margin": 0.049586
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.131457,
+        "draw": 0.18554,
+        "home": 0.683003,
+        "margin": 0.060958
+      },
+      "fixtureId": "704919",
+      "homeTeamId": "102",
+      "kickoff": "2025-04-27T14:15:00+00:00",
+      "opening": {
+        "away": 0.150241,
+        "draw": 0.194539,
+        "home": 0.655219,
+        "margin": 0.059866
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.277483,
+        "draw": 0.325948,
+        "home": 0.396569,
+        "margin": 0.050678
+      },
+      "fixtureId": "704998",
+      "homeTeamId": "101",
+      "kickoff": "2025-05-02T19:00:00+00:00",
+      "opening": {
+        "away": 0.283212,
+        "draw": 0.321227,
+        "home": 0.395561,
+        "margin": 0.044652
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.451156,
+        "draw": 0.300296,
+        "home": 0.248548,
+        "margin": 0.050488
+      },
+      "fixtureId": "704993",
+      "homeTeamId": "96",
+      "kickoff": "2025-05-03T12:00:00+00:00",
+      "opening": {
+        "away": 0.444738,
+        "draw": 0.30214,
+        "home": 0.253122,
+        "margin": 0.050707
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.13311,
+        "draw": 0.19759,
+        "home": 0.6693,
+        "margin": 0.052182
+      },
+      "fixtureId": "704991",
+      "homeTeamId": "102",
+      "kickoff": "2025-05-03T14:15:00+00:00",
+      "opening": {
+        "away": 0.165068,
+        "draw": 0.216464,
+        "home": 0.618468,
+        "margin": 0.049934
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.330909,
+        "draw": 0.302545,
+        "home": 0.366545,
+        "margin": 0.049298
+      },
+      "fixtureId": "704999",
+      "homeTeamId": "98",
+      "kickoff": "2025-05-03T16:30:00+00:00",
+      "opening": {
+        "away": 0.34826,
+        "draw": 0.284655,
+        "home": 0.367085,
+        "margin": 0.051802
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.721103,
+        "draw": 0.166118,
+        "home": 0.112779,
+        "margin": 0.050579
+      },
+      "fixtureId": "704996",
+      "homeTeamId": "95",
+      "kickoff": "2025-05-03T19:00:00+00:00",
+      "opening": {
+        "away": 0.824441,
+        "draw": 0.11115,
+        "home": 0.064409,
+        "margin": 0.054733
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.131375,
+        "draw": 0.168281,
+        "home": 0.700344,
+        "margin": 0.049904
+      },
+      "fixtureId": "704994",
+      "homeTeamId": "86",
+      "kickoff": "2025-05-04T12:00:00+00:00",
+      "opening": {
+        "away": 0.131139,
+        "draw": 0.168807,
+        "home": 0.700053,
+        "margin": 0.05034
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.168004,
+        "draw": 0.258152,
+        "home": 0.573844,
+        "margin": 0.049779
+      },
+      "fixtureId": "704997",
+      "homeTeamId": "243",
+      "kickoff": "2025-05-04T14:15:00+00:00",
+      "opening": {
+        "away": 0.190438,
+        "draw": 0.278676,
+        "home": 0.530886,
+        "margin": 0.052315
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.404106,
+        "draw": 0.308638,
+        "home": 0.287256,
+        "margin": 0.048558
+      },
+      "fixtureId": "704990",
+      "homeTeamId": "88",
+      "kickoff": "2025-05-04T16:30:00+00:00",
+      "opening": {
+        "away": 0.398214,
+        "draw": 0.319373,
+        "home": 0.282413,
+        "margin": 0.050716
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.296776,
+        "draw": 0.329636,
+        "home": 0.373588,
+        "margin": 0.049704
+      },
+      "fixtureId": "704995",
+      "homeTeamId": "89",
+      "kickoff": "2025-05-04T19:00:00+00:00",
+      "opening": {
+        "away": 0.312605,
+        "draw": 0.30265,
+        "home": 0.384745,
+        "margin": 0.052277
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.235548,
+        "draw": 0.291013,
+        "home": 0.473439,
+        "margin": 0.050848
+      },
+      "fixtureId": "704992",
+      "homeTeamId": "9812",
+      "kickoff": "2025-05-05T19:00:00+00:00",
+      "opening": {
+        "away": 0.233278,
+        "draw": 0.296701,
+        "home": 0.470021,
+        "margin": 0.05325
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.331966,
+        "draw": 0.304391,
+        "home": 0.363643,
+        "margin": 0.0496
+      },
+      "fixtureId": "705004",
+      "homeTeamId": "98",
+      "kickoff": "2025-05-09T19:00:00+00:00",
+      "opening": {
+        "away": 0.321311,
+        "draw": 0.291035,
+        "home": 0.387654,
+        "margin": 0.04438
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.215881,
+        "draw": 0.308102,
+        "home": 0.476017,
+        "margin": 0.050382
+      },
+      "fixtureId": "705005",
+      "homeTeamId": "94",
+      "kickoff": "2025-05-10T12:00:00+00:00",
+      "opening": {
+        "away": 0.230502,
+        "draw": 0.30512,
+        "home": 0.464378,
+        "margin": 0.050448
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.224928,
+        "draw": 0.26928,
+        "home": 0.505791,
+        "margin": 0.046085
+      },
+      "fixtureId": "705003",
+      "homeTeamId": "85",
+      "kickoff": "2025-05-10T14:15:00+00:00",
+      "opening": {
+        "away": 0.219424,
+        "draw": 0.260192,
+        "home": 0.520384,
+        "margin": 0.050087
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.409418,
+        "draw": 0.267211,
+        "home": 0.323371,
+        "margin": 0.04828
+      },
+      "fixtureId": "705009",
+      "homeTeamId": "9812",
+      "kickoff": "2025-05-10T16:30:00+00:00",
+      "opening": {
+        "away": 0.439956,
+        "draw": 0.255459,
+        "home": 0.304585,
+        "margin": 0.052293
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.100669,
+        "draw": 0.18178,
+        "home": 0.717551,
+        "margin": 0.047841
+      },
+      "fixtureId": "705007",
+      "homeTeamId": "84",
+      "kickoff": "2025-05-10T16:30:00+00:00",
+      "opening": {
+        "away": 0.095838,
+        "draw": 0.191101,
+        "home": 0.713062,
+        "margin": 0.04657
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.196241,
+        "draw": 0.270947,
+        "home": 0.532812,
+        "margin": 0.048511
+      },
+      "fixtureId": "705001",
+      "homeTeamId": "1068",
+      "kickoff": "2025-05-10T19:00:00+00:00",
+      "opening": {
+        "away": 0.183965,
+        "draw": 0.248809,
+        "home": 0.567226,
+        "margin": 0.049385
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.296771,
+        "draw": 0.299571,
+        "home": 0.403659,
+        "margin": 0.049721
+      },
+      "fixtureId": "705006",
+      "homeTeamId": "17534",
+      "kickoff": "2025-05-11T12:00:00+00:00",
+      "opening": {
+        "away": 0.295425,
+        "draw": 0.309859,
+        "home": 0.394717,
+        "margin": 0.05123
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.270232,
+        "draw": 0.220928,
+        "home": 0.50884,
+        "margin": 0.045348
+      },
+      "fixtureId": "705002",
+      "homeTeamId": "83",
+      "kickoff": "2025-05-11T14:15:00+00:00",
+      "opening": {
+        "away": 0.284571,
+        "draw": 0.232958,
+        "home": 0.482471,
+        "margin": 0.052113
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.208157,
+        "draw": 0.33569,
+        "home": 0.456153,
+        "margin": 0.048922
+      },
+      "fixtureId": "705000",
+      "homeTeamId": "93",
+      "kickoff": "2025-05-11T16:30:00+00:00",
+      "opening": {
+        "away": 0.202683,
+        "draw": 0.292765,
+        "home": 0.504552,
+        "margin": 0.054232
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.181688,
+        "draw": 0.23669,
+        "home": 0.581622,
+        "margin": 0.048371
+      },
+      "fixtureId": "705008",
+      "homeTeamId": "244",
+      "kickoff": "2025-05-11T19:00:00+00:00",
+      "opening": {
+        "away": 0.181432,
+        "draw": 0.23887,
+        "home": 0.579698,
+        "margin": 0.051852
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.555023,
+        "draw": 0.242294,
+        "home": 0.202683,
+        "margin": 0.047517
+      },
+      "fixtureId": "705016",
+      "homeTeamId": "95",
+      "kickoff": "2025-05-13T17:00:00+00:00",
+      "opening": {
+        "away": 0.545764,
+        "draw": 0.246156,
+        "home": 0.20808,
+        "margin": 0.047025
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.295952,
+        "draw": 0.287905,
+        "home": 0.416142,
+        "margin": 0.049355
+      },
+      "fixtureId": "705015",
+      "homeTeamId": "89",
+      "kickoff": "2025-05-13T18:00:00+00:00",
+      "opening": {
+        "away": 0.307105,
+        "draw": 0.288605,
+        "home": 0.40429,
+        "margin": 0.043659
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.183234,
+        "draw": 0.251886,
+        "home": 0.56488,
+        "margin": 0.047507
+      },
+      "fixtureId": "705017",
+      "homeTeamId": "243",
+      "kickoff": "2025-05-13T19:30:00+00:00",
+      "opening": {
+        "away": 0.178025,
+        "draw": 0.256299,
+        "home": 0.565677,
+        "margin": 0.046032
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.253101,
+        "draw": 0.334518,
+        "home": 0.41238,
+        "margin": 0.045235
+      },
+      "fixtureId": "705010",
+      "homeTeamId": "96",
+      "kickoff": "2025-05-14T17:00:00+00:00",
+      "opening": {
+        "away": 0.25824,
+        "draw": 0.300601,
+        "home": 0.441159,
+        "margin": 0.049423
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.102943,
+        "draw": 0.163789,
+        "home": 0.733269,
+        "margin": 0.049043
+      },
+      "fixtureId": "705019",
+      "homeTeamId": "102",
+      "kickoff": "2025-05-14T17:00:00+00:00",
+      "opening": {
+        "away": 0.108996,
+        "draw": 0.180901,
+        "home": 0.710103,
+        "margin": 0.05093
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.134739,
+        "draw": 0.19441,
+        "home": 0.670851,
+        "margin": 0.04975
+      },
+      "fixtureId": "705014",
+      "homeTeamId": "86",
+      "kickoff": "2025-05-14T19:30:00+00:00",
+      "opening": {
+        "away": 0.121091,
+        "draw": 0.188338,
+        "home": 0.690571,
+        "margin": 0.049331
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.414701,
+        "draw": 0.288161,
+        "home": 0.297138,
+        "margin": 0.048424
+      },
+      "fixtureId": "705013",
+      "homeTeamId": "101",
+      "kickoff": "2025-05-15T17:00:00+00:00",
+      "opening": {
+        "away": 0.383811,
+        "draw": 0.304106,
+        "home": 0.312083,
+        "margin": 0.050583
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.451242,
+        "draw": 0.283027,
+        "home": 0.265731,
+        "margin": 0.045334
+      },
+      "fixtureId": "705012",
+      "homeTeamId": "97",
+      "kickoff": "2025-05-15T17:00:00+00:00",
+      "opening": {
+        "away": 0.457362,
+        "draw": 0.288277,
+        "home": 0.254362,
+        "margin": 0.051179
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.708191,
+        "draw": 0.16678,
+        "home": 0.12503,
+        "margin": 0.053768
+      },
+      "fixtureId": "705018",
+      "homeTeamId": "88",
+      "kickoff": "2025-05-15T19:30:00+00:00",
+      "opening": {
+        "away": 0.732665,
+        "draw": 0.165358,
+        "home": 0.101977,
+        "margin": 0.049908
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.330885,
+        "draw": 0.372246,
+        "home": 0.296869,
+        "margin": 0.049374
+      },
+      "fixtureId": "705011",
+      "homeTeamId": "2922",
+      "kickoff": "2025-05-15T19:30:00+00:00",
+      "opening": {
+        "away": 0.36066,
+        "draw": 0.359299,
+        "home": 0.280042,
+        "margin": 0.050264
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "244",
+      "closing": {
+        "away": 0.160897,
+        "draw": 0.217598,
+        "home": 0.621505,
+        "margin": 0.051632
+      },
+      "fixtureId": "705020",
+      "homeTeamId": "1068",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.25745,
+        "draw": 0.255374,
+        "home": 0.487175,
+        "margin": 0.05264
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "102",
+      "closing": {
+        "away": 0.230032,
+        "draw": 0.213049,
+        "home": 0.556919,
+        "margin": 0.050055
+      },
+      "fixtureId": "705021",
+      "homeTeamId": "83",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.256966,
+        "draw": 0.229102,
+        "home": 0.513932,
+        "margin": 0.051775
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "101",
+      "closing": {
+        "away": 0.228166,
+        "draw": 0.272496,
+        "home": 0.499338,
+        "margin": 0.048509
+      },
+      "fixtureId": "705022",
+      "homeTeamId": "85",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.220662,
+        "draw": 0.2438,
+        "home": 0.535538,
+        "margin": 0.049034
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "17534",
+      "closing": {
+        "away": 0.428392,
+        "draw": 0.278079,
+        "home": 0.293528,
+        "margin": 0.05149
+      },
+      "fixtureId": "705023",
+      "homeTeamId": "98",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.397315,
+        "draw": 0.275242,
+        "home": 0.327443,
+        "margin": 0.053093
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "2922",
+      "closing": {
+        "away": 0.27927,
+        "draw": 0.338689,
+        "home": 0.382041,
+        "margin": 0.047008
+      },
+      "fixtureId": "705024",
+      "homeTeamId": "84",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.228851,
+        "draw": 0.297507,
+        "home": 0.473642,
+        "margin": 0.050397
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "88",
+      "closing": {
+        "away": 0.234758,
+        "draw": 0.282683,
+        "home": 0.482559,
+        "margin": 0.046609
+      },
+      "fixtureId": "705025",
+      "homeTeamId": "97",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.207161,
+        "draw": 0.273238,
+        "home": 0.519601,
+        "margin": 0.051669
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "86",
+      "closing": {
+        "away": 0.439488,
+        "draw": 0.257754,
+        "home": 0.302758,
+        "margin": 0.04856
+      },
+      "fixtureId": "705028",
+      "homeTeamId": "243",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.532734,
+        "draw": 0.237661,
+        "home": 0.229605,
+        "margin": 0.054555
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "9812",
+      "closing": {
+        "away": 0.19337,
+        "draw": 0.25558,
+        "home": 0.551049,
+        "margin": 0.048971
+      },
+      "fixtureId": "705026",
+      "homeTeamId": "89",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.245018,
+        "draw": 0.308659,
+        "home": 0.446323,
+        "margin": 0.051891
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "93",
+      "closing": {
+        "away": 0.301746,
+        "draw": 0.324326,
+        "home": 0.373928,
+        "margin": 0.048749
+      },
+      "fixtureId": "705029",
+      "homeTeamId": "94",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.25558,
+        "draw": 0.318834,
+        "home": 0.425586,
+        "margin": 0.048973
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "96",
+      "closing": {
+        "away": 0.578492,
+        "draw": 0.255217,
+        "home": 0.166291,
+        "margin": 0.047656
+      },
+      "fixtureId": "705027",
+      "homeTeamId": "95",
+      "kickoff": "2025-05-18T17:00:00+00:00",
+      "opening": {
+        "away": 0.586649,
+        "draw": 0.247492,
+        "home": 0.165859,
+        "margin": 0.052221
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "94",
+      "closing": {
+        "away": 0.259555,
+        "draw": 0.245543,
+        "home": 0.494902,
+        "margin": 0.046943
+      },
+      "fixtureId": "705036",
+      "homeTeamId": "244",
+      "kickoff": "2025-05-23T19:00:00+00:00",
+      "opening": {
+        "away": 0.260715,
+        "draw": 0.252439,
+        "home": 0.486846,
+        "margin": 0.047978
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "89",
+      "closing": {
+        "away": 0.130354,
+        "draw": 0.170913,
+        "home": 0.698733,
+        "margin": 0.052324
+      },
+      "fixtureId": "705034",
+      "homeTeamId": "86",
+      "kickoff": "2025-05-24T14:15:00+00:00",
+      "opening": {
+        "away": 0.141528,
+        "draw": 0.188704,
+        "home": 0.669767,
+        "margin": 0.051448
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "98",
+      "closing": {
+        "away": 0.116498,
+        "draw": 0.188736,
+        "home": 0.694766,
+        "margin": 0.042995
+      },
+      "fixtureId": "705032",
+      "homeTeamId": "88",
+      "kickoff": "2025-05-24T16:30:00+00:00",
+      "opening": {
+        "away": 0.114741,
+        "draw": 0.195153,
+        "home": 0.690106,
+        "margin": 0.050038
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "95",
+      "closing": {
+        "away": 0.108548,
+        "draw": 0.174872,
+        "home": 0.71658,
+        "margin": 0.049261
+      },
+      "fixtureId": "705038",
+      "homeTeamId": "17534",
+      "kickoff": "2025-05-24T16:30:00+00:00",
+      "opening": {
+        "away": 0.101466,
+        "draw": 0.175974,
+        "home": 0.72256,
+        "margin": 0.048461
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "97",
+      "closing": {
+        "away": 0.404402,
+        "draw": 0.300122,
+        "home": 0.295476,
+        "margin": 0.047792
+      },
+      "fixtureId": "705030",
+      "homeTeamId": "96",
+      "kickoff": "2025-05-24T19:00:00+00:00",
+      "opening": {
+        "away": 0.40404,
+        "draw": 0.29798,
+        "home": 0.29798,
+        "margin": 0.048729
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "85",
+      "closing": {
+        "away": 0.548317,
+        "draw": 0.253743,
+        "home": 0.19794,
+        "margin": 0.048139
+      },
+      "fixtureId": "705039",
+      "homeTeamId": "2922",
+      "kickoff": "2025-05-24T19:00:00+00:00",
+      "opening": {
+        "away": 0.512729,
+        "draw": 0.261281,
+        "home": 0.22599,
+        "margin": 0.048574
+      }
+    },
+    {
+      "actual": "draw",
+      "awayTeamId": "84",
+      "closing": {
+        "away": 0.130886,
+        "draw": 0.221805,
+        "home": 0.647309,
+        "margin": 0.050924
+      },
+      "fixtureId": "705037",
+      "homeTeamId": "101",
+      "kickoff": "2025-05-24T19:00:00+00:00",
+      "opening": {
+        "away": 0.147106,
+        "draw": 0.231781,
+        "home": 0.621113,
+        "margin": 0.052296
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "1068",
+      "closing": {
+        "away": 0.435812,
+        "draw": 0.269612,
+        "home": 0.294576,
+        "margin": 0.047749
+      },
+      "fixtureId": "705033",
+      "homeTeamId": "9812",
+      "kickoff": "2025-05-25T12:00:00+00:00",
+      "opening": {
+        "away": 0.488853,
+        "draw": 0.254203,
+        "home": 0.256944,
+        "margin": 0.049029
+      }
+    },
+    {
+      "actual": "home",
+      "awayTeamId": "243",
+      "closing": {
+        "away": 0.225601,
+        "draw": 0.232188,
+        "home": 0.542211,
+        "margin": 0.047897
+      },
+      "fixtureId": "705031",
+      "homeTeamId": "102",
+      "kickoff": "2025-05-25T14:15:00+00:00",
+      "opening": {
+        "away": 0.15456,
+        "draw": 0.194385,
+        "home": 0.651056,
+        "margin": 0.052032
+      }
+    },
+    {
+      "actual": "away",
+      "awayTeamId": "83",
+      "closing": {
+        "away": 0.457863,
+        "draw": 0.245453,
+        "home": 0.296684,
+        "margin": 0.050028
+      },
+      "fixtureId": "705035",
+      "homeTeamId": "93",
+      "kickoff": "2025-05-25T19:00:00+00:00",
+      "opening": {
+        "away": 0.450868,
+        "draw": 0.253688,
+        "home": 0.295444,
+        "margin": 0.051159
+      }
+    }
+  ],
+  "provider": "football-data.co.uk",
+  "quarantine": [],
+  "quarantinedCount": 0,
+  "reconciledCount": 380,
+  "season": "2024-25",
+  "source": "https://www.football-data.co.uk/mmz4281/2425/SP1.csv",
+  "usage": "benchmark-only; closing prices are never historical model inputs"
+}

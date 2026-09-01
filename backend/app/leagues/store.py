@@ -49,12 +49,20 @@ class LeagueSeason:
     @property
     def completed_fixtures(self) -> tuple[dict[str, Any], ...]:
         historical = tuple(
-            fixture
+            {
+                **fixture,
+                "_competition": snapshot.get("competition"),
+                "_season": snapshot.get("season"),
+            }
             for snapshot in self.history
             for fixture in snapshot.get("fixtures", ())
             if fixture.get("status") == "completed"
         )
-        current = tuple(f for f in self.fixtures if f.get("status") == "completed")
+        current = tuple(
+            {**fixture, "_competition": self.competition, "_season": self.season}
+            for fixture in self.fixtures
+            if fixture.get("status") == "completed"
+        )
         return historical + current
 
     @property

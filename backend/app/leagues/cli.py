@@ -12,7 +12,8 @@ from ..db.base import db
 from .espn import EspnDataError
 from .evidence import collect_league_evidence
 from .fotmob import FotMobHistoricalAuditor, admission_report
-from .forecast import sync_forecast_ledger
+from .forecast import provider_admission_report, sync_forecast_ledger
+from .market_benchmark import ClosingOddsAuditor
 from .prediction import LeaguePredictionModel
 from .season import SeasonManager, SeasonSpec, season_spec
 from .store import LeagueSeasonStore, SeasonDataError
@@ -250,12 +251,50 @@ def register_cli(app: Flask) -> None:
     @click.option("--competition", default="premier-league", show_default=True)
     @click.option("--season", "season_name", default="2024-25", show_default=True)
     def league_backtest(competition: str, season_name: str) -> None:
-        """Report a leakage-safe ESPN-only walk-forward baseline."""
+        """Report a leakage-safe walk-forward test with earlier editions as priors."""
+        store = LeagueSeasonStore(Config.DATA_DIR + "/leagues")
         try:
-            data = LeagueSeasonStore(Config.DATA_DIR + "/leagues").load(competition, season_name)
+            data = store.load(competition, season_name)
         except SeasonDataError as exc:
             raise click.ClickException(str(exc)) from exc
-        model = LeaguePredictionModel(teams=data.teams, completed_fixtures=data.completed_fixtures, promoted_team_ids=data.promoted_team_ids)
+        earlier = sorted(
+            (item for item in store.catalog() if item["competition"] == competition and item["season"] < season_name),
+            key=lambda item: item["season"],
+        )[-2:]
+        historical = []
+        previous_team_ids: set[str] = set()
+        for entry in earlier:
+            prior = store.load(competition, entry["season"])
+            historical.extend(
+                {**fixture, "_competition": competition, "_season": prior.season}
+                for fixture in prior.fixtures
+                if fixture.get("status") == "completed"
+            )
+            previous_team_ids = {str(team["id"]) for team in prior.teams}
+        promotion_competition = {"premier-league": "championship", "la-liga": "segunda-division", "bundesliga": "2-bundesliga"}.get(competition)
+        promotion_team_ids: set[str] = set()
+        if promotion_competition and earlier:
+            lower = store.load(promotion_competition, earlier[-1]["season"])
+            historical.extend(
+                {**fixture, "_competition": promotion_competition, "_season": lower.season}
+                for fixture in lower.fixtures
+                if fixture.get("status") == "completed"
+            )
+            promotion_team_ids = {str(team["id"]) for team in lower.teams}
+        current_team_ids = {str(team["id"]) for team in data.teams}
+        derived_promoted = (current_team_ids - previous_team_ids) & promotion_team_ids if previous_team_ids and promotion_team_ids else set()
+        promoted = data.promoted_team_ids or derived_promoted
+        current = [
+            {**fixture, "_competition": competition, "_season": season_name}
+            for fixture in data.fixtures
+            if fixture.get("status") == "completed"
+        ]
+        model = LeaguePredictionModel(
+            teams=data.teams,
+            completed_fixtures=historical + current,
+            promoted_team_ids=promoted,
+            competition=data.competition,
+        )
         rows = []
         for fixture in data.fixtures:
             if fixture.get("status") != "completed":
@@ -271,38 +310,80 @@ def register_cli(app: Flask) -> None:
             raise click.ClickException("season has no completed fixtures")
         log_loss = -sum(__import__("math").log(probability) for probability, _, _ in rows) / len(rows)
         brier = sum(sum((probabilities[key] - (key == actual)) ** 2 for key in ("home", "draw", "away")) for _, probabilities, actual in rows) / len(rows)
-        click.echo(f"ESPN walk-forward {competition}/{season_name}: matches={len(rows)} logLoss={log_loss:.4f} brier={brier:.4f} adjustmentsApplied=false")
+        click.echo(
+            f"ESPN walk-forward {competition}/{season_name}: priorSeasons={len(earlier)} "
+            f"historicalMatches={len(historical)} promotedTeams={len(promoted)} matches={len(rows)} "
+            f"logLoss={log_loss:.4f} brier={brier:.4f} adjustmentsApplied=false"
+        )
 
     @app.cli.command("league-fotmob-backfill")
+    @click.option("--competition", default="premier-league", show_default=True)
     @click.option("--season", "season_names", multiple=True, default=("2024-25", "2025-26"), show_default=True)
     @click.option("--refresh", is_flag=True, help="Discard the normalized cache and refetch match details.")
-    def league_fotmob_backfill(season_names: tuple[str, ...], refresh: bool) -> None:
-        """Reconcile historical EPL FotMob fixtures and cache compact stats."""
+    def league_fotmob_backfill(competition: str, season_names: tuple[str, ...], refresh: bool) -> None:
+        """Reconcile historical league fixtures to FotMob and cache compact stats."""
         store = LeagueSeasonStore(Config.DATA_DIR + "/leagues")
         auditor = FotMobHistoricalAuditor()
         for season_name in season_names:
             try:
-                data = store.load("premier-league", season_name)
+                data = store.load(competition, season_name)
                 result = auditor.run(data, refresh=refresh)
             except (SeasonDataError, OSError, TypeError, ValueError) as exc:
                 raise click.ClickException(str(exc)) from exc
             click.echo(
-                f"FotMob {season_name}: fixtures={result['fixtureCount']} reconciled={result['reconciledCount']} "
+                f"FotMob {competition}/{season_name}: fixtures={result['fixtureCount']} reconciled={result['reconciledCount']} "
                 f"quarantined={result['quarantinedCount']} stats={result['statsCoverage']} "
                 f"xg={result['xgCoverage']} shots={result['shotsCoverage']}"
             )
 
     @app.cli.command("league-fotmob-admission")
-    @click.option("--season", "season_names", multiple=True, default=("2024-25", "2025-26"), show_default=True)
-    def league_fotmob_admission(season_names: tuple[str, ...]) -> None:
+    @click.option("--competition", default="premier-league", show_default=True)
+    @click.option("--season", "season_names", multiple=True, default=("2023-24", "2024-25", "2025-26"), show_default=True)
+    def league_fotmob_admission(competition: str, season_names: tuple[str, ...]) -> None:
         """Report the leakage-safe FotMob numerical admission gate."""
         store = LeagueSeasonStore(Config.DATA_DIR + "/leagues")
         try:
-            seasons = {season_name: store.load("premier-league", season_name) for season_name in season_names}
-            report = admission_report(seasons)
-            report_path = Config.DATA_DIR + "/leagues/fotmob-admission-report.json"
+            seasons = {season_name: store.load(competition, season_name) for season_name in season_names}
+            promotion_competition = {"premier-league": "championship", "la-liga": "segunda-division", "bundesliga": "2-bundesliga"}.get(competition)
+            lower_seasons = {
+                season_name: store.load(promotion_competition, season_name)
+                for season_name in season_names[:-1]
+            } if promotion_competition else {}
+            report = admission_report(seasons, lower_seasons)
+            report_path = Config.DATA_DIR + f"/leagues/fotmob-admission-{competition}.json"
             from pathlib import Path
             Path(report_path).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        except (SeasonDataError, OSError, TypeError, ValueError) as exc:
+            raise click.ClickException(str(exc)) from exc
+        click.echo(json.dumps(report, indent=2, sort_keys=True))
+
+    @app.cli.command("league-market-benchmark")
+    @click.option("--competition", default="premier-league", show_default=True)
+    @click.option("--season", "season_names", multiple=True, default=("2023-24", "2024-25", "2025-26"), show_default=True)
+    def league_market_benchmark(competition: str, season_names: tuple[str, ...]) -> None:
+        """Reconcile free historical opening/closing odds as benchmark-only data."""
+        store = LeagueSeasonStore(Config.DATA_DIR + "/leagues")
+        auditor = ClosingOddsAuditor()
+        for season_name in season_names:
+            try:
+                result = auditor.run(store.load(competition, season_name))
+            except (SeasonDataError, OSError, TypeError, ValueError) as exc:
+                raise click.ClickException(str(exc)) from exc
+            click.echo(
+                f"Market benchmark {competition}/{season_name}: fixtures={result['fixtureCount']} "
+                f"reconciled={result['reconciledCount']} quarantined={result['quarantinedCount']}"
+            )
+
+    @app.cli.command("league-provider-admission")
+    @click.option("--competition", default="premier-league", show_default=True)
+    @click.option("--season", "season_name", default="2026-27", show_default=True)
+    def league_provider_admission(competition: str, season_name: str) -> None:
+        """Evaluate immutable live snapshots and persist only proven provider weights."""
+        try:
+            season = LeagueSeasonStore(Config.DATA_DIR + "/leagues").load(competition, season_name)
+            report = provider_admission_report(season)
+            report_path = season.directory / "provider-admission.json"
+            report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         except (SeasonDataError, OSError, TypeError, ValueError) as exc:
             raise click.ClickException(str(exc)) from exc
         click.echo(json.dumps(report, indent=2, sort_keys=True))

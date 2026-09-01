@@ -4,16 +4,17 @@ from __future__ import annotations
 
 import json
 import math
+import random
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 from .evidence import collect_league_evidence
 from .prediction import LeaguePredictionModel, admitted_fotmob_records
-from .swarm import build_league_swarm
+from .swarm import build_league_swarm, provider_signal
 
 
-LEDGER_VERSION = 1
+LEDGER_VERSION = 2
 PROVIDERS = ("SofaScore", "FotMob", "365Scores", "YouTube", "Zep", "Opta")
 
 
@@ -46,6 +47,21 @@ def _write(path: Path, value: dict[str, Any]) -> None:
     temporary.replace(path)
 
 
+def _admitted_provider_weights(season) -> dict[str, float]:
+    """Read only provider weights that passed this edition's persisted gate."""
+    try:
+        report = json.loads((season.directory / "provider-admission.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if report.get("version") != 1:
+        return {}
+    return {
+        str(row["provider"]): float(row["weight"])
+        for row in report.get("providers", ())
+        if row.get("passed") is True and float(row.get("weight", 0.0)) > 0
+    }
+
+
 def _provider_snapshot(forecast: dict[str, Any], *, season, kickoff: datetime, settings: Any) -> None:
     """Attach the one pre-kickoff provider snapshot used for later calibration."""
     if settings is None:
@@ -59,7 +75,8 @@ def _provider_snapshot(forecast: dict[str, Any], *, season, kickoff: datetime, s
         graph_id=str(season.edition.get("leagueGraph", {}).get("graphId", "")),
         settings=settings,
     )
-    swarm = build_league_swarm(forecast, evidence)
+    forecast["baselineProbabilities"] = dict(forecast["probabilities"])
+    swarm = build_league_swarm(forecast, evidence, calibrated_weights=_admitted_provider_weights(season))
     forecast["probabilities"] = swarm["probabilities"]
     forecast["modelVersion"] = swarm["modelVersion"]
     outcome = max(swarm["probabilities"], key=swarm["probabilities"].get)
@@ -88,6 +105,7 @@ def fixture_forecast(season, fixture: dict[str, Any], kickoff: datetime, *, sett
         completed_fixtures=season.completed_fixtures,
         promoted_team_ids=season.promoted_team_ids,
         fotmob_records=admitted_fotmob_records(season),
+        competition=season.competition,
     )
     forecast = model.predict(fixture["homeTeamId"], fixture["awayTeamId"], kickoff=kickoff)
     forecast["evidence"] = {
@@ -135,10 +153,13 @@ def sync_forecast_ledger(season, *, now: datetime | None = None, settings: Any =
             "season": season.season,
             "homeTeamId": str(fixture["homeTeamId"]),
             "awayTeamId": str(fixture["awayTeamId"]),
+            "homeTeamName": forecast["homeTeam"]["name"],
+            "awayTeamName": forecast["awayTeam"]["name"],
             "kickoff": fixture["kickoff"],
             "modelVersion": forecast["modelVersion"],
             "generatedAt": now.isoformat(),
             "probabilities": forecast["probabilities"],
+            "baselineProbabilities": forecast.get("baselineProbabilities", forecast["probabilities"]),
             "expectedGoals": forecast["expectedGoals"],
             "likelyScore": forecast["likelyScore"],
             "evidence": forecast.get("evidence", {}),
@@ -191,7 +212,7 @@ def forecast_metrics(season) -> dict[str, Any]:
 def forecast_performance(season) -> dict[str, Any]:
     """Summarize only the immutable provider snapshots available for calibration."""
     rows = _read(season.directory / "forecasts.json")["forecasts"]
-    providers = {name: {"provider": name, "snapshots": 0, "resolvedSnapshots": 0, "statuses": {}} for name in PROVIDERS}
+    providers = {name: {"provider": name, "snapshots": 0, "resolvedSnapshots": 0, "numericResolvedSnapshots": 0, "statuses": {}, "samples": []} for name in PROVIDERS}
     for row in rows:
         evidence = row.get("evidence", {}).get("providerEvidence", [])
         if not isinstance(evidence, list):
@@ -206,16 +227,104 @@ def forecast_performance(season) -> dict[str, Any]:
             summary["resolvedSnapshots"] += int(resolved)
             status = str(item.get("status", "unavailable"))
             summary["statuses"][status] = summary["statuses"].get(status, 0) + 1
+            if not resolved:
+                continue
+            signal = provider_signal(item, home_name=str(row.get("homeTeamName", "")), away_name=str(row.get("awayTeamName", "")))
+            baseline = row.get("baselineProbabilities") or row.get("probabilities")
+            actual = row["actual"].get("outcome")
+            if signal is not None and actual in ("home", "draw", "away") and isinstance(baseline, dict):
+                try:
+                    normalized_baseline = {key: float(baseline[key]) for key in ("home", "draw", "away")}
+                except (KeyError, TypeError, ValueError):
+                    continue
+                summary["samples"].append((normalized_baseline, signal, actual))
+                summary["numericResolvedSnapshots"] += 1
     result = []
     for summary in providers.values():
-        resolved = summary["resolvedSnapshots"]
-        summary["weight"] = 0.0
-        summary["admission"] = "not-collected" if not summary["snapshots"] else "collecting" if resolved < 30 else "not-admitted"
+        samples = summary.pop("samples")
+        recommendation = _provider_admission(samples)
+        summary.update(recommendation)
+        summary["admission"] = "active" if recommendation["passed"] else "not-collected" if not summary["snapshots"] else "collecting" if len(samples) < 60 else "not-admitted"
         result.append(summary)
+    _retain_best_provider(result)
     return {
         "snapshots": len(rows),
         "resolvedSnapshots": sum(isinstance(row.get("actual"), dict) for row in rows),
         "accuracy": forecast_metrics(season),
         "baseline": {"provider": "ESPN baseline", "weight": 1.0, "admission": "active"},
         "providers": result,
+    }
+
+
+def _scores(samples: list[tuple[dict[str, float], dict[str, float], str]], weight: float) -> tuple[float, float]:
+    log_loss = brier = 0.0
+    for baseline, signal, actual in samples:
+        probabilities = {key: (baseline[key] + weight * signal[key]) / (1 + weight) for key in ("home", "draw", "away")}
+        log_loss -= math.log(max(1e-12, probabilities[actual]))
+        brier += sum((probabilities[key] - (key == actual)) ** 2 for key in probabilities)
+    return log_loss / len(samples), brier / len(samples)
+
+
+def _provider_admission(samples: list[tuple[dict[str, float], dict[str, float], str]]) -> dict[str, Any]:
+    """Select on older records and gate on the final 30 immutable forecasts."""
+    empty = {"weight": 0.0, "passed": False, "developmentSize": 0, "holdoutSize": 0, "holdout": None, "confidenceIntervals": None}
+    if len(samples) < 60:
+        return empty
+    development, holdout = samples[:-30], samples[-30:]
+    # Relative provider weights above one allow a demonstrably stronger signal
+    # (notably a market consensus) to dominate without special-case logic.
+    weights = [value / 20 for value in range(21)] + [1.25, 1.5, 2.0, 3.0, 5.0, 10.0, 100.0]
+    weight = min(weights, key=lambda value: _scores(development, value))
+    if weight <= 0:
+        return {**empty, "developmentSize": len(development), "holdoutSize": len(holdout)}
+    baseline_scores = _scores(holdout, 0.0)
+    candidate_scores = _scores(holdout, weight)
+    rng = random.Random(20260901)
+    improvements = []
+    for _ in range(1000):
+        sample = [holdout[rng.randrange(len(holdout))] for _ in holdout]
+        before = _scores(sample, 0.0)
+        after = _scores(sample, weight)
+        improvements.append((before[0] - after[0], before[1] - after[1]))
+    intervals = []
+    for index in (0, 1):
+        ordered = sorted(row[index] for row in improvements)
+        intervals.append([ordered[24], ordered[974]])
+    passed = all(interval[0] > 0 for interval in intervals)
+    return {
+        "weight": weight if passed else 0.0,
+        "testedWeight": weight,
+        "passed": passed,
+        "developmentSize": len(development),
+        "holdoutSize": len(holdout),
+        "holdout": {"baselineLogLoss": baseline_scores[0], "candidateLogLoss": candidate_scores[0], "baselineBrier": baseline_scores[1], "candidateBrier": candidate_scores[1]},
+        "confidenceIntervals": {"logLossImprovement95": intervals[0], "brierImprovement95": intervals[1]},
+    }
+
+
+def _retain_best_provider(providers: list[dict[str, Any]]) -> None:
+    """Avoid combining independently calibrated, correlated provider signals."""
+    passing = [row for row in providers if row.get("passed") is True]
+    if len(passing) <= 1:
+        return
+    winner = min(passing, key=lambda row: float((row.get("holdout") or {}).get("candidateLogLoss", math.inf)))
+    for row in passing:
+        if row is winner:
+            continue
+        row["passed"] = False
+        row["weight"] = 0.0
+        row["admission"] = "not-admitted"
+        row["reason"] = f"A stronger passing provider ({winner['provider']}) was retained to avoid an untested correlated blend."
+
+
+def provider_admission_report(season) -> dict[str, Any]:
+    """Build the exact report consumed by future forecasts for this edition."""
+    performance = forecast_performance(season)
+    return {
+        "version": 1,
+        "competition": season.competition,
+        "season": season.season,
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "rule": "60 numeric resolved snapshots; select on earlier records; final 30 holdout; both paired-bootstrap 95% lower bounds above zero",
+        "providers": performance["providers"],
     }

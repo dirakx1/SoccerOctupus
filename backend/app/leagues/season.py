@@ -44,7 +44,10 @@ SEASON_SPECS = (
     ),
     SeasonSpec("premier-league", "2025-26", "eng.1", 2025, "2025-08-01", "2026-05-31", "Premier League 2025-26"),
     SeasonSpec("premier-league", "2024-25", "eng.1", 2024, "2024-08-01", "2025-05-31", "Premier League 2024-25"),
+    SeasonSpec("premier-league", "2023-24", "eng.1", 2023, "2023-08-01", "2024-05-31", "Premier League 2023-24"),
     SeasonSpec("championship", "2025-26", "eng.2", 2025, "2025-08-01", "2026-05-31", "Championship 2025-26"),
+    SeasonSpec("championship", "2024-25", "eng.2", 2024, "2024-08-01", "2025-05-31", "Championship 2024-25"),
+    SeasonSpec("championship", "2023-24", "eng.2", 2023, "2023-08-01", "2024-05-31", "Championship 2023-24"),
     SeasonSpec(
         "la-liga", "2026-27", "esp.1", 2026, "2026-08-01", "2027-05-31", "La Liga 2026-27",
         history=(
@@ -55,7 +58,10 @@ SEASON_SPECS = (
     ),
     SeasonSpec("la-liga", "2025-26", "esp.1", 2025, "2025-08-01", "2026-05-31", "La Liga 2025-26"),
     SeasonSpec("la-liga", "2024-25", "esp.1", 2024, "2024-08-01", "2025-05-31", "La Liga 2024-25"),
+    SeasonSpec("la-liga", "2023-24", "esp.1", 2023, "2023-08-01", "2024-05-31", "La Liga 2023-24"),
     SeasonSpec("segunda-division", "2025-26", "esp.2", 2025, "2025-08-01", "2026-05-31", "Segunda Division 2025-26"),
+    SeasonSpec("segunda-division", "2024-25", "esp.2", 2024, "2024-08-01", "2025-05-31", "Segunda Division 2024-25"),
+    SeasonSpec("segunda-division", "2023-24", "esp.2", 2023, "2023-08-01", "2024-05-31", "Segunda Division 2023-24"),
     SeasonSpec(
         "bundesliga", "2026-27", "ger.1", 2026, "2026-08-01", "2027-05-31", "Bundesliga 2026-27",
         history=(
@@ -66,7 +72,10 @@ SEASON_SPECS = (
     ),
     SeasonSpec("bundesliga", "2025-26", "ger.1", 2025, "2025-08-01", "2026-05-31", "Bundesliga 2025-26"),
     SeasonSpec("bundesliga", "2024-25", "ger.1", 2024, "2024-08-01", "2025-05-31", "Bundesliga 2024-25"),
+    SeasonSpec("bundesliga", "2023-24", "ger.1", 2023, "2023-08-01", "2024-05-31", "Bundesliga 2023-24"),
     SeasonSpec("2-bundesliga", "2025-26", "ger.2", 2025, "2025-08-01", "2026-05-31", "2. Bundesliga 2025-26"),
+    SeasonSpec("2-bundesliga", "2024-25", "ger.2", 2024, "2024-08-01", "2025-05-31", "2. Bundesliga 2024-25"),
+    SeasonSpec("2-bundesliga", "2023-24", "ger.2", 2023, "2023-08-01", "2024-05-31", "2. Bundesliga 2023-24"),
 )
 
 

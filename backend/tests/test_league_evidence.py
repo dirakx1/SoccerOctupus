@@ -127,18 +127,26 @@ def test_provider_probe_excludes_live_context_after_kickoff():
     assert all("leakage-safe" in row["reason"] for row in result)
 
 
-def test_unverified_league_providers_abstain_without_using_epl_adapters():
+def test_supported_league_providers_use_league_specific_adapters_and_abstain_on_failure():
+    calls = []
+
+    def unavailable(_url, **kwargs):
+        calls.append(kwargs.get("params", {}))
+        raise requests.ConnectionError("offline")
+
     result = collect_league_evidence(
         home="Real Madrid",
         away="Barcelona",
         kickoff=datetime.now(timezone.utc) + timedelta(days=1),
         competition="la-liga",
         settings=_settings(),
-        get=lambda *_args, **_kwargs: pytest.fail("unverified league adapters must not fetch"),
+        get=unavailable,
     )
 
     assert {row["provider"] for row in result} == {"SofaScore", "FotMob", "365Scores", "YouTube", "Zep", "Opta"}
-    assert {row["status"] for row in result} == {"unavailable"}
+    assert all(row["status"] in {"unavailable", "error"} for row in result)
+    assert any(params.get("id") == 87 for params in calls)
+    assert any(params.get("competitions") == "11" for params in calls)
 
 
 def test_youtube_uses_separate_team_queries_and_admits_only_relevant_pre_kickoff_videos():
@@ -181,7 +189,7 @@ def test_youtube_excludes_blocked_or_post_kickoff_results():
     evidence = YouTubeLeagueAdapter(api_key="test-key", get=get).collect("Arsenal", "Brighton & Hove Albion", kickoff)
 
     assert evidence.status == "excluded"
-    assert "no verified pre-kickoff EPL videos" in evidence.reason
+    assert "no verified pre-kickoff Premier League videos" in evidence.reason
 
 
 def test_365scores_reconciles_epl_fixture_before_admitting_market_odds():

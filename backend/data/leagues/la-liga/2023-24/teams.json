@@ -1,0 +1,122 @@
+[
+  {
+    "id": "96",
+    "name": "Alavés",
+    "abbreviation": "ALA",
+    "provider": "espn"
+  },
+  {
+    "id": "6832",
+    "name": "Almería",
+    "abbreviation": "ALM",
+    "provider": "espn"
+  },
+  {
+    "id": "93",
+    "name": "Athletic Club",
+    "abbreviation": "ATH",
+    "provider": "espn"
+  },
+  {
+    "id": "1068",
+    "name": "Atlético Madrid",
+    "abbreviation": "ATM",
+    "provider": "espn"
+  },
+  {
+    "id": "83",
+    "name": "Barcelona",
+    "abbreviation": "BAR",
+    "provider": "espn"
+  },
+  {
+    "id": "85",
+    "name": "Celta Vigo",
+    "abbreviation": "CEL",
+    "provider": "espn"
+  },
+  {
+    "id": "3842",
+    "name": "Cádiz",
+    "abbreviation": "CAD",
+    "provider": "espn"
+  },
+  {
+    "id": "2922",
+    "name": "Getafe",
+    "abbreviation": "GET",
+    "provider": "espn"
+  },
+  {
+    "id": "9812",
+    "name": "Girona",
+    "abbreviation": "GIR",
+    "provider": "espn"
+  },
+  {
+    "id": "3747",
+    "name": "Granada",
+    "abbreviation": "GRA",
+    "provider": "espn"
+  },
+  {
+    "id": "98",
+    "name": "Las Palmas",
+    "abbreviation": "LPA",
+    "provider": "espn"
+  },
+  {
+    "id": "84",
+    "name": "Mallorca",
+    "abbreviation": "MLL",
+    "provider": "espn"
+  },
+  {
+    "id": "97",
+    "name": "Osasuna",
+    "abbreviation": "OSA",
+    "provider": "espn"
+  },
+  {
+    "id": "101",
+    "name": "Rayo Vallecano",
+    "abbreviation": "RAY",
+    "provider": "espn"
+  },
+  {
+    "id": "244",
+    "name": "Real Betis",
+    "abbreviation": "BET",
+    "provider": "espn"
+  },
+  {
+    "id": "86",
+    "name": "Real Madrid",
+    "abbreviation": "RMA",
+    "provider": "espn"
+  },
+  {
+    "id": "89",
+    "name": "Real Sociedad",
+    "abbreviation": "RSO",
+    "provider": "espn"
+  },
+  {
+    "id": "243",
+    "name": "Sevilla",
+    "abbreviation": "SEV",
+    "provider": "espn"
+  },
+  {
+    "id": "94",
+    "name": "Valencia",
+    "abbreviation": "VAL",
+    "provider": "espn"
+  },
+  {
+    "id": "102",
+    "name": "Villarreal",
+    "abbreviation": "VIL",
+    "provider": "espn"
+  }
+]

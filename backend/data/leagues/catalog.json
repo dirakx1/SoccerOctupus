@@ -1,5 +1,26 @@
 [
   {
+    "slug": "2-bundesliga-2023-24",
+    "competition": "2-bundesliga",
+    "season": "2023-24",
+    "displayName": "2. Bundesliga 2023-24",
+    "active": false
+  },
+  {
+    "slug": "2-bundesliga-2024-25",
+    "competition": "2-bundesliga",
+    "season": "2024-25",
+    "displayName": "2. Bundesliga 2024-25",
+    "active": false
+  },
+  {
+    "slug": "bundesliga-2023-24",
+    "competition": "bundesliga",
+    "season": "2023-24",
+    "displayName": "Bundesliga 2023-24",
+    "active": false
+  },
+  {
     "slug": "bundesliga-2024-25",
     "competition": "bundesliga",
     "season": "2024-25",
@@ -21,10 +42,31 @@
     "active": true
   },
   {
+    "slug": "championship-2023-24",
+    "competition": "championship",
+    "season": "2023-24",
+    "displayName": "Championship 2023-24",
+    "active": false
+  },
+  {
+    "slug": "championship-2024-25",
+    "competition": "championship",
+    "season": "2024-25",
+    "displayName": "Championship 2024-25",
+    "active": false
+  },
+  {
     "slug": "championship-2025-26",
     "competition": "championship",
     "season": "2025-26",
     "displayName": "Championship 2025-26",
+    "active": false
+  },
+  {
+    "slug": "la-liga-2023-24",
+    "competition": "la-liga",
+    "season": "2023-24",
+    "displayName": "La Liga 2023-24",
     "active": false
   },
   {
@@ -49,6 +91,13 @@
     "active": true
   },
   {
+    "slug": "premier-league-2023-24",
+    "competition": "premier-league",
+    "season": "2023-24",
+    "displayName": "Premier League 2023-24",
+    "active": false
+  },
+  {
     "slug": "premier-league-2024-25",
     "competition": "premier-league",
     "season": "2024-25",
@@ -68,5 +117,19 @@
     "season": "2026-27",
     "displayName": "Premier League 2026-27",
     "active": true
+  },
+  {
+    "slug": "segunda-division-2023-24",
+    "competition": "segunda-division",
+    "season": "2023-24",
+    "displayName": "Segunda Division 2023-24",
+    "active": false
+  },
+  {
+    "slug": "segunda-division-2024-25",
+    "competition": "segunda-division",
+    "season": "2024-25",
+    "displayName": "Segunda Division 2024-25",
+    "active": false
   }
 ]

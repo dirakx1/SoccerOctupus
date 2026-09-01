@@ -1,0 +1,109 @@
+{
+  "adjustmentsApplied": false,
+  "candidateSelection": "fixed candidate; no parameter tuning",
+  "competition": "la-liga",
+  "developmentSeason": "2024-25",
+  "featureSet": "rolling five-match xG/shots, 20% bounded blend",
+  "gate": {
+    "passed": false,
+    "requirements": [
+      "holdout log loss improves with positive 95% paired bootstrap CI",
+      "holdout Brier improves with positive 95% paired bootstrap CI",
+      "top-label calibration error not >0.02 worse",
+      "at least 100 eligible holdout matches"
+    ]
+  },
+  "holdoutBootstrap": {
+    "brierCI95": [
+      -0.002455,
+      0.004209
+    ],
+    "brierImprovement": 0.000861,
+    "logLossCI95": [
+      -0.003902,
+      0.00606
+    ],
+    "logLossImprovement": 0.001048,
+    "matches": 349,
+    "repetitions": 2000
+  },
+  "holdoutSeason": "2025-26",
+  "provider": "FotMob",
+  "seasons": {
+    "2024-25": {
+      "baseline": {
+        "brier": 0.575849,
+        "logLoss": 0.971106,
+        "matches": 349,
+        "topLabelCalibrationError": 0.024351
+      },
+      "candidate": {
+        "brier": 0.573587,
+        "logLoss": 0.968183,
+        "matches": 349,
+        "topLabelCalibrationError": 0.028058
+      },
+      "candidateMatches": 349,
+      "promotedSubset": {
+        "baseline": {
+          "brier": 0.497348,
+          "logLoss": 0.862412,
+          "matches": 101,
+          "topLabelCalibrationError": 0.095094
+        },
+        "candidate": {
+          "brier": 0.493102,
+          "logLoss": 0.857586,
+          "matches": 101,
+          "topLabelCalibrationError": 0.086065
+        }
+      },
+      "promotedTeamIds": [
+        "17534",
+        "88",
+        "95"
+      ],
+      "scorelineCoverage": 380,
+      "shotsCoverage": 380,
+      "xgCoverage": 380
+    },
+    "2025-26": {
+      "baseline": {
+        "brier": 0.579596,
+        "logLoss": 0.977104,
+        "matches": 349,
+        "topLabelCalibrationError": 0.032626
+      },
+      "candidate": {
+        "brier": 0.578734,
+        "logLoss": 0.976056,
+        "matches": 349,
+        "topLabelCalibrationError": 0.054193
+      },
+      "candidateMatches": 349,
+      "promotedSubset": {
+        "baseline": {
+          "brier": 0.565812,
+          "logLoss": 0.954218,
+          "matches": 100,
+          "topLabelCalibrationError": 0.060428
+        },
+        "candidate": {
+          "brier": 0.562433,
+          "logLoss": 0.948301,
+          "matches": 100,
+          "topLabelCalibrationError": 0.054154
+        }
+      },
+      "promotedTeamIds": [
+        "1538",
+        "3751",
+        "92"
+      ],
+      "scorelineCoverage": 380,
+      "shotsCoverage": 380,
+      "xgCoverage": 380
+    }
+  },
+  "version": "fotmob-admission-2026.2"
+}

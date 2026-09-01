@@ -11,14 +11,6 @@ from typing import Any, Iterable
 
 MODEL_VERSION = "league-swarm-2026.2"
 
-# A provider may only contribute after its own pre-kickoff historical data has
-# passed an admission report.  No provider has met that bar yet: FotMob's
-# existing holdout gate is false, while the other adapters have no historic
-# fixture-bound snapshots to evaluate.  Keep the declaration here so the
-# live ensemble cannot accidentally turn an untested signal into a forecast.
-CALIBRATED_PROVIDER_WEIGHTS: dict[str, float] = {}
-
-
 def _normal(values: Iterable[float]) -> dict[str, float] | None:
     try:
         values = [float(v) for v in values]
@@ -43,7 +35,8 @@ def _poisson(home: float, away: float) -> dict[str, float] | None:
     return _normal(result)
 
 
-def _provider_signal(row: dict[str, Any], *, home_name: str, away_name: str) -> dict[str, float] | None:
+def provider_signal(row: dict[str, Any], *, home_name: str, away_name: str) -> dict[str, float] | None:
+    """Return a provider's normalized 1X2 signal, or abstain safely."""
     if row.get("status") != "admitted":
         return None
     evidence = row.get("evidence") or {}
@@ -75,22 +68,28 @@ def _provider_signal(row: dict[str, Any], *, home_name: str, away_name: str) -> 
     return None
 
 
-def build_league_swarm(baseline: dict[str, Any], provider_evidence: Iterable[dict[str, Any]] = ()) -> dict[str, Any]:
+def build_league_swarm(
+    baseline: dict[str, Any],
+    provider_evidence: Iterable[dict[str, Any]] = (),
+    *,
+    calibrated_weights: dict[str, float] | None = None,
+) -> dict[str, Any]:
     """Return consensus, contributions, specialist results, and abstentions."""
     probabilities = _normal([baseline.get("probabilities", {}).get(k) for k in ("home", "draw", "away")])
     if probabilities is None:
         raise ValueError("baseline probabilities must be finite and normalizable")
     home_name = str(baseline.get("homeTeam", {}).get("name", ""))
     away_name = str(baseline.get("awayTeam", {}).get("name", ""))
-    specialists = [{"name": "Statistical/form", "status": "active", "weight": 1.0, "source": "ESPN completed results", "probabilities": probabilities}]
-    contributions = [{"name": "Statistical/form", "source": "ESPN completed results", "weight": 1.0}]
+    specialists = [{"name": "Statistical", "status": "active", "weight": 1.0, "source": "ESPN completed results", "probabilities": probabilities}]
+    contributions = [{"name": "Statistical", "source": "ESPN completed results", "weight": 1.0}]
     abstentions = []
     weighted = [probabilities[k] for k in ("home", "draw", "away")]
     total_weight = 1.0
+    calibrated_weights = calibrated_weights or {}
     for row in provider_evidence:
         provider = str(row.get("provider", "unknown"))
-        signal = _provider_signal(row, home_name=home_name, away_name=away_name)
-        weight = CALIBRATED_PROVIDER_WEIGHTS.get(provider, 0.0)
+        signal = provider_signal(row, home_name=home_name, away_name=away_name)
+        weight = max(0.0, float(calibrated_weights.get(provider, 0.0)))
         if signal is None or weight <= 0:
             reason = row.get("reason", "unavailable or non-numerical evidence")
             if signal is not None and weight <= 0:
@@ -109,6 +108,6 @@ def build_league_swarm(baseline: dict[str, Any], provider_evidence: Iterable[dic
             weighted[index] += weight * signal[key]
         total_weight += weight
         contributions.append({"name": provider, "source": row.get("source", provider), "weight": weight})
-        specialists.append({"name": provider, "status": "active", "weight": weight, "source": row.get("source", provider), "probabilities": signal, "reason": "Initial, uncalibrated provider weight is included in this consensus."})
+        specialists.append({"name": provider, "status": "active", "weight": weight, "source": row.get("source", provider), "probabilities": signal, "reason": "A persisted leakage-safe admission report includes this provider in the consensus."})
     consensus = _normal([value / total_weight for value in weighted])
     return {"modelVersion": MODEL_VERSION, "baseline": baseline.get("probabilities"), "probabilities": consensus, "specialists": specialists, "contributions": contributions, "abstentions": abstentions}

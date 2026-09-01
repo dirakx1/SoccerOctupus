@@ -16,7 +16,7 @@ from ..feature_limits import (
     release_feature_usage,
     reserve_feature_usage,
 )
-from ..leagues.prediction import LeaguePredictionModel, admitted_fotmob_records, project_table
+from ..leagues.prediction import LeaguePredictionModel, admitted_fotmob_records, league_model_version, project_table
 from ..leagues.forecast import fixture_forecast, forecast_metrics, forecast_performance
 from ..leagues.markets import match_questions, season_questions
 from ..leagues.season import season_spec
@@ -363,7 +363,7 @@ def markets(competition: str, season: str):
             "fixtureMarkets": upcoming,
             "seasonMarkets": [],
             "seasonQuestions": [],
-            "evidence": {"provider": "ESPN", "model": "league-poisson-2026.1", "simulationCount": 0},
+            "evidence": {"provider": "ESPN", "model": league_model_version(competition), "simulationCount": 0},
         }
     except (SeasonDataError, ValueError) as exc:
         return {"error": str(exc)}, 400
@@ -386,7 +386,7 @@ def season_market_generation(competition: str, season: str):
         return {
             "seasonMarkets": season_markets,
             "seasonQuestions": season_questions(competition=competition, season=season, end_date=data.edition.get("endsOn", ""), projected=projected, competition_name=competition_name, competition_tag=competition_tag),
-            "evidence": {"provider": "ESPN", "model": "league-poisson-2026.1", "simulationCount": 500},
+            "evidence": {"provider": "ESPN", "model": league_model_version(competition), "simulationCount": 500},
         }
     except (SeasonDataError, ValueError) as exc:
         release_feature_usage(reservation.cycle_limit_id, db)
@@ -398,7 +398,7 @@ def season_market_generation(competition: str, season: str):
 def accuracy(competition: str, season: str):
     try:
         data = _load(competition, season)
-        return {"accuracy": forecast_metrics(data), "provider": "ESPN", "model": "league-poisson-2026.1"}
+        return {"accuracy": forecast_metrics(data), "provider": "ESPN", "model": league_model_version(competition)}
     except SeasonDataError as exc:
         return _error(exc)
 

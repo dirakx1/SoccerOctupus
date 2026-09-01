@@ -7,8 +7,18 @@ def test_uncalibrated_numeric_provider_abstains_from_consensus():
         [{"provider": "365Scores", "status": "admitted", "source": "odds", "evidence": {"homeImplied": .6, "drawImplied": .2, "awayImplied": .2}}],
     )
     assert abs(sum(result["probabilities"].values()) - 1) < 1e-9
-    assert result["contributions"] == [{"name": "Statistical/form", "source": "ESPN completed results", "weight": 1.0}]
+    assert result["contributions"] == [{"name": "Statistical", "source": "ESPN completed results", "weight": 1.0}]
     assert result["abstentions"][0]["name"] == "365Scores"
+
+
+def test_persisted_calibrated_provider_contributes_to_consensus():
+    result = build_league_swarm(
+        {"probabilities": {"home": 0.4, "draw": 0.3, "away": 0.3}},
+        [{"provider": "365Scores", "status": "admitted", "source": "odds", "evidence": {"homeImplied": .7, "drawImplied": .2, "awayImplied": .1}}],
+        calibrated_weights={"365Scores": 0.5},
+    )
+    assert result["probabilities"]["home"] == 0.5
+    assert result["contributions"][-1]["weight"] == 0.5
 
 
 def test_sofascore_uses_the_fixture_club_keys_and_attack_defence_rates():
@@ -19,7 +29,7 @@ def test_sofascore_uses_the_fixture_club_keys_and_attack_defence_rates():
             "Chelsea": {"goalsForPerMatch": 1.0, "goalsAgainstPerMatch": 1.5},
         }}],
     )
-    assert result["contributions"] == [{"name": "Statistical/form", "source": "ESPN completed results", "weight": 1.0}]
+    assert result["contributions"] == [{"name": "Statistical", "source": "ESPN completed results", "weight": 1.0}]
     assert result["abstentions"][0]["name"] == "SofaScore"
 
 

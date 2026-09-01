@@ -1,0 +1,15 @@
+{
+  "competition": "segunda-division",
+  "season": "2024-25",
+  "displayName": "Segunda Division 2024-25",
+  "provider": {
+    "name": "espn",
+    "competition": "esp.2",
+    "season": 2024
+  },
+  "startsOn": "2024-08-01",
+  "endsOn": "2025-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

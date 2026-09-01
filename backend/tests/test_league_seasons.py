@@ -234,7 +234,7 @@ def test_forecast_ledger_keeps_one_immutable_provider_snapshot(tmp_path, monkeyp
     row = first["forecasts"][0]
     assert row["modelVersion"] == "league-swarm-2026.2"
     assert row["evidence"]["providerEvidence"] == evidence
-    assert row["analysis"]["swarm"]["contributions"] == [{"name": "Statistical/form", "source": "ESPN completed results", "weight": 1.0}]
+    assert row["analysis"]["swarm"]["contributions"] == [{"name": "Statistical", "source": "ESPN completed results", "weight": 1.0}]
     original = copy.deepcopy(row)
 
     fixture.update(status="completed", homeScore=1, awayScore=0)
@@ -246,3 +246,16 @@ def test_forecast_ledger_keeps_one_immutable_provider_snapshot(tmp_path, monkeyp
     provider = next(item for item in report["providers"] if item["provider"] == "365Scores")
     assert provider["snapshots"] == provider["resolvedSnapshots"] == 1
     assert provider["admission"] == "collecting"
+
+
+def test_provider_admission_requires_holdout_improvement_with_confidence():
+    from app.leagues.forecast import _provider_admission
+
+    samples = [
+        ({"home": .34, "draw": .33, "away": .33}, {"home": .8, "draw": .1, "away": .1}, "home")
+        for _ in range(60)
+    ]
+    result = _provider_admission(samples)
+    assert result["passed"] is True
+    assert result["weight"] > 0
+    assert result["confidenceIntervals"]["logLossImprovement95"][0] > 0

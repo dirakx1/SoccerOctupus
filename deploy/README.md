@@ -325,13 +325,27 @@ when the active snapshot is missing, invalid, or more than 6 hours old.
 For each fixture first seen no more than 35 minutes before kickoff (normally
 within the timer's 30-minute match window), the same run also writes one
 immutable forecast record to the edition's `forecasts.json`. For
-Premier League fixtures it includes the ESPN forecast, every configured
+all three leagues it includes the untouched ESPN baseline, every configured
 provider's pre-kickoff evidence/availability, and the swarm contributions.
 When ESPN later marks the fixture complete, the command adds the official score
 and outcome to that record without changing its original probabilities. Keep
 this timer enabled: those records are the only valid dataset for future
 provider-weight calibration. Already-finished matches are intentionally never
 backfilled with live-provider evidence.
+
+Once at least 60 numeric provider snapshots have resolved, run the persisted
+admission gate. A provider remains at zero unless its final 30-match holdout
+improves both log loss and Brier score with positive paired-bootstrap 95%
+confidence bounds:
+
+```bash
+sudo -u www-data ./venv/bin/flask --app run.py league-provider-admission --competition premier-league --season 2026-27
+sudo -u www-data ./venv/bin/flask --app run.py league-provider-admission --competition la-liga --season 2026-27
+sudo -u www-data ./venv/bin/flask --app run.py league-provider-admission --competition bundesliga --season 2026-27
+```
+
+See [`docs/league-forecast-calibration.md`](../docs/league-forecast-calibration.md)
+for model decisions, benchmark results, and the season rollover checklist.
 
 Check, follow, or force a run with:
 
