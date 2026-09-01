@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <footer>
+    <footer v-if="showOperatorDetails">
       <div><span>{{ t('markets.card.ticker') }}</span><code>{{ question.question_id }}</code></div>
       <button type="button" class="copy-button" :aria-label="t('markets.card.copy', { id: question.question_id })" @click="copyTicker">
         <Check v-if="copyState === 'success'" :size="16" />
@@ -69,7 +69,10 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CalendarDays, Check, ChevronDown, CircleDollarSign, Copy, Flag, Goal, ShieldCheck, Target, Trophy, TrendingUp, Users } from '@lucide/vue'
 
-const props = defineProps({ question: { type: Object, required: true } })
+const props = defineProps({
+  question: { type: Object, required: true },
+  showOperatorDetails: { type: Boolean, default: true },
+})
 const { locale, t } = useI18n()
 const showCriteria = ref(false)
 const copyState = ref('idle')
@@ -82,6 +85,7 @@ const PROP_META = {
   correct_score: { label: 'correctScore', icon: Goal }, tournament_winner: { label: 'tournamentWinner', icon: Trophy },
   reach_stage: { label: 'reachStage', icon: Flag }, group_winner: { label: 'groupWinner', icon: Trophy },
   confederation_win: { label: 'confederationWin', icon: CircleDollarSign }, host_nation: { label: 'hostNation', icon: Flag },
+  relegation: { label: 'relegation', icon: Flag }, futures: { label: 'futures', icon: CircleDollarSign },
 }
 const meta = computed(() => PROP_META[props.question.prop_type] || { label: null, icon: CircleDollarSign })
 const typeLabel = computed(() => meta.value.label ? t(`markets.filters.${meta.value.label}`) : (props.question.prop_type || t('markets.card.unknownType')))

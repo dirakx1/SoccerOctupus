@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import router from './index.js'
-import { WORKSPACE_ROUTE_NAMES } from './workspace.js'
+import { HISTORIC_WORKSPACE_ROUTE_NAMES, LEAGUE_ROUTE_NAMES, workspaceSwitchLocation } from './workspace.js'
 import { clearAuthState, setAuthState } from '../lib/auth'
 import { applyLocale, i18n, LOCALE_STORAGE_KEY } from '../i18n/index.js'
 import { consumePostAuthRedirect } from '../lib/postAuthRedirect.js'
@@ -42,10 +42,10 @@ describe('router', () => {
     }
   })
 
-  it('resolves the localized Competition Workspace overview', async () => {
-    await router.push('/es/competitions/world-cup-2026')
+  it('resolves the localized historical World Cup overview', async () => {
+    await router.push('/es/historic/competitions/world-cup-2026')
 
-    expect(router.currentRoute.value.name).toBe(WORKSPACE_ROUTE_NAMES.overview)
+    expect(router.currentRoute.value.name).toBe(HISTORIC_WORKSPACE_ROUTE_NAMES.overview)
     expect(router.currentRoute.value.params).toEqual({
       locale: 'es',
       competitionEditionSlug: 'world-cup-2026',
@@ -57,10 +57,10 @@ describe('router', () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
 
     const routes = [
-      ['/es/competitions/world-cup-2026/groups', WORKSPACE_ROUTE_NAMES.groups],
-      ['/es/competitions/world-cup-2026/predict', WORKSPACE_ROUTE_NAMES.predict],
-      ['/es/competitions/world-cup-2026/bracket', WORKSPACE_ROUTE_NAMES.bracket],
-      ['/es/competitions/world-cup-2026/markets', WORKSPACE_ROUTE_NAMES.markets],
+      ['/es/historic/competitions/world-cup-2026/groups', HISTORIC_WORKSPACE_ROUTE_NAMES.groups],
+      ['/es/historic/competitions/world-cup-2026/predict', HISTORIC_WORKSPACE_ROUTE_NAMES.predict],
+      ['/es/historic/competitions/world-cup-2026/bracket', HISTORIC_WORKSPACE_ROUTE_NAMES.bracket],
+      ['/es/historic/competitions/world-cup-2026/markets', HISTORIC_WORKSPACE_ROUTE_NAMES.markets],
     ]
 
     for (const [path, name] of routes) {
@@ -70,15 +70,52 @@ describe('router', () => {
     }
   })
 
+  it('retains the league edition parameter on league workspace routes', async () => {
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    for (const [area, path] of [
+      ['overview', '/es/competitions/premier-league-2026-27'],
+      ['table', '/es/competitions/premier-league-2026-27/table'],
+      ['fixtures', '/es/competitions/premier-league-2026-27/fixtures'],
+      ['predict', '/es/competitions/premier-league-2026-27/predict'],
+      ['markets', '/es/competitions/premier-league-2026-27/markets'],
+    ]) {
+      await router.push(path)
+      expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES[area])
+      expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league-2026-27')
+    }
+  })
+
+  it('accepts the stable active-league identity and future catalog editions', async () => {
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    await router.push('/en/competitions/premier-league/table')
+    expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.table)
+    await router.push('/en/competitions/premier-league-2027-28')
+    expect(router.currentRoute.value.params.competitionEditionSlug).toBe('premier-league-2027-28')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.overview)
+
+    await router.push('/en/competitions/la-liga/table')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.table)
+    await router.push('/en/competitions/bundesliga-2027-28/fixtures')
+    expect(router.currentRoute.value.name).toBe(LEAGUE_ROUTE_NAMES.fixtures)
+  })
+
+  it('guards the league prediction route when signed out', async () => {
+    clearAuthState()
+    await router.push('/en/competitions/premier-league-2026-27/predict')
+    expect(router.currentRoute.value.path).toBe('/sign-in')
+    expect(consumePostAuthRedirect()).toBe('/en/competitions/premier-league-2026-27/predict')
+  })
+
   it('redirects legacy workspace paths while preserving query and hash', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
 
     const redirects = [
-      ['/', '/en/competitions/world-cup-2026'],
-      ['/groups', '/en/competitions/world-cup-2026/groups'],
-      ['/predict', '/en/competitions/world-cup-2026/predict'],
-      ['/tournament', '/en/competitions/world-cup-2026/bracket'],
-      ['/markets', '/en/competitions/world-cup-2026/markets'],
+      ['/', '/en/competitions/premier-league'],
+      ['/groups', '/en/competitions/premier-league'],
+      ['/predict', '/en/competitions/premier-league/predict'],
+      ['/tournament', '/en/competitions/premier-league'],
+      ['/markets', '/en/competitions/premier-league/markets'],
     ]
 
     for (const [source, target] of redirects) {
@@ -91,7 +128,7 @@ describe('router', () => {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, 'en')
     document.documentElement.lang = 'en'
 
-    await router.push('/es/competitions/world-cup-2026')
+    await router.push('/es/historic/competitions/world-cup-2026')
 
     expect(i18n.global.locale.value).toBe('es')
     expect(document.documentElement.lang).toBe('es')
@@ -112,7 +149,7 @@ describe('router', () => {
     expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe('es')
   })
 
-  it('redirects unknown and blank Competition Editions to localized World Cup home', async () => {
+  it('redirects unknown and blank Competition Editions to the localized active home', async () => {
     const paths = [
       '/es/competitions/not-registered/groups',
       '/es/competitions',
@@ -122,7 +159,7 @@ describe('router', () => {
     for (const path of paths) {
       await router.push({ path, query: { source: 'fallback' }, hash: '#overview' })
       expect(router.currentRoute.value.fullPath).toBe(
-        '/es/competitions/world-cup-2026?source=fallback#overview'
+        '/es/competitions/premier-league?source=fallback#overview'
       )
     }
   })
@@ -167,17 +204,17 @@ describe('router', () => {
     clearAuthState()
     consumePostAuthRedirect()
 
-    await router.push('/es/competitions/world-cup-2026/predict?stage=group#match-form')
+    await router.push('/es/historic/competitions/world-cup-2026/predict?stage=group#match-form')
 
     expect(router.currentRoute.value.path).toBe('/sign-in')
     expect(consumePostAuthRedirect()).toBe(
-      '/es/competitions/world-cup-2026/predict?stage=group#match-form'
+      '/es/historic/competitions/world-cup-2026/predict?stage=group#match-form'
     )
   })
 
   it('redirects signed-in non-admin users away from admin routes', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
     await router.push('/admin/settings')
-    expect(router.currentRoute.value.path).toBe('/en/competitions/world-cup-2026')
+    expect(router.currentRoute.value.path).toBe('/en/competitions/premier-league')
   })
 })

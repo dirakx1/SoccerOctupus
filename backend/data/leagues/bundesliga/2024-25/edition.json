@@ -1,0 +1,15 @@
+{
+  "competition": "bundesliga",
+  "season": "2024-25",
+  "displayName": "Bundesliga 2024-25",
+  "provider": {
+    "name": "espn",
+    "competition": "ger.1",
+    "season": 2024
+  },
+  "startsOn": "2024-08-01",
+  "endsOn": "2025-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

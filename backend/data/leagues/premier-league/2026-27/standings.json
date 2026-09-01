@@ -1,0 +1,362 @@
+[
+  {
+    "teamId": "382",
+    "team": {
+      "id": "382",
+      "name": "Manchester City",
+      "abbreviation": "MNC",
+      "provider": "espn"
+    },
+    "position": 1,
+    "played": 2,
+    "won": 2,
+    "drawn": 0,
+    "lost": 0,
+    "goalsFor": 6,
+    "goalsAgainst": 2,
+    "goalDifference": 4,
+    "points": 6
+  },
+  {
+    "teamId": "306",
+    "team": {
+      "id": "306",
+      "name": "Hull City",
+      "abbreviation": "HUL",
+      "provider": "espn"
+    },
+    "position": 2,
+    "played": 2,
+    "won": 2,
+    "drawn": 0,
+    "lost": 0,
+    "goalsFor": 3,
+    "goalsAgainst": 0,
+    "goalDifference": 3,
+    "points": 6
+  },
+  {
+    "teamId": "363",
+    "team": {
+      "id": "363",
+      "name": "Chelsea",
+      "abbreviation": "CHE",
+      "provider": "espn"
+    },
+    "position": 3,
+    "played": 2,
+    "won": 2,
+    "drawn": 0,
+    "lost": 0,
+    "goalsFor": 7,
+    "goalsAgainst": 5,
+    "goalDifference": 2,
+    "points": 6
+  },
+  {
+    "teamId": "337",
+    "team": {
+      "id": "337",
+      "name": "Brentford",
+      "abbreviation": "BRE",
+      "provider": "espn"
+    },
+    "position": 4,
+    "played": 2,
+    "won": 1,
+    "drawn": 1,
+    "lost": 0,
+    "goalsFor": 4,
+    "goalsAgainst": 1,
+    "goalDifference": 3,
+    "points": 4
+  },
+  {
+    "teamId": "361",
+    "team": {
+      "id": "361",
+      "name": "Newcastle United",
+      "abbreviation": "NEW",
+      "provider": "espn"
+    },
+    "position": 5,
+    "played": 2,
+    "won": 1,
+    "drawn": 1,
+    "lost": 0,
+    "goalsFor": 4,
+    "goalsAgainst": 2,
+    "goalDifference": 2,
+    "points": 4
+  },
+  {
+    "teamId": "368",
+    "team": {
+      "id": "368",
+      "name": "Everton",
+      "abbreviation": "EVE",
+      "provider": "espn"
+    },
+    "position": 6,
+    "played": 2,
+    "won": 1,
+    "drawn": 1,
+    "lost": 0,
+    "goalsFor": 3,
+    "goalsAgainst": 1,
+    "goalDifference": 2,
+    "points": 4
+  },
+  {
+    "teamId": "357",
+    "team": {
+      "id": "357",
+      "name": "Leeds United",
+      "abbreviation": "LEE",
+      "provider": "espn"
+    },
+    "position": 7,
+    "played": 2,
+    "won": 1,
+    "drawn": 1,
+    "lost": 0,
+    "goalsFor": 2,
+    "goalsAgainst": 1,
+    "goalDifference": 1,
+    "points": 4
+  },
+  {
+    "teamId": "331",
+    "team": {
+      "id": "331",
+      "name": "Brighton & Hove Albion",
+      "abbreviation": "BHA",
+      "provider": "espn"
+    },
+    "position": 8,
+    "played": 2,
+    "won": 1,
+    "drawn": 0,
+    "lost": 1,
+    "goalsFor": 7,
+    "goalsAgainst": 4,
+    "goalDifference": 3,
+    "points": 3
+  },
+  {
+    "teamId": "359",
+    "team": {
+      "id": "359",
+      "name": "Arsenal",
+      "abbreviation": "ARS",
+      "provider": "espn"
+    },
+    "position": 9,
+    "played": 1,
+    "won": 1,
+    "drawn": 0,
+    "lost": 0,
+    "goalsFor": 3,
+    "goalsAgainst": 0,
+    "goalDifference": 3,
+    "points": 3
+  },
+  {
+    "teamId": "360",
+    "team": {
+      "id": "360",
+      "name": "Manchester United",
+      "abbreviation": "MAN",
+      "provider": "espn"
+    },
+    "position": 10,
+    "played": 2,
+    "won": 1,
+    "drawn": 0,
+    "lost": 1,
+    "goalsFor": 5,
+    "goalsAgainst": 4,
+    "goalDifference": 1,
+    "points": 3
+  },
+  {
+    "teamId": "366",
+    "team": {
+      "id": "366",
+      "name": "Sunderland",
+      "abbreviation": "SUN",
+      "provider": "espn"
+    },
+    "position": 11,
+    "played": 2,
+    "won": 1,
+    "drawn": 0,
+    "lost": 1,
+    "goalsFor": 2,
+    "goalsAgainst": 2,
+    "goalDifference": 0,
+    "points": 3
+  },
+  {
+    "teamId": "373",
+    "team": {
+      "id": "373",
+      "name": "Ipswich Town",
+      "abbreviation": "IPS",
+      "provider": "espn"
+    },
+    "position": 12,
+    "played": 2,
+    "won": 1,
+    "drawn": 0,
+    "lost": 1,
+    "goalsFor": 4,
+    "goalsAgainst": 6,
+    "goalDifference": -2,
+    "points": 3
+  },
+  {
+    "teamId": "364",
+    "team": {
+      "id": "364",
+      "name": "Liverpool",
+      "abbreviation": "LIV",
+      "provider": "espn"
+    },
+    "position": 13,
+    "played": 2,
+    "won": 0,
+    "drawn": 2,
+    "lost": 0,
+    "goalsFor": 4,
+    "goalsAgainst": 4,
+    "goalDifference": 0,
+    "points": 2
+  },
+  {
+    "teamId": "349",
+    "team": {
+      "id": "349",
+      "name": "AFC Bournemouth",
+      "abbreviation": "BOU",
+      "provider": "espn"
+    },
+    "position": 14,
+    "played": 2,
+    "won": 0,
+    "drawn": 1,
+    "lost": 1,
+    "goalsFor": 2,
+    "goalsAgainst": 3,
+    "goalDifference": -1,
+    "points": 1
+  },
+  {
+    "teamId": "393",
+    "team": {
+      "id": "393",
+      "name": "Nottingham Forest",
+      "abbreviation": "NFO",
+      "provider": "espn"
+    },
+    "position": 15,
+    "played": 2,
+    "won": 0,
+    "drawn": 1,
+    "lost": 1,
+    "goalsFor": 2,
+    "goalsAgainst": 3,
+    "goalDifference": -1,
+    "points": 1
+  },
+  {
+    "teamId": "370",
+    "team": {
+      "id": "370",
+      "name": "Fulham",
+      "abbreviation": "FUL",
+      "provider": "espn"
+    },
+    "position": 16,
+    "played": 2,
+    "won": 0,
+    "drawn": 0,
+    "lost": 2,
+    "goalsFor": 2,
+    "goalsAgainst": 4,
+    "goalDifference": -2,
+    "points": 0
+  },
+  {
+    "teamId": "362",
+    "team": {
+      "id": "362",
+      "name": "Aston Villa",
+      "abbreviation": "AVL",
+      "provider": "espn"
+    },
+    "position": 17,
+    "played": 1,
+    "won": 0,
+    "drawn": 0,
+    "lost": 1,
+    "goalsFor": 0,
+    "goalsAgainst": 4,
+    "goalDifference": -4,
+    "points": 0
+  },
+  {
+    "teamId": "388",
+    "team": {
+      "id": "388",
+      "name": "Coventry City",
+      "abbreviation": "COV",
+      "provider": "espn"
+    },
+    "position": 18,
+    "played": 2,
+    "won": 0,
+    "drawn": 0,
+    "lost": 2,
+    "goalsFor": 0,
+    "goalsAgainst": 4,
+    "goalDifference": -4,
+    "points": 0
+  },
+  {
+    "teamId": "384",
+    "team": {
+      "id": "384",
+      "name": "Crystal Palace",
+      "abbreviation": "CRY",
+      "provider": "espn"
+    },
+    "position": 19,
+    "played": 2,
+    "won": 0,
+    "drawn": 0,
+    "lost": 2,
+    "goalsFor": 1,
+    "goalsAgainst": 6,
+    "goalDifference": -5,
+    "points": 0
+  },
+  {
+    "teamId": "367",
+    "team": {
+      "id": "367",
+      "name": "Tottenham Hotspur",
+      "abbreviation": "TOT",
+      "provider": "espn"
+    },
+    "position": 20,
+    "played": 2,
+    "won": 0,
+    "drawn": 0,
+    "lost": 2,
+    "goalsFor": 0,
+    "goalsAgainst": 5,
+    "goalDifference": -5,
+    "points": 0
+  }
+]

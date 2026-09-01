@@ -1,0 +1,11 @@
+[Unit]
+Description=Run SoccerOctupus active league refresh every thirty minutes
+
+[Timer]
+OnCalendar=*:0/30
+AccuracySec=30s
+Persistent=true
+Unit=socceroctupus-league-refresh.service
+
+[Install]
+WantedBy=timers.target

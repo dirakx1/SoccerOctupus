@@ -1,0 +1,326 @@
+[
+  {
+    "teamId": "122",
+    "team": {
+      "id": "122",
+      "name": "FC Cologne",
+      "abbreviation": "KOE",
+      "provider": "espn"
+    },
+    "position": 1,
+    "played": 34,
+    "won": 18,
+    "drawn": 7,
+    "lost": 9,
+    "goalsFor": 53,
+    "goalsAgainst": 38,
+    "goalDifference": 15,
+    "points": 61
+  },
+  {
+    "teamId": "127",
+    "team": {
+      "id": "127",
+      "name": "Hamburg SV",
+      "abbreviation": "HSV",
+      "provider": "espn"
+    },
+    "position": 2,
+    "played": 34,
+    "won": 16,
+    "drawn": 11,
+    "lost": 7,
+    "goalsFor": 78,
+    "goalsAgainst": 44,
+    "goalDifference": 34,
+    "points": 59
+  },
+  {
+    "teamId": "10388",
+    "team": {
+      "id": "10388",
+      "name": "SV Elversberg",
+      "abbreviation": "ELV",
+      "provider": "espn"
+    },
+    "position": 3,
+    "played": 34,
+    "won": 16,
+    "drawn": 10,
+    "lost": 8,
+    "goalsFor": 64,
+    "goalsAgainst": 37,
+    "goalDifference": 27,
+    "points": 58
+  },
+  {
+    "teamId": "3307",
+    "team": {
+      "id": "3307",
+      "name": "SC Paderborn 07",
+      "abbreviation": "SCP",
+      "provider": "espn"
+    },
+    "position": 4,
+    "played": 34,
+    "won": 15,
+    "drawn": 10,
+    "lost": 9,
+    "goalsFor": 56,
+    "goalsAgainst": 46,
+    "goalDifference": 10,
+    "points": 55
+  },
+  {
+    "teamId": "10382",
+    "team": {
+      "id": "10382",
+      "name": "1. FC Magdeburg",
+      "abbreviation": "FCM",
+      "provider": "espn"
+    },
+    "position": 5,
+    "played": 34,
+    "won": 14,
+    "drawn": 11,
+    "lost": 9,
+    "goalsFor": 64,
+    "goalsAgainst": 52,
+    "goalDifference": 12,
+    "points": 53
+  },
+  {
+    "teamId": "9707",
+    "team": {
+      "id": "9707",
+      "name": "Fortuna Düsseldorf",
+      "abbreviation": "F95",
+      "provider": "espn"
+    },
+    "position": 6,
+    "played": 34,
+    "won": 14,
+    "drawn": 11,
+    "lost": 9,
+    "goalsFor": 57,
+    "goalsAgainst": 52,
+    "goalDifference": 5,
+    "points": 53
+  },
+  {
+    "teamId": "130",
+    "team": {
+      "id": "130",
+      "name": "Kaiserslautern",
+      "abbreviation": "FCK",
+      "provider": "espn"
+    },
+    "position": 7,
+    "played": 34,
+    "won": 15,
+    "drawn": 8,
+    "lost": 11,
+    "goalsFor": 56,
+    "goalsAgainst": 55,
+    "goalDifference": 1,
+    "points": 53
+  },
+  {
+    "teamId": "4471",
+    "team": {
+      "id": "4471",
+      "name": "Karlsruher SC",
+      "abbreviation": "KSC",
+      "provider": "espn"
+    },
+    "position": 8,
+    "played": 34,
+    "won": 14,
+    "drawn": 10,
+    "lost": 10,
+    "goalsFor": 57,
+    "goalsAgainst": 55,
+    "goalDifference": 2,
+    "points": 52
+  },
+  {
+    "teamId": "2428",
+    "team": {
+      "id": "2428",
+      "name": "Hannover 96",
+      "abbreviation": "H96",
+      "provider": "espn"
+    },
+    "position": 9,
+    "played": 34,
+    "won": 13,
+    "drawn": 12,
+    "lost": 9,
+    "goalsFor": 41,
+    "goalsAgainst": 36,
+    "goalDifference": 5,
+    "points": 51
+  },
+  {
+    "teamId": "269",
+    "team": {
+      "id": "269",
+      "name": "1. FC Nürnberg",
+      "abbreviation": "FCN",
+      "provider": "espn"
+    },
+    "position": 10,
+    "played": 34,
+    "won": 14,
+    "drawn": 6,
+    "lost": 14,
+    "goalsFor": 60,
+    "goalsAgainst": 57,
+    "goalDifference": 3,
+    "points": 48
+  },
+  {
+    "teamId": "129",
+    "team": {
+      "id": "129",
+      "name": "Hertha Berlin",
+      "abbreviation": "BSC",
+      "provider": "espn"
+    },
+    "position": 11,
+    "played": 34,
+    "won": 12,
+    "drawn": 8,
+    "lost": 14,
+    "goalsFor": 49,
+    "goalsAgainst": 51,
+    "goalDifference": -2,
+    "points": 44
+  },
+  {
+    "teamId": "3812",
+    "team": {
+      "id": "3812",
+      "name": "SV Darmstadt 98",
+      "abbreviation": "SVD",
+      "provider": "espn"
+    },
+    "position": 12,
+    "played": 34,
+    "won": 11,
+    "drawn": 9,
+    "lost": 14,
+    "goalsFor": 56,
+    "goalsAgainst": 55,
+    "goalDifference": 1,
+    "points": 42
+  },
+  {
+    "teamId": "3070",
+    "team": {
+      "id": "3070",
+      "name": "SpVgg Greuther Fürth",
+      "abbreviation": "SGF",
+      "provider": "espn"
+    },
+    "position": 13,
+    "played": 34,
+    "won": 10,
+    "drawn": 9,
+    "lost": 15,
+    "goalsFor": 45,
+    "goalsAgainst": 59,
+    "goalDifference": -14,
+    "points": 39
+  },
+  {
+    "teamId": "133",
+    "team": {
+      "id": "133",
+      "name": "Schalke 04",
+      "abbreviation": "S04",
+      "provider": "espn"
+    },
+    "position": 14,
+    "played": 34,
+    "won": 10,
+    "drawn": 8,
+    "lost": 16,
+    "goalsFor": 52,
+    "goalsAgainst": 62,
+    "goalDifference": -10,
+    "points": 38
+  },
+  {
+    "teamId": "9867",
+    "team": {
+      "id": "9867",
+      "name": "Preußen Münster",
+      "abbreviation": "PRM",
+      "provider": "espn"
+    },
+    "position": 15,
+    "played": 34,
+    "won": 8,
+    "drawn": 12,
+    "lost": 14,
+    "goalsFor": 40,
+    "goalsAgainst": 43,
+    "goalDifference": -3,
+    "points": 36
+  },
+  {
+    "teamId": "3067",
+    "team": {
+      "id": "3067",
+      "name": "TSV Eintracht Braunschweig",
+      "abbreviation": "EBS",
+      "provider": "espn"
+    },
+    "position": 16,
+    "played": 34,
+    "won": 8,
+    "drawn": 11,
+    "lost": 15,
+    "goalsFor": 38,
+    "goalsAgainst": 64,
+    "goalDifference": -26,
+    "points": 35
+  },
+  {
+    "teamId": "15710",
+    "team": {
+      "id": "15710",
+      "name": "SSV Ulm 1846",
+      "abbreviation": "ULM",
+      "provider": "espn"
+    },
+    "position": 17,
+    "played": 34,
+    "won": 6,
+    "drawn": 12,
+    "lost": 16,
+    "goalsFor": 36,
+    "goalsAgainst": 48,
+    "goalDifference": -12,
+    "points": 30
+  },
+  {
+    "teamId": "11017",
+    "team": {
+      "id": "11017",
+      "name": "SSV Jahn Regensburg",
+      "abbreviation": "REG",
+      "provider": "espn"
+    },
+    "position": 18,
+    "played": 34,
+    "won": 6,
+    "drawn": 7,
+    "lost": 21,
+    "goalsFor": 23,
+    "goalsAgainst": 71,
+    "goalDifference": -48,
+    "points": 25
+  }
+]

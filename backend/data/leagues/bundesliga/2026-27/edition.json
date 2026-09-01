@@ -1,0 +1,39 @@
+{
+  "competition": "bundesliga",
+  "season": "2026-27",
+  "displayName": "Bundesliga 2026-27",
+  "provider": {
+    "name": "espn",
+    "competition": "ger.1",
+    "season": 2026
+  },
+  "startsOn": "2026-08-01",
+  "endsOn": "2027-05-31",
+  "promotedTeamIds": [
+    "10388",
+    "133",
+    "3307"
+  ],
+  "history": [
+    {
+      "competition": "bundesliga",
+      "season": "2024-25",
+      "providerCompetition": "ger.1",
+      "file": "history-bundesliga-2024-25.json"
+    },
+    {
+      "competition": "bundesliga",
+      "season": "2025-26",
+      "providerCompetition": "ger.1",
+      "file": "history-bundesliga-2025-26.json"
+    },
+    {
+      "competition": "2-bundesliga",
+      "season": "2025-26",
+      "providerCompetition": "ger.2",
+      "file": "history-2-bundesliga-2025-26.json"
+    }
+  ],
+  "active": true,
+  "promotedTeamIdsSource": "derived: current bundesliga minus its most recent prior season, verified in 2-bundesliga"
+}

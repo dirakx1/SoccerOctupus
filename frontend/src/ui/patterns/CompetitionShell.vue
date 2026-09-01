@@ -20,7 +20,7 @@
             :title="t('navigation.controls.competitionMenu')"
             @click="toggleMenu('competition')"
           >
-            <strong>{{ t(edition.displayNameKey) }}</strong>
+            <strong>{{ edition.displayName || t(edition.displayNameKey) }}</strong>
             <ChevronDown :size="15" aria-hidden="true" />
           </button>
           <div v-if="competitionMenuOpen" data-testid="competition-menu" class="header-menu competition-menu" role="menu">
@@ -48,21 +48,86 @@
         :class="{ 'is-open': mobileMenuOpen }"
       >
         <template v-if="signedIn">
-          <router-link
-            v-for="item in navigation"
-            :key="item.key"
-            :to="item.route"
-            class="workspace-link"
-            @click="emit('close-menus')"
-          >
-            <span>{{ t(item.labelKey) }}</span>
-          </router-link>
-          <router-link to="/pricing" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
-            <span>{{ t('navigation.public.pricing') }}</span>
-          </router-link>
-          <router-link v-if="isAdmin" to="/admin/settings" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
-            <span>{{ t('navigation.account.admin') }}</span>
-          </router-link>
+          <div class="desktop-workspace-navigation">
+            <router-link
+              v-for="item in overviewNavigation"
+              :key="item.key"
+              :to="item.route"
+              class="workspace-link"
+              @click="closeWorkspaceMenu"
+            >
+              <span>{{ t(item.labelKey) }}</span>
+            </router-link>
+            <div v-if="exploreNavigation.length" class="workspace-menu-control">
+              <button
+                data-testid="workspace-menu-toggle"
+                class="workspace-link workspace-menu-toggle"
+                :class="{ 'is-active': exploreNavigationActive }"
+                type="button"
+                aria-haspopup="menu"
+                :aria-expanded="workspaceMenuOpen"
+                @click="toggleMenu('workspace')"
+              >
+                <span>{{ t('navigation.workspace.explore') }}</span>
+                <ChevronDown :size="15" aria-hidden="true" />
+              </button>
+              <div v-if="workspaceMenuOpen" data-testid="workspace-menu" class="header-menu workspace-menu" role="menu">
+                <small>{{ t('navigation.competition.label') }}</small>
+                <router-link
+                  v-for="item in exploreNavigation"
+                  :key="item.key"
+                  :to="item.route"
+                  role="menuitem"
+                  @click="closeWorkspaceMenu"
+                >
+                  {{ t(item.labelKey) }}
+                </router-link>
+              </div>
+            </div>
+            <div v-if="predictionNavigation.length" class="workspace-menu-control">
+              <button
+                data-testid="prediction-menu-toggle"
+                class="workspace-link workspace-menu-toggle"
+                :class="{ 'is-active': predictionNavigationActive }"
+                type="button"
+                aria-haspopup="menu"
+                :aria-expanded="predictionMenuOpen"
+                @click="toggleMenu('prediction')"
+              >
+                <span>{{ t('navigation.workspace.predictions') }}</span>
+                <ChevronDown :size="15" aria-hidden="true" />
+              </button>
+              <div v-if="predictionMenuOpen" data-testid="prediction-menu" class="header-menu workspace-menu prediction-menu" role="menu">
+                <small>{{ t('navigation.workspace.predictions') }}</small>
+                <router-link
+                  v-for="item in predictionNavigation"
+                  :key="item.key"
+                  :to="item.route"
+                  role="menuitem"
+                  @click="closeWorkspaceMenu"
+                >
+                  {{ t(item.labelKey) }}
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-workspace-navigation">
+            <router-link
+              v-for="item in navigation"
+              :key="item.key"
+              :to="item.route"
+              class="workspace-link"
+              @click="closeWorkspaceMenu"
+            >
+              <span>{{ t(item.labelKey) }}</span>
+            </router-link>
+            <router-link to="/pricing" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
+              <span>{{ t('navigation.public.pricing') }}</span>
+            </router-link>
+            <router-link v-if="isAdmin" to="/admin/settings" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
+              <span>{{ t('navigation.account.admin') }}</span>
+            </router-link>
+          </div>
         </template>
         <template v-else>
           <router-link :to="homeLocation" class="workspace-link" @click="emit('close-menus')">
@@ -174,6 +239,14 @@
               <UserRound :size="15" aria-hidden="true" />
               <span>{{ t('navigation.account.profile') }}</span>
             </router-link>
+            <router-link to="/pricing" role="menuitem" @click="emit('close-menus')">
+              <CreditCard :size="15" aria-hidden="true" />
+              <span>{{ t('navigation.public.pricing') }}</span>
+            </router-link>
+            <router-link v-if="isAdmin" to="/admin/settings" role="menuitem" @click="emit('close-menus')">
+              <Settings :size="15" aria-hidden="true" />
+              <span>{{ t('navigation.account.admin') }}</span>
+            </router-link>
             <button type="button" role="menuitem" @click="emit('sign-out')">
               <LogOut :size="15" aria-hidden="true" />
               <span>{{ t('navigation.account.signOut') }}</span>
@@ -204,11 +277,13 @@ import { useI18n } from 'vue-i18n'
 import {
   Check,
   ChevronDown,
+  CreditCard,
   Globe2,
   LogOut,
   Menu,
   Moon,
   Monitor,
+  Settings,
   Sun,
   Trophy,
   UserRound,
@@ -219,6 +294,7 @@ const props = defineProps({
   edition: { type: Object, required: true },
   editions: { type: Array, default: () => [] },
   navigation: { type: Array, default: () => [] },
+  activeNavigationKey: { type: String, default: '' },
   homeLocation: { type: [String, Object], required: true },
   locale: { type: String, default: 'en' },
   themePreference: { type: String, default: 'system' },
@@ -249,6 +325,13 @@ const shellRef = ref(null)
 const localeMenuOpen = ref(false)
 const themeMenuOpen = ref(false)
 const competitionMenuOpen = ref(false)
+const workspaceMenuOpen = ref(false)
+const predictionMenuOpen = ref(false)
+const overviewNavigation = computed(() => props.navigation.filter((item) => item.key === 'overview'))
+const exploreNavigation = computed(() => props.navigation.filter((item) => ['groups', 'table', 'fixtures'].includes(item.key)))
+const predictionNavigation = computed(() => props.navigation.filter((item) => !['overview', 'groups', 'table', 'fixtures'].includes(item.key)))
+const exploreNavigationActive = computed(() => exploreNavigation.value.some((item) => item.key === props.activeNavigationKey))
+const predictionNavigationActive = computed(() => predictionNavigation.value.some((item) => item.key === props.activeNavigationKey))
 const themeOptions = [
   { value: 'light', labelKey: 'navigation.controls.themeLight', icon: Sun },
   { value: 'dark', labelKey: 'navigation.controls.themeDark', icon: Moon },
@@ -269,6 +352,8 @@ function closeHeaderMenus() {
   localeMenuOpen.value = false
   themeMenuOpen.value = false
   competitionMenuOpen.value = false
+  workspaceMenuOpen.value = false
+  predictionMenuOpen.value = false
 }
 
 function toggleMenu(menu) {
@@ -276,12 +361,23 @@ function toggleMenu(menu) {
     ? !localeMenuOpen.value
     : menu === 'theme'
       ? !themeMenuOpen.value
-      : !competitionMenuOpen.value
+      : menu === 'competition'
+        ? !competitionMenuOpen.value
+        : menu === 'workspace'
+          ? !workspaceMenuOpen.value
+          : !predictionMenuOpen.value
 
   closeHeaderMenus()
   if (menu === 'locale') localeMenuOpen.value = nextValue
   if (menu === 'theme') themeMenuOpen.value = nextValue
   if (menu === 'competition') competitionMenuOpen.value = nextValue
+  if (menu === 'workspace') workspaceMenuOpen.value = nextValue
+  if (menu === 'prediction') predictionMenuOpen.value = nextValue
+}
+
+function closeWorkspaceMenu() {
+  closeHeaderMenus()
+  emit('close-menus')
 }
 
 function selectLocale(value) {
@@ -351,6 +447,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
 
 .shell-brand:focus-visible,
 .workspace-link:focus-visible,
+.workspace-menu a:focus-visible,
 .icon-menu-toggle:focus-visible,
 .competition-toggle:focus-visible,
 .account-toggle:focus-visible,
@@ -543,9 +640,48 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
   display: flex;
   gap: var(--space-1);
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  overflow: visible;
 }
+
+.desktop-workspace-navigation {
+  align-items: center;
+  display: flex;
+  gap: var(--space-1);
+}
+
+.mobile-workspace-navigation { display: none; }
+
+.workspace-menu-control { position: relative; }
+
+.workspace-menu-toggle { background: transparent; border: 0; cursor: pointer; gap: var(--space-1); }
+
+.workspace-menu {
+  left: 0;
+  min-width: 13rem;
+  right: auto;
+}
+
+.workspace-menu small {
+  color: var(--color-text-subtle);
+  font: var(--font-weight-bold) var(--font-size-xs) / var(--line-height-normal) var(--font-family-data);
+  letter-spacing: .08em;
+  padding: var(--space-2);
+  text-transform: uppercase;
+}
+
+.workspace-menu a {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-2);
+  text-decoration: none;
+}
+
+.workspace-menu a:hover,
+.workspace-menu a.router-link-active { background: var(--color-surface-inset); color: var(--color-accent); }
 
 .workspace-link {
   align-items: center;
@@ -562,7 +698,8 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
 }
 
 .workspace-link:hover,
-.workspace-link.router-link-active {
+.workspace-link.router-link-active,
+.workspace-menu-toggle.is-active {
   background: var(--color-surface-inset);
   border-bottom-color: var(--color-accent);
   color: var(--color-text);
@@ -593,6 +730,8 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
     padding: var(--space-2) 0 var(--space-3);
   }
   .workspace-navigation.is-open { display: flex; }
+  .desktop-workspace-navigation { display: none; }
+  .mobile-workspace-navigation { display: flex; flex-direction: column; }
   .workspace-link { min-height: var(--control-height-lg); padding: 0 var(--space-2); }
   .workspace-link:hover,
   .workspace-link.router-link-active { border-left: var(--border-width-strong) solid var(--color-accent); border-bottom-color: transparent; }

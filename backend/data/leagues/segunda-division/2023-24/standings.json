@@ -1,0 +1,398 @@
+[
+  {
+    "teamId": "17534",
+    "team": {
+      "id": "17534",
+      "name": "Leganés",
+      "abbreviation": "LEG",
+      "provider": "espn"
+    },
+    "position": 1,
+    "played": 42,
+    "won": 20,
+    "drawn": 14,
+    "lost": 8,
+    "goalsFor": 56,
+    "goalsAgainst": 27,
+    "goalDifference": 29,
+    "points": 74
+  },
+  {
+    "teamId": "95",
+    "team": {
+      "id": "95",
+      "name": "Real Valladolid",
+      "abbreviation": "VLL",
+      "provider": "espn"
+    },
+    "position": 2,
+    "played": 42,
+    "won": 21,
+    "drawn": 9,
+    "lost": 12,
+    "goalsFor": 51,
+    "goalsAgainst": 36,
+    "goalDifference": 15,
+    "points": 72
+  },
+  {
+    "teamId": "3752",
+    "team": {
+      "id": "3752",
+      "name": "Eibar",
+      "abbreviation": "EIB",
+      "provider": "espn"
+    },
+    "position": 3,
+    "played": 42,
+    "won": 21,
+    "drawn": 8,
+    "lost": 13,
+    "goalsFor": 72,
+    "goalsAgainst": 48,
+    "goalDifference": 24,
+    "points": 71
+  },
+  {
+    "teamId": "88",
+    "team": {
+      "id": "88",
+      "name": "Espanyol",
+      "abbreviation": "ESP",
+      "provider": "espn"
+    },
+    "position": 4,
+    "played": 42,
+    "won": 17,
+    "drawn": 18,
+    "lost": 7,
+    "goalsFor": 59,
+    "goalsAgainst": 40,
+    "goalDifference": 19,
+    "points": 69
+  },
+  {
+    "teamId": "3788",
+    "team": {
+      "id": "3788",
+      "name": "Sporting Gijón",
+      "abbreviation": "RSG",
+      "provider": "espn"
+    },
+    "position": 5,
+    "played": 42,
+    "won": 18,
+    "drawn": 11,
+    "lost": 13,
+    "goalsFor": 51,
+    "goalsAgainst": 42,
+    "goalDifference": 9,
+    "points": 65
+  },
+  {
+    "teamId": "92",
+    "team": {
+      "id": "92",
+      "name": "Real Oviedo",
+      "abbreviation": "OVI",
+      "provider": "espn"
+    },
+    "position": 6,
+    "played": 42,
+    "won": 17,
+    "drawn": 13,
+    "lost": 12,
+    "goalsFor": 55,
+    "goalsAgainst": 39,
+    "goalDifference": 16,
+    "points": 64
+  },
+  {
+    "teamId": "87",
+    "team": {
+      "id": "87",
+      "name": "Racing Santander",
+      "abbreviation": "RAC",
+      "provider": "espn"
+    },
+    "position": 7,
+    "played": 42,
+    "won": 18,
+    "drawn": 10,
+    "lost": 14,
+    "goalsFor": 63,
+    "goalsAgainst": 55,
+    "goalDifference": 8,
+    "points": 64
+  },
+  {
+    "teamId": "1538",
+    "team": {
+      "id": "1538",
+      "name": "Levante",
+      "abbreviation": "LEV",
+      "provider": "espn"
+    },
+    "position": 8,
+    "played": 42,
+    "won": 13,
+    "drawn": 20,
+    "lost": 9,
+    "goalsFor": 49,
+    "goalsAgainst": 45,
+    "goalDifference": 4,
+    "points": 59
+  },
+  {
+    "teamId": "12597",
+    "team": {
+      "id": "12597",
+      "name": "Burgos",
+      "abbreviation": "BUR",
+      "provider": "espn"
+    },
+    "position": 9,
+    "played": 42,
+    "won": 16,
+    "drawn": 11,
+    "lost": 15,
+    "goalsFor": 52,
+    "goalsAgainst": 54,
+    "goalDifference": -2,
+    "points": 59
+  },
+  {
+    "teamId": "8448",
+    "team": {
+      "id": "8448",
+      "name": "Racing Ferrol",
+      "abbreviation": "FER",
+      "provider": "espn"
+    },
+    "position": 10,
+    "played": 42,
+    "won": 15,
+    "drawn": 14,
+    "lost": 13,
+    "goalsFor": 49,
+    "goalsAgainst": 52,
+    "goalDifference": -3,
+    "points": 59
+  },
+  {
+    "teamId": "3751",
+    "team": {
+      "id": "3751",
+      "name": "Elche",
+      "abbreviation": "ELC",
+      "provider": "espn"
+    },
+    "position": 11,
+    "played": 42,
+    "won": 16,
+    "drawn": 11,
+    "lost": 15,
+    "goalsFor": 43,
+    "goalsAgainst": 46,
+    "goalDifference": -3,
+    "points": 59
+  },
+  {
+    "teamId": "245",
+    "team": {
+      "id": "245",
+      "name": "Tenerife",
+      "abbreviation": "TEN",
+      "provider": "espn"
+    },
+    "position": 12,
+    "played": 42,
+    "won": 15,
+    "drawn": 11,
+    "lost": 16,
+    "goalsFor": 38,
+    "goalsAgainst": 41,
+    "goalDifference": -3,
+    "points": 56
+  },
+  {
+    "teamId": "2737",
+    "team": {
+      "id": "2737",
+      "name": "Albacete",
+      "abbreviation": "ALB",
+      "provider": "espn"
+    },
+    "position": 13,
+    "played": 42,
+    "won": 12,
+    "drawn": 15,
+    "lost": 15,
+    "goalsFor": 50,
+    "goalsAgainst": 56,
+    "goalDifference": -6,
+    "points": 51
+  },
+  {
+    "teamId": "5419",
+    "team": {
+      "id": "5419",
+      "name": "FC Cartagena",
+      "abbreviation": "CAR",
+      "provider": "espn"
+    },
+    "position": 14,
+    "played": 42,
+    "won": 14,
+    "drawn": 9,
+    "lost": 19,
+    "goalsFor": 37,
+    "goalsAgainst": 51,
+    "goalDifference": -14,
+    "points": 51
+  },
+  {
+    "teamId": "91",
+    "team": {
+      "id": "91",
+      "name": "Real Zaragoza",
+      "abbreviation": "ZAR",
+      "provider": "espn"
+    },
+    "position": 15,
+    "played": 42,
+    "won": 12,
+    "drawn": 15,
+    "lost": 15,
+    "goalsFor": 42,
+    "goalsAgainst": 42,
+    "goalDifference": 0,
+    "points": 51
+  },
+  {
+    "teamId": "7320",
+    "team": {
+      "id": "7320",
+      "name": "Eldense",
+      "abbreviation": "ELD",
+      "provider": "espn"
+    },
+    "position": 16,
+    "played": 42,
+    "won": 12,
+    "drawn": 14,
+    "lost": 16,
+    "goalsFor": 46,
+    "goalsAgainst": 56,
+    "goalDifference": -10,
+    "points": 50
+  },
+  {
+    "teamId": "5413",
+    "team": {
+      "id": "5413",
+      "name": "Huesca",
+      "abbreviation": "HUE",
+      "provider": "espn"
+    },
+    "position": 17,
+    "played": 42,
+    "won": 11,
+    "drawn": 16,
+    "lost": 15,
+    "goalsFor": 36,
+    "goalsAgainst": 33,
+    "goalDifference": 3,
+    "points": 49
+  },
+  {
+    "teamId": "4515",
+    "team": {
+      "id": "4515",
+      "name": "Mirandés",
+      "abbreviation": "MIR",
+      "provider": "espn"
+    },
+    "position": 18,
+    "played": 42,
+    "won": 12,
+    "drawn": 13,
+    "lost": 17,
+    "goalsFor": 47,
+    "goalsAgainst": 55,
+    "goalDifference": -8,
+    "points": 49
+  },
+  {
+    "teamId": "12587",
+    "team": {
+      "id": "12587",
+      "name": "Amorebieta",
+      "abbreviation": "AMO",
+      "provider": "espn"
+    },
+    "position": 19,
+    "played": 42,
+    "won": 11,
+    "drawn": 12,
+    "lost": 19,
+    "goalsFor": 37,
+    "goalsAgainst": 53,
+    "goalDifference": -16,
+    "points": 45
+  },
+  {
+    "teamId": "11121",
+    "team": {
+      "id": "11121",
+      "name": "AD Alcorcón",
+      "abbreviation": "ADA",
+      "provider": "espn"
+    },
+    "position": 20,
+    "played": 42,
+    "won": 10,
+    "drawn": 14,
+    "lost": 18,
+    "goalsFor": 32,
+    "goalsAgainst": 53,
+    "goalDifference": -21,
+    "points": 44
+  },
+  {
+    "teamId": "20179",
+    "team": {
+      "id": "20179",
+      "name": "FC Andorra",
+      "abbreviation": "AND",
+      "provider": "espn"
+    },
+    "position": 21,
+    "played": 42,
+    "won": 11,
+    "drawn": 10,
+    "lost": 21,
+    "goalsFor": 33,
+    "goalsAgainst": 53,
+    "goalDifference": -20,
+    "points": 43
+  },
+  {
+    "teamId": "9322",
+    "team": {
+      "id": "9322",
+      "name": "Villarreal B",
+      "abbreviation": "VLB",
+      "provider": "espn"
+    },
+    "position": 22,
+    "played": 42,
+    "won": 11,
+    "drawn": 10,
+    "lost": 21,
+    "goalsFor": 41,
+    "goalsAgainst": 62,
+    "goalDifference": -21,
+    "points": 43
+  }
+]

@@ -46,6 +46,7 @@ def create_app(config_overrides: dict | None = None) -> Flask:
     # Register blueprints
     from .api.admin import bp as admin_bp
     from .api.billing import bp as billing_bp
+    from .api.leagues import bp as leagues_bp
     from .api.markets import bp as markets_bp
     from .api.predictions import bp as predictions_bp
     from .api.webhooks import bp as webhooks_bp
@@ -54,7 +55,12 @@ def create_app(config_overrides: dict | None = None) -> Flask:
     app.register_blueprint(markets_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(billing_bp)
+    app.register_blueprint(leagues_bp)
     app.register_blueprint(webhooks_bp)
+
+    from .leagues.cli import register_cli as register_league_cli
+
+    register_league_cli(app)
 
     @app.route("/health")
     def health():

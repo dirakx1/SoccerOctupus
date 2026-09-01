@@ -1,0 +1,15 @@
+{
+  "competition": "la-liga",
+  "season": "2025-26",
+  "displayName": "La Liga 2025-26",
+  "provider": {
+    "name": "espn",
+    "competition": "esp.1",
+    "season": 2025
+  },
+  "startsOn": "2025-08-01",
+  "endsOn": "2026-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

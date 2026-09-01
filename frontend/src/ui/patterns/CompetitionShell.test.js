@@ -16,6 +16,7 @@ const baseProps = {
   edition: worldCup2026,
   editions: [worldCup2026],
   navigation: getCompetitionNavigation(worldCup2026, { locale: 'en' }),
+  activeNavigationKey: 'bracket',
   homeLocation: { name: 'competition-workspace-overview' },
   locale: 'en',
   themePreference: 'system',
@@ -41,7 +42,7 @@ function mountShell(props = {}) {
 }
 
 describe('CompetitionShell', () => {
-  it('renders localized signed-in workspace navigation and competition context', () => {
+  it('groups signed-in workspace navigation without hiding primary actions', async () => {
     applyLocale('en')
     const wrapper = mountShell()
 
@@ -50,8 +51,16 @@ describe('CompetitionShell', () => {
     expect(wrapper.find('.shell-brand-copy small').exists()).toBe(false)
     expect(wrapper.find('[data-testid="competition-context-label"]').exists()).toBe(false)
     expect(wrapper.find('[data-testid="workspace-navigation"]').text()).toContain('Overview')
-    expect(wrapper.find('[data-testid="workspace-navigation"]').text()).toContain('Bracket')
-    expect(wrapper.find('[data-testid="workspace-navigation"] svg').exists()).toBe(false)
+    expect(wrapper.find('.desktop-workspace-navigation').text()).toContain('Predictions')
+    expect(wrapper.find('.desktop-workspace-navigation').text()).not.toContain('Markets')
+    expect(wrapper.find('.desktop-workspace-navigation').text()).not.toContain('Bracket')
+    expect(wrapper.find('[data-testid="prediction-menu-toggle"]').classes()).toContain('is-active')
+    await wrapper.find('[data-testid="workspace-menu-toggle"]').trigger('click')
+    expect(wrapper.find('[data-testid="workspace-menu"]').text()).toContain('Groups')
+    expect(wrapper.find('[data-testid="workspace-menu"]').text()).not.toContain('Bracket')
+    await wrapper.find('[data-testid="prediction-menu-toggle"]').trigger('click')
+    expect(wrapper.find('[data-testid="prediction-menu"]').text()).toContain('Bracket')
+    expect(wrapper.find('[data-testid="prediction-menu"]').text()).toContain('Swarm Lab')
     expect(wrapper.find('.shell-subbar').exists()).toBe(false)
     expect(wrapper.text()).toContain('AM')
     expect(wrapper.text()).toContain('Admin')

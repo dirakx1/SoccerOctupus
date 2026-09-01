@@ -3,10 +3,16 @@ import { getCompetitionEdition } from '../competition/index.js'
 import { applyLocale } from '../i18n/index.js'
 import { useAuthState } from '../lib/auth'
 import { setPostAuthRedirect } from '../lib/postAuthRedirect.js'
-import { WORKSPACE_ROUTE_NAMES, workspaceLocation } from './workspace.js'
+import { HISTORIC_WORKSPACE_ROUTE_NAMES, LEAGUE_ROUTE_NAMES, workspaceLocation } from './workspace.js'
 
 function workspaceRedirect(area) {
-  return (to) => workspaceLocation(area, { query: to.query, hash: to.hash })
+  return (to) => {
+    try {
+      return workspaceLocation(area, { query: to.query, hash: to.hash })
+    } catch {
+      return workspaceLocation('overview', { query: to.query, hash: to.hash })
+    }
+  }
 }
 
 function localizedWorkspaceFallback(to) {
@@ -42,40 +48,82 @@ const router = createRouter({
       meta: { public: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug',
-      name: WORKSPACE_ROUTE_NAMES.overview,
-      component: () => import('../views/Home.vue'),
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})',
+      name: LEAGUE_ROUTE_NAMES.overview,
+      component: () => import('../views/LeagueOverviewView.vue'),
       meta: { public: true, competitionWorkspace: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug/groups',
-      name: WORKSPACE_ROUTE_NAMES.groups,
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})/table',
+      name: LEAGUE_ROUTE_NAMES.table,
+      component: () => import('../views/LeagueTableView.vue'),
+      meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})/fixtures',
+      name: LEAGUE_ROUTE_NAMES.fixtures,
+      component: () => import('../views/LeagueFixturesView.vue'),
+      meta: { public: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})/predict',
+      name: LEAGUE_ROUTE_NAMES.predict,
+      component: () => import('../views/LeaguePredictView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})/markets',
+      name: LEAGUE_ROUTE_NAMES.markets,
+      component: () => import('../views/LeagueMarketsView.vue'),
+      meta: { requiresAuth: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})/performance',
+      name: LEAGUE_ROUTE_NAMES.performance,
+      component: () => import('../views/LeaguePerformanceView.vue'),
+      meta: { requiresAuth: true, admin: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/competitions/:competitionEditionSlug(premier-league|la-liga|bundesliga|premier-league-[0-9]{4}-[0-9]{2}|la-liga-[0-9]{4}-[0-9]{2}|bundesliga-[0-9]{4}-[0-9]{2})/swarm',
+      name: LEAGUE_ROUTE_NAMES.swarm,
+      component: () => import('../views/LeagueSwarmView.vue'),
+      meta: { requiresAuth: true, admin: true, competitionWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/historic/competitions/:competitionEditionSlug(world-cup-2026)',
+      name: HISTORIC_WORKSPACE_ROUTE_NAMES.overview,
+      component: () => import('../views/Home.vue'),
+      meta: { public: true, competitionWorkspace: true, historicWorkspace: true },
+    },
+    {
+      path: '/:locale(en|es)/historic/competitions/:competitionEditionSlug(world-cup-2026)/groups',
+      name: HISTORIC_WORKSPACE_ROUTE_NAMES.groups,
       component: () => import('../views/GroupsView.vue'),
-      meta: { requiresAuth: true, competitionWorkspace: true },
+      meta: { requiresAuth: true, competitionWorkspace: true, historicWorkspace: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug/predict',
-      name: WORKSPACE_ROUTE_NAMES.predict,
+      path: '/:locale(en|es)/historic/competitions/:competitionEditionSlug(world-cup-2026)/predict',
+      name: HISTORIC_WORKSPACE_ROUTE_NAMES.predict,
       component: () => import('../views/PredictView.vue'),
-      meta: { requiresAuth: true, competitionWorkspace: true },
+      meta: { requiresAuth: true, competitionWorkspace: true, historicWorkspace: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug/bracket',
-      name: WORKSPACE_ROUTE_NAMES.bracket,
+      path: '/:locale(en|es)/historic/competitions/:competitionEditionSlug(world-cup-2026)/bracket',
+      name: HISTORIC_WORKSPACE_ROUTE_NAMES.bracket,
       component: () => import('../views/TournamentView.vue'),
-      meta: { requiresAuth: true, competitionWorkspace: true },
+      meta: { requiresAuth: true, competitionWorkspace: true, historicWorkspace: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug/markets',
-      name: WORKSPACE_ROUTE_NAMES.markets,
+      path: '/:locale(en|es)/historic/competitions/:competitionEditionSlug(world-cup-2026)/markets',
+      name: HISTORIC_WORKSPACE_ROUTE_NAMES.markets,
       component: () => import('../views/MarketsView.vue'),
-      meta: { requiresAuth: true, competitionWorkspace: true },
+      meta: { requiresAuth: true, competitionWorkspace: true, historicWorkspace: true },
     },
     {
-      path: '/:locale(en|es)/competitions/:competitionEditionSlug/swarm',
-      name: WORKSPACE_ROUTE_NAMES.swarm,
+      path: '/:locale(en|es)/historic/competitions/:competitionEditionSlug(world-cup-2026)/swarm',
+      name: HISTORIC_WORKSPACE_ROUTE_NAMES.swarm,
       component: () => import('../views/SwarmLabView.vue'),
-      meta: { requiresAuth: true, competitionWorkspace: true },
+      meta: { requiresAuth: true, competitionWorkspace: true, historicWorkspace: true },
     },
     {
       path: '/:locale(en|es)/competitions/:pathMatch(.*)*',

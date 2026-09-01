@@ -277,6 +277,92 @@ Useful backend log command:
 sudo journalctl -u socceroctupus-backend -f
 ```
 
+## 8A. Prepare and Activate League Seasons
+
+League data is stored by competition and season under
+`backend/data/leagues/<competition>/<season>`. The configured 2026–27 editions
+can be rebuilt from ESPN and activated independently with:
+
+```bash
+cd /var/www/SoccerOctupus/backend
+sudo -u www-data ./venv/bin/flask --app run.py league-season --competition premier-league --season 2026-27 --action refresh --action activate
+sudo -u www-data ./venv/bin/flask --app run.py league-season --competition la-liga --season 2026-27 --action refresh --action activate
+sudo -u www-data ./venv/bin/flask --app run.py league-season --competition bundesliga --season 2026-27 --action refresh --action activate
+```
+
+Activation is competition-scoped: activating a new La Liga season does not
+deactivate Premier League or Bundesliga. Each configured current season also
+fetches two prior top-flight seasons and the previous promotion-league season
+so the model can derive promoted clubs from ESPN IDs.
+
+## 8B. Schedule Active League Refresh
+
+The repository includes a short systemd service/timer pair for the active
+league snapshot:
+
+```text
+deploy/systemd/socceroctupus-league-refresh.service
+deploy/systemd/socceroctupus-league-refresh.timer
+```
+
+These files are templates; they do not install themselves. Copy them into
+systemd's unit directory on the Ubuntu host:
+
+```bash
+sudo cp /var/www/SoccerOctupus/deploy/systemd/socceroctupus-league-refresh.service /etc/systemd/system/
+sudo cp /var/www/SoccerOctupus/deploy/systemd/socceroctupus-league-refresh.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now socceroctupus-league-refresh.timer
+```
+
+The timer wakes every 30 minutes. The service checks the active Premier League,
+La Liga, and Bundesliga seasons. Each command refreshes only that competition's
+current ESPN fixtures and standings (not historical seasons) when
+the current time is from 30 minutes before through 3 hours after a
+non-cancelled/non-postponed fixture kickoff. Outside those windows it runs
+when the active snapshot is missing, invalid, or more than 6 hours old.
+
+For each fixture first seen no more than 35 minutes before kickoff (normally
+within the timer's 30-minute match window), the same run also writes one
+immutable forecast record to the edition's `forecasts.json`. For
+all three leagues it includes the untouched ESPN baseline, every configured
+provider's pre-kickoff evidence/availability, and the swarm contributions.
+When ESPN later marks the fixture complete, the command adds the official score
+and outcome to that record without changing its original probabilities. Keep
+this timer enabled: those records are the only valid dataset for future
+provider-weight calibration. Already-finished matches are intentionally never
+backfilled with live-provider evidence.
+
+Once at least 60 numeric provider snapshots have resolved, run the persisted
+admission gate. A provider remains at zero unless its final 30-match holdout
+improves both log loss and Brier score with positive paired-bootstrap 95%
+confidence bounds:
+
+```bash
+sudo -u www-data ./venv/bin/flask --app run.py league-provider-admission --competition premier-league --season 2026-27
+sudo -u www-data ./venv/bin/flask --app run.py league-provider-admission --competition la-liga --season 2026-27
+sudo -u www-data ./venv/bin/flask --app run.py league-provider-admission --competition bundesliga --season 2026-27
+```
+
+See [`docs/league-forecast-calibration.md`](../docs/league-forecast-calibration.md)
+for model decisions, benchmark results, and the season rollover checklist.
+
+Check, follow, or force a run with:
+
+```bash
+sudo systemctl status socceroctupus-league-refresh.timer
+sudo systemctl status socceroctupus-league-refresh.service
+sudo journalctl -u socceroctupus-league-refresh.service -f
+cd /var/www/SoccerOctupus/backend
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --competition premier-league --force
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --competition la-liga --force
+sudo -u www-data ./venv/bin/flask --app run.py league-refresh-active --competition bundesliga --force
+```
+
+The service uses the same `www-data` account, backend working directory,
+virtualenv, and optional backend `.env` file as the Flask deployment. Its
+atomic snapshot writes leave valid existing data untouched if ESPN fails.
+
 ## 9. Build The Frontend
 
 ```bash

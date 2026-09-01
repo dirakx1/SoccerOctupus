@@ -3,6 +3,7 @@
     :edition="activeEdition"
     :editions="competitionEditions"
     :navigation="competitionNavigation"
+    :active-navigation-key="activeNavigationKey"
     :home-location="homeLocation"
     :locale="currentLocale"
     :theme-preference="themePreference"
@@ -82,7 +83,7 @@ import {
   hasPostAuthCompletion,
 } from './lib/postAuthCompletion'
 import { useThemePreference } from './ui/themePreference.js'
-import { workspaceLocaleLocation, workspaceLocation } from './router/workspace.js'
+import { workspaceLocaleLocation, workspaceLocation, workspaceSwitchLocation } from './router/workspace.js'
 
 function getBrowserStorage() {
   try {
@@ -156,13 +157,18 @@ const isWorkspaceRoute = computed(() => Boolean(
 const homeLocation = computed(() => workspaceLocation('overview', {
   locale: currentLocale.value,
   competitionEditionSlug: activeEdition.value.slug,
+  historic: Boolean(route.meta.historicWorkspace),
 }))
 const competitionNavigation = computed(() => getCompetitionNavigation(activeEdition.value, {
   locale: currentLocale.value,
+  historic: Boolean(route.meta.historicWorkspace),
 }))
+const activeNavigationKey = computed(() => (
+  competitionNavigation.value.find((item) => item.route.name === route.name)?.key || ''
+))
 
-installAuthInterceptor(async () => {
-  return await getToken.value?.()
+installAuthInterceptor(async (options) => {
+  return await getToken.value?.(options)
 })
 
 const canRenderRoute = computed(() => {
@@ -202,13 +208,8 @@ async function changeLocale(value) {
 
 async function changeEdition(edition) {
   if (!isWorkspaceRoute.value || !route.name || !edition?.slug) return
-
-  await router.push({
-    name: route.name,
-    params: { ...route.params, competitionEditionSlug: edition.slug },
-    query: route.query,
-    hash: route.hash,
-  })
+  const target = workspaceSwitchLocation(route, edition)
+  if (target) await router.push(target)
 }
 
 watch(() => route.fullPath, closeMenus)

@@ -86,34 +86,35 @@ const edition = computed(() => (
   getCompetitionEdition(route.params.competitionEditionSlug) || defaultEdition
 ))
 const locale = computed(() => route.params.locale || 'en')
+const historic = computed(() => Boolean(route.meta.historicWorkspace))
 const actions = computed(() => [
   {
     key: 'groups',
     eyebrowKey: 'home.actions.groups.eyebrow',
     titleKey: 'home.actions.groups.title',
     descriptionKey: 'home.actions.groups.description',
-    route: workspaceLocation('groups', { locale: locale.value, competitionEditionSlug: edition.value.slug }),
+    route: workspaceLocation('groups', { locale: locale.value, competitionEditionSlug: edition.value.slug, historic: historic.value }),
   },
   {
     key: 'predict',
     eyebrowKey: 'home.actions.predict.eyebrow',
     titleKey: 'home.actions.predict.title',
     descriptionKey: 'home.actions.predict.description',
-    route: workspaceLocation('predict', { locale: locale.value, competitionEditionSlug: edition.value.slug }),
+    route: workspaceLocation('predict', { locale: locale.value, competitionEditionSlug: edition.value.slug, historic: historic.value }),
   },
   {
     key: 'bracket',
     eyebrowKey: 'home.actions.bracket.eyebrow',
     titleKey: 'home.actions.bracket.title',
     descriptionKey: 'home.actions.bracket.description',
-    route: workspaceLocation('bracket', { locale: locale.value, competitionEditionSlug: edition.value.slug }),
+    route: workspaceLocation('bracket', { locale: locale.value, competitionEditionSlug: edition.value.slug, historic: historic.value }),
   },
   {
     key: 'markets',
     eyebrowKey: 'home.actions.markets.eyebrow',
     titleKey: 'home.actions.markets.title',
     descriptionKey: 'home.actions.markets.description',
-    route: workspaceLocation('markets', { locale: locale.value, competitionEditionSlug: edition.value.slug }),
+    route: workspaceLocation('markets', { locale: locale.value, competitionEditionSlug: edition.value.slug, historic: historic.value }),
   },
 ])
 

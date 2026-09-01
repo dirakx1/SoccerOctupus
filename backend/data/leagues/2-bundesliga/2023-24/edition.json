@@ -1,0 +1,15 @@
+{
+  "competition": "2-bundesliga",
+  "season": "2023-24",
+  "displayName": "2. Bundesliga 2023-24",
+  "provider": {
+    "name": "espn",
+    "competition": "ger.2",
+    "season": 2023
+  },
+  "startsOn": "2023-08-01",
+  "endsOn": "2024-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

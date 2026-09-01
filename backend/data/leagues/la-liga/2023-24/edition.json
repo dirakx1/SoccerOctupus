@@ -1,0 +1,15 @@
+{
+  "competition": "la-liga",
+  "season": "2023-24",
+  "displayName": "La Liga 2023-24",
+  "provider": {
+    "name": "espn",
+    "competition": "esp.1",
+    "season": 2023
+  },
+  "startsOn": "2023-08-01",
+  "endsOn": "2024-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

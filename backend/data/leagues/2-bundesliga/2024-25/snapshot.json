@@ -1,0 +1,7676 @@
+{
+  "fixtures": [
+    {
+      "id": "711807",
+      "kickoff": "2024-08-02T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711808",
+      "kickoff": "2024-08-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711811",
+      "kickoff": "2024-08-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711815",
+      "kickoff": "2024-08-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711812",
+      "kickoff": "2024-08-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711809",
+      "kickoff": "2024-08-03T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 5,
+      "awayScore": 1
+    },
+    {
+      "id": "711810",
+      "kickoff": "2024-08-04T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711813",
+      "kickoff": "2024-08-04T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711814",
+      "kickoff": "2024-08-04T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "711816",
+      "kickoff": "2024-08-09T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711823",
+      "kickoff": "2024-08-09T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711817",
+      "kickoff": "2024-08-10T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711819",
+      "kickoff": "2024-08-10T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711824",
+      "kickoff": "2024-08-10T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711820",
+      "kickoff": "2024-08-10T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711822",
+      "kickoff": "2024-08-11T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711821",
+      "kickoff": "2024-08-11T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711818",
+      "kickoff": "2024-08-11T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711827",
+      "kickoff": "2024-08-23T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711829",
+      "kickoff": "2024-08-23T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711828",
+      "kickoff": "2024-08-24T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711830",
+      "kickoff": "2024-08-24T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711833",
+      "kickoff": "2024-08-24T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711825",
+      "kickoff": "2024-08-24T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 5,
+      "awayScore": 0
+    },
+    {
+      "id": "711826",
+      "kickoff": "2024-08-25T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711831",
+      "kickoff": "2024-08-25T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711832",
+      "kickoff": "2024-08-25T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711838",
+      "kickoff": "2024-08-30T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711841",
+      "kickoff": "2024-08-30T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 4
+    },
+    {
+      "id": "711835",
+      "kickoff": "2024-08-31T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 0,
+      "awayScore": 4
+    },
+    {
+      "id": "711839",
+      "kickoff": "2024-08-31T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 4,
+      "awayScore": 1
+    },
+    {
+      "id": "711842",
+      "kickoff": "2024-08-31T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 4,
+      "awayScore": 0
+    },
+    {
+      "id": "711834",
+      "kickoff": "2024-08-31T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 3,
+      "awayScore": 4
+    },
+    {
+      "id": "711840",
+      "kickoff": "2024-09-01T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711837",
+      "kickoff": "2024-09-01T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711836",
+      "kickoff": "2024-09-01T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711847",
+      "kickoff": "2024-09-13T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711848",
+      "kickoff": "2024-09-13T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 3,
+      "awayScore": 3
+    },
+    {
+      "id": "711845",
+      "kickoff": "2024-09-14T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711849",
+      "kickoff": "2024-09-14T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711850",
+      "kickoff": "2024-09-14T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711843",
+      "kickoff": "2024-09-14T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711844",
+      "kickoff": "2024-09-15T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 5,
+      "awayScore": 0
+    },
+    {
+      "id": "711846",
+      "kickoff": "2024-09-15T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "711851",
+      "kickoff": "2024-09-15T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711858",
+      "kickoff": "2024-09-20T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711856",
+      "kickoff": "2024-09-20T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 3,
+      "awayScore": 5
+    },
+    {
+      "id": "711854",
+      "kickoff": "2024-09-21T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "711857",
+      "kickoff": "2024-09-21T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711855",
+      "kickoff": "2024-09-21T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711852",
+      "kickoff": "2024-09-21T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711853",
+      "kickoff": "2024-09-22T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711859",
+      "kickoff": "2024-09-22T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711860",
+      "kickoff": "2024-09-22T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711868",
+      "kickoff": "2024-09-27T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711867",
+      "kickoff": "2024-09-27T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711862",
+      "kickoff": "2024-09-28T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711866",
+      "kickoff": "2024-09-28T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711865",
+      "kickoff": "2024-09-28T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711869",
+      "kickoff": "2024-09-28T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711863",
+      "kickoff": "2024-09-29T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711864",
+      "kickoff": "2024-09-29T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 4
+    },
+    {
+      "id": "711861",
+      "kickoff": "2024-09-29T11:40:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 4,
+      "awayScore": 4
+    },
+    {
+      "id": "711878",
+      "kickoff": "2024-10-04T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 3,
+      "awayScore": 3
+    },
+    {
+      "id": "711875",
+      "kickoff": "2024-10-04T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "711870",
+      "kickoff": "2024-10-05T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711873",
+      "kickoff": "2024-10-05T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711876",
+      "kickoff": "2024-10-05T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711872",
+      "kickoff": "2024-10-05T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711874",
+      "kickoff": "2024-10-06T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711877",
+      "kickoff": "2024-10-06T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711871",
+      "kickoff": "2024-10-06T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711882",
+      "kickoff": "2024-10-18T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711886",
+      "kickoff": "2024-10-18T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 5,
+      "awayScore": 1
+    },
+    {
+      "id": "711881",
+      "kickoff": "2024-10-19T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711883",
+      "kickoff": "2024-10-19T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711884",
+      "kickoff": "2024-10-19T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711879",
+      "kickoff": "2024-10-19T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "711880",
+      "kickoff": "2024-10-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711887",
+      "kickoff": "2024-10-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 0,
+      "awayScore": 4
+    },
+    {
+      "id": "711885",
+      "kickoff": "2024-10-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711890",
+      "kickoff": "2024-10-25T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 8,
+      "awayScore": 3
+    },
+    {
+      "id": "711888",
+      "kickoff": "2024-10-25T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711894",
+      "kickoff": "2024-10-26T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711892",
+      "kickoff": "2024-10-26T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 3,
+      "awayScore": 4
+    },
+    {
+      "id": "711895",
+      "kickoff": "2024-10-26T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 4,
+      "awayScore": 2
+    },
+    {
+      "id": "711893",
+      "kickoff": "2024-10-26T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 3,
+      "awayScore": 4
+    },
+    {
+      "id": "711889",
+      "kickoff": "2024-10-27T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711896",
+      "kickoff": "2024-10-27T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711891",
+      "kickoff": "2024-10-27T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711902",
+      "kickoff": "2024-11-01T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711904",
+      "kickoff": "2024-11-01T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711899",
+      "kickoff": "2024-11-02T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711900",
+      "kickoff": "2024-11-02T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 1,
+      "awayScore": 5
+    },
+    {
+      "id": "711903",
+      "kickoff": "2024-11-02T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711901",
+      "kickoff": "2024-11-02T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711898",
+      "kickoff": "2024-11-03T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711897",
+      "kickoff": "2024-11-03T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711905",
+      "kickoff": "2024-11-03T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711908",
+      "kickoff": "2024-11-08T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711909",
+      "kickoff": "2024-11-08T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711907",
+      "kickoff": "2024-11-09T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711906",
+      "kickoff": "2024-11-09T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711914",
+      "kickoff": "2024-11-09T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711911",
+      "kickoff": "2024-11-09T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711912",
+      "kickoff": "2024-11-10T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711910",
+      "kickoff": "2024-11-10T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711913",
+      "kickoff": "2024-11-10T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711920",
+      "kickoff": "2024-11-22T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711921",
+      "kickoff": "2024-11-22T17:45:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711916",
+      "kickoff": "2024-11-23T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "711918",
+      "kickoff": "2024-11-23T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711919",
+      "kickoff": "2024-11-23T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711923",
+      "kickoff": "2024-11-23T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "id": "711917",
+      "kickoff": "2024-11-23T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711915",
+      "kickoff": "2024-11-24T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711922",
+      "kickoff": "2024-11-24T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711925",
+      "kickoff": "2024-11-29T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711928",
+      "kickoff": "2024-11-29T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711924",
+      "kickoff": "2024-11-30T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711931",
+      "kickoff": "2024-11-30T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711927",
+      "kickoff": "2024-11-30T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711932",
+      "kickoff": "2024-11-30T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711926",
+      "kickoff": "2024-12-01T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711929",
+      "kickoff": "2024-12-01T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "711930",
+      "kickoff": "2024-12-01T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711933",
+      "kickoff": "2024-12-06T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 2,
+      "awayScore": 4
+    },
+    {
+      "id": "711936",
+      "kickoff": "2024-12-06T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711938",
+      "kickoff": "2024-12-07T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711939",
+      "kickoff": "2024-12-07T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711937",
+      "kickoff": "2024-12-07T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711940",
+      "kickoff": "2024-12-07T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711934",
+      "kickoff": "2024-12-08T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 5,
+      "awayScore": 0
+    },
+    {
+      "id": "711941",
+      "kickoff": "2024-12-08T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711935",
+      "kickoff": "2024-12-08T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711942",
+      "kickoff": "2024-12-13T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711949",
+      "kickoff": "2024-12-13T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 4,
+      "awayScore": 2
+    },
+    {
+      "id": "711948",
+      "kickoff": "2024-12-14T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711947",
+      "kickoff": "2024-12-14T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711944",
+      "kickoff": "2024-12-14T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711945",
+      "kickoff": "2024-12-14T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 5,
+      "awayScore": 1
+    },
+    {
+      "id": "711950",
+      "kickoff": "2024-12-15T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711946",
+      "kickoff": "2024-12-15T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711943",
+      "kickoff": "2024-12-15T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711955",
+      "kickoff": "2024-12-20T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 2,
+      "awayScore": 5
+    },
+    {
+      "id": "711959",
+      "kickoff": "2024-12-20T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 1,
+      "awayScore": 4
+    },
+    {
+      "id": "711958",
+      "kickoff": "2024-12-21T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 5,
+      "awayScore": 0
+    },
+    {
+      "id": "711957",
+      "kickoff": "2024-12-21T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711952",
+      "kickoff": "2024-12-21T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711956",
+      "kickoff": "2024-12-21T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711951",
+      "kickoff": "2024-12-22T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711953",
+      "kickoff": "2024-12-22T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711954",
+      "kickoff": "2024-12-22T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711960",
+      "kickoff": "2025-01-17T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711963",
+      "kickoff": "2025-01-17T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711967",
+      "kickoff": "2025-01-18T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711964",
+      "kickoff": "2025-01-18T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711961",
+      "kickoff": "2025-01-18T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "711966",
+      "kickoff": "2025-01-18T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711968",
+      "kickoff": "2025-01-19T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711965",
+      "kickoff": "2025-01-19T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711962",
+      "kickoff": "2025-01-19T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 2,
+      "awayScore": 5
+    },
+    {
+      "id": "711976",
+      "kickoff": "2025-01-24T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711977",
+      "kickoff": "2025-01-24T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 2,
+      "awayScore": 4
+    },
+    {
+      "id": "711969",
+      "kickoff": "2025-01-25T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711972",
+      "kickoff": "2025-01-25T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "id": "711975",
+      "kickoff": "2025-01-25T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "711973",
+      "kickoff": "2025-01-25T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "id": "711974",
+      "kickoff": "2025-01-26T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711971",
+      "kickoff": "2025-01-26T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 5,
+      "awayScore": 1
+    },
+    {
+      "id": "711970",
+      "kickoff": "2025-01-26T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711985",
+      "kickoff": "2025-01-31T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711982",
+      "kickoff": "2025-01-31T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711978",
+      "kickoff": "2025-02-01T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "711981",
+      "kickoff": "2025-02-01T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711986",
+      "kickoff": "2025-02-01T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711983",
+      "kickoff": "2025-02-01T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 2,
+      "awayScore": 5
+    },
+    {
+      "id": "711979",
+      "kickoff": "2025-02-02T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "711984",
+      "kickoff": "2025-02-02T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711980",
+      "kickoff": "2025-02-02T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711995",
+      "kickoff": "2025-02-07T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "711989",
+      "kickoff": "2025-02-07T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "711991",
+      "kickoff": "2025-02-08T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 3,
+      "awayScore": 4
+    },
+    {
+      "id": "711988",
+      "kickoff": "2025-02-08T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "711987",
+      "kickoff": "2025-02-08T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "711993",
+      "kickoff": "2025-02-08T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "711990",
+      "kickoff": "2025-02-09T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711992",
+      "kickoff": "2025-02-09T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "711994",
+      "kickoff": "2025-02-09T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "712003",
+      "kickoff": "2025-02-14T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "711997",
+      "kickoff": "2025-02-14T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711996",
+      "kickoff": "2025-02-15T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712002",
+      "kickoff": "2025-02-15T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712004",
+      "kickoff": "2025-02-15T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "711998",
+      "kickoff": "2025-02-15T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712000",
+      "kickoff": "2025-02-16T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "711999",
+      "kickoff": "2025-02-16T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712001",
+      "kickoff": "2025-02-16T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712012",
+      "kickoff": "2025-02-21T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712010",
+      "kickoff": "2025-02-21T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712013",
+      "kickoff": "2025-02-22T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "712008",
+      "kickoff": "2025-02-22T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712007",
+      "kickoff": "2025-02-22T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712011",
+      "kickoff": "2025-02-22T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712005",
+      "kickoff": "2025-02-23T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712009",
+      "kickoff": "2025-02-23T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712006",
+      "kickoff": "2025-02-23T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712019",
+      "kickoff": "2025-02-28T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712022",
+      "kickoff": "2025-02-28T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712016",
+      "kickoff": "2025-03-01T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712014",
+      "kickoff": "2025-03-01T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712018",
+      "kickoff": "2025-03-01T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712020",
+      "kickoff": "2025-03-01T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712015",
+      "kickoff": "2025-03-02T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 4,
+      "awayScore": 1
+    },
+    {
+      "id": "712021",
+      "kickoff": "2025-03-02T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712017",
+      "kickoff": "2025-03-02T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 4,
+      "awayScore": 0
+    },
+    {
+      "id": "712023",
+      "kickoff": "2025-03-07T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712030",
+      "kickoff": "2025-03-07T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712026",
+      "kickoff": "2025-03-08T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712031",
+      "kickoff": "2025-03-08T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712029",
+      "kickoff": "2025-03-08T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "712024",
+      "kickoff": "2025-03-08T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 4,
+      "awayScore": 1
+    },
+    {
+      "id": "712025",
+      "kickoff": "2025-03-09T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712027",
+      "kickoff": "2025-03-09T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "712028",
+      "kickoff": "2025-03-09T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712033",
+      "kickoff": "2025-03-14T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "712036",
+      "kickoff": "2025-03-14T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712037",
+      "kickoff": "2025-03-15T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712039",
+      "kickoff": "2025-03-15T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 5,
+      "awayScore": 3
+    },
+    {
+      "id": "712040",
+      "kickoff": "2025-03-15T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "712032",
+      "kickoff": "2025-03-15T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712034",
+      "kickoff": "2025-03-16T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712038",
+      "kickoff": "2025-03-16T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712035",
+      "kickoff": "2025-03-16T12:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 5
+    },
+    {
+      "id": "712042",
+      "kickoff": "2025-03-28T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712048",
+      "kickoff": "2025-03-28T17:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712043",
+      "kickoff": "2025-03-29T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "712044",
+      "kickoff": "2025-03-29T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "712045",
+      "kickoff": "2025-03-29T12:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712041",
+      "kickoff": "2025-03-29T19:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "712046",
+      "kickoff": "2025-03-30T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712049",
+      "kickoff": "2025-03-30T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 3,
+      "awayScore": 3
+    },
+    {
+      "id": "712047",
+      "kickoff": "2025-03-30T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712056",
+      "kickoff": "2025-04-04T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712054",
+      "kickoff": "2025-04-04T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "712052",
+      "kickoff": "2025-04-05T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 0,
+      "awayScore": 3
+    },
+    {
+      "id": "712055",
+      "kickoff": "2025-04-05T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712053",
+      "kickoff": "2025-04-05T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712050",
+      "kickoff": "2025-04-05T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "712051",
+      "kickoff": "2025-04-06T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712058",
+      "kickoff": "2025-04-06T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712057",
+      "kickoff": "2025-04-06T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 6,
+      "awayScore": 0
+    },
+    {
+      "id": "712060",
+      "kickoff": "2025-04-11T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 2,
+      "awayScore": 4
+    },
+    {
+      "id": "712067",
+      "kickoff": "2025-04-11T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712061",
+      "kickoff": "2025-04-12T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "712062",
+      "kickoff": "2025-04-12T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712066",
+      "kickoff": "2025-04-12T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712059",
+      "kickoff": "2025-04-12T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712064",
+      "kickoff": "2025-04-13T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712063",
+      "kickoff": "2025-04-13T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712065",
+      "kickoff": "2025-04-13T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712070",
+      "kickoff": "2025-04-19T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "id": "712075",
+      "kickoff": "2025-04-19T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712071",
+      "kickoff": "2025-04-19T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712072",
+      "kickoff": "2025-04-19T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "712069",
+      "kickoff": "2025-04-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712068",
+      "kickoff": "2025-04-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "712073",
+      "kickoff": "2025-04-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712074",
+      "kickoff": "2025-04-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "id": "712076",
+      "kickoff": "2025-04-20T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "712081",
+      "kickoff": "2025-04-25T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712085",
+      "kickoff": "2025-04-25T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 0,
+      "awayScore": 1
+    },
+    {
+      "id": "712083",
+      "kickoff": "2025-04-26T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712082",
+      "kickoff": "2025-04-26T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712084",
+      "kickoff": "2025-04-26T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712078",
+      "kickoff": "2025-04-26T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 3,
+      "awayScore": 3
+    },
+    {
+      "id": "712079",
+      "kickoff": "2025-04-27T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712080",
+      "kickoff": "2025-04-27T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712077",
+      "kickoff": "2025-04-27T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712089",
+      "kickoff": "2025-05-02T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 0,
+      "awayScore": 5
+    },
+    {
+      "id": "712086",
+      "kickoff": "2025-05-02T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "id": "712090",
+      "kickoff": "2025-05-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712091",
+      "kickoff": "2025-05-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 0,
+      "awayScore": 4
+    },
+    {
+      "id": "712087",
+      "kickoff": "2025-05-03T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "712094",
+      "kickoff": "2025-05-03T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712088",
+      "kickoff": "2025-05-04T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "id": "712092",
+      "kickoff": "2025-05-04T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 0
+    },
+    {
+      "id": "712093",
+      "kickoff": "2025-05-04T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "712101",
+      "kickoff": "2025-05-09T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "269",
+      "awayTeamId": "122",
+      "homeTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "venue": "Max-Morlock-Stadion",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712097",
+      "kickoff": "2025-05-09T16:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9867",
+      "awayTeamId": "129",
+      "homeTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "venue": "LVM-Preußenstadion",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712102",
+      "kickoff": "2025-05-10T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "9707",
+      "awayTeamId": "133",
+      "homeTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "venue": "Merkur Spiel-Arena",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "712096",
+      "kickoff": "2025-05-10T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3307",
+      "awayTeamId": "10382",
+      "homeTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "venue": "Home Deluxe Arena",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712099",
+      "kickoff": "2025-05-10T11:00:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10388",
+      "awayTeamId": "3067",
+      "homeTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "venue": "URSAPHARM-Arena an der Kaiserlinde",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712103",
+      "kickoff": "2025-05-10T18:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "127",
+      "awayTeamId": "15710",
+      "homeTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "venue": "Volksparkstadion",
+      "homeScore": 6,
+      "awayScore": 1
+    },
+    {
+      "id": "712100",
+      "kickoff": "2025-05-11T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "2428",
+      "awayTeamId": "3070",
+      "homeTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "venue": "Heinz von Heiden-Arena",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712095",
+      "kickoff": "2025-05-11T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "130",
+      "awayTeamId": "3812",
+      "homeTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "venue": "Fritz-Walter-Stadion",
+      "homeScore": 2,
+      "awayScore": 1
+    },
+    {
+      "id": "712098",
+      "kickoff": "2025-05-11T11:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "11017",
+      "awayTeamId": "4471",
+      "homeTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "venue": "Jahnstadion Regensburg",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "712109",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "10382",
+      "awayTeamId": "9707",
+      "homeTeam": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "venue": "Avnet Arena",
+      "homeScore": 4,
+      "awayScore": 2
+    },
+    {
+      "id": "712110",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "122",
+      "awayTeamId": "130",
+      "homeTeam": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "venue": "RheinEnergieStadion",
+      "homeScore": 4,
+      "awayScore": 0
+    },
+    {
+      "id": "712112",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "129",
+      "awayTeamId": "2428",
+      "homeTeam": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "venue": "Olympiastadion Berlin",
+      "homeScore": 1,
+      "awayScore": 1
+    },
+    {
+      "id": "712111",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "4471",
+      "awayTeamId": "3307",
+      "homeTeam": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "venue": "BBBank Wildpark",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "id": "712106",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "133",
+      "awayTeamId": "10388",
+      "homeTeam": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "venue": "VELTINS-Arena",
+      "homeScore": 1,
+      "awayScore": 2
+    },
+    {
+      "id": "712105",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3070",
+      "awayTeamId": "127",
+      "homeTeam": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "venue": "Sportpark Ronhof | Thomas Sommer",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "id": "712104",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "15710",
+      "awayTeamId": "9867",
+      "homeTeam": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "venue": "Donaustadion",
+      "homeScore": 2,
+      "awayScore": 2
+    },
+    {
+      "id": "712108",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3812",
+      "awayTeamId": "11017",
+      "homeTeam": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "venue": "Merck-Stadion am Böllenfalltor",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "id": "712107",
+      "kickoff": "2025-05-18T13:30:00+00:00",
+      "matchweek": null,
+      "status": "completed",
+      "providerStatus": "STATUS_FULL_TIME",
+      "homeTeamId": "3067",
+      "awayTeamId": "269",
+      "homeTeam": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "awayTeam": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "venue": "Eintracht-Stadion",
+      "homeScore": 1,
+      "awayScore": 4
+    }
+  ],
+  "standings": [
+    {
+      "teamId": "122",
+      "team": {
+        "id": "122",
+        "name": "FC Cologne",
+        "abbreviation": "KOE",
+        "provider": "espn"
+      },
+      "position": 1,
+      "played": 34,
+      "won": 18,
+      "drawn": 7,
+      "lost": 9,
+      "goalsFor": 53,
+      "goalsAgainst": 38,
+      "goalDifference": 15,
+      "points": 61
+    },
+    {
+      "teamId": "127",
+      "team": {
+        "id": "127",
+        "name": "Hamburg SV",
+        "abbreviation": "HSV",
+        "provider": "espn"
+      },
+      "position": 2,
+      "played": 34,
+      "won": 16,
+      "drawn": 11,
+      "lost": 7,
+      "goalsFor": 78,
+      "goalsAgainst": 44,
+      "goalDifference": 34,
+      "points": 59
+    },
+    {
+      "teamId": "10388",
+      "team": {
+        "id": "10388",
+        "name": "SV Elversberg",
+        "abbreviation": "ELV",
+        "provider": "espn"
+      },
+      "position": 3,
+      "played": 34,
+      "won": 16,
+      "drawn": 10,
+      "lost": 8,
+      "goalsFor": 64,
+      "goalsAgainst": 37,
+      "goalDifference": 27,
+      "points": 58
+    },
+    {
+      "teamId": "3307",
+      "team": {
+        "id": "3307",
+        "name": "SC Paderborn 07",
+        "abbreviation": "SCP",
+        "provider": "espn"
+      },
+      "position": 4,
+      "played": 34,
+      "won": 15,
+      "drawn": 10,
+      "lost": 9,
+      "goalsFor": 56,
+      "goalsAgainst": 46,
+      "goalDifference": 10,
+      "points": 55
+    },
+    {
+      "teamId": "10382",
+      "team": {
+        "id": "10382",
+        "name": "1. FC Magdeburg",
+        "abbreviation": "FCM",
+        "provider": "espn"
+      },
+      "position": 5,
+      "played": 34,
+      "won": 14,
+      "drawn": 11,
+      "lost": 9,
+      "goalsFor": 64,
+      "goalsAgainst": 52,
+      "goalDifference": 12,
+      "points": 53
+    },
+    {
+      "teamId": "9707",
+      "team": {
+        "id": "9707",
+        "name": "Fortuna Düsseldorf",
+        "abbreviation": "F95",
+        "provider": "espn"
+      },
+      "position": 6,
+      "played": 34,
+      "won": 14,
+      "drawn": 11,
+      "lost": 9,
+      "goalsFor": 57,
+      "goalsAgainst": 52,
+      "goalDifference": 5,
+      "points": 53
+    },
+    {
+      "teamId": "130",
+      "team": {
+        "id": "130",
+        "name": "Kaiserslautern",
+        "abbreviation": "FCK",
+        "provider": "espn"
+      },
+      "position": 7,
+      "played": 34,
+      "won": 15,
+      "drawn": 8,
+      "lost": 11,
+      "goalsFor": 56,
+      "goalsAgainst": 55,
+      "goalDifference": 1,
+      "points": 53
+    },
+    {
+      "teamId": "4471",
+      "team": {
+        "id": "4471",
+        "name": "Karlsruher SC",
+        "abbreviation": "KSC",
+        "provider": "espn"
+      },
+      "position": 8,
+      "played": 34,
+      "won": 14,
+      "drawn": 10,
+      "lost": 10,
+      "goalsFor": 57,
+      "goalsAgainst": 55,
+      "goalDifference": 2,
+      "points": 52
+    },
+    {
+      "teamId": "2428",
+      "team": {
+        "id": "2428",
+        "name": "Hannover 96",
+        "abbreviation": "H96",
+        "provider": "espn"
+      },
+      "position": 9,
+      "played": 34,
+      "won": 13,
+      "drawn": 12,
+      "lost": 9,
+      "goalsFor": 41,
+      "goalsAgainst": 36,
+      "goalDifference": 5,
+      "points": 51
+    },
+    {
+      "teamId": "269",
+      "team": {
+        "id": "269",
+        "name": "1. FC Nürnberg",
+        "abbreviation": "FCN",
+        "provider": "espn"
+      },
+      "position": 10,
+      "played": 34,
+      "won": 14,
+      "drawn": 6,
+      "lost": 14,
+      "goalsFor": 60,
+      "goalsAgainst": 57,
+      "goalDifference": 3,
+      "points": 48
+    },
+    {
+      "teamId": "129",
+      "team": {
+        "id": "129",
+        "name": "Hertha Berlin",
+        "abbreviation": "BSC",
+        "provider": "espn"
+      },
+      "position": 11,
+      "played": 34,
+      "won": 12,
+      "drawn": 8,
+      "lost": 14,
+      "goalsFor": 49,
+      "goalsAgainst": 51,
+      "goalDifference": -2,
+      "points": 44
+    },
+    {
+      "teamId": "3812",
+      "team": {
+        "id": "3812",
+        "name": "SV Darmstadt 98",
+        "abbreviation": "SVD",
+        "provider": "espn"
+      },
+      "position": 12,
+      "played": 34,
+      "won": 11,
+      "drawn": 9,
+      "lost": 14,
+      "goalsFor": 56,
+      "goalsAgainst": 55,
+      "goalDifference": 1,
+      "points": 42
+    },
+    {
+      "teamId": "3070",
+      "team": {
+        "id": "3070",
+        "name": "SpVgg Greuther Fürth",
+        "abbreviation": "SGF",
+        "provider": "espn"
+      },
+      "position": 13,
+      "played": 34,
+      "won": 10,
+      "drawn": 9,
+      "lost": 15,
+      "goalsFor": 45,
+      "goalsAgainst": 59,
+      "goalDifference": -14,
+      "points": 39
+    },
+    {
+      "teamId": "133",
+      "team": {
+        "id": "133",
+        "name": "Schalke 04",
+        "abbreviation": "S04",
+        "provider": "espn"
+      },
+      "position": 14,
+      "played": 34,
+      "won": 10,
+      "drawn": 8,
+      "lost": 16,
+      "goalsFor": 52,
+      "goalsAgainst": 62,
+      "goalDifference": -10,
+      "points": 38
+    },
+    {
+      "teamId": "9867",
+      "team": {
+        "id": "9867",
+        "name": "Preußen Münster",
+        "abbreviation": "PRM",
+        "provider": "espn"
+      },
+      "position": 15,
+      "played": 34,
+      "won": 8,
+      "drawn": 12,
+      "lost": 14,
+      "goalsFor": 40,
+      "goalsAgainst": 43,
+      "goalDifference": -3,
+      "points": 36
+    },
+    {
+      "teamId": "3067",
+      "team": {
+        "id": "3067",
+        "name": "TSV Eintracht Braunschweig",
+        "abbreviation": "EBS",
+        "provider": "espn"
+      },
+      "position": 16,
+      "played": 34,
+      "won": 8,
+      "drawn": 11,
+      "lost": 15,
+      "goalsFor": 38,
+      "goalsAgainst": 64,
+      "goalDifference": -26,
+      "points": 35
+    },
+    {
+      "teamId": "15710",
+      "team": {
+        "id": "15710",
+        "name": "SSV Ulm 1846",
+        "abbreviation": "ULM",
+        "provider": "espn"
+      },
+      "position": 17,
+      "played": 34,
+      "won": 6,
+      "drawn": 12,
+      "lost": 16,
+      "goalsFor": 36,
+      "goalsAgainst": 48,
+      "goalDifference": -12,
+      "points": 30
+    },
+    {
+      "teamId": "11017",
+      "team": {
+        "id": "11017",
+        "name": "SSV Jahn Regensburg",
+        "abbreviation": "REG",
+        "provider": "espn"
+      },
+      "position": 18,
+      "played": 34,
+      "won": 6,
+      "drawn": 7,
+      "lost": 21,
+      "goalsFor": 23,
+      "goalsAgainst": 71,
+      "goalDifference": -48,
+      "points": 25
+    }
+  ],
+  "fetchedAt": "2026-08-31T21:16:34.133211+00:00",
+  "provider": "espn"
+}

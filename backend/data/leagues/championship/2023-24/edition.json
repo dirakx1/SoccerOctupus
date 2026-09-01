@@ -1,0 +1,15 @@
+{
+  "competition": "championship",
+  "season": "2023-24",
+  "displayName": "Championship 2023-24",
+  "provider": {
+    "name": "espn",
+    "competition": "eng.2",
+    "season": 2023
+  },
+  "startsOn": "2023-08-01",
+  "endsOn": "2024-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

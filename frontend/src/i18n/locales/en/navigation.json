@@ -5,10 +5,15 @@
   },
   "workspace": {
     "overview": "Overview",
+    "explore": "Explore",
+    "predictions": "Predictions",
     "groups": "Groups",
+    "table": "Table",
+    "fixtures": "Fixtures",
     "predict": "Predict",
     "bracket": "Bracket",
     "markets": "Markets",
+    "performance": "Model performance",
     "swarm": "Swarm Lab"
   },
   "public": {

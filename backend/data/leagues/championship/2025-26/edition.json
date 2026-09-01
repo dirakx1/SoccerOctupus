@@ -1,0 +1,15 @@
+{
+  "competition": "championship",
+  "season": "2025-26",
+  "displayName": "Championship 2025-26",
+  "provider": {
+    "name": "espn",
+    "competition": "eng.2",
+    "season": 2025
+  },
+  "startsOn": "2025-08-01",
+  "endsOn": "2026-05-31",
+  "promotedTeamIds": [],
+  "history": [],
+  "active": false
+}

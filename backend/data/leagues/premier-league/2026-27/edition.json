@@ -1,0 +1,41 @@
+{
+  "competition": "premier-league",
+  "season": "2026-27",
+  "displayName": "Premier League 2026-27",
+  "provider": {
+    "name": "espn",
+    "competition": "eng.1",
+    "season": 2026
+  },
+  "startsOn": "2026-08-01",
+  "endsOn": "2027-05-31",
+  "promotedTeamIds": [
+    "306",
+    "373",
+    "388"
+  ],
+  "history": [
+    {
+      "competition": "premier-league",
+      "season": "2024-25",
+      "file": "history-premier-league-2024-25.json"
+    },
+    {
+      "competition": "premier-league",
+      "season": "2025-26",
+      "file": "history-premier-league-2025-26.json"
+    },
+    {
+      "competition": "championship",
+      "season": "2025-26",
+      "file": "history-championship-2025-26.json"
+    }
+  ],
+  "active": true,
+  "promotedTeamIdsSource": "derived: current EPL minus prior EPL, verified in Championship",
+  "leagueGraph": {
+    "graphId": "socceroctupus_premier_league_2026_27",
+    "builtAt": "2026-08-29T19:20:19.582529+00:00",
+    "source": "ESPN committed league JSON"
+  }
+}
