@@ -86,7 +86,7 @@ const edition = computed(() => (
   getCompetitionEdition(route.params.competitionEditionSlug) || defaultEdition
 ))
 const locale = computed(() => route.params.locale || 'en')
-const historic = computed(() => Boolean(route.meta.historicWorkspace))
+const historic = computed(() => Boolean(route.meta?.historicWorkspace))
 const actions = computed(() => [
   {
     key: 'groups',

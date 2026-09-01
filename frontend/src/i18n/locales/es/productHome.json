@@ -1,0 +1,30 @@
+{
+  "hero": {
+    "eyebrow": "Pronósticos de partidos y temporadas",
+    "title": "Predicciones de fútbol que puedes entender.",
+    "description": "Sigue la tabla, explora los próximos partidos y descubre cómo podría desarrollarse cada encuentro en las grandes ligas europeas.",
+    "explore": "Explorar la Premier League",
+    "predict": "Predecir un partido",
+    "freeNote": "Las tablas y los partidos se pueden consultar gratis."
+  },
+  "competitions": {
+    "eyebrow": "Elige una competición",
+    "title": "Tres ligas. Una visión clara.",
+    "format": "{clubs} clubes · {matchdays} jornadas"
+  },
+  "journey": {
+    "eyebrow": "Del partido al pronóstico",
+    "title": "Todo comienza con el partido.",
+    "description": "SoccerOctopus simplifica el recorrido diario y mantiene el razonamiento disponible cuando quieras consultarlo.",
+    "follow": { "title": "Sigue la temporada", "description": "Consulta la tabla actual, la forma de los clubes y todos los partidos disputados o pendientes." },
+    "choose": { "title": "Elige un partido", "description": "Busca por jornada o club y abre el encuentro que te interesa." },
+    "forecast": { "title": "Lee el pronóstico", "description": "Compara las probabilidades de victoria local, empate y victoria visitante, los goles esperados y los marcadores más probables." },
+    "season": { "title": "Mira más allá", "description": "Explora las opciones de título, clasificación y descenso a medida que cambia la temporada." }
+  },
+  "pricing": {
+    "eyebrow": "Empieza gratis",
+    "title": "Sigue primero. Predice cuando quieras.",
+    "description": "Las tablas y los partidos están abiertos para todos. Los planes añaden pronósticos, simulaciones de temporada y preguntas de mercado.",
+    "action": "Ver precios"
+  }
+}

@@ -30,6 +30,7 @@ describe('router', () => {
   it('marks home as public', () => {
     const route = router.getRoutes().find((entry) => entry.path === '/')
     expect(route.meta.public).toBe(true)
+    expect(route.name).toBe('product-home')
   })
 
   it('keeps design-lab routes public and unchanged', () => {
@@ -111,7 +112,6 @@ describe('router', () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
 
     const redirects = [
-      ['/', '/en/competitions/premier-league'],
       ['/groups', '/en/competitions/premier-league'],
       ['/predict', '/en/competitions/premier-league/predict'],
       ['/tournament', '/en/competitions/premier-league'],
@@ -215,6 +215,6 @@ describe('router', () => {
   it('redirects signed-in non-admin users away from admin routes', async () => {
     setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
     await router.push('/admin/settings')
-    expect(router.currentRoute.value.path).toBe('/en/competitions/premier-league')
+    expect(router.currentRoute.value.path).toBe('/')
   })
 })

@@ -17,6 +17,8 @@
     "swarm": "Swarm Lab"
   },
   "public": {
+    "competitions": "Competitions",
+    "howItWorks": "How it works",
     "pricing": "Pricing",
     "signIn": "Sign in",
     "signUp": "Sign up"

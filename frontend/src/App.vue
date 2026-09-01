@@ -154,11 +154,13 @@ const currentLocale = computed(() => (
 const isWorkspaceRoute = computed(() => Boolean(
   route.meta.competitionWorkspace && route.params.locale
 ))
-const homeLocation = computed(() => workspaceLocation('overview', {
-  locale: currentLocale.value,
-  competitionEditionSlug: activeEdition.value.slug,
-  historic: Boolean(route.meta.historicWorkspace),
-}))
+const homeLocation = computed(() => isWorkspaceRoute.value
+  ? workspaceLocation('overview', {
+    locale: currentLocale.value,
+    competitionEditionSlug: activeEdition.value.slug,
+    historic: Boolean(route.meta.historicWorkspace),
+  })
+  : '/')
 const competitionNavigation = computed(() => getCompetitionNavigation(activeEdition.value, {
   locale: currentLocale.value,
   historic: Boolean(route.meta.historicWorkspace),

@@ -21,6 +21,7 @@ import enPasswordRecovery from './locales/en/passwordRecovery.json'
 import enPricing from './locales/en/pricing.json'
 import enProfile from './locales/en/profile.json'
 import enPredictions from './locales/en/predictions.json'
+import enProductHome from './locales/en/productHome.json'
 import enTournament from './locales/en/tournament.json'
 import enSwarmLab from './locales/en/swarmLab.json'
 import enUsernameContinuation from './locales/en/usernameContinuation.json'
@@ -45,6 +46,7 @@ import esPasswordRecovery from './locales/es/passwordRecovery.json'
 import esPricing from './locales/es/pricing.json'
 import esProfile from './locales/es/profile.json'
 import esPredictions from './locales/es/predictions.json'
+import esProductHome from './locales/es/productHome.json'
 import esTournament from './locales/es/tournament.json'
 import esSwarmLab from './locales/es/swarmLab.json'
 import esUsernameContinuation from './locales/es/usernameContinuation.json'
@@ -68,8 +70,8 @@ export const i18n = createI18n({
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
   messages: {
-    en: { about: enAbout, adminSettings: enAdminSettings, billingSuccess: enBillingSuccess, common: enCommon, competitions: enCompetitions, contact: enContact, cookiePolicy: enCookiePolicy, groups: enGroups, home: enHome, legal: enLegal, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordPolicy: enPasswordPolicy, passwordRecovery: enPasswordRecovery, predictions: enPredictions, pricing: enPricing, profile: enProfile, signIn: enSignIn, signUp: enSignUp, swarmLab: enSwarmLab, tournament: enTournament, usernameContinuation: enUsernameContinuation },
-    es: { about: esAbout, adminSettings: esAdminSettings, billingSuccess: esBillingSuccess, common: esCommon, competitions: esCompetitions, contact: esContact, cookiePolicy: esCookiePolicy, groups: esGroups, home: esHome, legal: esLegal, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordPolicy: esPasswordPolicy, passwordRecovery: esPasswordRecovery, predictions: esPredictions, pricing: esPricing, profile: esProfile, signIn: esSignIn, signUp: esSignUp, swarmLab: esSwarmLab, tournament: esTournament, usernameContinuation: esUsernameContinuation },
+    en: { about: enAbout, adminSettings: enAdminSettings, billingSuccess: enBillingSuccess, common: enCommon, competitions: enCompetitions, contact: enContact, cookiePolicy: enCookiePolicy, groups: enGroups, home: enHome, legal: enLegal, markets: enMarkets, navigation: enNavigation, oauthCallback: enOauthCallback, overlays: enOverlays, passwordPolicy: enPasswordPolicy, passwordRecovery: enPasswordRecovery, predictions: enPredictions, pricing: enPricing, productHome: enProductHome, profile: enProfile, signIn: enSignIn, signUp: enSignUp, swarmLab: enSwarmLab, tournament: enTournament, usernameContinuation: enUsernameContinuation },
+    es: { about: esAbout, adminSettings: esAdminSettings, billingSuccess: esBillingSuccess, common: esCommon, competitions: esCompetitions, contact: esContact, cookiePolicy: esCookiePolicy, groups: esGroups, home: esHome, legal: esLegal, markets: esMarkets, navigation: esNavigation, oauthCallback: esOauthCallback, overlays: esOverlays, passwordPolicy: esPasswordPolicy, passwordRecovery: esPasswordRecovery, predictions: esPredictions, pricing: esPricing, productHome: esProductHome, profile: esProfile, signIn: esSignIn, signUp: esSignUp, swarmLab: esSwarmLab, tournament: esTournament, usernameContinuation: esUsernameContinuation },
   },
 })
 

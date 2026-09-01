@@ -41,7 +41,7 @@ function applyWorkspaceLocale(locale) {
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', redirect: workspaceRedirect('overview'), meta: { public: true } },
+    { path: '/', name: 'product-home', component: () => import('../views/ProductHomeView.vue'), meta: { public: true } },
     {
       path: '/:locale(en|es)/competitions',
       redirect: localizedWorkspaceFallback,

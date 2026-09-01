@@ -9,7 +9,7 @@
           </span>
         </router-link>
 
-        <div class="competition-context">
+        <div v-if="workspaceRoute" class="competition-context">
           <button
             data-testid="competition-toggle"
             class="competition-toggle"
@@ -47,8 +47,9 @@
         class="workspace-navigation"
         :class="{ 'is-open': mobileMenuOpen }"
       >
-        <template v-if="signedIn">
-          <div class="desktop-workspace-navigation">
+        <template v-if="workspaceRoute">
+          <template v-if="signedIn">
+            <div class="desktop-workspace-navigation">
             <router-link
               v-for="item in overviewNavigation"
               :key="item.key"
@@ -110,8 +111,8 @@
                 </router-link>
               </div>
             </div>
-          </div>
-          <div class="mobile-workspace-navigation">
+            </div>
+            <div class="mobile-workspace-navigation">
             <router-link
               v-for="item in navigation"
               :key="item.key"
@@ -127,19 +128,37 @@
             <router-link v-if="isAdmin" to="/admin/settings" class="workspace-link workspace-link-secondary" @click="emit('close-menus')">
               <span>{{ t('navigation.account.admin') }}</span>
             </router-link>
-          </div>
+            </div>
+          </template>
+          <template v-else>
+            <router-link :to="homeLocation" class="workspace-link" @click="emit('close-menus')">
+              <span>{{ t('navigation.workspace.overview') }}</span>
+            </router-link>
+            <router-link to="/pricing" class="workspace-link" @click="emit('close-menus')">
+              <span>{{ t('navigation.public.pricing') }}</span>
+            </router-link>
+            <router-link to="/sign-in" class="workspace-link" @click="emit('close-menus')">
+              <span>{{ t('navigation.public.signIn') }}</span>
+            </router-link>
+            <router-link to="/sign-up" class="workspace-link workspace-link-primary" @click="emit('close-menus')">
+              <span>{{ t('navigation.public.signUp') }}</span>
+            </router-link>
+          </template>
         </template>
         <template v-else>
-          <router-link :to="homeLocation" class="workspace-link" @click="emit('close-menus')">
-            <span>{{ t('navigation.workspace.overview') }}</span>
-          </router-link>
+          <a href="/#competitions" class="workspace-link" @click="emit('close-menus')">
+            <span>{{ t('navigation.public.competitions') }}</span>
+          </a>
+          <a href="/#how-it-works" class="workspace-link" @click="emit('close-menus')">
+            <span>{{ t('navigation.public.howItWorks') }}</span>
+          </a>
           <router-link to="/pricing" class="workspace-link" @click="emit('close-menus')">
             <span>{{ t('navigation.public.pricing') }}</span>
           </router-link>
-          <router-link to="/sign-in" class="workspace-link" @click="emit('close-menus')">
+          <router-link v-if="!signedIn" to="/sign-in" class="workspace-link" @click="emit('close-menus')">
             <span>{{ t('navigation.public.signIn') }}</span>
           </router-link>
-          <router-link to="/sign-up" class="workspace-link workspace-link-primary" @click="emit('close-menus')">
+          <router-link v-if="!signedIn" to="/sign-up" class="workspace-link workspace-link-primary" @click="emit('close-menus')">
             <span>{{ t('navigation.public.signUp') }}</span>
           </router-link>
         </template>

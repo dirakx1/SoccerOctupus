@@ -1,0 +1,30 @@
+{
+  "hero": {
+    "eyebrow": "Match and season forecasts",
+    "title": "Football predictions you can inspect.",
+    "description": "Follow the table, explore upcoming fixtures and see how every match could unfold across Europe’s biggest leagues.",
+    "explore": "Explore the Premier League",
+    "predict": "Predict a match",
+    "freeNote": "Tables and fixtures are free to explore."
+  },
+  "competitions": {
+    "eyebrow": "Choose a competition",
+    "title": "Three leagues. One clear view.",
+    "format": "{clubs} clubs · {matchdays} matchdays"
+  },
+  "journey": {
+    "eyebrow": "From fixture to forecast",
+    "title": "Everything begins with the match.",
+    "description": "SoccerOctopus keeps the everyday journey simple while leaving the reasoning available when you want it.",
+    "follow": { "title": "Follow the season", "description": "See the current table, club form and every completed or upcoming fixture." },
+    "choose": { "title": "Choose a match", "description": "Browse by matchday or club and open the fixture you care about." },
+    "forecast": { "title": "Read the forecast", "description": "Compare home, draw and away chances, expected goals and the most likely scores." },
+    "season": { "title": "Look further ahead", "description": "Explore title, qualification and relegation outlooks as the season changes." }
+  },
+  "pricing": {
+    "eyebrow": "Start free",
+    "title": "Follow first. Predict when you’re ready.",
+    "description": "Tables and fixtures are open to everyone. Plans add match forecasts, season simulations and market questions.",
+    "action": "View pricing"
+  }
+}

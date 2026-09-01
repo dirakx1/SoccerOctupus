@@ -17,6 +17,8 @@
     "swarm": "Laboratorio Swarm"
   },
   "public": {
+    "competitions": "Competiciones",
+    "howItWorks": "Cómo funciona",
     "pricing": "Precios",
     "signIn": "Iniciar sesión",
     "signUp": "Crear cuenta"
