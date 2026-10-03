@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import PricingView from './PricingView.vue'
-import { clearAuthState, setAuthState } from '../lib/auth'
+import { clearAuthState, setAuthPendingState, setAuthState } from '../lib/auth'
 import { applyLocale, i18n } from '../i18n/index.js'
 
 const routerPush = vi.fn()
@@ -86,6 +86,7 @@ describe('PricingView', () => {
     await flushPromises()
 
     expect(wrapper.find('[data-testid="promotion-callout"]').text()).toContain('OCTUPUSFREE')
+    expect(wrapper.text()).toContain('first-time subscribers only')
     expect(wrapper.text()).toContain('enter it on the checkout page')
 
     const copyButton = wrapper.find('.promotion-copy-button')
@@ -93,6 +94,21 @@ describe('PricingView', () => {
     await flushPromises()
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('OCTUPUSFREE')
     expect(copyButton.attributes('aria-label')).toBe('Promotion code copied')
+  })
+
+  it('waits for auth resolution before loading pricing data', async () => {
+    setAuthPendingState()
+    const wrapper = mountPricing()
+    await flushPromises()
+
+    expect(getPlans).not.toHaveBeenCalled()
+    expect(wrapper.find('[data-testid="promotion-callout"]').exists()).toBe(false)
+
+    setAuthState({ signedIn: true, isAdmin: false, user: { email: 'user@example.com' } })
+    await flushPromises()
+
+    expect(getSubscription).toHaveBeenCalled()
+    expect(wrapper.find('[data-testid="promotion-callout"]').exists()).toBe(true)
   })
 
   it('stores a post-auth redirect and routes to sign-up when Basic is clicked signed out', async () => {
@@ -152,7 +168,7 @@ describe('PricingView', () => {
 
     await proButton.trigger('click')
     expect(changePlan).not.toHaveBeenCalled()
-    expect(wrapper.find('[data-testid="promotion-callout"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="promotion-callout"]').exists()).toBe(true)
   })
 
   it('uses Spanish frontend copy while preserving plan data from billing', async () => {

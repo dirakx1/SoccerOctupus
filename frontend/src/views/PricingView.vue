@@ -41,7 +41,7 @@
     <template v-else>
       <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
-      <section v-if="promotionCode && promotionEligible" class="promotion-callout" data-testid="promotion-callout" aria-labelledby="promotion-title">
+      <section v-if="promotionCode" class="promotion-callout" data-testid="promotion-callout" aria-labelledby="promotion-title">
         <div>
           <p class="promotion-kicker">{{ t('pricing.promotion.eyebrow') }}</p>
           <h2 id="promotion-title">{{ t('pricing.promotion.title') }}</h2>
@@ -106,7 +106,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowRight, Check, Copy, CreditCard, LoaderCircle, LogIn, RefreshCw } from '@lucide/vue'
@@ -129,7 +129,6 @@ const promotionCode = ref('')
 const promotionCopyState = ref('idle')
 let checkoutStarted = false
 
-const promotionEligible = computed(() => !auth.state.signedIn || currentTier.value === 'free')
 const promotionCopyLabel = computed(() => promotionCopyState.value === 'success' ? t('pricing.promotion.copied') : t('pricing.promotion.copyCode'))
 const promotionCopyMessage = computed(() => promotionCopyState.value === 'success' ? t('pricing.promotion.copied') : promotionCopyState.value === 'error' ? t('pricing.promotion.copyFailed') : '')
 
@@ -233,10 +232,24 @@ async function loadPlans() {
   }
 }
 
-onMounted(async () => {
+let loadedForAuthState = ''
+
+async function initializePricing() {
+  if (!auth.state.loaded) return
+
+  const authStateKey = auth.state.signedIn ? 'signed-in' : 'signed-out'
+  if (loadedForAuthState === authStateKey) return
+  loadedForAuthState = authStateKey
+
   await loadPlans()
   await startCheckoutFromRoute()
-})
+}
+
+watch(
+  () => [auth.state.loaded, auth.state.signedIn],
+  initializePricing,
+  { immediate: true }
+)
 </script>
 
 <style scoped>
