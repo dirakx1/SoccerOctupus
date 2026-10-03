@@ -58,7 +58,7 @@ describe('PricingView', () => {
     routeQuery = {}
     clearAuthState()
     applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
-    getPlans.mockResolvedValue({ data: { plans } })
+    getPlans.mockResolvedValue({ data: { plans, promotion_code: 'OCTUPUSFREE' } })
     getSubscription.mockResolvedValue({ data: { tier: 'free' } })
     changePlan.mockResolvedValue({ data: { action: 'checkout', url: 'https://checkout.stripe.com/session' } })
     Object.defineProperty(window, 'location', {
@@ -78,6 +78,14 @@ describe('PricingView', () => {
     expect(wrapper.find('[data-testid="plans-skeleton"]').exists()).toBe(true)
     expect(wrapper.findAll('.plan-card-skeleton')).toHaveLength(3)
     expect(wrapper.find('.pricing-state').exists()).toBe(false)
+  })
+
+  it('shows the Stripe promotion code and checkout instructions', async () => {
+    const wrapper = mountPricing()
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="promotion-callout"]').text()).toContain('OCTUPUSFREE')
+    expect(wrapper.text()).toContain('enter it on the checkout page')
   })
 
   it('stores a post-auth redirect and routes to sign-up when Basic is clicked signed out', async () => {
@@ -137,6 +145,7 @@ describe('PricingView', () => {
 
     await proButton.trigger('click')
     expect(changePlan).not.toHaveBeenCalled()
+    expect(wrapper.find('[data-testid="promotion-callout"]').exists()).toBe(false)
   })
 
   it('uses Spanish frontend copy while preserving plan data from billing', async () => {

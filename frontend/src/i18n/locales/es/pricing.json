@@ -7,6 +7,11 @@
   "loadingCopy": "Comprobando las opciones de suscripción disponibles para tu cuenta.",
   "loadError": "No se pudieron cargar los planes.",
   "retry": "Intentar de nuevo",
+  "promotion": {
+    "eyebrow": "Oferta limitada",
+    "title": "Tu primer mes es gratis",
+    "copy": "Solo para tu primera compra. Copia este código e introdúcelo en la página de checkout después de elegir Basic o Pro."
+  },
   "perInterval": "/{interval}",
   "featured": "Recomendado",
   "notes": {

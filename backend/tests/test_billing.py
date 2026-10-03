@@ -67,6 +67,7 @@ def test_plans_return_free_basic_and_pro(client):
     assert plans[1]["display_price"] == "$5"
     assert plans[2]["display_price"] == "$10"
     assert all("price_id" not in plan for plan in plans)
+    assert response.get_json()["promotion_code"] == "OCTUPUSFREE"
 
 
 def test_checkout_rejects_unauthenticated(client):

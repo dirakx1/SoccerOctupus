@@ -5,6 +5,7 @@ from __future__ import annotations
 from flask import Blueprint, g, jsonify, request
 
 from ..auth import require_user
+from ..config import Config
 from ..billing import (
     BillingConfigError,
     change_subscription_plan,
@@ -43,7 +44,7 @@ def _get_value(obj, key, default=None):
 
 @bp.route("/plans", methods=["GET"])
 def plans():
-    return jsonify({"plans": plan_catalog()})
+    return jsonify({"plans": plan_catalog(), "promotion_code": Config.STRIPE_PROMOTION_CODE})
 
 
 @bp.route("/checkout", methods=["POST"])

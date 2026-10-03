@@ -151,6 +151,7 @@ STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 STRIPE_BASIC_PRICE_ID=
 STRIPE_PRO_PRICE_ID=
+STRIPE_PROMOTION_CODE=OCTUPUSFREE
 STRIPE_BILLING_PORTAL_CONFIGURATION_ID=
 
 DEBUG=false
@@ -165,6 +166,7 @@ Notes:
 - `CLERK_JWT_PUBLIC_KEY` or `CLERK_JWKS_JSON` can be used instead of `CLERK_JWKS_URL` to verify tokens without a runtime JWKS fetch; prefer `CLERK_JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"` in production env managers
 - Stripe secrets stay in deployment env, not `/admin/settings`
 - Stripe price IDs are not secret, but configure `STRIPE_BASIC_PRICE_ID` and `STRIPE_PRO_PRICE_ID` through env for each Stripe account
+- `STRIPE_PROMOTION_CODE` is the active Stripe promotion code shown on the pricing page; create it separately in each Stripe mode/account
 - The Stripe webhook endpoint is `POST https://socceroctupus.co/api/webhooks/stripe`
 - LLM, Zep, YouTube, Opta, provider endpoint URLs, swarm, and Monte Carlo settings are configured in `/admin/settings` after first-admin bootstrap
 - Provider API keys are encrypted in the database and redacted from admin API responses

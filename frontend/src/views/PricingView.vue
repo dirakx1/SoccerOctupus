@@ -41,6 +41,15 @@
     <template v-else>
       <p v-if="error" class="error-box" role="alert">{{ error }}</p>
 
+      <section v-if="promotionCode && promotionEligible" class="promotion-callout" data-testid="promotion-callout" aria-labelledby="promotion-title">
+        <div>
+          <p class="promotion-kicker">{{ t('pricing.promotion.eyebrow') }}</p>
+          <h2 id="promotion-title">{{ t('pricing.promotion.title') }}</h2>
+          <p>{{ t('pricing.promotion.copy') }}</p>
+        </div>
+        <code class="promotion-code">{{ promotionCode }}</code>
+      </section>
+
       <section class="plans-grid" aria-label="Subscription plans">
         <article
           v-for="plan in plans"
@@ -84,7 +93,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowRight, Check, CreditCard, LoaderCircle, LogIn, RefreshCw } from '@lucide/vue'
@@ -103,7 +112,10 @@ const loadError = ref('')
 const plansLoading = ref(true)
 const loadingTier = ref('')
 const currentTier = ref('')
+const promotionCode = ref('')
 let checkoutStarted = false
+
+const promotionEligible = computed(() => !auth.state.signedIn || currentTier.value === 'free')
 
 function isCurrentTier(tier) {
   return auth.state.signedIn && currentTier.value === tier
@@ -187,6 +199,7 @@ async function loadPlans() {
     }
     const [plansRes, subscriptionRes] = await Promise.all(requests)
     plans.value = plansRes.data.plans
+    promotionCode.value = plansRes.data.promotion_code || ''
     currentTier.value = subscriptionRes?.data?.tier || ''
   } catch (err) {
     loadError.value = err.response?.data?.error || t('pricing.loadError')
@@ -203,6 +216,11 @@ onMounted(async () => {
 
 <style scoped>
 .pricing-page { display: flex; flex-direction: column; gap: var(--space-8); margin: 0 auto; max-width: 72rem; padding: var(--space-8) 0 var(--space-12); }
+.promotion-callout { align-items: center; background: var(--color-surface-inset); border: var(--border-width-thin) solid var(--color-accent); display: flex; gap: var(--space-6); justify-content: space-between; padding: var(--space-5) var(--space-6); }
+.promotion-callout h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
+.promotion-callout p { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; }
+.promotion-kicker { color: var(--color-accent) !important; font: var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data); letter-spacing: .04em; margin: 0 !important; text-transform: uppercase; }
+.promotion-code { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border-strong); color: var(--color-text); font: var(--font-weight-bold) var(--font-size-lg)/1 var(--font-family-data); padding: var(--space-3) var(--space-4); white-space: nowrap; }
 .pricing-intro { align-items: end; border-bottom: var(--border-width-strong) solid var(--color-border-strong); display: flex; gap: var(--space-6); justify-content: space-between; padding-bottom: var(--space-6); }
 .atlas-kicker,.featured-label { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data); letter-spacing: 0; margin: 0 0 var(--space-2); text-transform: uppercase; }
 .pricing-intro h1,.plan-card h2,.pricing-state h2 { color: var(--color-text); font-family: var(--font-family-display); margin: 0; }

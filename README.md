@@ -351,6 +351,7 @@ STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 STRIPE_BASIC_PRICE_ID=
 STRIPE_PRO_PRICE_ID=
+STRIPE_PROMOTION_CODE=OCTUPUSFREE
 STRIPE_BILLING_PORTAL_CONFIGURATION_ID=
 PORT=5002
 DEBUG=false
@@ -735,6 +736,7 @@ Only bootstrap settings are read from `.env` (see `.env.example`):
 | `STRIPE_WEBHOOK_SECRET` | — | For billing webhooks | Stripe endpoint signing secret for `POST /api/webhooks/stripe`. |
 | `STRIPE_BASIC_PRICE_ID` | — | For billing | Stripe recurring monthly price ID for Basic USD 5. Not secret, but env-specific. |
 | `STRIPE_PRO_PRICE_ID` | — | For billing | Stripe recurring monthly price ID for Pro USD 10. Not secret, but env-specific. |
+| `STRIPE_PROMOTION_CODE` | `OCTUPUSFREE` | Optional billing | Active Stripe promotion code displayed on the pricing page. Stripe Checkout validates and applies it. |
 | `STRIPE_BILLING_PORTAL_CONFIGURATION_ID` | — | Optional billing | Stripe Customer Portal configuration ID when using a non-default portal setup. |
 | `PORT` | `5002` | — | Backend port |
 
