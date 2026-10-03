@@ -10,7 +10,10 @@
   "promotion": {
     "eyebrow": "Oferta limitada",
     "title": "Tu primer mes es gratis",
-    "copy": "Solo para tu primera compra. Copia este código e introdúcelo en la página de checkout después de elegir Basic o Pro."
+    "copy": "Solo para tu primera compra. Copia este código e introdúcelo en la página de checkout después de elegir Basic o Pro.",
+    "copyCode": "Copiar código promocional",
+    "copied": "Código promocional copiado",
+    "copyFailed": "No se pudo copiar el código promocional"
   },
   "perInterval": "/{interval}",
   "featured": "Recomendado",

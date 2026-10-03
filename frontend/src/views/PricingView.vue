@@ -47,7 +47,20 @@
           <h2 id="promotion-title">{{ t('pricing.promotion.title') }}</h2>
           <p>{{ t('pricing.promotion.copy') }}</p>
         </div>
-        <code class="promotion-code">{{ promotionCode }}</code>
+        <div class="promotion-code-group">
+          <code class="promotion-code">{{ promotionCode }}</code>
+          <button
+            class="promotion-copy-button"
+            type="button"
+            :aria-label="promotionCopyLabel"
+            :title="promotionCopyLabel"
+            @click="copyPromotionCode"
+          >
+            <Check v-if="promotionCopyState === 'success'" :size="17" aria-hidden="true" />
+            <Copy v-else :size="17" aria-hidden="true" />
+          </button>
+        </div>
+        <p class="sr-only" aria-live="polite">{{ promotionCopyMessage }}</p>
       </section>
 
       <section class="plans-grid" aria-label="Subscription plans">
@@ -96,7 +109,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowRight, Check, CreditCard, LoaderCircle, LogIn, RefreshCw } from '@lucide/vue'
+import { ArrowRight, Check, Copy, CreditCard, LoaderCircle, LogIn, RefreshCw } from '@lucide/vue'
 
 import { changePlan, getPlans, getSubscription } from '../lib/billing'
 import { useAuthState } from '../lib/auth'
@@ -113,9 +126,21 @@ const plansLoading = ref(true)
 const loadingTier = ref('')
 const currentTier = ref('')
 const promotionCode = ref('')
+const promotionCopyState = ref('idle')
 let checkoutStarted = false
 
 const promotionEligible = computed(() => !auth.state.signedIn || currentTier.value === 'free')
+const promotionCopyLabel = computed(() => promotionCopyState.value === 'success' ? t('pricing.promotion.copied') : t('pricing.promotion.copyCode'))
+const promotionCopyMessage = computed(() => promotionCopyState.value === 'success' ? t('pricing.promotion.copied') : promotionCopyState.value === 'error' ? t('pricing.promotion.copyFailed') : '')
+
+async function copyPromotionCode() {
+  try {
+    await navigator.clipboard.writeText(promotionCode.value)
+    promotionCopyState.value = 'success'
+  } catch {
+    promotionCopyState.value = 'error'
+  }
+}
 
 function isCurrentTier(tier) {
   return auth.state.signedIn && currentTier.value === tier
@@ -220,7 +245,11 @@ onMounted(async () => {
 .promotion-callout h2 { color: var(--color-text); font-family: var(--font-family-display); font-size: var(--font-size-xl); margin: 0; }
 .promotion-callout p { color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin: var(--space-2) 0 0; }
 .promotion-kicker { color: var(--color-accent) !important; font: var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data); letter-spacing: .04em; margin: 0 !important; text-transform: uppercase; }
+.promotion-code-group { align-items: center; display: inline-flex; gap: var(--space-2); }
 .promotion-code { background: var(--color-surface); border: var(--border-width-thin) solid var(--color-border-strong); color: var(--color-text); font: var(--font-weight-bold) var(--font-size-lg)/1 var(--font-family-data); padding: var(--space-3) var(--space-4); white-space: nowrap; }
+.promotion-copy-button { align-items: center; background: transparent; border: var(--border-width-thin) solid var(--color-border-strong); color: var(--color-text-muted); cursor: pointer; display: inline-flex; justify-content: center; min-height: var(--control-height-lg); min-width: var(--control-height-lg); padding: 0; }
+.promotion-copy-button:hover { color: var(--color-accent); }
+.promotion-copy-button:focus-visible { outline: var(--border-width-strong) solid var(--color-focus); outline-offset: 3px; }
 .pricing-intro { align-items: end; border-bottom: var(--border-width-strong) solid var(--color-border-strong); display: flex; gap: var(--space-6); justify-content: space-between; padding-bottom: var(--space-6); }
 .atlas-kicker,.featured-label { color: var(--color-accent); font: var(--font-weight-bold) var(--font-size-xs)/var(--line-height-normal) var(--font-family-data); letter-spacing: 0; margin: 0 0 var(--space-2); text-transform: uppercase; }
 .pricing-intro h1,.plan-card h2,.pricing-state h2 { color: var(--color-text); font-family: var(--font-family-display); margin: 0; }

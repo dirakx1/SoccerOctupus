@@ -58,6 +58,7 @@ describe('PricingView', () => {
     routeQuery = {}
     clearAuthState()
     applyLocale('en', { storage: window.localStorage, documentElement: document.documentElement })
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: vi.fn().mockResolvedValue() } })
     getPlans.mockResolvedValue({ data: { plans, promotion_code: 'OCTUPUSFREE' } })
     getSubscription.mockResolvedValue({ data: { tier: 'free' } })
     changePlan.mockResolvedValue({ data: { action: 'checkout', url: 'https://checkout.stripe.com/session' } })
@@ -86,6 +87,12 @@ describe('PricingView', () => {
 
     expect(wrapper.find('[data-testid="promotion-callout"]').text()).toContain('OCTUPUSFREE')
     expect(wrapper.text()).toContain('enter it on the checkout page')
+
+    const copyButton = wrapper.find('.promotion-copy-button')
+    await copyButton.trigger('click')
+    await flushPromises()
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('OCTUPUSFREE')
+    expect(copyButton.attributes('aria-label')).toBe('Promotion code copied')
   })
 
   it('stores a post-auth redirect and routes to sign-up when Basic is clicked signed out', async () => {
@@ -95,7 +102,7 @@ describe('PricingView', () => {
     expect(wrapper.text()).toContain('1 match prediction')
     expect(wrapper.text()).toContain('Unlimited market generation')
 
-    await wrapper.findAll('button')[1].trigger('click')
+    await wrapper.findAll('.plan-card button')[1].trigger('click')
 
     expect(window.localStorage.getItem('socceroctopus.postAuthRedirect')).toBe('/pricing?plan=basic&checkout=1')
     expect(routerPush).toHaveBeenCalledWith('/sign-up')
@@ -106,7 +113,7 @@ describe('PricingView', () => {
     const wrapper = mountPricing()
     await flushPromises()
 
-    await wrapper.findAll('button')[2].trigger('click')
+    await wrapper.findAll('.plan-card button')[2].trigger('click')
     await flushPromises()
 
     expect(changePlan).toHaveBeenCalledWith('pro')
@@ -125,7 +132,7 @@ describe('PricingView', () => {
     const wrapper = mountPricing()
     await flushPromises()
 
-    await wrapper.findAll('button')[0].trigger('click')
+    await wrapper.findAll('.plan-card button')[0].trigger('click')
     await flushPromises()
 
     expect(changePlan).toHaveBeenCalledWith('free')
@@ -139,7 +146,7 @@ describe('PricingView', () => {
     const wrapper = mountPricing()
     await flushPromises()
 
-    const proButton = wrapper.findAll('button')[2]
+    const proButton = wrapper.findAll('.plan-card button')[2]
     expect(proButton.attributes('disabled')).toBeDefined()
     expect(proButton.text()).toContain('Current plan')
 
@@ -184,10 +191,10 @@ describe('PricingView', () => {
     const wrapper = mountPricing()
     await flushPromises()
 
-    await wrapper.findAll('button')[1].trigger('click')
+    await wrapper.findAll('.plan-card button')[1].trigger('click')
     await flushPromises()
 
     expect(wrapper.text()).toContain('Card update needed')
-    expect(wrapper.findAll('button')[1].attributes('disabled')).toBeUndefined()
+    expect(wrapper.findAll('.plan-card button')[1].attributes('disabled')).toBeUndefined()
   })
 })
